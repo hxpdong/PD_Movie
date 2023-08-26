@@ -14,16 +14,32 @@ use App\Http\Controllers\API\AuthController;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('movie.index');
+});
+Route::get('movies', function(){
+    return view('/movie.index');
+});
+Route::get('movies/{mid}', function(){
+    return view('/movie.show');
+});
+Route::get('recommend', function(){
+    return view('/movie.recommender');
 });
 Route::middleware('pdmv_checkLogin')->group(function () {
     Route::get('/login', function () {
         return view('auth.login');
     });
 });
-Route::get('/dashboard', function () {
-    return view('auth.dashboard');
+Route::middleware('pdmv_checkUserType')->group(function () {
+    Route::get('/dashboard', function () {
+        return view('auth.dashboard');
+    });
 });
+
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/logout', [AuthController::class, 'logout']);
+
+//in web-header
+Route::post('/modalLogin', [AuthController::class, 'modalPostAuthLogin'])->name('modalLogin');
+Route::get('/logoutHeader', [AuthController::class, 'logoutHeader'])->name('logoutHeader');

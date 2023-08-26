@@ -113,4 +113,40 @@ class AuthController extends Controller
             ]);
         }
     }
+
+    public function modalPostAuthLogin(Request $request)
+    {
+        try {
+            $credentials = [
+                'name' => $request->mdusname,
+                'password' => $request->mduspassword,
+            ];
+
+            if (Auth::guard('web')->attempt($credentials)) {
+                return response()->json([
+                    'success' => true,
+                ]);
+            } else {
+                return response()->json([
+                    'message' => "Invalid credentials",
+                ]);
+            }
+        } catch (\Exception $e) {
+            return response()->json([
+                "error:" => $e->getMessage(),
+            ]);
+        }
+    }
+
+    public function logoutHeader(Request $request)
+    {
+        try {
+            Auth::guard('web')->logout();
+            return redirect()->back();
+        } catch (\Exception $e) {
+            return response()->json([
+                "error:" => $e->getMessage(),
+            ]);
+        }
+    }
 }

@@ -1,0 +1,149 @@
+:root {
+    --color-blue: #66CCFF;
+    --color-gray: #3a3a3a;
+    --color-black: #000000;
+    --color-white: #ffffff;
+    --color-half-white: #ddd;
+}
+
+body {
+    background-color: var(--color-gray);
+}
+
+.main-container {
+    margin: 50px;
+    
+}
+
+.right-container {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 20%;
+    height: 100%;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background-color: var(--color-half-white);
+    margin: 5px;
+}
+
+#right-banner img {
+    max-width: 100%;
+    max-height: 100%;
+}
+
+button {
+    background-color: var(--color-white);
+    color: var(--color-black);
+    font-weight: bold;
+    border-radius: 5px;
+    padding: 10px;
+    font-size: 15px;
+}
+
+/* CSS để định dạng nút trang đang được chọn */
+button.active {
+    background-color: var(--color-blue);
+    /* Màu nền của nút trang đang chọn */
+    color: var(--color-white);
+    /* Màu chữ của nút trang đang chọn */
+    font-weight: bold;
+    /* Đậm chữ của nút trang đang chọn */
+}
+
+button:disabled {
+    color: var(--color-half-white);
+}
+
+#movie-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    grid-gap: 20px;
+    list-style: none;
+    padding: 0;
+}
+
+.grid-item {
+    border: 1px solid var(--color-black);
+    padding: 10px;
+    background-color: var(--color-half-white);
+}
+
+/* CSS để điều chỉnh kích thước hình ảnh */
+.movie-item img {
+    object-fit: cover;
+}
+
+.text-ellipsis {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.tooltip {
+    position: absolute;
+    background-color: var(--color-black);
+    color: var(--color-white);
+    padding: 5px;
+    z-index: 1;
+    /* Đảm bảo tooltip nằm trên các phần khác */
+    visibility: hidden;
+    /* Ẩn tooltip ban đầu */
+    opacity: 0;
+    /* Ẩn tooltip ban đầu */
+    transition: opacity 0.3s, visibility 0.3s;
+    /* Hiệu ứng khi hiện/ẩn tooltip */
+}
+
+.grid-item:hover {
+    border: 5px solid var(--color-blue);
+}
+
+.grid-item:hover .tooltip {
+    visibility: visible;
+    /* Hiển thị tooltip khi hover lên .grid-item */
+    opacity: 1;
+    /* Hiển thị tooltip khi hover lên .grid-item */
+}
+
+#pagination {
+    text-align: center;
+    margin: 20px;
+}
+
+
+#bd-mvdetail {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.mvdetail-container {
+    width: 500px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: auto;
+    margin: 10px;
+    background-color: var(--color-half-white);
+}
+
+
+#mvdetail-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    list-style: none;
+    padding: 10px;
+}
+
+.mvdetail-grid-item {
+    margin: 0px 5px;
+}
+
+@media (min-width: 780px) {
+    #mvdetail-grid {
+        grid-template-columns: 2fr 1fr;
+    }
+}

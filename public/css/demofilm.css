@@ -1,0 +1,69 @@
+/* Thiết lập cho iframe và container */
+.responsive-container {
+    position: relative;
+    padding-bottom: 60%;
+    /* Tỷ lệ khung hình 16:9 */
+    width: 100%;
+}
+
+.responsive-iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+/* Điều chỉnh chiều rộng khi đạt kích thước màn hình cụ thể */
+@media (min-width: 780px) {
+
+    /* Khi đạt kích thước màn hình tối thiểu là 768px (desktop) */
+    .responsive-container {
+        width: 60%;
+        overflow: hidden;
+        padding-bottom: 36%;
+        /* 70% cho desktop */
+    }
+}
+
+.star-rating {
+    display: inline-block;
+    font-size: 0;
+}
+
+.star-rating input {
+    display: none;
+}
+
+.star-rating label {
+    float: right;
+    cursor: pointer;
+    color: #ccc;
+}
+
+.star-rating label:before {
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
+    content: '\f005';
+    /* Unicode của icon ngôi sao đầy đủ */
+    font-size: 30px;
+}
+
+.star-rating label.half:before {
+    content: '\f089';
+    /* Unicode của icon nửa sao */
+    position: absolute;
+    
+    /* Cắt phần trên của nửa sao */
+    z-index: 1;
+}
+
+.star-rating input:checked~label {
+    color: rgb(247, 247, 11);
+    /* Thay đổi màu sáng cho các sao đã được chọn */
+}
+
+
+body {
+    background-color: rgb(82, 80, 77);
+}

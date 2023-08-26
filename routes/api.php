@@ -3,6 +3,8 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\AuthController;
+use App\Http\Controllers\API\MovieController;
+use App\Http\Controllers\API\RecommenderController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -26,3 +28,11 @@ Route::post('login', [AuthController::class, 'loginAPI']);
 Route::group(['middleware' => ['auth:api']], function () {
     Route::post('logout', [AuthController::class, 'logoutAPI']);
 });
+
+Route::get('/movies', [MovieController::class, 'index']);
+Route::get('/movies/{mid}', [MovieController::class, 'show']);
+Route::get('comments/{mid}', [MovieController::class, 'getCommentListOf']);
+Route::post('/postcomment' , [MovieController::class, 'postComment']);
+Route::get('/ratings/{uid}/{mid}' , [MovieController::class, 'getRatingOf']);
+Route::post('/postrating' , [MovieController::class, 'postRatingOf']);
+Route::get('/movies/recommended/{uid}', [RecommenderController::class, 'UserBased_CollaborativeFiltering']);
