@@ -1,5 +1,4 @@
-<script src="https://cdn.tailwindcss.com"></script>
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
+@include ('component.online-src')
 <!-- component -->
 <header id="headerLoginInfo">
     <nav class="bg-gray-500 border-gray-200 px-4 lg:px-6 py-2.5 dark:bg-gray-800">
@@ -8,14 +7,15 @@
                 <img src="/img/fav-removebg.png" class="mr-3 h-6 sm:h-9" alt="Flowbite Logo" />
                 <span class="self-center text-xl font-semibold whitespace-nowrap dark:text-white">PDMovie</span>
             </a>
-            <input class="w-32 pl-10 pr-4 rounded-md form-input sm:w-64 focus:border-indigo-600" type="text"
-                placeholder="Nhập từ khóa...">
+
             <div class="flex items-center lg:order-2">
                 @if(auth()->check())
                 <a href=""><span id="loginuser">{{ auth()->user()->name }}</span></a>
-                
-                <a href="/logoutHeader" class="text-gray-800 bg-white mx-1 dark:text-white hover:bg-gray-50 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-gray-800">Đăng xuất</a>
-                
+
+                <a href="/logoutHeader"
+                    class="text-gray-800 bg-white mx-1 dark:text-white hover:bg-gray-50 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-gray-800">Đăng
+                    xuất</a>
+
                 <input type="hidden" id="authUserId" value="{{ auth()->user()->id }}">
                 @else
                 Guest!
@@ -47,7 +47,24 @@
                 </button>
             </div>
             <div class="hidden justify-between items-center w-full lg:flex lg:w-auto lg:order-1" id="mobile-menu-2">
-                <ul class="flex flex-col mt-4 font-medium lg:flex-row lg:space-x-8 lg:mt-0">
+                <ul class="flex flex-col mt-4 font-medium lg:flex-row lg:space-x-8 lg:mt-0 lg:items-center">
+                    <li>
+                        <form class="mb-0">
+                            <div class="relative">
+                                <input type="search" id="default-search"
+                                    class="lg:w-96 w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                    placeholder="tìm kiếm..." required name="kwsearch">
+                                <button type="submit"
+                                    class="text-white absolute right-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                                    <svg class="w-4 h-4 text-white dark:text-white" aria-hidden="true"
+                                        xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                            stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
+                                    </svg>
+                                </button>
+                            </div>
+                        </form>
+                    </li>
                     <li>
                         <a href="/"
                             class="block py-2 pr-4 pl-3 text-white rounded bg-gray-700 lg:bg-transparent lg:text-black lg:p-0 dark:text-white"
@@ -119,11 +136,8 @@
     </div>
 </div>
 
-<script src="https://unpkg.com/flowbite@1.4.7/dist/flowbite.js"></script>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script>
-    var accId = document.getElementById("authUserId").value;
+var accId = document.getElementById("authUserId").value;
 $(document).ready(function() {
     $('#modalLoginForm').submit(function(e) {
         e.preventDefault();

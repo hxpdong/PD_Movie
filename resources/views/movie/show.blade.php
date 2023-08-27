@@ -5,7 +5,6 @@
 <head>
     <title>List of Movies</title>
     <link rel="stylesheet" href="/css/main.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="/css/demofilm.css">
 </head>
 
@@ -61,12 +60,14 @@
             <!--FILMDETAIL-->
             <div class="py-3 sm:mx-auto mvdetail-grid-item">
                 <div class="bg-white shadow-lg border-gray-100 border rounded-3xl p-8 flex space-x-8">
-                    <div class="overflow-visible w-1/2">
-                        <img class="rounded-3xl shadow-lg" id="mvdetail-img" src="">
-                        <button data-modal-target="watchMovieModal" data-modal-toggle="watchMovieModal"
-                            class="m-2 bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow">
-                            Xem phim
-                        </button>
+                    <div class="w-1/2 flex justify-center h-screen">
+                        <div class="w-full mx-auto text-center">
+                            <img class="mx-auto rounded-3xl shadow-lg" id="mvdetail-img" src="">
+                            <button data-modal-target="watchMovieModal" data-modal-toggle="watchMovieModal"
+                                class="mt-2 bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow">
+                                Xem phim
+                            </button>
+                        </div>
                     </div>
                     <div class="flex flex-col w-1/2 space-y-4">
                         <div>
@@ -75,7 +76,7 @@
                         </div>
                         <div class="flex justify-between items-start">
                             <div class="text-3xl font-bold" id="mvdetail-title"></div>
-                            <div class="bg-yellow-400 font-bold rounded-xl p-2"><span id="mvdetail-rating"></span>/5.0
+                            <div class="bg-[#f5e50b] font-bold rounded-xl p-2"><span id="mvdetail-rating"></span>/5.0
                             </div>
                         </div>
                         <div>
@@ -131,17 +132,21 @@
                                     class="px-0 w-full text-sm text-gray-900 border-0 focus:ring-0 focus:outline-none dark:text-white dark:placeholder-gray-400 dark:bg-gray-800"
                                     placeholder="Viết bình luận..." required></textarea>
                             </div>
-                            <button type="submit"
-                                class="inline-flex items-center py-2.5 px-4 text-xs font-medium text-center text-white bg-[#66CCFF] rounded-lg focus:ring-4 focus:ring-primary-200 dark:focus:ring-primary-900 hover:bg-primary-800">
-                                Gửi đánh giá
-                            </button>
+                            <div class="flex justify-center">
+                                <button type="submit"
+                                    class="inline-flex items-center py-2.5 px-4 text-xs font-medium text-center text-white bg-[#66CCFF] rounded-lg focus:ring-4 focus:ring-primary-200 dark:focus:ring-primary-900 hover:bg-primary-800">
+                                    Gửi đánh giá
+                                </button>
+                            </div>
                         </form>
                         @else
-                        <button
-                            class="block text-white bg-[#66CCFF] hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-                            type="button" data-modal-toggle="authentication-modal">
-                            Đăng nhập để gửi đánh giá
-                        </button>
+                        <form class="flex justify-center">
+                            <button
+                                class="block text-white bg-[#66CCFF] hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                                type="button" data-modal-toggle="authentication-modal">
+                                Đăng nhập để gửi đánh giá
+                            </button>
+                        </form>
                         @endif
                         <div id="comment-list">
                             {{--
@@ -206,7 +211,6 @@
             </div>
         </div>
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="/js/detail-movie.js"></script>
 
     <script>

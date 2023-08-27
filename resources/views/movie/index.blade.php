@@ -4,8 +4,6 @@
 <head>
     <title>List of Movies</title>
     <link rel="stylesheet" href="/css/main.css">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 </head>
 <body>
     <div class="main-container">
@@ -44,7 +42,7 @@
     </div>
     --}}
 
-    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    
     <script src="/js/main.js"></script>
 </body>
 

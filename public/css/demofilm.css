@@ -59,7 +59,7 @@
 }
 
 .star-rating input:checked~label {
-    color: rgb(247, 247, 11);
+    color: #f5e50b;
     /* Thay đổi màu sáng cho các sao đã được chọn */
 }
 

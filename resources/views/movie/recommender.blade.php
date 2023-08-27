@@ -15,7 +15,6 @@
         <div id="movie-list" class="grid-container">
         </div>
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="/js/main-test-recommend.js"></script>
 </body>
 

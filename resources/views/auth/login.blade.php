@@ -1,8 +1,8 @@
+@include ('component.online-src')
 <html>
 
 <head>
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <script src="https://cdn.tailwindcss.com"></script>
     <title>Trang đăng nhập</title>
 </head>
 
