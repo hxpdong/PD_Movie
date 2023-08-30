@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\Auth;
 
-class PDMV_CheckLogin
+class PDMV_CheckTypeIsUser
 {
     /**
      * Handle an incoming request.
@@ -16,9 +16,8 @@ class PDMV_CheckLogin
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (Auth::guard('web')->check()) {
-            return redirect('/admin/dashboard');
-        }
-        return $next($request);
+        if( (auth()->check() && auth()->user()->acctype_id == 3)){
+            return $next($request);
+        }else return redirect('/login');
     }
 }

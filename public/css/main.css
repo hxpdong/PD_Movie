@@ -29,10 +29,6 @@ body {
     margin: 5px;
 }
 
-#right-banner img {
-    max-width: 100%;
-    max-height: 100%;
-}
 
 button {
     background-color: var(--color-white);
@@ -71,10 +67,6 @@ button:disabled {
     background-color: var(--color-half-white);
 }
 
-/* CSS để điều chỉnh kích thước hình ảnh */
-.movie-item img {
-    object-fit: cover;
-}
 
 .text-ellipsis {
     white-space: nowrap;
@@ -131,7 +123,7 @@ button:disabled {
 }
 
 
-#mvdetail-grid {
+.mvdetail-grid {
     display: grid;
     grid-template-columns: 1fr;
     list-style: none;
@@ -143,7 +135,7 @@ button:disabled {
 }
 
 @media (min-width: 780px) {
-    #mvdetail-grid {
+    .mvdetail-grid {
         grid-template-columns: 2fr 1fr;
     }
 }

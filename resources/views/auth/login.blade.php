@@ -35,6 +35,9 @@
                             nhập</button>
                     </div>
                 </form>
+                <div class="text-sm font-medium text-white dark:text-white">
+                    Chưa có tài khoản? <a href="/register" class="text-blue-700 hover:underline dark:text-blue-500">Đăng ký</a>
+                </div>
             </div>
         </div>
     </div>

@@ -56,13 +56,13 @@
     </div>
 
     <div class="flex flex-col justify-center">
-        <div id="mvdetail-grid">
+        <div class="mvdetail-grid">
             <!--FILMDETAIL-->
             <div class="py-3 sm:mx-auto mvdetail-grid-item">
                 <div class="bg-white shadow-lg border-gray-100 border rounded-3xl p-8 flex space-x-8">
                     <div class="w-1/2 flex justify-center h-screen">
                         <div class="w-full mx-auto text-center">
-                            <img class="mx-auto rounded-3xl shadow-lg" id="mvdetail-img" src="">
+                            <img class="mx-auto rounded-3xl shadow-lg lg:w-3/5 sm:w-full" id="mvdetail-img" src="">
                             <button data-modal-target="watchMovieModal" data-modal-toggle="watchMovieModal"
                                 class="mt-2 bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow">
                                 Xem phim

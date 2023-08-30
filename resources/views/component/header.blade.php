@@ -18,7 +18,7 @@
 
                 <input type="hidden" id="authUserId" value="{{ auth()->user()->id }}">
                 @else
-                Guest!
+                Khách!
                 <input type="hidden" id="authUserId" value="">
                 <button data-modal-toggle="authentication-modal"
                     class="text-gray-800 bg-white mx-1 dark:text-white hover:bg-gray-50 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-gray-800">Đăng
@@ -129,7 +129,7 @@
                     class="w-full text-white bg-[#66CCFF] hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                     Đăng nhập</button>
                 <div class="text-sm font-medium text-gray-500 dark:text-gray-300">
-                    Chưa có tài khoản? <a href="#" class="text-blue-700 hover:underline dark:text-blue-500">Đăng ký</a>
+                    Chưa có tài khoản? <a href="/register" class="text-blue-700 hover:underline dark:text-blue-500">Đăng ký</a>
                 </div>
             </form>
         </div>

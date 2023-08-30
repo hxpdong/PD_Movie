@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>List of Movies</title>
+    <title>PDMovie</title>
     <link rel="stylesheet" href="/css/main.css">
 </head>
 <body>

@@ -65,6 +65,8 @@ class Kernel extends HttpKernel
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'pdmv_checkLogin' => \App\Http\Middleware\PDMV_CheckLogin::class,
-        'pdmv_checkUserType' => \App\Http\Middleware\PDMV_CheckTypeUser::class,
+        'pdmv_checkIsAdmin' => \App\Http\Middleware\PDMV_CheckTypeUser::class,
+        'pdmv_checkIsUserOrGuest' => \App\Http\Middleware\PDMV_CheckTypeIsUserOrGuest::class,
+        'pdmv_checkIsUser' =>\App\Http\Middleware\PDMV_CheckTypeIsUser::class,
     ];
 }
