@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\DB;
 
 class AuthController extends Controller
 {
-    public function register(Request $request)
+    public function registerAPI(Request $request)
     {
         try {
             $usname = $request->name;
@@ -82,6 +82,37 @@ class AuthController extends Controller
         }
     }
 
+    public function register(Request $request)
+    {
+        try {
+            $usname = $request->name;
+            $passwd = bcrypt($request->password);
+            $email = $request->email;
+            $fullname = $request->fullname;
+            DB::insert('insert into pdmv_accounts (usname, password, acctype_id) values (?, ?, ?)', [$usname, $passwd, 3]);
+            $numaccid = DB::table('pdmv_accounts')
+                ->where('acctype_id', 3)
+                ->max('acc_id');
+            DB::insert('insert into pdmv_users (user_id, email, fullname) values (?, ?, ?)', [$numaccid, $email, $fullname]);
+
+            $user = new User();
+            $user->id = $numaccid;
+            $user->name = $usname;
+            $user->email = $email;
+            $user->password = $passwd;
+            $user->fullname = $fullname;
+            $user->acctype_id = 3;
+            $user->save();
+
+            return $user;
+        } catch (\Exception $e) {
+            // Xử lý lỗi ở đây, ví dụ: in thông báo lỗi
+            return response()->json([
+                "error:" => $e->getMessage(),
+            ]);
+        }
+    }
+
     public function login(Request $request)
     {
         try {
@@ -110,6 +141,57 @@ class AuthController extends Controller
         } catch (\Exception $e) {
             return response()->json([
                 "error:" => $e->getMessage(),
+            ]);
+        }
+    }
+
+    public function modalPostAuthRegister(Request $request)
+    {
+        try {
+            $usname = $request->mdregusname;
+            $passwd = bcrypt($request->mdreguspassword);
+            $email = $request->mdregemail;
+            $fullname = $request->mdregfullname;
+            if($usname == null || $passwd == null || $email == null || $fullname == null){
+                return response()->json([
+                    "error" => true,
+                    "message" => "Các trường không được bỏ trống",
+                ]);
+            }
+            DB::insert('insert into pdmv_accounts (usname, password, acctype_id) values (?, ?, ?)', [$usname, $passwd, 3]);
+            $numaccid = DB::table('pdmv_accounts')
+                ->where('acctype_id', 3)
+                ->max('acc_id');
+            DB::insert('insert into pdmv_users (user_id, email, fullname) values (?, ?, ?)', [$numaccid, $email, $fullname]);
+
+            $user = new User();
+            $user->id = $numaccid;
+            $user->name = $usname;
+            $user->email = $email;
+            $user->password = $passwd;
+            $user->fullname = $fullname;
+            $user->acctype_id = 3;
+            $user->save();
+
+            $credentials = [
+                'name' => $usname,
+                'password' => $request->mdreguspassword,
+            ];
+
+            if (Auth::guard('web')->attempt($credentials)) {
+                return response()->json([
+                    'success' => true,
+                ]);
+            }
+
+            return response()->json([
+                "success" => true,
+            ]);
+        } catch (\Exception $e) {
+            // Xử lý lỗi ở đây, ví dụ: in thông báo lỗi
+            return response()->json([
+                "error" => true,
+                "message" => $e->getMessage(),
             ]);
         }
     }
