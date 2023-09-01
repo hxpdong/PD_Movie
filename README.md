@@ -64,3 +64,18 @@ If you discover a security vulnerability within Laravel, please send an e-mail t
 ## License
 
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+
+## PDMovie
+Setup:
+
+git clone https://github.com/hxpdong/PD_Movie.git <Project_Name>
+
+composer update
+
+npm install -D tailwindcss postcss autoprefixer
+
+Run (We will use 2 terminals to run the project, 1 for the server, 1 for the vite. The 2 terminals are PARALLEL to each other):
+
+php artisan serve
+
+npm run dev
