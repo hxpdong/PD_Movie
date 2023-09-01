@@ -31,27 +31,32 @@
         data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
         <div class="relative w-full max-w-7xl max-h-full">
             <!-- Modal content -->
-            <div class="bg-white rounded-lg shadow relative dark:bg-gray-700">
-                <div class="flex justify-end p-2">
-                    <button type="button"
-                        class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-800 dark:hover:text-white"
-                        data-modal-toggle="watchMovieModal">
-                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                            <path fill-rule="evenodd"
-                                d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-                                clip-rule="evenodd"></path>
-                        </svg>
-                    </button>
-                </div>
-                <div class="space-y-6 px-6 lg:px-8 pb-4 sm:pb-6 xl:pb-8">
-                    @csrf
-                    <h3 class="text-xl font-medium text-gray-900 dark:text-white">Xem phim</h3>
-                    <div class="responsive-container container mx-auto">
-                        <iframe class="responsive-iframe" src="https://player.vimeo.com/video/854102726" frameborder="0"
-                            allowfullscreen></iframe>
+            <form id="getMovieInfoForm">
+                <div class="bg-white rounded-lg shadow relative dark:bg-gray-700">
+                    <div class="flex justify-end p-2 bg-[#66CCFF]">
+                        <div class="px-6 ">
+                            <h3 class="text-xl font-medium text-white dark:text-white" id="watchmvtitle">Xem phim</h3>
+                        </div>
+                        <button type="button"
+                            class="text-white bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-800 dark:hover:text-white"
+                            data-modal-toggle="watchMovieModal">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd"
+                                    d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                                    clip-rule="evenodd"></path>
+                            </svg>
+                        </button>
+                    </div>
+                    <div class="space-y-6 px-6 lg:px-8 pb-4 sm:pb-6 xl:pb-8">
+                        @csrf
+                        <div class="responsive-container container mx-auto">
+                            <iframe id="watchmovievideo" class="responsive-iframe" src="https://player.vimeo.com/video/854102726"
+                                frameborder="0" allowfullscreen></iframe>
+                        </div>
                     </div>
                 </div>
-            </div>
+            </form>
         </div>
     </div>
 
@@ -64,7 +69,8 @@
                         <div class="w-full mx-auto text-center">
                             <img class="mx-auto rounded-3xl shadow-lg lg:w-3/5 sm:w-full" id="mvdetail-img" src="">
                             <button data-modal-target="watchMovieModal" data-modal-toggle="watchMovieModal"
-                                class="mt-2 bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow">
+                                class="mt-2 bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow"
+                                onclick="getMovieInfoToWatch()">
                                 Xem phim
                             </button>
                         </div>
@@ -435,6 +441,20 @@
             return match[1]; // Trả về chuỗi từ regex match
         }
         return null;
+    }
+
+    function getMovieInfoToWatch() {
+        var movieId = getMovieIdFromURL();
+        axios.get('/api/movies/' + movieId)
+            .then(function (response) {
+                var moviedt = response.data.movie_detail;
+                if (moviedt) {
+                    moviedt.forEach(function (movie) {
+                        var mvtitleText = movie.title_vi + " (" + movie.title_en + ")";
+                        $('#watchmvtitle').text(mvtitleText);
+                    });
+                }
+            });
     }
     </script>
 </body>
