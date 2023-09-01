@@ -68,14 +68,24 @@ The Laravel framework is open-sourced software licensed under the [MIT license](
 ## PDMovie
 Setup:
 
-    git clone https://github.com/hxpdong/PD_Movie.git <Project_Name>
+1. Clone the project:
 
-    composer update
+        git clone https://github.com/hxpdong/PD_Movie.git <Project_Name>
 
-    npm install -D tailwindcss postcss autoprefixer
+2. Update:
+
+        composer update
+
+3. Install tailwindcss:
+
+        npm install -D tailwindcss postcss autoprefixer
 
 Run (We will use 2 terminals to run the project, 1 for the server, 1 for the vite. The 2 terminals are PARALLEL to each other):
 
-    php artisan serve
+1. Terminal 1:
 
-    npm run dev
+        php artisan serve
+
+2. Terminal 2:
+
+        npm run dev
