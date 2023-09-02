@@ -88,7 +88,7 @@ Setup:
         
         DB_PORT=
         
-        DB_DATABASE=
+        DB_DATABASE=rcm_movie
         
         DB_USERNAME=
         
