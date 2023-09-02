@@ -602,6 +602,17 @@ BEGIN
 END//
 DELIMITER ;
 
+DELIMITER //
+CREATE PROCEDURE movie_showdetailByURL (IN mvurl VARCHAR(255))
+BEGIN
+	SELECT mv.*, ROUND(COALESCE(AVG(rt.rating), 0), 1) as mvpoint, COUNT(rt.rating) as numrating
+	FROM pdmv_movies mv
+	LEFT JOIN pdmv_ratings rt ON mv.movie_id = rt.movie_id
+	WHERE mv.movie_url = mvurl
+	GROUP BY mv.movie_id, rt.movie_id;
+END//
+DELIMITER ;
+
 CREATE TABLE pdmv_comments (
 	comment_id INT PRIMARY KEY AUTO_INCREMENT,
     user_id INT,

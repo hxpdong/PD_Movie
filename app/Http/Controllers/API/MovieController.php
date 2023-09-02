@@ -64,6 +64,23 @@ class MovieController extends Controller
         
     }
 
+    public function showWithUrl($mid,$murl){
+        $results = DB::select("CALL movie_showdetailByURL(?)", array($murl));
+        if (!empty($results)) {
+            return response()->json([
+                'success' => true,
+                'movie_detail' => $results
+            ]);
+        } else {
+            // Đăng nhập thất bại
+            return response()->json([
+                'success' => false
+            ]);
+        }
+
+        
+    }
+
     public function getCommentListOf($mid){
         $results = DB::select("SELECT * FROM pdmv_comments cmt JOIN pdmv_accounts acc ON cmt.user_id = acc.acc_id WHERE movie_id = ? ORDER BY comment_id DESC;", array($mid));
         

@@ -73,12 +73,11 @@ function updateMovieDetail(movieDetail) {
 }
 
 function getMovieIdFromURL() {
-    // Lấy đường dẫn hiện tại trong trình duyệt
     var currentURL = window.location.href;
-    // Tách đường dẫn thành các phần
-    var segments = currentURL.split('/');
-    // Lấy phần cuối cùng của đường dẫn, đó chính là số bạn cần
-    var lastSegment = segments[segments.length - 1];
-    // Chuyển đổi phần cuối thành số hoặc trả về 0 nếu không phải số
-    return parseInt(lastSegment) || 0;
+    var regexPattern = /\/movies\/([a-zA-Z0-9\-_]+)/;
+    var match = currentURL.match(regexPattern);
+    if (match && match[1]) {
+        return match[1]; // Trả về chuỗi từ regex match
+    }
+    return null;
 }

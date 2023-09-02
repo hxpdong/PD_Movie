@@ -28,7 +28,8 @@ function addTooltip() {
     gridItems.forEach(function (gridItem) {
         gridItem.onclick = function () {
             // Truyền URL bạn muốn chuyển hướng vào hàm redirectToWebsite
-            redirectToWebsite("/movies/" + gridItem.querySelector('h6').textContent); // Thay URL bằng URL thích hợp
+            redirectToWebsite("/movies/" + gridItem.querySelector('.mvid').textContent + "@title=" +
+            gridItem.querySelector('.mvurl').textContent); // Thay URL bằng URL thích hợp
         };
     });
 }
@@ -69,9 +70,15 @@ function getMovies() {
                 // Tạo thẻ <h3> để hiển thị tiêu đề phim
                 var mid = document.createElement("h6");
                 mid.textContent = movie.movie_id;
-                mid.className = "text-ellipsis";
+                mid.className = "text-ellipsis mvid";
                 mid.style.height= "0px";
                 movieItem.appendChild(mid);
+                // Tạo thẻ <h3> để hiển thị tiêu đề phim
+                var murl = document.createElement("h5");
+                murl.textContent = movie.movie_url;
+                murl.className = "text-ellipsis mvurl";
+                murl.style.height= "0px";
+                movieItem.appendChild(murl);
 
                 // Tạo thẻ <h3> để hiển thị tiêu đề phim
                 var title = document.createElement("h3");

@@ -30,6 +30,7 @@
         class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full"
         data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
         <div class="relative w-full max-w-7xl max-h-full">
+            <div class="fixed inset-0 bg-black opacity-50"></div>
             <!-- Modal content -->
             <form id="getMovieInfoForm">
                 <div class="bg-white rounded-lg shadow relative dark:bg-gray-700">
@@ -37,7 +38,7 @@
                         <div class="px-6 ">
                             <h3 class="text-xl font-medium text-white dark:text-white" id="watchmvtitle">Xem phim</h3>
                         </div>
-                        <button type="button"
+                        <button type="button" onclick="closeModalWatchMovie()"
                             class="text-white bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-800 dark:hover:text-white"
                             data-modal-toggle="watchMovieModal">
                             <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"
@@ -455,6 +456,12 @@
                     });
                 }
             });
+    }
+    
+    function closeModalWatchMovie(){
+        $("#watchMovieModal").modal('hide');
+        $('#watchmvtitle').text('');
+        $('#watchmovievideo').attr('src', '');
     }
     </script>
 </body>

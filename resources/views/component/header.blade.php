@@ -89,9 +89,10 @@
 </header>
 <!-- Login modal -->
 <div id="authentication-modal" aria-hidden="true"
-    class="modal fade hidden overflow-x-hidden overflow-y-auto fixed h-modal md:h-full top-4 left-0 right-0 md:inset-0 z-50 justify-center items-center"
+    class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full"
     data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
     <div class="relative w-full max-w-md px-4 h-full md:h-auto">
+        <div class="fixed inset-0 bg-black opacity-50"></div>
         <!-- Modal content -->
         <div class="bg-white rounded-lg shadow relative dark:bg-gray-700">
             <div class="flex justify-end p-2 bg-[#66CCFF]">
@@ -144,9 +145,10 @@
 
 <!-- Register modal -->
 <div id="register-modal" aria-hidden="true"
-    class="modal fade hidden overflow-x-hidden overflow-y-auto fixed h-modal md:h-full top-4 left-0 right-0 md:inset-0 z-50 justify-center items-center"
+    class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full"
     data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
     <div class="relative w-full max-w-md px-4 h-full md:h-auto">
+        <div class="fixed inset-0 bg-black opacity-50"></div>
         <!-- Modal content -->
         <div class="bg-white rounded-lg shadow relative dark:bg-gray-700">
             <div class="flex justify-end p-2 bg-[#66CCFF]">
