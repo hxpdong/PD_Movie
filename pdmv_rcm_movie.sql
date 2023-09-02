@@ -621,6 +621,110 @@ CREATE TABLE pdmv_errors (
 	err_id INT PRIMARY KEY AUTO_INCREMENT,
 	errContent TEXT
 );
+
+ALTER TABLE pdmv_movies
+ADD COLUMN movie_url VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci UNIQUE;
+
+DELIMITER //
+CREATE FUNCTION convertToURL (inputText VARCHAR(255))
+RETURNS VARCHAR(255)
+DETERMINISTIC
+BEGIN
+  DECLARE outputText VARCHAR(255);
+  SET outputText = LOWER(inputText);
+  
+  -- Chuyển chữ tiếng Việt có dấu thành không dấu
+  -- a
+  SET outputText = REPLACE(outputText, 'á', 'a');
+  SET outputText = REPLACE(outputText, 'à', 'a');
+  SET outputText = REPLACE(outputText, 'ả', 'a');
+  SET outputText = REPLACE(outputText, 'ã', 'a');
+  SET outputText = REPLACE(outputText, 'ạ', 'a');
+  -- ă
+  SET outputText = REPLACE(outputText, 'ă', 'a');
+  SET outputText = REPLACE(outputText, 'ắ', 'a');
+  SET outputText = REPLACE(outputText, 'ằ', 'a');
+  SET outputText = REPLACE(outputText, 'ẳ', 'a');
+  SET outputText = REPLACE(outputText, 'ẵ', 'a');
+  SET outputText = REPLACE(outputText, 'ặ', 'a');
+  -- â
+  SET outputText = REPLACE(outputText, 'â', 'a');
+  SET outputText = REPLACE(outputText, 'ấ', 'a');
+  SET outputText = REPLACE(outputText, 'ầ', 'a');
+  SET outputText = REPLACE(outputText, 'ẩ', 'a');
+  SET outputText = REPLACE(outputText, 'ẫ', 'a');
+  SET outputText = REPLACE(outputText, 'ậ', 'a');
+  -- đ
+  SET outputText = REPLACE(outputText, 'đ', 'd');
+  -- e
+  SET outputText = REPLACE(outputText, 'é', 'e');
+  SET outputText = REPLACE(outputText, 'è', 'e');
+  SET outputText = REPLACE(outputText, 'ẻ', 'e');
+  SET outputText = REPLACE(outputText, 'ẽ', 'e');
+  SET outputText = REPLACE(outputText, 'ẹ', 'e');
+  -- ê
+  SET outputText = REPLACE(outputText, 'ê', 'e');
+  SET outputText = REPLACE(outputText, 'ế', 'e');
+  SET outputText = REPLACE(outputText, 'ề', 'e');
+  SET outputText = REPLACE(outputText, 'ể', 'e');
+  SET outputText = REPLACE(outputText, 'ễ', 'e');
+  SET outputText = REPLACE(outputText, 'ệ', 'e');
+  -- o
+  SET outputText = REPLACE(outputText, 'ó', 'o');
+  SET outputText = REPLACE(outputText, 'ò', 'o');
+  SET outputText = REPLACE(outputText, 'ỏ', 'o');
+  SET outputText = REPLACE(outputText, 'õ', 'o');
+  SET outputText = REPLACE(outputText, 'ọ', 'o');
+  -- ô
+  SET outputText = REPLACE(outputText, 'ô', 'o');
+  SET outputText = REPLACE(outputText, 'ố', 'o');
+  SET outputText = REPLACE(outputText, 'ồ', 'o');
+  SET outputText = REPLACE(outputText, 'ổ', 'o');
+  SET outputText = REPLACE(outputText, 'ỗ', 'o');
+  SET outputText = REPLACE(outputText, 'ộ', 'o');
+  -- ơ
+  SET outputText = REPLACE(outputText, 'ơ', 'o');
+  SET outputText = REPLACE(outputText, 'ớ', 'o');
+  SET outputText = REPLACE(outputText, 'ờ', 'o');
+  SET outputText = REPLACE(outputText, 'ở', 'o');
+  SET outputText = REPLACE(outputText, 'ỡ', 'o');
+  SET outputText = REPLACE(outputText, 'ợ', 'o');
+  -- u
+  SET outputText = REPLACE(outputText, 'ú', 'u');
+  SET outputText = REPLACE(outputText, 'ù', 'u');
+  SET outputText = REPLACE(outputText, 'ủ', 'u');
+  SET outputText = REPLACE(outputText, 'ũ', 'u');
+  SET outputText = REPLACE(outputText, 'ụ', 'u');
+  -- ư
+  SET outputText = REPLACE(outputText, 'ư', 'u');
+  SET outputText = REPLACE(outputText, 'ứ', 'u');
+  SET outputText = REPLACE(outputText, 'ừ', 'u');
+  SET outputText = REPLACE(outputText, 'ử', 'u');
+  SET outputText = REPLACE(outputText, 'ữ', 'u');
+  SET outputText = REPLACE(outputText, 'ự', 'u');
+  -- Thêm các quy tắc chuyển đổi cho các ký tự tiếng Việt khác tùy theo nhu cầu
+  
+  -- Loại bỏ các ký tự đặc biệt
+  SET outputText = REGEXP_REPLACE(outputText, '[^a-zA-Z0-9]+', '-');
+  
+  -- Loại bỏ dấu hai chấm (:)
+  SET outputText = REPLACE(outputText, ':', '');
+
+  -- Loại bỏ dấu ngoặc đơn và ngoặc đôi
+  SET outputText = REPLACE(outputText, '(', '');
+  SET outputText = REPLACE(outputText, ')', '');
+
+  -- Loại bỏ khoảng trắng thừa ở đầu và cuối
+  SET outputText = TRIM(BOTH '-' FROM outputText);
+
+  RETURN outputText;
+END//
+DELIMITER ;
+
+UPDATE pdmv_movies
+SET movie_url = convertToURL(title_en);
+
+
 /*
 INSERT INTO users (id, name, password, acctype_id)
 SELECT acc_id, usname, password, acctype_id FROM pdmv_accounts;

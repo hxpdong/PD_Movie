@@ -72,6 +72,22 @@ Setup:
 
         git clone https://github.com/hxpdong/PD_Movie.git <Project_Name>
 
+1.1. Coppy the content of pdmv_rcm_movie.sql file and run them
+
+1.2. run Migration:
+
+        php artisan migrate --path=/database/migrations/create_users_table.php
+
+1.3. Rename file .env.example to .env
+
+1.4. Change the information of Connection suitable with yourself (in .env):
+        DB_CONNECTION=
+        DB_HOST=
+        DB_PORT=
+        DB_DATABASE=
+        DB_USERNAME=
+        DB_PASSWORD=
+
 2. Update:
 
         composer update
