@@ -81,12 +81,19 @@ Setup:
 1.3. Rename file .env.example to .env
 
 1.4. Change the information of Connection suitable with yourself (in .env):
+
         DB_CONNECTION=
+        
         DB_HOST=
+        
         DB_PORT=
+        
         DB_DATABASE=
+        
         DB_USERNAME=
+        
         DB_PASSWORD=
+        
 
 2. Update:
 
