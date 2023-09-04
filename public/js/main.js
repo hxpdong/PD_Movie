@@ -57,8 +57,8 @@ function addTooltip() {
     gridItems.forEach(function (gridItem) {
         gridItem.onclick = function () {
             // Truyền URL bạn muốn chuyển hướng vào hàm redirectToWebsite
-            redirectToWebsite("/movies/" + gridItem.querySelector('.mvid').textContent + "~" +
-            gridItem.querySelector('.mvurl').textContent); // Thay URL bằng URL thích hợp
+            redirectToWebsite("/movies/" + gridItem.querySelector('.mvurl').textContent + "-" +
+            gridItem.querySelector('.mvid').textContent); // Thay URL bằng URL thích hợp
         };
     });
 }
