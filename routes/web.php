@@ -50,3 +50,7 @@ Route::post('/logout', [AuthController::class, 'logout']);
 //in web-header
 Route::post('/modalLogin', [AuthController::class, 'modalPostAuthLogin'])->name('modalLogin');
 Route::post('/modalRegister', [AuthController::class, 'modalPostAuthRegister'])->name('modalRegister');
+
+Route::get('/test', function(){
+    return view('component.test');
+});

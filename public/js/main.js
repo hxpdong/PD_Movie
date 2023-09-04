@@ -57,8 +57,8 @@ function addTooltip() {
     gridItems.forEach(function (gridItem) {
         gridItem.onclick = function () {
             // Truyền URL bạn muốn chuyển hướng vào hàm redirectToWebsite
-            redirectToWebsite("/movies/" + gridItem.querySelector('.mvurl').textContent + "-" +
-            gridItem.querySelector('.mvid').textContent); // Thay URL bằng URL thích hợp
+            redirectToWebsite("/movies/mv" + gridItem.querySelector('.mvid').textContent + "-" +
+            gridItem.querySelector('.mvurl').textContent); // Thay URL bằng URL thích hợp
         };
     });
 }
@@ -213,8 +213,3 @@ function changeUrl() {
     const fileURL = "https://drive.google.com/uc?id=" + newurl;
     document.getElementById("url_storage_here").innerHTML = fileURL;
 }
-
-function redirectToWebsite(url) {
-    window.location.href = url;
-}
-

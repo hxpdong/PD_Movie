@@ -74,10 +74,10 @@ function updateMovieDetail(movieDetail) {
 
 function getMovieIdFromURL() {
     var currentURL = window.location.href;
-    var regexPattern = /-(\d+)$/;
+    var regexPattern = /\/movies\/mv(\d+)-/;
     var match = currentURL.match(regexPattern);
     if (match && match[1]) {
-        return match[1]; // Trả về số từ regex match
+        return match[1]; // Trả về số sau dấu "-" cuối cùng trong URL
     }
     return null;
 }
