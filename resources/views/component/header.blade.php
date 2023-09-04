@@ -300,8 +300,4 @@ function closeModalRegister() {
     $('#mdregusname').val('');
     $('#mdreguspassword').val('');
 };
-function redirectToWebsite(url) {
-    window.location.href = url;
-}
-
 </script>

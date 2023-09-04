@@ -19,3 +19,4 @@
 </body>
 
 </html>
+@include ('component.footer')

@@ -4,72 +4,7 @@ var defaultImageUrl = '/img/banner.png';
 document.addEventListener("DOMContentLoaded", function () {
     var initialPage = getPageFromURL();
     getMovies(initialPage);
-    // Lấy tất cả các .grid-item
-    /*
-    var form = document.getElementById("SignUpForm");
-    form.addEventListener("submit", function (event) {
-        event.preventDefault(); // Ngăn form submit theo cách thông thường
-
-        // Gửi request POST bằng AJAX hoặc Fetch API
-        fetch(form.action, {
-            method: "POST",
-            body: new FormData(form),
-        })
-            .then(function (response) {
-                return response.json();
-            })
-            .then(function (data) {
-                if (data.success === true) {
-                    // Thực hiện hành động nếu success là true (VD: điều hướng hoặc hiển thị thông báo)
-                    $newuser = data.newuser;
-                    alert("Post successful!\n" + $newuser.usname);
-                    //getMovies(getPageFromURL());
-                } else {
-                    // Xử lý trường hợp không thành công (VD: hiển thị thông báo lỗi)
-                    alert("Post failed. Please try again.");
-                }
-            })
-            .catch(function (error) {
-                // Xử lý lỗi kết nối hoặc lỗi từ server
-                alert("An error occurred. Please try again later.");
-            });
-    });*/
 });
-
-function addTooltip() {
-    var gridItems = document.querySelectorAll('.grid-item');
-
-    // Lặp qua từng .grid-item để thêm sự kiện hover
-    gridItems.forEach(function (gridItem) {
-        var tooltip = document.createElement('div');
-        tooltip.className = 'tooltip';
-
-        // Lấy thông tin bộ phim từ các phần tử con của .grid-item
-        var title = gridItem.querySelector('h3').textContent;
-
-        // Hiển thị thông tin trong tooltip
-        tooltip.innerHTML = '<h3>' + title + '</h3>';
-
-        // Thêm tooltip vào .grid-item
-        gridItem.appendChild(tooltip);
-    });
-    // Tiếp theo, lặp qua từng phần tử để gán sự kiện "onclick"
-    gridItems.forEach(function (gridItem) {
-        gridItem.onclick = function () {
-            // Truyền URL bạn muốn chuyển hướng vào hàm redirectToWebsite
-            redirectToWebsite("/movies/mv" + gridItem.querySelector('.mvid').textContent + "-" +
-            gridItem.querySelector('.mvurl').textContent); // Thay URL bằng URL thích hợp
-        };
-    });
-}
-
-// Xóa tất cả các phần tử con trong danh sách phim
-function removeAllMovieItems() {
-    var movieList = document.getElementById("movie-list");
-    while (movieList.firstChild) {
-        movieList.removeChild(movieList.firstChild);
-    }
-}
 
 function getMovies(page) {
 
