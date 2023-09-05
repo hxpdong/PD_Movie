@@ -517,7 +517,7 @@ BEGIN
 	UPDATE USER_LIST
 	SET user_stt = (@row_number:=@row_number + 1)
 	ORDER BY cosine_similarity DESC;
-    SELECT * FROM USER_LIST ORDER BY cosine_similarity DESC;
+    SELECT * FROM USER_LIST WHERE cosine_similarity > 0 ORDER BY cosine_similarity DESC;
 	DROP TABLE USER_LIST;
 END//
 DELIMITER ;
@@ -735,7 +735,22 @@ DELIMITER ;
 UPDATE pdmv_movies
 SET movie_url = convertToURL(title_en);
 
-
+DELIMITER //
+CREATE PROCEDURE movie_listHighestRatingMovies(IN numofmovie INT)
+BEGIN
+    SELECT
+		pdmv_movies.*, AVG(pdmv_ratings.rating) as mvrating
+	FROM
+		pdmv_movies
+	INNER JOIN
+		pdmv_ratings ON pdmv_movies.movie_id = pdmv_ratings.movie_id
+	GROUP BY
+		pdmv_movies.movie_id
+	ORDER BY
+		AVG(pdmv_ratings.rating) DESC
+		LIMIT numofmovie;
+END//
+DELIMITER ;
 /*
 INSERT INTO users (id, name, password, acctype_id)
 SELECT acc_id, usname, password, acctype_id FROM pdmv_accounts;

@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\DB;
 
 class AuthController extends Controller
 {
+    //API
     public function registerAPI(Request $request)
     {
         try {
@@ -81,7 +82,7 @@ class AuthController extends Controller
             ]);
         }
     }
-
+    //Web
     public function register(Request $request)
     {
         try {
@@ -144,7 +145,7 @@ class AuthController extends Controller
             ]);
         }
     }
-
+    //Web-modal
     public function modalPostAuthRegister(Request $request)
     {
         try {

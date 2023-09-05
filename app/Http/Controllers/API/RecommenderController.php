@@ -12,7 +12,13 @@ class RecommenderController extends Controller
     //
     public function UserBased_CollaborativeFiltering($uid)
     {
-        $movies = DB::select('CALL collab_recommendedmovies(?, ?)', array($uid, 9));
+        $sameUsers = DB::select('call collab_similarityUsers(?)', array($uid));
+        if(empty($sameUsers)){
+            $movies = DB::select('call movie_listhighestratingmovies(?)', array(9));
+        }
+        else {
+            $movies = DB::select('CALL collab_recommendedmovies(?, ?)', array($uid, 9));
+        }
         $resultArray = [
             'recommendedmovies' => $movies
         ];
