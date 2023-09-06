@@ -129,9 +129,6 @@ button:disabled {
     list-style: none;
 }
 
-.mvdetail-grid-item {
-    
-}
 
 @media (min-width: 780px) {
     .mvdetail-grid {
