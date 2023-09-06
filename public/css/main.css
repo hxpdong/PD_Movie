@@ -127,11 +127,10 @@ button:disabled {
     display: grid;
     grid-template-columns: 1fr;
     list-style: none;
-    padding: 10px;
 }
 
 .mvdetail-grid-item {
-    margin: 0px 5px;
+    
 }
 
 @media (min-width: 780px) {
