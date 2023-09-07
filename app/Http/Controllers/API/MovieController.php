@@ -14,7 +14,7 @@ class MovieController extends Controller
     public function index()
     {
         $results = DB::select("CALL movie_list()");
-        $perPage = 12;
+        $perPage = request()->get('num', 12);
         $currentPage = request()->get('page', 1);
         $total = count($results);
         $offset = ($currentPage - 1) * $perPage;
@@ -50,9 +50,13 @@ class MovieController extends Controller
     public function show($mid){
         $results = DB::select("CALL movie_showdetail(?)", array($mid));
         if (!empty($results)) {
+            $chapters = DB::select("CALL movie_listChaptersOfMovie(?)", array($mid));
+            $cnt = count($chapters);
             return response()->json([
                 'success' => true,
-                'movie_detail' => $results
+                'movie_detail' => $results,
+                'chapters' => $chapters,
+                'numchap' => $cnt,
             ]);
         } else {
             // Đăng nhập thất bại
@@ -84,7 +88,7 @@ class MovieController extends Controller
     public function getCommentListOf($mid){
         $results = DB::select("SELECT * FROM pdmv_comments cmt JOIN pdmv_accounts acc ON cmt.user_id = acc.acc_id WHERE movie_id = ? ORDER BY comment_id DESC;", array($mid));
         
-        $perPage = 3;
+        $perPage = request()->get('num', 3);
         $currentPage = request()->get('page', 1);
         $total = count($results);
         $offset = ($currentPage - 1) * $perPage;

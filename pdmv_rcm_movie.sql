@@ -121,14 +121,30 @@ CREATE TABLE pdmv_movies (
 
 INSERT INTO pdmv_movies (movie_id, title_vi, title_en, content, director, actors, manufactureYear, videoLength)
 VALUES
-    (1, 'Harry Potter 1 - Harry Potter và Hòn đá Phù thủy', 'Harry Potter and the Philosopher Stone', '', 'Chris Columbus', 'Daniel Radcliffe, Rupert Grint, Emma Watson', '2001', '2h32m'),
-    (2, 'Harry Potter 2 - Harry Potter và Phòng chứa Bí mật', '	Harry Potter and the Chamber of Secrets', '', 'Chris Columbus', 'Daniel Radcliffe, Rupert Grint, Emma Watson', '2002', '2h41m'),
-    (3, 'Harry Potter 3 - Harry Potter và tên tù nhân ngục Azkaban', '	Harry Potter and the Prisoner of Azkaban', '', 'Alfonso Cuarón', 'Daniel Radcliffe, Rupert Grint, Emma Watson', '2004', '2h19m'),
-    (4, 'Harry Potter 4 - Harry Potter và Chiếc cốc lửa', 'Harry Potter and the Goblet of Fire', '', 'Mike Newell', 'Daniel Radcliffe, Rupert Grint, Emma Watson', '2005', '2h37m'),
-    (5, 'Harry Potter 5 - Harry Potter và Hội Phượng hoàng', 'Harry Potter and the Order of the Phoenix', '', 'David Yates', 'Daniel Radcliffe, Rupert Grint, Emma Watson', '2007', '2h18m'),
-    (6, 'Harry Potter 6 - Harry Potter và Hoàng tử lai', 'Harry Potter and the Half-Blood Prince', '', 'David Yates', 'Daniel Radcliffe, Rupert Grint, Emma Watson', '2009', '2h33m'),
-    (7, 'Harry Potter 7 - Harry Potter và Bảo bối Tử thần – Phần 1', '	Harry Potter and the Deathly Hallows – Part 1', '', 'David Yates', 'Daniel Radcliffe, Rupert Grint, Emma Watson', '2010', '2h26m'),
-    (8, 'Harry Potter 7 - Harry Potter và Bảo bối Tử thần – Phần 2', 'Harry Potter and the Deathly Hallows – Part 2', '', 'David Yates', 'Daniel Radcliffe, Rupert Grint, Emma Watson', '2011', '2h10m'),
+    (1, 'Harry Potter 1 - Harry Potter và Hòn đá Phù thủy', 'Harry Potter and the Philosopher Stone',
+    'Harry Potter và Hòn Đá Phù Thủy là bộ phim đầu tiên trong series phim “Harry Potter” được xây dựng dựa trên tiểu thuyết của nhà văn J.K.Rowling. Nhân vật chính của phim, Harry Potter : cậu bé 11 tuổi sau khi mồ côi cha mẹ đã bị gửi đến nhà chú và dì dượng của mình, gia đình Dursley. Tuy nhiên, cậu bé bị ngược đãi và không hề biết về thân phận thực sự của mình. Vào sinh nhật thứ 11 của Harry, một người lai khổng lồ là Rubeus Hagrid đã đến tìm cậu bé để đưa cậu về trường Pháp Thuật Hogwarts. Lúc này, Harry mới biết được mình là phù thủy và một phần câu chuyện về cha mẹ mình, những người đã bị Voldemort giết hại. Cùng với trí thông minh và lòng dũng cảm, cậu bé đã cùng những người bạn của mình khám phá những điều bí mật nguy hiểm về thế giới của phép thuật...',
+    'Chris Columbus', 'Daniel Radcliffe, Rupert Grint, Emma Watson', '2001', '2h32m'),
+    (2, 'Harry Potter 2 - Harry Potter và Phòng chứa Bí mật', 'Harry Potter and the Chamber of Secrets',
+    'Dựa trên tập thứ hai thuộc loạt sách ăn khách của tác giả J.K. Rowling, bộ phim kể lại cuộc sống của cậu bé Harry Potter trong năm học thứ hai tại trường phù thủy Hogwarts. Mong ngóng trở lại ngôi trường thân yêu của Harry bị một sinh vật kỳ lạ phá tan tành. Chú gia tinh Dobby đã mang tới lời cảnh báo về những nguy cơ tiềm ẩn đang chờ cậu và tìm cách ép Harry nghỉ học. Bất chấp điều đó, Harry vẫn trở lại nơi cậu coi là mái ấm thực sự. Tuy nhiên, Hogwarts có nguy cơ bị đóng cửa vĩnh viễn khi một chuỗi sự kiện kỳ lạ bắt đầu xảy ra: Những vệt máu lạ trên tường, học sinh các Nhà lần lượt hóa đá, câu chuyện thần bí và rùng rợn về "phòng chứa bí mật"... Rồi Harry phát hiện ra mình nghe thấy giọng nói lạ, phát ra từ đâu đó bên trong bức tường...',
+    'Chris Columbus', 'Daniel Radcliffe, Rupert Grint, Emma Watson', '2002', '2h41m'),
+    (3, 'Harry Potter 3 - Harry Potter và tên tù nhân ngục Azkaban', 'Harry Potter and the Prisoner of Azkaban',
+    'Mùa hè trước khi Harry bước vào năm 3 ở trường Hogwarts, trong cơn nóng giận không kềm chế được, Harry đã làm phép với bà cô khó chịu và cậu sợ hãi bỏ trốn khỏi nhà trên chuyến xe bus hiệp sĩ. Tại đây, cậu nghe nói về Sirius Black, tên phù thuỷ trốn khỏi ngục Azkaban. Nhưng Harry không ngờ, Sirius Black trốn ngục là để truy tìm cậu...',
+    'Alfonso Cuarón', 'Daniel Radcliffe, Rupert Grint, Emma Watson', '2004', '2h19m'),
+    (4, 'Harry Potter 4 - Harry Potter và Chiếc cốc lửa', 'Harry Potter and the Goblet of Fire',
+    'Cuộc thi đấu Tam pháp thuật diễn ra giữa ba trường phù thuỷ nổi tiếng thế giới của Bungary, Pháp và Anh. Tại vòng thi đấu Tam Pháp Thuật, Harry Potter bất ngờ được Chiếc cốc lửa chọn là thí sinh thứ tư, một trường hợp ngoại lệ hy hữu vì thứ nhất, mỗi trường chỉ có một người được chọn, và thứ hai, cậu bé chưa đủ tuổi để tham gia. Cuộc thi đấu khá cam go, nguy hiểm chết người. Trong cuộc thi cuối cùng trong mê cung, Harry và người bạn thi đấu cùng trường Cedric đã phải đối mặt với chúa tể Hắc ám Voldemort...',
+    'Mike Newell', 'Daniel Radcliffe, Rupert Grint, Emma Watson', '2005', '2h37m'),
+    (5, 'Harry Potter 5 - Harry Potter và Hội Phượng hoàng', 'Harry Potter and the Order of the Phoenix',
+    'Trong kỳ nghỉ hè tại gia đình dì dượng Dursley trước khi bước vào năm thứ 5 tại Hogwarts, Harry Potter không nhận được nhiều tin tức từ thế giới phù thủy. Harry rất bực mình vì Voldemort vừa mới được sống dậy mà hai người bạn của Harry, Hermione Granger và Ron Weasley cứ úp mở trong các thư từ họ gửi. Trong lúc kình cãi với Dursley trong khi về nhà từ công viên, Harry bị hai giám ngục Azkaban tấn công. Với phép Expacto Patronum, Harry đã đẩy lùi bọn chúng nhưng Dudley đã bị tấn công. Một người hàng xóm, Arabella Figg, đến để giúp đỡ Harry, và tiết lộ rằng bà đã được Albus Dumbledore yêu cầu canh giữ Harry. Về đến nhà, Harry nhận một lá thư cho biết rằng cậu ta đã bị đuổi khỏi trường Hogwarts (vì học sinh không được phép dùng pháp thuật khi còn dưới 17 tuổi), và phải ra toà tại Bộ Pháp thuật để giải thích hành động của mình...',
+    'David Yates', 'Daniel Radcliffe, Rupert Grint, Emma Watson', '2007', '2h18m'),
+    (6, 'Harry Potter 6 - Harry Potter và Hoàng tử lai', 'Harry Potter and the Half-Blood Prince',
+    'Năm học thứ sáu của Harry Potter ở Hogwarts hóa ra lại là một năm đầy thú vị. Điều thú vị đầu tiên là việc chào đón một giáo sư mới tại Hogwarts, thầy Horace Slughorn, người dạy cho Harry nhiều điều thú vị trong môn độc dược của thầy Snape hắc ám. Thầy Slughorn còn cho Harry mượn đồ dùng của trường học, và trong số đó có một quyển sách cũ nát thuộc về chủ nhân tên là Hoàng Tử Lai. Quyển sách có nhiều ghi chú nguệch ngoạc ở lề mỗi trang giấy, và đây lại là người khuyên giúp Harry có thể tiến bộ trong pháp thuật của mình. Cũng trong năm học này, thầy Dumbledore mở một lớp học riêng cho Harry. Ở đó, thầy cho Harry xem những kí ức về những bí mật đen tối của quá khứ Voldermort, với hy vọng rằng Harry có thể lợi dụng những điểm yểu của Voldermort để đánh bại hắn trong trận chiến cuối cùng. Draco Malfoy, kẻ thù không đội trời chung của Harry, có nhiều hành động khả nghi, luôn lén lút đi khắp trường. Vì thế, Harry cho rằng Draco là nội gián của Voldermort và quyết tâm tìm hiểu chính xác chuyện gì đang xảy ra...',
+    'David Yates', 'Daniel Radcliffe, Rupert Grint, Emma Watson', '2009', '2h33m'),
+    (7, 'Harry Potter 7 - Harry Potter và Bảo bối Tử thần – Phần 1', 'Harry Potter and the Deathly Hallows – Part 1',
+    'Chúa tể Voldemort cùng đám tay chân của hắn đang âm mưu tấn công Harry Potter khi cậu rời khỏi ngôi nhà của gia đình Dursley lần cuối cùng. Ngay trước khi phép bảo vệ cho Harry tại gia đình Dursley hết hiệu lực vào thời điểm Harry bước qua tuổi 17, người của Hội Phượng hoàng đến để hộ tống cậu tới một nơi ở mới an toàn. Mặc dù đã dùng sáu người nguỵ trang thành Harry, Harry thật vẫn bị Voldemort cùng các Tử thần Thực tử phát hiện ra trên đường đi và bị tấn công...',
+    'David Yates', 'Daniel Radcliffe, Rupert Grint, Emma Watson', '2010', '2h26m'),
+    (8, 'Harry Potter 7 - Harry Potter và Bảo bối Tử thần – Phần 2', 'Harry Potter and the Deathly Hallows – Part 2',
+    'Kết thúc phần 1 là khi nhóm bạn Harry Potter, Ron và Hermione quay trở lại trường Hogwarts để tìm và tiêu diệt Trường Sinh Linh Giá cuối cùng của Voldemort. Nhưng Voldemort đã phát hiện ra nhiệm vụ của họ, và trận chiến pháp thuật lớn nhất trong lịch sử đã diễn ra ở đây, nơi mà biết bao người ngã xuống, nơi mà tất cả các pháp sư dũng cảm sẵn sàng đánh đổi cuộc sống của mình để tiêu diệt tận cùng thế lực hắc ám. Giáo sư Dumbledore mặc dù đã mất từ tập 6, nhưng ở phần cuối ông vẫn đóng vai trò quan trọng trong việc dẫn đường chỉ lối cho Harry chiến đấu với phù thủy hắc ám mạnh nhất mọi thời đại...',
+    'David Yates', 'Daniel Radcliffe, Rupert Grint, Emma Watson', '2011', '2h10m'),
     (9, 'Sát thủ John Wick', 'John Wick', 
 	'Bộ phim hành động nổi tiếng "John Wick" không thể bỏ qua. Câu chuyện xoay quanh John Wick, một sát thủ sống cùng chú chó héo của người vợ đã qua đời. Một ngày nọ, một băng nhóm xã hội đen do Isoef Tarasov cầm đầu tấn công John Wick vì không được mua chiếc xe Mustang của ông. Nhưng họ không ngờ rằng John Wick không phải là người dễ bị đánh bại và hậu quả của hành động đó làm dấy lên một thế giới ngầm đen tối với những luật lệ khắc nghiệt và các nhân vật sâu sắc tâm lý.', 
 	'Chad Stahelski', 'Keanu Reeves, Alfie Allen', '2014', '1h41m'),
@@ -176,7 +192,7 @@ VALUES
     (24, 'Lối Thoát Trên Không (2019)', 'Exit (2019)',
 	'Lối thoát trên không kể về Lee Yong-nam, một chàng trai nổi tiếng với kỹ năng leo núi nhưng không có công việc và không ai để ý tới. Trong một ngày đặc biệt, khi một thảm họa xảy ra, anh phải dùng tất cả khả năng leo núi của mình để cứu sống gia đình và mọi người. Bộ phim mang đến nhiều cung bậc cảm xúc, từ lòng cao thượng và tình yêu gia đình đến những tình huống hài hước và hấp dẫn. Exit - Lối thoát trên không là một bộ phim Hàn Quốc đầy cuốn hút không thể bỏ qua.', 
 	'Lee Sang Geun', 'Jo Jong-suk, Im Yoon-ah', '2019', '1h44m'),
-    (25, 'Nghề siêu khós (2019)', 'Extreme Job (2019)', 
+    (25, 'Nghề siêu khó (2019)', 'Extreme Job (2019)', 
 	'Extreme Job - Phi Vụ Bá Đạo là một bộ phim Hàn Quốc phát hành vào năm 2019, gây sốt tại phòng vé. Câu chuyện xoay quanh 5 trinh sát thuộc đội phòng chống ma túy. Họ cải trang thành nhân viên quán gà rán để tiến hành điều tra một băng nhóm tội phạm. Tuy nhiên, việc nhà hàng trở nên nổi tiếng và đông khách gây ra nhiều rắc rối. Tuy vậy, đội trinh sát không bỏ cuộc và vẫn đoàn kết để truy bắt tội phạm. Phim cũng đề cao tình cảm đồng đội, gia đình và sự đoàn kết giữa những người cùng chí hướng. Extreme Job - Phi Vụ Bá Đạo là một bộ phim hấp dẫn và độc đáo.', 
 	'Lee Byeong-heon', 'Ryu Seung-ryong, Lee Hanee, Jin Seon-kyu, Lee Dong-hwi, Gong Myung', '2019', '1h51m'),
     (26, 'Cờ Thái cực giương cao', 'Tae Guk Gi: The Brotherhood of War (2004)', 
@@ -266,7 +282,46 @@ CREATE TABLE pdmv_mvchapters (
 
 INSERT INTO pdmv_mvchapters(movie_id, chapter_name, chapterURL)
 VALUES
-	(7, 'FULL', 'https://player.vimeo.com/video/854102726');
+    (1, 'FULL', 'https://player.vimeo.com/video/854102726'),
+    (2, 'FULL', 'https://player.vimeo.com/video/854102726'),
+    (3, 'FULL', 'https://player.vimeo.com/video/854102726'),
+    (4, 'FULL', 'https://player.vimeo.com/video/861692196'),
+    (5, 'FULL', 'https://player.vimeo.com/video/854102726'),
+    (6, 'FULL', 'https://player.vimeo.com/video/854102726'),
+	(7, 'FULL', 'https://player.vimeo.com/video/854102726'),
+    (8, 'FULL', 'https://player.vimeo.com/video/861692196'),
+    (9, 'FULL', 'https://player.vimeo.com/video/854102726'),
+    (10, 'FULL', 'https://player.vimeo.com/video/854102726'),
+    (11, 'FULL', 'https://player.vimeo.com/video/854102726'),
+    (12, 'FULL', 'https://player.vimeo.com/video/861692196'),
+    (13, 'FULL', 'https://player.vimeo.com/video/854102726'),
+    (14, 'FULL', 'https://player.vimeo.com/video/854102726'),
+    (15, 'FULL', 'https://player.vimeo.com/video/854102726'),
+    (16, 'FULL', 'https://player.vimeo.com/video/861692196'),
+	(17, 'FULL', 'https://player.vimeo.com/video/854102726'),
+    (18, 'FULL', 'https://player.vimeo.com/video/854102726'),
+    (19, 'FULL', 'https://player.vimeo.com/video/854102726'),
+    (20, 'FULL', 'https://player.vimeo.com/video/861692196'),
+    (21, 'FULL', 'https://player.vimeo.com/video/854102726'),
+    (22, 'FULL', 'https://player.vimeo.com/video/854102726'),
+    (23, 'FULL', 'https://player.vimeo.com/video/854102726'),
+    (24, 'FULL', 'https://player.vimeo.com/video/861692196'),
+    (25, 'FULL', 'https://player.vimeo.com/video/854102726'),
+    (26, 'FULL', 'https://player.vimeo.com/video/854102726'),
+	(27, 'FULL', 'https://player.vimeo.com/video/854102726'),
+    (28, 'FULL', 'https://player.vimeo.com/video/861692196'),
+    (29, 'FULL', 'https://player.vimeo.com/video/854102726'),
+    (30, 'FULL', 'https://player.vimeo.com/video/854102726'),
+    (31, 'FULL', 'https://player.vimeo.com/video/854102726'),
+    (32, 'FULL', 'https://player.vimeo.com/video/861692196'),
+    (33, 'FULL', 'https://player.vimeo.com/video/854102726'),
+    (34, 'FULL', 'https://player.vimeo.com/video/854102726'),
+    (35, 'FULL', 'https://player.vimeo.com/video/854102726'),
+    (36, 'FULL', 'https://player.vimeo.com/video/861692196'),
+	(37, 'FULL', 'https://player.vimeo.com/video/854102726'),
+    (38, 'FULL', 'https://player.vimeo.com/video/854102726'),
+    (39, 'FULL', 'https://player.vimeo.com/video/854102726'),
+    (40, 'FULL', 'https://player.vimeo.com/video/861692196');
 
 CREATE TABLE pdmv_movies_genres (
 	movie_id INT NOT NULL,
@@ -751,7 +806,17 @@ BEGIN
 		LIMIT numofmovie;
 END//
 DELIMITER ;
-/*
+
+DELIMITER //
+CREATE PROCEDURE movie_listChaptersOfMovie (IN mvid INT)
+BEGIN
+	SELECT *
+    FROM pdmv_mvchapters
+    WHERE movie_id = mvid;
+END//
+DELIMITER ;
+
+/* LARAVEL
 INSERT INTO users (id, name, password, acctype_id)
 SELECT acc_id, usname, password, acctype_id FROM pdmv_accounts;
 

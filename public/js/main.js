@@ -8,7 +8,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 function getMovies(page) {
 
-    axios.get('/api/movies?page=' + page)
+    axios.get('/api/movies?page=' + page + "&num=12")
         .then(function (response) {
             removeAllMovieItems();
             var movieList = document.getElementById("movie-list");

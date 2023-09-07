@@ -34,10 +34,10 @@
                         </button>
                     </div>
                     <div class="space-y-6 px-6 lg:px-8 pb-4 sm:pb-6 xl:pb-8">
-                        @csrf
+                        <div id="list-chapter-btns"></div>
                         <div class="responsive-container container mx-auto">
                             <iframe id="watchmovievideo" class="responsive-iframe"
-                                src="https://player.vimeo.com/video/854102726" frameborder="0" allowfullscreen></iframe>
+                                src="" frameborder="0" allowfullscreen></iframe>
                         </div>
                     </div>
                 </div>
@@ -52,7 +52,7 @@
                     <div class="bg-white shadow-lg border-gray-100 border rounded-3xl p-8 flex space-x-8">
                         <div class="w-1/2 flex justify-center h-screen">
                             <div class="w-full mx-auto text-center">
-                                <img class="mx-auto rounded-3xl shadow-lg lg:w-3/5 sm:w-full" id="mvdetail-img" src="">
+                                <img class="mx-auto rounded-3xl shadow-lg lg:w-3/5 md:w-full" id="mvdetail-img" src="">
                                 <button data-modal-target="watchMovieModal" data-modal-toggle="watchMovieModal"
                                     class="mt-2 bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow"
                                     onclick="getMovieInfoToWatch()">
@@ -94,7 +94,7 @@
                     </div>
                 </div>
                 <!--COMMENTS-->
-                <div class="pt-3 mvdetail-grid-item md:mx-1">
+                <div class="pt-3 mvdetail-grid-item mx-0 md:mx-1">
                     <section class="bg-white shadow-lg border-gray-100 border rounded-3xl p-8 flex space-x-8">
                         <div class="max-w-2xl mx-auto px-4  w-full">
                             <div class="flex justify-between items-center mb-6">
@@ -202,16 +202,33 @@
                     </section>
                 </div>
             </div>
-            @if(auth()->check())
-                <div class="w-full pt-3">
-                    <section class="bg-white shadow-lg border-gray-100 border rounded-3xl p-8 flex space-x-8">
-                        <h2 class="text-lg lg:text-2xl font-bold text-gray-900 dark:text-white">Có thể bạn sẽ thích:</h2>
-                    </section>
+
+            <div class="w-full pt-3 md:pt-1">
+                <div class="bg-white shadow-lg border-gray-100 border rounded-3xl p-4">
+                    <div class="text-lg lg:text-2xl font-bold text-gray-900 dark:text-white">Phim liên quan</div>
+                    <div class="bg-[#3a3a3a] p-4 border rounded-3xl mb-2">
+                        <div id="related-list">
+                        </div>
+                    </div>
+                    @if(auth()->check())
+                        <div class="text-lg lg:text-2xl font-bold text-gray-900 dark:text-white">Đề xuất cho bạn</div>
+                        <div class="bg-[#3a3a3a] p-4 border rounded-3xl mb-2">
+                            <div id="recommended-list">
+                            </div>
+                        </div>
+                    @endif
+                    <div class="text-lg lg:text-2xl font-bold text-gray-900 dark:text-white">Phim mới nhất</div>
+                    <div class="bg-[#3a3a3a] p-4 border rounded-3xl mb-2">
+                        <div id="new-list">
+                        </div>
+                    </div>
                 </div>
-            @endif
+            </div>
+
         </div>
     </div>
     <script src="/js/detail-movie.js"></script>
 </body>
 
 </html>
+@include ('component.footer')

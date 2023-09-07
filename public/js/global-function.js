@@ -32,7 +32,16 @@ function addTooltip() {
 // Xóa tất cả các phần tử con trong danh sách phim
 function removeAllMovieItems() {
     var movieList = document.getElementById("movie-list");
-    while (movieList.firstChild) {
-        movieList.removeChild(movieList.firstChild);
+    if(movieList){
+        while (movieList.firstChild) {
+            movieList.removeChild(movieList.firstChild);
+        }
+    }
+
+    var movieRecommendedList = document.getElementById("recommended-list");
+    if(movieRecommendedList){
+        while (movieRecommendedList.firstChild) {
+            movieRecommendedList.removeChild(movieRecommendedList.firstChild);
+        }
     }
 }

@@ -46,7 +46,13 @@
     font-weight: 900;
     content: '\f005';
     /* Unicode của icon ngôi sao đầy đủ */
-    font-size: 30px;
+    font-size: 40px;
+}
+
+@media (min-width: 770px) {
+    .star-rating label:before {
+        font-size: 25px;
+    }
 }
 
 .star-rating label.half:before {

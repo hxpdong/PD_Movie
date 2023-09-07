@@ -2,6 +2,10 @@ const defaultImageUrl = '/img/banner.png';
 document.addEventListener("DOMContentLoaded", function () {
     var movieId = getMovieIdFromURL();
     loadMovieDetail(movieId);
+    getLatestMovies();
+    if(accId){
+        getRecommendedMovies();
+    }
 });
 
 function loadMovieDetail(movieId) {
@@ -39,6 +43,7 @@ function updateMovieDetail(movieDetail) {
             if (movie.posterURL != null)
                 posterElement.src = movie.posterURL;
             else posterElement.src = defaultImageUrl;
+            document.title = movie.title_vi;
         });
         console.log("đã update");
     }
@@ -297,14 +302,45 @@ function loadPrevComment() {
 
 function getMovieInfoToWatch() {
     var movieId = getMovieIdFromURL();
+    var chapterBtn = document.getElementById("list-chapter-btns");
+    var chapterSrc = "";
     axios.get('/api/movies/' + movieId)
         .then(function (response) {
             var moviedt = response.data.movie_detail;
             if (moviedt) {
                 moviedt.forEach(function (movie) {
-                    var mvtitleText = movie.title_vi + " (" + movie.title_en + ")";
+                    var mvtitleText = movie.title_vi + " (" + movie.title_en + ")";                    
                     $('#watchmvtitle').text(mvtitleText);
                 });
+                var chapters = response.data.chapters;
+                if(chapters){
+                    var cnt = 0;
+                    chapters.forEach(function (chapter) {
+                        var button = document.createElement("button");
+                        button.type = "button";
+                        button.className = "chapterBtn mt-2 hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow";
+                        button.textContent = chapter.chapter_name;
+                        button.addEventListener("click", function() {
+                            var btnGroup = document.getElementsByClassName("chapterBtn");
+                            var btnArray = Array.from(btnGroup);
+                            btnArray.forEach(function (btn) {
+                                btn.classList.remove("bg-[#66CCFF]", "text-white");
+                                btn.disabled = false;
+                            });
+                            $('#watchmovievideo').attr('src', chapter.chapterURL);
+                            button.classList.add("bg-[#66CCFF]", "text-white");
+                            button.disabled = true;
+                        });
+                        chapterBtn.appendChild(button);
+                        if(cnt == 0) {
+                            $('#watchmovievideo').attr('src', chapter.chapterURL);
+                            button.classList.add("bg-[#66CCFF]", "text-white");
+                            button.disabled = true;
+                        }
+                        cnt++;
+                        console.log('cnt: ' + cnt);
+                    });
+                }
             }
         });
 }
@@ -313,4 +349,142 @@ function closeModalWatchMovie() {
     $("#watchMovieModal").modal('hide');
     $('#watchmvtitle').text('');
     $('#watchmovievideo').attr('src', '');
+    var chapterBtn = document.getElementById("list-chapter-btns");
+    while (chapterBtn.firstChild) {
+        chapterBtn.removeChild(chapterBtn.firstChild);
+    }
+}
+
+function getLatestMovies() {
+
+    axios.get('/api/movies?num=6')
+        .then(function (response) {
+            //removeAllMovieItems();
+            var movieList = document.getElementById("new-list");
+            var movies = response.data.results.movies;
+
+            // Lặp qua danh sách phim và tạo các thẻ <li> để hiển thị thông tin về mỗi bộ phim
+            movies.forEach(function (movie) {
+                var movieItem = document.createElement("div");
+                movieItem.className = "grid-item rounded-lg bg-white shadow-lg";
+
+                // Tạo thẻ <img> để hiển thị hình ảnh phim
+                var image = document.createElement("img");
+                image.alt = movie.title_vi;
+                image.style.width = '100%';
+                image.style.objectFit = "cover";
+                image.className = "rounded-t-lg";
+                if (movie.posterURL != null) {
+                    image.src = movie.posterURL;
+                }
+                else image.src = defaultImageUrl;
+                movieItem.insertAdjacentElement('afterbegin', image);
+
+                // Tạo thẻ <h3> để hiển thị tiêu đề phim
+                var mid = document.createElement("h6");
+                mid.textContent = movie.movie_id;
+                mid.className = "text-ellipsis mvid";
+                mid.style.height= "0px";
+                movieItem.appendChild(mid);
+                // Tạo thẻ <h3> để hiển thị tiêu đề phim
+                var murl = document.createElement("h5");
+                murl.textContent = movie.movie_url;
+                murl.className = "text-ellipsis mvurl";
+                murl.style.height= "0px";
+                movieItem.appendChild(murl);
+
+                // Tạo thẻ <h3> để hiển thị tiêu đề phim
+                var title = document.createElement("h3");
+                title.textContent = movie.title_vi;
+                title.className = "text-ellipsis mb-2 text-lg font-semibold";
+                movieItem.appendChild(title);
+
+                // Tạo thẻ <p> để hiển thị đạo diễn
+                var director = document.createElement("p");
+                director.textContent = "Năm: " + movie.manufactureYear;
+                director.className = "text-ellipsis";
+                movieItem.appendChild(director);
+
+                // Tạo thẻ <p> để hiển thị danh sách diễn viên
+                var actors = document.createElement("p");
+                actors.textContent = "Thời lượng: " + movie.videoLength;
+                actors.className = "text-ellipsis";
+                movieItem.appendChild(actors);
+
+                // Thêm thông tin về bộ phim vào danh sách
+                movieList.appendChild(movieItem);
+
+            });
+            addTooltip();
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
+}
+
+function getRecommendedMovies() {
+
+    axios.get('/api/movies/recommended/' + accId + "?num=6")
+        .then(function (response) {
+            //removeAllMovieItems();
+            var movieList = document.getElementById("recommended-list");
+            var movies = response.data.results.recommendedmovies;
+
+            // Lặp qua danh sách phim và tạo các thẻ <li> để hiển thị thông tin về mỗi bộ phim
+            movies.forEach(function (movie) {
+                var movieItem = document.createElement("div");
+                movieItem.className = "grid-item rounded-lg bg-white shadow-lg";
+
+                // Tạo thẻ <img> để hiển thị hình ảnh phim
+                var image = document.createElement("img");
+                image.alt = movie.title_vi;
+                image.style.width = '100%';
+                image.style.objectFit = "cover";
+                image.className = "rounded-t-lg";
+                if (movie.posterURL != null) {
+                    image.src = movie.posterURL;
+                }
+                else image.src = defaultImageUrl;
+                movieItem.insertAdjacentElement('afterbegin', image);
+
+                // Tạo thẻ <h3> để hiển thị tiêu đề phim
+                var mid = document.createElement("h6");
+                mid.textContent = movie.movie_id;
+                mid.className = "text-ellipsis mvid";
+                mid.style.height= "0px";
+                movieItem.appendChild(mid);
+                // Tạo thẻ <h3> để hiển thị tiêu đề phim
+                var murl = document.createElement("h5");
+                murl.textContent = movie.movie_url;
+                murl.className = "text-ellipsis mvurl";
+                murl.style.height= "0px";
+                movieItem.appendChild(murl);
+
+                // Tạo thẻ <h3> để hiển thị tiêu đề phim
+                var title = document.createElement("h3");
+                title.textContent = movie.title_vi;
+                title.className = "text-ellipsis mb-2 text-lg font-semibold";
+                movieItem.appendChild(title);
+
+                // Tạo thẻ <p> để hiển thị đạo diễn
+                var director = document.createElement("p");
+                director.textContent = "Năm: " + movie.manufactureYear;
+                director.className = "text-ellipsis";
+                movieItem.appendChild(director);
+
+                // Tạo thẻ <p> để hiển thị danh sách diễn viên
+                var actors = document.createElement("p");
+                actors.textContent = "Thời lượng: " + movie.videoLength;
+                actors.className = "text-ellipsis";
+                movieItem.appendChild(actors);
+
+                // Thêm thông tin về bộ phim vào danh sách
+                movieList.appendChild(movieItem);
+
+            });
+            addTooltip();
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
 }
