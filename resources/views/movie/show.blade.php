@@ -76,7 +76,7 @@
                             </div>
                             <div class="grid grid-cols-2">
                                 <div>
-                                    <div class="text-sm text-gray-400">Năm:</div>
+                                    <div class="text-sm text-gray-400">Năm sản xuất:</div>
                                     <div class="text-lg text-gray-800" id="mvdetail-manufactureYear"></div>
                                 </div>
                                 <div>

@@ -9,15 +9,18 @@
             </a>
 
             <div class="flex items-center lg:order-2">
+                
                 @if(auth()->check())
                     @if(auth()->user()->fullname)
-                        <a href=""><span id="loginuser">{{ auth()->user()->fullname }}</span></a>
+                        <a href=""><span id="loginuser" class="font-medium">{{ auth()->user()->fullname }}</span></a>
                     @else
-                        <a href=""><span id="loginuser">{{ auth()->user()->name }}</span></a>
+                        <a href=""><span id="loginuser" class="font-medium">{{ auth()->user()->name }}</span></a>
                     @endif
                 <a href="/logoutHeader"
                     class="text-gray-800 bg-white mx-1 dark:text-white hover:bg-gray-50 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-gray-800">Đăng
                     xuất</a>
+                
+                
 
                 <input type="hidden" id="authUserId" value="{{ auth()->user()->id }}">
                 @else
@@ -58,7 +61,7 @@
                                     class="lg:w-96 w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                     placeholder="tìm kiếm..." required name="kwsearch">
                                 <button type="submit"
-                                    class="text-white absolute right-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                                    class="text-white absolute right-2.5 bottom-2.5 bg-[#66CCFF] hover:bg-[#00aaff] focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                                     <svg class="w-4 h-4 text-white dark:text-white" aria-hidden="true"
                                         xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
                                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
@@ -71,7 +74,7 @@
                     <li>
                         <div>
                             <button id="dropdownDefaultButton" data-dropdown-toggle="dropdown"
-                                class="text-white lg:text-black hover:bg-[#66CCFF] focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg px-5 py-2.5 text-center inline-flex items-center dark:hover:bg-blue-700 dark:focus:ring-blue-800 w-full md:w-auto"
+                                class="text-white lg:text-white bg-[#66CCFF] hover:bg-[#00aaff] focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg px-5 py-2.5 text-center inline-flex items-center dark:hover:bg-blue-700 dark:focus:ring-blue-800 w-full lg:w-auto"
                                 type="button">Thể loại <svg class="w-2.5 h-2.5 ml-2.5" aria-hidden="true"
                                     xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
                                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
