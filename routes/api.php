@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\API\MovieController;
 use App\Http\Controllers\API\RecommenderController;
+use App\Http\Controllers\API\MovieGenreController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -36,3 +37,4 @@ Route::post('/postcomment' , [MovieController::class, 'postComment']);
 Route::get('/ratings/{uid}/{mid}' , [MovieController::class, 'getRatingOf']);
 Route::post('/postrating' , [MovieController::class, 'postRatingOf']);
 Route::get('/movies/recommended/{uid}', [RecommenderController::class, 'UserBased_CollaborativeFiltering']);
+Route::get('/genres', [MovieGenreController::class, 'listAllGenres']);

@@ -52,5 +52,5 @@ Route::post('/modalLogin', [AuthController::class, 'modalPostAuthLogin'])->name(
 Route::post('/modalRegister', [AuthController::class, 'modalPostAuthRegister'])->name('modalRegister');
 
 Route::get('/test', function(){
-    return view('component.test');
+    return view('auth.dashboardtest');
 });

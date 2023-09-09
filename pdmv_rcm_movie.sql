@@ -108,7 +108,7 @@ VALUES
     (9, 'Kịch', 'Dramatic'),
     (10, 'Giả tưởng', 'Fiction'),
     (11, 'Huyền bí', 'Mystery'),
-    (12, 'Phiêu lưu', 'Advanture'),
+    (12, 'Phiêu lưu', 'Adventure'),
     (13, 'Giật gân', 'Thriller'),
     (14, 'Thảm họa', 'Disaster');
 
@@ -836,6 +836,37 @@ BEGIN
     WHERE movie_id = mvid;
 END//
 DELIMITER ;
+
+DELIMITER //
+CREATE PROCEDURE movie_listGenresOfMovie (IN mvid INT)
+BEGIN
+	SELECT *
+    FROM pdmv_movies_genres mv
+    INNER JOIN pdmv_mvgenres g ON mv.mvgenre_id = g.mvgenre_id
+    WHERE movie_id = mvid;
+END//
+DELIMITER ;
+
+DELIMITER //
+CREATE PROCEDURE mvgenre_listGenres (IN viOrEn INT)
+BEGIN
+    CASE viOrEn
+        WHEN 1 THEN
+            SELECT *
+            FROM pdmv_mvgenres
+            ORDER BY mvgenre_vi_name ASC;
+        WHEN 2 THEN
+            SELECT *
+            FROM pdmv_mvgenres
+            ORDER BY mvgenre_en_name ASC;
+        ELSE
+            SELECT *
+            FROM pdmv_mvgenres
+            ORDER BY mvgenre_id ASC;
+    END CASE;
+END//
+DELIMITER ;
+
 
 /* LARAVEL
 INSERT INTO users (id, name, password, acctype_id)

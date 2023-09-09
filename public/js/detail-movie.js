@@ -12,10 +12,21 @@ function loadMovieDetail(movieId) {
     axios.get('/api/movies/' + movieId)
         .then(function (response) {
             var moviedt = response.data.movie_detail;
+            var mvgenres = response.data.genres;
             console.log("đã load");
             if (moviedt) {
                 updateMovieDetail(moviedt);
-            }
+            };
+            if (mvgenres) {
+                var genresGroupElement = document.getElementById("mvdetail-genres-group");
+                mvgenres.forEach(function (mvg) {
+                    var spanElement = document.createElement('a');
+                    spanElement.classList.add('bg-blue-100', 'text-blue-800', 'font-medium', 'rounded', 'dark:bg-blue-900', 'dark:text-blue-300', 'mr-2', 'mb-2', 'p-1', 'flex', 'justify-center', 'item-center');
+                    spanElement.textContent = mvg.mvgenre_vi_name;
+                    spanElement.href = `/genres/mvg`+ mvg.mvgenre_id + "-" + mvg.mvgenre_en_name;
+                    genresGroupElement.appendChild(spanElement);
+                });
+            };
         })
         .catch(function (error) {
             console.log(error);
@@ -31,6 +42,9 @@ function updateMovieDetail(movieDetail) {
     var contentElement = document.getElementById("mvdetail-content");
     var ratingElement = document.getElementById("mvdetail-rating");
     var numRatingElement = document.getElementById("mvdetail-numrating");
+    var manufactureYearElement = document.getElementById("mvdetail-manufactureYear");
+    var videoLengthElement = document.getElementById("mvdetail-videoLength");
+
     if (movieDetail) {
         movieDetail.forEach(function (movie) {
             titleElement.innerHTML = movie.title_vi;
@@ -40,6 +54,9 @@ function updateMovieDetail(movieDetail) {
             contentElement.innerHTML = movie.content;
             ratingElement.innerHTML = movie.mvpoint;
             numRatingElement.innerHTML = movie.numrating;
+            manufactureYearElement.innerHTML = movie.manufactureYear;
+            videoLengthElement.innerHTML = movie.videoLength;
+
             if (movie.posterURL != null)
                 posterElement.src = movie.posterURL;
             else posterElement.src = defaultImageUrl;
@@ -55,7 +72,7 @@ function updateMovieDetail(movieDetail) {
     directorNames.forEach((directorName, index) => {
         const directorLink = document.createElement('a');
         directorLink.textContent = directorName;
-        directorLink.href = `/tags/directors/${directorName.replace(/\s+/g, '-').toLowerCase()}`;
+        directorLink.href = `/tags/${directorName.replace(/\s+/g, '-').toLowerCase()}`;
         directorElement.appendChild(directorLink);
         if (index !== directorNames.length - 1) {
             directorElement.appendChild(document.createTextNode(', ')); // Thêm dấu phẩy và khoảng trắng, trừ lần cuối
@@ -69,7 +86,7 @@ function updateMovieDetail(movieDetail) {
     actorNames.forEach((actorName, index) => {
         const actorLink = document.createElement('a');
         actorLink.textContent = actorName;
-        actorLink.href = `/tags/actors/${actorName.replace(/\s+/g, '-').toLowerCase()}`;
+        actorLink.href = `/tags/${actorName.replace(/\s+/g, '-').toLowerCase()}`;
         actorsElement.appendChild(actorLink);
         if (index !== actorNames.length - 1) {
             actorsElement.appendChild(document.createTextNode(', ')); // Thêm dấu phẩy và khoảng trắng, trừ lần cuối

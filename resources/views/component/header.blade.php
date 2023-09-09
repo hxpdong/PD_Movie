@@ -69,14 +69,27 @@
                         </form>
                     </li>
                     <li>
-                        <a href="/"
-                            class="block py-2 pr-4 pl-3 text-white rounded bg-gray-700 lg:bg-transparent lg:text-black lg:p-0 dark:text-white"
-                            aria-current="page">Trang chủ</a>
+                        <div>
+                            <button id="dropdownDefaultButton" data-dropdown-toggle="dropdown"
+                                class="text-white lg:text-black hover:bg-[#66CCFF] focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg px-5 py-2.5 text-center inline-flex items-center dark:hover:bg-blue-700 dark:focus:ring-blue-800 w-full md:w-auto"
+                                type="button">Thể loại <svg class="w-2.5 h-2.5 ml-2.5" aria-hidden="true"
+                                    xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                        stroke-width="2" d="m1 1 4 4 4-4" />
+                                </svg></button>
+                            <!-- Dropdown menu -->
+                            <div id="dropdown"
+                                class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-4/5 md:w-44 dark:bg-gray-700">
+                                <ul class="max-h-48 w-auto overflow-y-auto py-2 text-sm text-gray-700 dark:text-gray-200"
+                                    aria-labelledby="dropdownDefaultButton" id="genresList">
+                                </ul>
+                            </div>
+                        </div>
                     </li>
                     <li>
                         <a href="/"
                             class="block py-2 pr-4 pl-3 text-white rounded bg-gray-700 lg:bg-transparent lg:text-black lg:p-0 dark:text-white"
-                            aria-current="page">Thể loại</a>
+                            aria-current="page">Trang chủ</a>
                     </li>
                     @if(auth()->check())
                     <li>
@@ -210,6 +223,7 @@
 <script>
 var accId = document.getElementById("authUserId").value;
 $(document).ready(function() {
+    getGenreList();
     $('#modalLoginForm').submit(function(e) {
         e.preventDefault();
         $.ajax({
@@ -302,5 +316,25 @@ function closeModalRegister() {
     $('#mdregemail').val('');
     $('#mdregusname').val('');
     $('#mdreguspassword').val('');
+};
+
+function getGenreList() {
+    axios.get('/api/genres?type=1')
+        .then(function (response) {
+            var genList = document.getElementById("genresList");
+            while (genList.firstChild) {
+                genList.removeChild(genList.firstChild);
+            }
+            var mvgenres = response.data.genres;
+            mvgenres.forEach(function (mvg) {
+                var li = document.createElement("li");
+                var link = document.createElement("a");
+                link.href = "/genres/mvg" + mvg.mvgenre_id + "-" + mvg.mvgenre_en_name;
+                link.className = "block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white";
+                link.textContent = mvg.mvgenre_vi_name;
+                li.appendChild(link);
+                genList.appendChild(li);
+            });
+        });
 };
 </script>

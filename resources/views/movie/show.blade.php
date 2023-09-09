@@ -74,6 +74,21 @@
                             <div>
                                 <div class="text-1xl font-bold" id="mvdetail-title-en"></div>
                             </div>
+                            <div class="grid grid-cols-2">
+                                <div>
+                                    <div class="text-sm text-gray-400">Năm:</div>
+                                    <div class="text-lg text-gray-800" id="mvdetail-manufactureYear"></div>
+                                </div>
+                                <div>
+                                    <div class="text-sm text-gray-400">Thời lượng:</div>
+                                    <div class="text-lg text-gray-800" id="mvdetail-videoLength"></div>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="text-sm text-gray-400">Thể loại:</div>
+                                <div class="grid grid-cols-2" id="mvdetail-genres-group">
+                                </div>
+                            </div>
                             <div>
                                 <div class="text-sm text-gray-400">Đạo diễn:</div>
                                 <div class="text-lg text-gray-800" id="mvdetail-directors"></div>

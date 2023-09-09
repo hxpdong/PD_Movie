@@ -52,11 +52,15 @@ class MovieController extends Controller
         if (!empty($results)) {
             $chapters = DB::select("CALL movie_listChaptersOfMovie(?)", array($mid));
             $cnt = count($chapters);
+            $genres = DB::select("CALL movie_listGenresOfMovie(?)", array($mid));
+            $cntGenre = count($genres);
             return response()->json([
                 'success' => true,
                 'movie_detail' => $results,
                 'chapters' => $chapters,
                 'numchap' => $cnt,
+                'genres' => $genres,
+                'numgenre' => $cntGenre
             ]);
         } else {
             // Đăng nhập thất bại
