@@ -72,7 +72,7 @@ Setup:
 
         git clone https://github.com/hxpdong/PD_Movie.git <Project_Name>
 
-1.1. Coppy the content of pdmv_rcm_movie.sql file and run them
+1.1. Copy the content of pdmv_rcm_movie.sql file and run them
 
 1.2. run Migration:
 
