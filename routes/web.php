@@ -61,7 +61,7 @@ Route::get('/test', function(){
     return view('auth.dashboardtest');
 });
 
-Route::middleware('pdmv_checkHaveKWSearch')->group(function (){
+Route::middleware('pdmv_checkIsUserOrGuest','pdmv_checkHaveKWSearch')->group(function (){
     Route::get('movies/{mid}', function(){
         return view('/movie.show');
     });
@@ -70,5 +70,8 @@ Route::middleware('pdmv_checkHaveKWSearch')->group(function (){
     });
     Route::get('genres/{mvgid}', function(){
         return view('/genre.show');
+    });
+    Route::get('recommend', function(){
+        return view('/movie.recommender');
     });
 });

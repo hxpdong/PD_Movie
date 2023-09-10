@@ -129,7 +129,7 @@ function getComments(mid, page) {
                 // Tạo phần tử img trong divFooter
                 var img = document.createElement("img");
                 img.className = "mr-2 w-6 h-6 rounded-full";
-                img.src = "/img/fav.png";
+                img.src = "/img/avt-user.png";
                 img.alt = cmt.user_id;
 
                 // Tạo phần tử p trong divFooter cho tên tác giả

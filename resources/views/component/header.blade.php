@@ -12,7 +12,7 @@
                 
                 @if(auth()->check())
                     @if(auth()->user()->fullname)
-                        <a href=""><span id="loginuser" class="font-medium">{{ auth()->user()->fullname }}({{ auth()->user()->name }})</span></a>
+                        <a href=""><span id="loginuser" class="font-medium">{{ auth()->user()->fullname }} ({{ auth()->user()->name }})</span></a>
                     @else
                         <a href=""><span id="loginuser" class="font-medium">{{ auth()->user()->name }}</span></a>
                     @endif
