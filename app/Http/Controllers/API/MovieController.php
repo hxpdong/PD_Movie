@@ -173,4 +173,49 @@ class MovieController extends Controller
             ]);
        
     }
+
+    public function dropComment($cmtid)
+    {
+        try{
+            $cmt = DB::select("SELECT * FROM pdmv_comments WHERE comment_id = ?", array($cmtid));
+            if($cmt){
+                DB::statement('CALL comment_drop(?)', [$cmtid]);
+                return response()->json([
+                    'success' => true
+                ]);
+            }else {
+                return response()->json([
+                    'success' => false
+                ]);
+            }
+        }        
+        catch (\Exception $e){
+            return response()->json([
+                'success' => false,
+                'error' => $e->getMessage() // Hoặc bạn có thể định nghĩa thông báo lỗi riêng
+            ], 500); // 500 là mã lỗi nội bộ (Internal Server Error)
+        }
+    }
+
+    public function editComment(Request $request, $cmtid)
+    {
+        $cmt = $request->editComment;
+        if(!$cmt){
+          $cmt = "This comment is in error";  
+        }
+        try {
+            DB::table('pdmv_comments')
+                ->where('comment_id', $cmtid)
+                ->update(['comment' => $cmt]);
+        
+            return response()->json([
+                'success' => true
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'error' => $e->getMessage() // Hoặc bạn có thể định nghĩa thông báo lỗi riêng
+            ], 500); // 500 là mã lỗi nội bộ (Internal Server Error)
+        }
+    }
 }

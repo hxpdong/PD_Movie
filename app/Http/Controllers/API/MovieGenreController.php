@@ -22,4 +22,8 @@ class MovieGenreController extends Controller
             "success" => false
         ]);
     }
+
+    public function listMoviesOf(){
+        
+    }
 }

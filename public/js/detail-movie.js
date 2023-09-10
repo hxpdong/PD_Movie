@@ -3,7 +3,7 @@ document.addEventListener("DOMContentLoaded", function () {
     var movieId = getMovieIdFromURL();
     loadMovieDetail(movieId);
     getLatestMovies();
-    if(accId){
+    if (accId) {
         getRecommendedMovies();
     }
 });
@@ -23,7 +23,7 @@ function loadMovieDetail(movieId) {
                     var spanElement = document.createElement('a');
                     spanElement.classList.add('bg-[#66CCFF]', 'text-blue-700', 'font-medium', 'rounded', 'dark:bg-blue-900', 'dark:text-blue-300', 'mr-2', 'mb-2', 'p-1', 'flex', 'justify-center', 'item-center');
                     spanElement.textContent = mvg.mvgenre_vi_name;
-                    spanElement.href = `/genres/mvg`+ mvg.mvgenre_id + "-" + mvg.mvgenre_en_name;
+                    spanElement.href = `/genres/mvg` + mvg.mvgenre_id + "-" + mvg.mvgenre_en_name;
                     genresGroupElement.appendChild(spanElement);
                 });
             };
@@ -115,7 +115,7 @@ function getComments(mid, page) {
 
             comments.forEach(function (cmt) {
                 var cntcmt = cmt.comment_id;
-                commentItem = document.createElement("article");
+                var commentItem = document.createElement("article");
                 commentItem.className =
                     "p-6 mb-6 text-base bg-white border-t border-gray-200 dark:border-gray-700 dark:bg-gray-900";
 
@@ -161,9 +161,267 @@ function getComments(mid, page) {
                 articleContent.className = "text-gray-500 dark:text-gray-400 text-justify";
                 articleContent.textContent = cmt.comment;
 
+                if (accId == cmt.user_id) {
+                    var divContent = document.createElement("div");
+                    divContent.className = 'dropdownCommentContainer my-2 flex justify-end';
+                    var divContent2 = document.createElement("div");
+                    divContent2.className = 'flex justify-end';
+
+                    var buttonDropDown = document.createElement("button");
+                    buttonDropDown.id = "dropdownCommentButton" + cmt.comment_id;
+                    buttonDropDown.setAttribute("data-dropdown-toggle", "dropdownComment" + cmt.comment_id);
+                    buttonDropDown.classList.add(
+                        "inline-flex",
+                        "items-center",
+                        "p-2",
+                        "text-sm",
+                        "font-medium",
+                        "text-center",
+                        "text-white",
+                        "dark:text-gray-400",
+                        "bg-gray-500",
+                        "rounded-lg",
+                        "hover:bg-gray-700",
+                        "hover:text-white",
+                        "focus:ring-4",
+                        "focus:outline-none",
+                        "focus:ring-gray-50",
+                    );
+                    buttonDropDown.type = "button";
+                    // Thêm nội dung vào nút button
+                    const svg = document.createElement("svg");
+                    svg.classList.add("w-4", "h-4");
+                    svg.setAttribute("aria-hidden", "true");
+                    svg.setAttribute("xmlns", "http://www.w3.org/2000/svg");
+                    svg.setAttribute("fill", "currentColor");
+                    svg.setAttribute("viewBox", "0 0 16 3");
+
+                    const path = document.createElement("path");
+                    path.setAttribute("d", "M2 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Zm6.041 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM14 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Z");
+
+                    svg.appendChild(path);
+                    buttonDropDown.appendChild(svg);
+
+                    const span = document.createElement("span");
+                    span.classList.add("sr-only");
+                    span.textContent = "Comment settings";
+                    buttonDropDown.appendChild(span);
+
+                    divContent.appendChild(buttonDropDown);
+
+                    var dropdownDiv = document.createElement("div");
+                    dropdownDiv.id = "dropdownComment" + cmt.comment_id;
+                    dropdownDiv.classList.add(
+
+                        "z-10",
+                        "w-full",
+                        "bg-white",
+                        "rounded",
+                        "divide-y",
+                        "divide-gray-100",
+                        "shadow",
+                    );
+                    var ul = document.createElement("ul");
+                    ul.classList.add("py-1", "text-sm", "text-gray-700", "text-gray-200");
+                    ul.setAttribute("aria-labelledby", "dropdownMenuIconHorizontalButton");
+                    var menuItems = ["Sửa", "Xóa"];
+                    var cnt = 0;
+                    menuItems.forEach((itemText) => {
+                        const li = document.createElement("li");
+                        const a = document.createElement("button");
+                        a.classList.add(
+                            "block",
+                            "py-2",
+                            "px-4",
+                            "hover:bg-gray-100",
+                            "w-full"
+
+                        );
+                        a.textContent = itemText;
+                        a.type = "button";
+                        if (cnt == 0) {
+                            a.onclick = function () {
+                                console.log("Sửa button clicked!");
+                                a.disabled = true;
+                                articleContent.style.display = "none";
+                                var form = document.createElement("form");
+                                form.classList.add("mb-6");
+                                form.id = "editcmt";
+                                var div1 = document.createElement("div");
+                                div1.classList.add(
+                                    "py-2",
+                                    "px-4",
+                                    "mb-4",
+                                    "bg-white",
+                                    "rounded-lg",
+                                    "rounded-t-lg",
+                                    "border",
+                                    "border-gray-200",
+                                    "dark:bg-gray-800",
+                                    "dark:border-gray-700"
+                                );
+                                var label = document.createElement("label");
+                                label.htmlFor = "comment";
+                                label.classList.add("sr-only");
+                                label.textContent = "Your comment";
+
+                                // Tạo phần tử textarea
+                                var textarea = document.createElement("textarea");
+                                textarea.id = "editComment" + cmt.comment_id;
+                                textarea.rows = "6";
+                                textarea.cols = "100";
+                                textarea.name = "editComment";
+                                textarea.classList.add(
+                                    "px-0",
+                                    "w-full",
+                                    "text-sm",
+                                    "text-gray-900",
+                                    "border-0",
+                                    "focus:ring-0",
+                                    "focus:outline-none",
+                                    "dark:text-white",
+                                    "dark:placeholder-gray-400",
+                                    "dark:bg-gray-800"
+                                );
+                                textarea.placeholder = "Viết bình luận...";
+                                textarea.textContent = cmt.comment;
+                                textarea.required = true;
+
+                                // Thêm label và textarea vào div đầu tiên
+                                div1.appendChild(label);
+                                div1.appendChild(textarea);
+
+                                // Tạo phần tử div thứ hai
+                                var div2 = document.createElement("div");
+                                div2.classList.add("flex", "justify-center");
+
+                                // Tạo nút submit
+                                var submitButton = document.createElement("button");
+                                submitButton.type = "submit";
+                                submitButton.classList.add(
+                                    "inline-flex",
+                                    "items-center",
+                                    "py-2.5",
+                                    "px-4",
+                                    "text-xs",
+                                    "font-medium",
+                                    "text-center",
+                                    "text-white",
+                                    "bg-[#66CCFF]",
+                                    "rounded-lg",
+                                    "focus:ring-4",
+                                    "focus:ring-primary-200",
+                                    "dark:focus:ring-primary-900",
+                                    "hover:bg-primary-800"
+                                );
+                                submitButton.textContent = "Sửa đánh giá";
+                                submitButton.onclick = function () {
+
+                                }
+                                // Thêm nút submit vào div thứ hai
+                                div2.appendChild(submitButton);
+
+                                // Thêm div1 và div2 vào biểu mẫu form
+                                form.appendChild(div1);
+                                form.appendChild(div2);
+
+                                form.addEventListener("submit", function (event) {
+                                    event.preventDefault(); // Ngăn form submit theo cách thông thường
+                                    var editCommentUrl = '/api/editcomment/'+cmt.comment_id+"?editComment=" +document.getElementById("editComment"+cmt.comment_id).value;
+                                    // Gửi request POST bằng AJAX hoặc Fetch API
+                                    fetch(editCommentUrl, {
+                                        method: "PUT",
+                                        body: new FormData(form),
+                                    })
+                                        .then(function (response) {
+                                            return response.json();
+                                        })
+                                        .then(function (data) {
+                                            if (data.success === true) {
+                                                getComments(mid, currentCmtPage);
+                                            } else {
+                                                // Xử lý trường hợp không thành công (VD: hiển thị thông báo lỗi)
+                                                alert("Post failed. Please try again.");
+                                            }
+                                        })
+                                        .catch(function (error) {
+                                            // Xử lý lỗi kết nối hoặc lỗi từ server
+                                            alert("An error occurred. Please try again later.");
+                                        });
+                                });
+
+                                commentItem.appendChild(form);
+                            };
+                        }
+                        if (cnt == 1) {
+                            a.onclick = function () {
+                                console.log("Xóa button clicked!");
+                                Swal.fire({
+                                    title: 'Bạn muốn xóa bình luận?',
+                                    showCancelButton: true,
+                                    confirmButtonText: 'Xóa',
+                                    cancelButtonText: 'Suy nghĩ lại'
+                                }).then((result) => {
+                                    if (result.isConfirmed) {
+                                        var commentId = cmt.comment_id;
+                                        var apiUrl = `/api/dropcomment/${commentId}`;
+                                        fetch(apiUrl, {
+                                            method: "DELETE"
+                                        })
+                                            .then(function (response) {
+                                                return response.json();
+                                            })
+                                            .then(function (data) {
+                                                if (data.success === true) {
+                                                    // Thực hiện hành động nếu success là true (VD: điều hướng hoặc hiển thị thông báo)
+                                                    //alert("Post successful!\n");
+                                                    //getMovies(getPageFromURL());
+                                                    Swal.fire(
+                                                        'Đã xóa!',
+                                                        'Xóa bình luận thành công!',
+                                                        'success'
+                                                    );
+                                                    currentCmtPage = 1;
+                                                    getComments(mid, currentCmtPage);
+                                                } else {
+                                                    // Xử lý trường hợp không thành công (VD: hiển thị thông báo lỗi)
+                                                    Swal.fire(
+                                                        'Xóa thất bại!',
+                                                        'Xóa bình luận thất bại!',
+                                                        'error'
+                                                    );
+                                                    console.log("xoa that bai");
+                                                }
+                                            })
+                                            .catch(function (error) {
+                                                // Xử lý lỗi kết nối hoặc lỗi từ server
+                                                alert("An error occurred. Please try again later.");
+                                            });
+                                    }
+                                });
+                            };
+                        }
+                        // Thêm phần tử a vào phần tử li
+                        li.appendChild(a);
+
+                        // Thêm phần tử li vào phần tử ul
+                        ul.appendChild(li);
+                        cnt++;
+                    });
+                    // Thêm phần tử ul vào phần tử div
+                    dropdownDiv.appendChild(ul);
+
+                    divContent2.appendChild(dropdownDiv);
+
+                }
                 // Gắn các phần tử con vào article
                 commentItem.appendChild(footer);
                 commentItem.appendChild(articleContent);
+
+                if (accId == cmt.user_id) {
+                    //commentItem.appendChild(divContent);
+                    commentItem.appendChild(divContent2);
+                }
 
                 commentList.appendChild(commentItem);
 
@@ -326,18 +584,18 @@ function getMovieInfoToWatch() {
             var moviedt = response.data.movie_detail;
             if (moviedt) {
                 moviedt.forEach(function (movie) {
-                    var mvtitleText = movie.title_vi + " (" + movie.title_en + ")";                    
+                    var mvtitleText = movie.title_vi + " (" + movie.title_en + ")";
                     $('#watchmvtitle').text(mvtitleText);
                 });
                 var chapters = response.data.chapters;
-                if(chapters){
+                if (chapters) {
                     var cnt = 0;
                     chapters.forEach(function (chapter) {
                         var button = document.createElement("button");
                         button.type = "button";
                         button.className = "chapterBtn mt-2 hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow";
                         button.textContent = chapter.chapter_name;
-                        button.addEventListener("click", function() {
+                        button.addEventListener("click", function () {
                             var btnGroup = document.getElementsByClassName("chapterBtn");
                             var btnArray = Array.from(btnGroup);
                             btnArray.forEach(function (btn) {
@@ -349,7 +607,7 @@ function getMovieInfoToWatch() {
                             button.disabled = true;
                         });
                         chapterBtn.appendChild(button);
-                        if(cnt == 0) {
+                        if (cnt == 0) {
                             $('#watchmovievideo').attr('src', chapter.chapterURL);
                             button.classList.add("bg-[#66CCFF]", "text-white");
                             button.disabled = true;
@@ -401,13 +659,13 @@ function getLatestMovies() {
                 var mid = document.createElement("h6");
                 mid.textContent = movie.movie_id;
                 mid.className = "text-ellipsis mvid";
-                mid.style.height= "0px";
+                mid.style.height = "0px";
                 movieItem.appendChild(mid);
                 // Tạo thẻ <h3> để hiển thị tiêu đề phim
                 var murl = document.createElement("h5");
                 murl.textContent = movie.movie_url;
                 murl.className = "text-ellipsis mvurl";
-                murl.style.height= "0px";
+                murl.style.height = "0px";
                 movieItem.appendChild(murl);
 
                 // Tạo thẻ <h3> để hiển thị tiêu đề phim
@@ -468,13 +726,13 @@ function getRecommendedMovies() {
                 var mid = document.createElement("h6");
                 mid.textContent = movie.movie_id;
                 mid.className = "text-ellipsis mvid";
-                mid.style.height= "0px";
+                mid.style.height = "0px";
                 movieItem.appendChild(mid);
                 // Tạo thẻ <h3> để hiển thị tiêu đề phim
                 var murl = document.createElement("h5");
                 murl.textContent = movie.movie_url;
                 murl.className = "text-ellipsis mvurl";
-                murl.style.height= "0px";
+                murl.style.height = "0px";
                 movieItem.appendChild(murl);
 
                 // Tạo thẻ <h3> để hiển thị tiêu đề phim

@@ -36,6 +36,9 @@ Route::middleware('pdmv_checkIsUserOrGuest')->group(function (){
     Route::get('movies/{mid}', function(){
         return view('/movie.show');
     });
+    Route::get('genres', function(){
+        return view('/genre.index');
+    });
 });
 Route::middleware('pdmv_checkIsUser')->group(function (){
     Route::get('recommend', function(){

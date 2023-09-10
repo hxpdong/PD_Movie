@@ -890,6 +890,13 @@ BEGIN
 END//
 DELIMITER ;
 
+DELIMITER //
+CREATE PROCEDURE comment_drop (IN cmtid INT)
+BEGIN
+    DELETE FROM pdmv_comments WHERE comment_id = cmtid; 
+END//
+DELIMITER ;
+
 /* LARAVEL
 INSERT INTO users (id, name, password, acctype_id)
 SELECT acc_id, usname, password, acctype_id FROM pdmv_accounts;
