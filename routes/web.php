@@ -57,3 +57,15 @@ Route::post('/modalRegister', [AuthController::class, 'modalPostAuthRegister'])-
 Route::get('/test', function(){
     return view('auth.dashboardtest');
 });
+
+Route::middleware('pdmv_checkHaveKWSearch')->group(function (){
+    Route::get('movies/{mid}', function(){
+        return view('/movie.show');
+    });
+    Route::get('genres', function(){
+        return view('/genre.index');
+    });
+    Route::get('genres/{mvgid}', function(){
+        return view('/genre.show');
+    });
+});

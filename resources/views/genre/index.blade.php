@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="/css/main.css">
 </head>
 <body>
+    Danh mục phim
     <div class="main-container">
         <div id="movie-list" class="grid-container">
         </div>
