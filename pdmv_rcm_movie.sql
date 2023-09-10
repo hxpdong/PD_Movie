@@ -867,6 +867,28 @@ BEGIN
 END//
 DELIMITER ;
 
+DELIMITER //
+CREATE PROCEDURE mvgenre_listMovieOfGenre (IN mvgid INT)
+BEGIN
+    SELECT * 
+    FROM pdmv_movies mv
+    JOIN pdmv_movies_genres mvg ON mv.movie_id = mvg.movie_id
+    WHERE mvg.mvgenre_id = mvgid
+    ORDER BY mv.movie_id DESC;
+END//
+DELIMITER ;
+
+DELIMITER //
+CREATE PROCEDURE movie_listWithSearch (IN kw VARCHAR(255))
+BEGIN
+    SET @search_term = CONCAT('%', kw, '%');
+    SELECT *
+    FROM pdmv_movies
+    WHERE title_vi COLLATE utf8_unicode_ci LIKE @search_term
+    OR title_en COLLATE utf8_unicode_ci LIKE @search_term
+    ORDER BY movie_id DESC;
+END//
+DELIMITER ;
 
 /* LARAVEL
 INSERT INTO users (id, name, password, acctype_id)

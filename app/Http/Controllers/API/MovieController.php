@@ -13,7 +13,12 @@ class MovieController extends Controller
     //
     public function index()
     {
-        $results = DB::select("CALL movie_list()");
+        $haveKW = request()->get('kwsearch', '');
+        if($haveKW == 'null'){
+            $haveKW = '';
+        }
+        $results = DB::select("CALL movie_listWithSearch(?)", array($haveKW));
+       
         $perPage = request()->get('num', 12);
         $currentPage = request()->get('page', 1);
         $total = count($results);

@@ -21,7 +21,7 @@ function loadMovieDetail(movieId) {
                 var genresGroupElement = document.getElementById("mvdetail-genres-group");
                 mvgenres.forEach(function (mvg) {
                     var spanElement = document.createElement('a');
-                    spanElement.classList.add('bg-[#66CCFF]', 'text-white', 'font-medium', 'rounded', 'dark:bg-blue-900', 'dark:text-blue-300', 'mr-2', 'mb-2', 'p-1', 'flex', 'justify-center', 'item-center');
+                    spanElement.classList.add('bg-[#66CCFF]', 'text-blue-700', 'font-medium', 'rounded', 'dark:bg-blue-900', 'dark:text-blue-300', 'mr-2', 'mb-2', 'p-1', 'flex', 'justify-center', 'item-center');
                     spanElement.textContent = mvg.mvgenre_vi_name;
                     spanElement.href = `/genres/mvg`+ mvg.mvgenre_id + "-" + mvg.mvgenre_en_name;
                     genresGroupElement.appendChild(spanElement);

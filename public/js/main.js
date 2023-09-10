@@ -3,12 +3,13 @@ var defaultImageUrl = '/img/banner.png';
 
 document.addEventListener("DOMContentLoaded", function () {
     var initialPage = getPageFromURL();
-    getMovies(initialPage);
+    var kwSearch = getKeywordSearchFromCurrentURL();
+    getMovies(initialPage, kwSearch);
 });
 
-function getMovies(page) {
+function getMovies(page, kwSearch) {
 
-    axios.get('/api/movies?page=' + page + "&num=12")
+    axios.get('/api/movies?page=' + page + "&num=12" + "&kwsearch=" + kwSearch)
         .then(function (response) {
             removeAllMovieItems();
             var movieList = document.getElementById("movie-list");
@@ -35,13 +36,13 @@ function getMovies(page) {
                 var mid = document.createElement("h6");
                 mid.textContent = movie.movie_id;
                 mid.className = "text-ellipsis mvid";
-                mid.style.height= "0px";
+                mid.style.height = "0px";
                 movieItem.appendChild(mid);
                 // Tạo thẻ <h3> để hiển thị tiêu đề phim
                 var murl = document.createElement("h5");
                 murl.textContent = movie.movie_url;
                 murl.className = "text-ellipsis mvurl";
-                murl.style.height= "0px";
+                murl.style.height = "0px";
                 movieItem.appendChild(murl);
 
                 // Tạo thẻ <h3> để hiển thị tiêu đề phim
@@ -84,17 +85,23 @@ function getMovies(page) {
 
 function prevPage() {
     if (currentPage > 1) {
-        //getMovies(currentPage - 1);
-        //updatePageURL(currentPage - 1);
-        redirectToWebsite('/movies?page=' + (currentPage-1));
+        const newPage = currentPage - 1;
+        const currentURL = new URL(window.location.href);
+        currentURL.searchParams.set('page', newPage);
+        //window.history.replaceState({}, document.title, currentURL);
+        //getMovies(currentURL.searchParams.get('page'), getKeywordSearchFromCurrentURL());
+        redirectToWebsite(currentURL);
     }
 }
-
 function nextPage() {
-    //getMovies(currentPage + 1);
-    //updatePageURL(currentPage + 1);
-    redirectToWebsite('/movies?page=' + (currentPage+1));
+    const newPage = currentPage + 1;
+    const currentURL = new URL(window.location.href);
+    currentURL.searchParams.set('page', newPage);
+    //window.history.replaceState({}, document.title, currentURL);    
+    //getMovies(currentURL.searchParams.get('page'), getKeywordSearchFromCurrentURL());
+    redirectToWebsite(currentURL);
 }
+
 
 function generatePageButtons(currentPage, lastPage) {
     var pageButtons = '';
@@ -111,9 +118,12 @@ function generatePageButtons(currentPage, lastPage) {
 }
 
 function gotoPage(page) {
-    //getMovies(page);
-    //updatePageURL(page);
-    redirectToWebsite('/movies?page=' + page);
+    const newPage = page;
+    const currentURL = new URL(window.location.href);
+    currentURL.searchParams.set('page', newPage);
+    //window.history.replaceState({}, document.title, currentURL);
+    //getMovies(page, getKeywordSearchFromCurrentURL());
+    redirectToWebsite(currentURL);
 }
 
 function updatePageURL(page) {
@@ -125,6 +135,25 @@ function getPageFromURL() {
     return parseInt(urlParams.get('page')) || 1;
 }
 
+function getKeywordSearchFromCurrentURL() {
+    const currentURL = window.location.href;
+    const startIndex = currentURL.indexOf('?kwsearch=');
+    if (startIndex !== -1) {
+      const startIndexCopy = startIndex + 10; // Độ dài của '?kwsearch='
+      const pattern = /(?:(?:&)|$)/; // Tìm '&' hoặc kết thúc chuỗi
+      const endIndex = currentURL.indexOf('&', startIndexCopy);
+      const keyword = endIndex !== -1
+        ? currentURL.substring(startIndexCopy, endIndex)
+        : currentURL.substring(startIndexCopy).replace(pattern, '');
+  
+      if (keyword.trim() === '' || /^(\+)+$/.test(keyword)) {
+        return null;
+      }
+      return keyword;
+    }
+    return null; // Trả về null nếu không tìm thấy cụm 'kwsearch='
+  }
+  
 function getDriveFileId(url) {
     const match = url.match(/\/file\/d\/([a-zA-Z0-9_-]+)\//);
     if (match && match[1]) {
