@@ -75,7 +75,12 @@ Route::middleware('pdmv_checkIsUserOrGuest','pdmv_checkHaveKWSearch')->group(fun
         return view('/movie.recommender');
     });
 });
-
-ROute::get('/users/{uid}', function(){
+/*
+Route::get('/users/{uid}', function(){
     return view('auth.userpage');
+});*/
+Route::middleware('pdmv_checkHaveKWSearch')->group(function (){
+    Route::get('/users/{uid}', function(){
+        return view('auth.userpage');
+    });
 });

@@ -138,6 +138,14 @@ function getComments(mid, page) {
                     "inline-flex items-center mr-3 text-sm text-gray-900 dark:text-white";
                 authorName.textContent = cmt.usname;
 
+                var linkToUser = document.createElement("a");
+                linkToUser.setAttribute('href','/users/' + cmt.usname);
+                linkToUser.appendChild(authorName);
+                
+                var linkToUserImg = document.createElement("a");
+                linkToUserImg.setAttribute('href','/users/' + cmt.usname);
+                linkToUserImg.appendChild(img);
+
                 // Tạo phần tử p trong divFooter cho ngày đăng
                 var publishDate = document.createElement("p");
                 publishDate.className = "text-sm text-gray-600 dark:text-gray-400";
@@ -149,8 +157,8 @@ function getComments(mid, page) {
                 publishDate.appendChild(time);
 
                 // Gắn các phần tử con vào divFooter
-                divFooter.appendChild(img);
-                divFooter.appendChild(authorName);
+                divFooter.appendChild(linkToUserImg);
+                divFooter.appendChild(linkToUser);
                 divFooter.appendChild(publishDate);
 
                 // Gắn các phần tử con vào footer
