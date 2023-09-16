@@ -13,7 +13,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('users', function (Blueprint $table) {
-            $table->integer('id')->primaryKey()->autoIncrement();
+            $table->integer('id')->primaryKey();
             $table->string('api_token')->nullable();
             $table->integer('acctype_id');
             $table->string('name')->unique();

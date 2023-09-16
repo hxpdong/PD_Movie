@@ -95,7 +95,7 @@ class MovieController extends Controller
     }
 
     public function getCommentListOf($mid){
-        $results = DB::select("SELECT * FROM pdmv_comments cmt JOIN pdmv_accounts acc ON cmt.user_id = acc.acc_id WHERE movie_id = ? ORDER BY comment_id DESC;", array($mid));
+        $results = DB::select("CALL movie_listCommentOfMovie(?);", array($mid));
         
         $perPage = request()->get('num', 3);
         $currentPage = request()->get('page', 1);
@@ -142,7 +142,7 @@ class MovieController extends Controller
         $cmt = $request->comment;
 
         // Insert the new user's account
-        DB::insert('insert into pdmv_comments (user_id, movie_id, comment) values (?, ?, ?)', [$usid, $mid, $cmt]);
+        DB::update('CALL comment_post(?, ?, ?)', [$usid, $mid, $cmt]);
 
         return response()->json([
             'success' => true
@@ -150,7 +150,7 @@ class MovieController extends Controller
     }
 
     public function getRatingOf($uid, $mid){
-        $results = DB::select("SELECT * FROM pdmv_ratings WHERE user_id = ? AND movie_id = ?;", array($uid, $mid));
+        $results = DB::select("CALL movie_getRatingOf(?, ?);", array($uid, $mid));
         if($results){
             return response()->json([
                 'success' => true,
@@ -166,8 +166,7 @@ class MovieController extends Controller
         $uid = $request->accId;
         $mid = $request->mId;
         $rating = $request->ratingpoint;
-        DB::delete("DELETE FROM pdmv_ratings WHERE user_id = ? AND movie_id = ?", [$uid, $mid]);
-        DB::insert("INSERT INTO pdmv_ratings(user_id, movie_id, rating) VALUES(?, ?, ?)", array($uid, $mid, $rating));
+        DB::update("CALL rating_post(?, ?, ?)", array($uid, $mid, $rating));
         return response()->json([
                 'success' => true,
             ]);
@@ -177,7 +176,7 @@ class MovieController extends Controller
     public function dropComment($cmtid)
     {
         try{
-            $cmt = DB::select("SELECT * FROM pdmv_comments WHERE comment_id = ?", array($cmtid));
+            $cmt = DB::select("CALL comment_get(?)", array($cmtid));
             if($cmt){
                 DB::statement('CALL comment_drop(?)', [$cmtid]);
                 return response()->json([
@@ -204,9 +203,7 @@ class MovieController extends Controller
           $cmt = "This comment is in error";  
         }
         try {
-            DB::table('pdmv_comments')
-                ->where('comment_id', $cmtid)
-                ->update(['comment' => $cmt]);
+            DB::update('CALL comment_edit(?,?);', array($cmtid,$cmt));
         
             return response()->json([
                 'success' => true

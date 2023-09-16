@@ -897,6 +897,69 @@ BEGIN
 END//
 DELIMITER ;
 
+DELIMITER //
+CREATE PROCEDURE movie_listCommentOfMovie(IN movie_id INT)
+BEGIN
+    SELECT cmt.*, acc.*
+    FROM pdmv_comments cmt
+    JOIN pdmv_accounts acc ON cmt.user_id = acc.acc_id
+    WHERE cmt.movie_id = movie_id
+    ORDER BY cmt.comment_id DESC;
+END //
+DELIMITER ;
+
+DELIMITER //
+CREATE PROCEDURE comment_post(IN uid INT, IN mvid INT, IN cmtcontent TEXT)
+BEGIN
+    INSERT INTO pdmv_comments (user_id, movie_id, comment)
+    VALUES (uid, mvid, cmtcontent);
+END //
+DELIMITER ;
+
+DELIMITER //
+CREATE PROCEDURE movie_getRatingOf(IN uid INT, IN mvid INT)
+BEGIN
+    SELECT *
+    FROM pdmv_ratings
+    WHERE user_id = uid AND movie_id = mvid;
+END //
+DELIMITER ;
+
+DELIMITER //
+CREATE PROCEDURE rating_post(IN uid INT, IN mvid INT, IN rating DECIMAL(3,2))
+BEGIN
+    DELETE FROM pdmv_ratings WHERE user_id = uid AND movie_id = mvid;
+    INSERT INTO pdmv_ratings (user_id, movie_id, rating) VALUES (uid, mvid, rating);
+END //
+DELIMITER ;
+
+DELIMITER //
+CREATE PROCEDURE comment_get(IN comment_id INT)
+BEGIN
+    SELECT * FROM pdmv_comments WHERE comment_id = comment_id;
+END //
+DELIMITER ;
+
+DELIMITER //
+CREATE PROCEDURE comment_edit(IN cmtid INT, IN new_comment TEXT)
+BEGIN
+    UPDATE pdmv_comments SET comment = new_comment WHERE comment_id = cmtid;
+END //
+DELIMITER ;
+
+DELIMITER //
+CREATE PROCEDURE user_register(IN p_usname VARCHAR(255), IN p_passwd VARCHAR(255), IN p_email VARCHAR(255), IN p_fullname VARCHAR(255))
+BEGIN
+    DECLARE numaccid INT;
+    
+    INSERT INTO pdmv_accounts (usname, password, acctype_id) VALUES (p_usname, p_passwd, 3);
+    
+    SELECT MAX(acc_id) INTO numaccid FROM pdmv_accounts WHERE acctype_id = 3;
+
+    INSERT INTO pdmv_users (user_id, email, fullname) VALUES (numaccid, p_email, p_fullname);
+END //
+DELIMITER ;
+
 /* LARAVEL
 INSERT INTO users (id, name, password, acctype_id)
 SELECT acc_id, usname, password, acctype_id FROM pdmv_accounts;
