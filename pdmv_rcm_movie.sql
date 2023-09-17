@@ -960,6 +960,46 @@ BEGIN
 END //
 DELIMITER ;
 
+DELIMITER //
+CREATE PROCEDURE user_getByUsername(IN p_usname VARCHAR(255))
+BEGIN
+    SELECT pa.usname, pa.acctype_id, pu.*
+    FROM pdmv_users pu JOIN pdmv_accounts pa ON pu.user_id = pa.acc_id
+    WHERE pa.usname = p_usname
+    LIMIT 1;
+END //
+DELIMITER ;
+
+DELIMITER //
+CREATE PROCEDURE user_getAll()
+BEGIN
+    SELECT pa.usname, pa.acctype_id, pu.*
+    FROM pdmv_users pu JOIN pdmv_accounts pa ON pu.user_id = pa.acc_id;
+END //
+DELIMITER ;
+
+CREATE TABLE pdmv_admins (
+    admin_id INT PRIMARY KEY,
+    fullname VARCHAR(255),
+    email VARCHAR(255) NOT NULL,
+    phone VARCHAR(10),
+    FOREIGN KEY (admin_id) REFERENCES pdmv_accounts(acc_id)
+);
+
+INSERT INTO pdmv_admins (admin_id, fullname, email, phone)
+VALUES
+    (2, 'Quản Trị Viên A','quantrivien1@gmail.com', '0774839113'),
+    (23, 'Quản Trị Viên B', 'quantrivien2@gmail.com', '0889004549'),
+    (24, 'Quản Trị Viên C', 'quantrivien3@gmail.com', '0123654978');
+
+DELIMITER //
+CREATE PROCEDURE admin_getAll()
+BEGIN
+    SELECT pa.usname, pa.acctype_id, pu.*
+    FROM pdmv_admins pu JOIN pdmv_accounts pa ON pu.admin_id = pa.acc_id;
+END //
+DELIMITER ;
+
 /* LARAVEL
 INSERT INTO users (id, name, password, acctype_id)
 SELECT acc_id, usname, password, acctype_id FROM pdmv_accounts;

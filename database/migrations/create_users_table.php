@@ -39,6 +39,13 @@ return new class extends Migration
             'users.email' => DB::raw('pdmv_users.email'),
             'users.fullname' => DB::raw('pdmv_users.fullname'),
         ]);
+
+        DB::table('users')
+        ->join('pdmv_admins', 'users.id', '=', 'pdmv_admins.admin_id')
+        ->update([
+            'users.email' => DB::raw('pdmv_admins.email'),
+            'users.fullname' => DB::raw('pdmv_admins.fullname'),
+        ]);
     }
 
     /**
