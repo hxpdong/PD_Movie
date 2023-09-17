@@ -32,4 +32,12 @@ class RecommenderController extends Controller
                 'success' => false]);
         }
     }
+
+    public function UserBased_SimilarityUsers($uid){
+        $sameUsers = DB::select('call collab_similarityUsers(?)', array($uid));
+        $sameUsers = array_slice($sameUsers, 0, 6);
+        return response()->json([
+            'sameUsers' => $sameUsers,
+        ]);
+    }
 }

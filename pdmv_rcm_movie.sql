@@ -593,7 +593,9 @@ BEGIN
 	UPDATE USER_LIST
 	SET user_stt = (@row_number:=@row_number + 1)
 	ORDER BY cosine_similarity DESC;
-    SELECT * FROM USER_LIST WHERE cosine_similarity > 0 ORDER BY cosine_similarity DESC;
+    SELECT ul.*, pa.usname FROM USER_LIST ul
+    JOIN pdmv_accounts pa ON ul.user_id = pa.acc_id
+    WHERE cosine_similarity > 0 ORDER BY cosine_similarity DESC;
 	DROP TABLE USER_LIST;
 END//
 DELIMITER ;
@@ -957,6 +959,26 @@ BEGIN
     SELECT MAX(acc_id) INTO numaccid FROM pdmv_accounts WHERE acctype_id = 3;
 
     INSERT INTO pdmv_users (user_id, email, fullname) VALUES (numaccid, p_email, p_fullname);
+END //
+DELIMITER ;
+
+DELIMITER //
+CREATE PROCEDURE account_getUid(IN p_usname VARCHAR(255))
+BEGIN
+    SELECT acc_id
+    FROM pdmv_accounts
+    WHERE usname = p_usname
+    LIMIT 1;
+END //
+DELIMITER ;
+
+DELIMITER //
+CREATE PROCEDURE user_get(IN p_uid INT)
+BEGIN
+    SELECT pa.usname, pa.acctype_id, pu.*
+    FROM pdmv_users pu JOIN pdmv_accounts pa ON pu.user_id = pa.acc_id
+    WHERE pu.user_id = p_uid
+    LIMIT 1;
 END //
 DELIMITER ;
 

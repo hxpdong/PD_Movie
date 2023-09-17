@@ -6,6 +6,7 @@ use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\API\MovieController;
 use App\Http\Controllers\API\RecommenderController;
 use App\Http\Controllers\API\MovieGenreController;
+use App\Http\Controllers\API\UserController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -40,3 +41,5 @@ Route::get('/movies/recommended/{uid}', [RecommenderController::class, 'UserBase
 Route::get('/genres', [MovieGenreController::class, 'listAllGenres']);
 Route::delete('/dropcomment/{cmtid}', [MovieController::class, 'dropComment']);
 Route::put('/editcomment/{cmtid}', [MovieController::class, 'editComment']);
+Route::get('/users/by-username/{usn}', [UserController::class, 'getInfoByUsername']);
+Route::get('/users/similarity-users/{uid}', [RecommenderController::class, 'UserBased_SimilarityUsers']);
