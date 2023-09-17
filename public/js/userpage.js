@@ -37,6 +37,60 @@ function getUserInfo(username) {
                 uid = userInfo.user_id;
                 console.log('UID2: ', uid);
                 getSimilarityUsers(uid);
+
+                var listFavMovies = response.data.favmovies;
+                if (listFavMovies && listFavMovies.length > 0) {
+                    var favoriteList = document.getElementById("us-favoriteList");
+                    listFavMovies.forEach(function (movie) {
+                        var link = document.createElement("a");
+                        link.href = "/movies/mv" + movie.movie_id + "-" + movie.movie_url;
+                        link.classList.add("border-gray-300", "border-2", "rounded-xl", "w-full", "py-7", "px-5", "m-1");
+
+                        var card = document.createElement("div");
+                        card.classList.add("grid", "grid-cols-6", "gap-3");
+
+                        var imageContainer = document.createElement("div");
+                        imageContainer.classList.add("col-span-1");
+
+                        var image = document.createElement("img");
+                        if(movie.posterURL != null)
+                            image.src = movie.posterURL;
+                        else image.src = "/img/banner.png";
+
+                        var contentContainer = document.createElement("div");
+                        contentContainer.classList.add("col-span-5");
+
+                        var title = document.createElement("div");
+                        title.classList.add("text-gray-700", "font-bold", "truncate");
+                        title.textContent = movie.title_vi;
+
+                        var ratingContainer = document.createElement("div");
+                        ratingContainer.classList.add("flex", "justify-end", "items-end", "h-full");
+
+                        var rating = document.createElement("div");
+                        rating.classList.add("bg-[#f5e50b]", "font-bold", "rounded-xl", "p-2", "flex", "items-end");
+                        rating.textContent = movie.rating + "/5.0";
+
+                        ratingContainer.appendChild(rating);
+                        contentContainer.appendChild(title);
+                        contentContainer.appendChild(ratingContainer);
+                        imageContainer.appendChild(image);
+                        card.appendChild(imageContainer);
+                        card.appendChild(contentContainer);
+                        link.appendChild(card);
+
+                        favoriteList.appendChild(link);
+                    });
+                } else {
+                    document.getElementById("us-notfoundFavoriteMovies").innerHTML = "Không tìm thấy phim";
+                }
+
+                var usActivitiesElement = document.getElementById("us-activities");
+                if(uid != accId){
+                    var usActItemElement = document.getElementById("us-act-item");
+                    usActivitiesElement.removeChild(usActItemElement);
+                }
+                
             } else {
                 window.location.href = "/";
             }

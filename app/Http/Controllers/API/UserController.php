@@ -11,10 +11,14 @@ class UserController extends Controller
     //
     public function getInfoByUsername($usn){
         $info = DB::select("CALL user_getByUsername(?)", array($usn));
+        $usid = DB::select("CALL account_getUid(?)", array($usn));
+        $usid = $usid[0];
+        $favoritemvs = DB::select("CALL user_getFavoriteMovies(?)", array($usid->acc_id));
         if($info){
             return response()->json([
                 'success' => true,
-                'userInfo' => $info
+                'userInfo' => $info,
+                'favmovies' => $favoritemvs
             ]);
         }
         return response()->json([

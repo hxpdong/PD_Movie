@@ -1022,6 +1022,17 @@ BEGIN
 END //
 DELIMITER ;
 
+DELIMITER //
+CREATE PROCEDURE user_getFavoriteMovies(IN p_uid INT)
+BEGIN
+    SELECT *
+    FROM pdmv_ratings pr
+    JOIN pdmv_movies pm ON pr.movie_id = pm.movie_id
+    WHERE user_id = p_uid AND rating >= 4.0
+    ORDER BY rating DESC;
+END //
+DELIMITER ;
+
 /* LARAVEL
 INSERT INTO users (id, name, password, acctype_id)
 SELECT acc_id, usname, password, acctype_id FROM pdmv_accounts;
