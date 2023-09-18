@@ -39,8 +39,10 @@ function getUserInfo(username) {
                 getSimilarityUsers(uid);
 
                 var listFavMovies = response.data.favmovies;
+                var favoriteList = document.getElementById("us-favoriteList");
+                var favoriteItem = document.getElementById("us-fsvoriteItem");
+                favoriteList.removeChild(favoriteItem);
                 if (listFavMovies && listFavMovies.length > 0) {
-                    var favoriteList = document.getElementById("us-favoriteList");
                     listFavMovies.forEach(function (movie) {
                         var link = document.createElement("a");
                         link.href = "/movies/mv" + movie.movie_id + "-" + movie.movie_url;
