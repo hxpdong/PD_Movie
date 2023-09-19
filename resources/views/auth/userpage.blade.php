@@ -87,7 +87,7 @@
             <!-- Right Side -->
             <div class="w-full lg:w-9/12 h-auto">
                 <!-- Favorite Movie Section -->
-                <div class="bg-white p-3 shadow-sm rounded-sm border-2 border-[#66CCFF] rounded-xl">
+                <div class="bg-white p-3 shadow-sm border-2 border-[#66CCFF] rounded-xl">
                     <div class="flex items-center space-x-2 font-semibold text-gray-900 leading-8">
                         <span clas="text-green-500">
                             <img src="https://www.svgrepo.com/show/425554/like-rating-up.svg" class="w-5 h-5">
