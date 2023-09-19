@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Session;
+use Carbon\Carbon;
 
 class MovieController extends Controller
 {
@@ -96,7 +97,9 @@ class MovieController extends Controller
 
     public function getCommentListOf($mid){
         $results = DB::select("CALL movie_listCommentOfMovie(?);", array($mid));
-        
+        foreach ($results as $rs) {
+            $rs->commentTime = Carbon::parse($rs->commentTime)->format('H:i:s d/m/Y');
+        }
         $perPage = request()->get('num', 3);
         $currentPage = request()->get('page', 1);
         $total = count($results);

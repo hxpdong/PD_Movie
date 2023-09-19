@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
 class UserController extends Controller
 {
@@ -25,5 +26,41 @@ class UserController extends Controller
             'success' => false,
             'message' => 'Cannot find this username'
         ]);
+    }
+
+    public function getListOfComment($uid){
+        try {
+            $cmt = DB::select("CALL user_getCommentList(?)", array($uid));
+            foreach ($cmt as $comment) {
+                $comment->commentTime = Carbon::parse($comment->commentTime)->format('H:i:s d/m/Y');
+            }
+            return response()->json([
+                'success' => true,
+                'listcomment' => $cmt
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'error' => 'An error occurred while fetching comments: ' . $e->getMessage()
+            ], 500); 
+        }
+    }
+
+    public function getListOfRating($uid){
+        try {
+            $ratings = DB::select("CALL user_getRatingList(?)", array($uid));
+            foreach ($ratings as $rt) {
+                $rt->ratingtime = Carbon::parse($rt->ratingtime)->format('H:i:s d/m/Y');
+            }
+            return response()->json([
+                'success' => true,
+                'listrating' => $ratings
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'error' => 'An error occurred while fetching comments: ' . $e->getMessage()
+            ], 500); 
+        }
     }
 }

@@ -33,13 +33,13 @@
     <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js" defer></script>
 </head>
 
-<body>
+<body class="bg-[#3a3a3a]">
     <div class="container mx-auto my-5 p-5">
-        <div class="md:flex no-wrap md:-mx-2 ">
+        <div class="lg:flex no-wrap lg:-mx-2 ">
             <!-- Left Side -->
-            <div class="w-full md:w-3/12 md:mx-2">
+            <div class="w-auto lg:w-3/12 lg:mx-2 pb-3 mb-3 border-2 border-[#66CCFF] rounded-xl bg-white">
                 <!-- Profile Card -->
-                <div class="bg-white p-3 border-t-4 border-[#66CCFF]">
+                <div class="bg-white p-3 border-t-4 border-[#66CCFF] rounded-xl">
                     <div class="image overflow-hidden">
                         <img class="w-1/3 mx-auto" src="/img/avtuser.jpg" alt="">
                     </div>
@@ -67,7 +67,7 @@
                 <!-- End of profile card -->
                 <div class="my-4"></div>
                 <!-- Friends card -->
-                <div class="bg-white p-3 hover:shadow">
+                <div class="bg-white p-2 hover:shadow border-2 m-3">
                     <div class="flex items-center space-x-3 font-semibold text-gray-900 text-xl leading-8">
                         <span class="text-[#66CCFF]">
                             <svg class="h-5 fill-current" xmlns="http://www.w3.org/2000/svg" fill="none"
@@ -85,9 +85,9 @@
                 <!-- End of friends card -->
             </div>
             <!-- Right Side -->
-            <div class="w-full md:w-9/12 mx-2 h-auto">
+            <div class="w-full lg:w-9/12 h-auto">
                 <!-- Favorite Movie Section -->
-                <div class="bg-white p-3 shadow-sm rounded-sm border-2">
+                <div class="bg-white p-3 shadow-sm rounded-sm border-2 border-[#66CCFF] rounded-xl">
                     <div class="flex items-center space-x-2 font-semibold text-gray-900 leading-8">
                         <span clas="text-green-500">
                             <img src="https://www.svgrepo.com/show/425554/like-rating-up.svg" class="w-5 h-5">
@@ -95,7 +95,7 @@
                         <span class="tracking-wide">Phim yêu thích</span>
                     </div>
                     <div class="text-gray-700">
-                        <div class="grid md:grid-cols-2 text-sm overflow-y-scroll max-h-[300px] p-10"
+                        <div class="grid lg:grid-cols-2 text-sm overflow-y-scroll max-h-[300px] p-10"
                             id="us-favoriteList">
                             <a href="/movies" id="us-fsvoriteItem" class="border-gray-300 border-2 rounded-xl w-full py-7 px-5 m-1">
                                 <card>
@@ -128,7 +128,7 @@
                 @if(auth()->check())
                 <!-- User activity (check) -->
                 <div id="us-activities">
-                    <div class="bg-white p-3 shadow-sm rounded-sm border-2" id="us-act-item">
+                    <div class="bg-white p-3 shadow-sm border-2 border-[#66CCFF] rounded-xl" id="us-act-item">
                         <div class="flex items-center space-x-2 font-semibold text-gray-900 leading-8">
                             <span clas="text-green-500">
                                 <img src="https://www.svgrepo.com/show/509175/note.svg" class="w-5 h-5">
@@ -136,49 +136,27 @@
                             <span class="tracking-wide">Các tương tác</span>
                         </div>
                         <div class="grid grid-cols-2">
-                            <div>
+                            <div class="border-2 p-2 m-2">
                                 <div class="flex items-center space-x-2 font-semibold text-gray-900 leading-8 mb-3">
                                     <span clas="text-green-500">
                                         <img src="https://www.svgrepo.com/show/522073/comment-5.svg" class="w-5 h-5">
                                     </span>
                                     <span class="tracking-wide">Bình luận</span>
                                 </div>
-                                <ul class="list-inside space-y-2" id="us-commentList">
-                                    <li>
-                                        <div class="text-teal-600">Owner at Her Company Inc.</div>
-                                        <div class="text-gray-500 text-xs">March 2020 - Now</div>
-                                    </li>
-                                    <li>
-                                        <div class="text-teal-600">Owner at Her Company Inc.</div>
-                                        <div class="text-gray-500 text-xs">March 2020 - Now</div>
-                                    </li>
-                                    <li>
-                                        <div class="text-teal-600">Owner at Her Company Inc.</div>
-                                        <div class="text-gray-500 text-xs">March 2020 - Now</div>
-                                    </li>
-                                    <li>
-                                        <div class="text-teal-600">Owner at Her Company Inc.</div>
-                                        <div class="text-gray-500 text-xs">March 2020 - Now</div>
-                                    </li>
+                                <ul class="list-inside space-y-2 overflow-y-scroll max-h-[300px]" id="us-commentList">
                                 </ul>
+                                <div id="us-notfoundcomment" class="text-center"></div>
                             </div>
-                            <div>
+                            <div class="border-2 p-2 m-2">
                                 <div class="flex items-center space-x-2 font-semibold text-gray-900 leading-8 mb-3">
                                     <span clas="text-green-500">
                                         <img src="https://www.svgrepo.com/show/533052/star.svg" class="w-5 h-5">
                                     </span>
                                     <span class="tracking-wide">Đánh giá</span>
                                 </div>
-                                <ul class="list-inside space-y-2" id="us-ratingList">
-                                    <li>
-                                        <div class="text-teal-600">Masters Degree in Oxford</div>
-                                        <div class="text-gray-500 text-xs">March 2020 - Now</div>
-                                    </li>
-                                    <li>
-                                        <div class="text-teal-600">Bachelors Degreen in LPU</div>
-                                        <div class="text-gray-500 text-xs">March 2020 - Now</div>
-                                    </li>
+                                <ul class="list-inside space-y-2 overflow-y-scroll max-h-[300px]" id="us-ratingList">
                                 </ul>
+                                <div id="us-notfoundrating" class="text-center"></div>
                             </div>
                         </div>
                         <!-- End of User activity -->

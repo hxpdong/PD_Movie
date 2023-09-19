@@ -43,3 +43,5 @@ Route::delete('/dropcomment/{cmtid}', [MovieController::class, 'dropComment']);
 Route::put('/editcomment/{cmtid}', [MovieController::class, 'editComment']);
 Route::get('/users/by-username/{usn}', [UserController::class, 'getInfoByUsername']);
 Route::get('/users/similarity-users/{uid}', [RecommenderController::class, 'UserBased_SimilarityUsers']);
+Route::get('/users/get-commentlist/{uid}', [UserController::class, 'getListOfComment']);
+Route::get('/users/get-ratinglist/{uid}', [UserController::class, 'getListOfRating']);

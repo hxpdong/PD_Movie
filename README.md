@@ -82,7 +82,7 @@ Setup:
 
 1.4. Change the information of Connection suitable with yourself (in .env):
 
-        DB_CONNECTION=
+        DB_CONNECTION=mysql
         
         DB_HOST=
         
@@ -103,12 +103,8 @@ Setup:
 
         npm install -D tailwindcss postcss autoprefixer
 
-Run (We will use 2 terminals to run the project, 1 for the server, 1 for the vite. The 2 terminals are PARALLEL to each other):
+Run:
 
-1. Terminal 1:
+1. Terminal:
 
-        php artisan serve
-
-2. Terminal 2:
-
-        npm run dev
+        npm start

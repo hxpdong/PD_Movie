@@ -43,12 +43,12 @@
                                 <div
                                     class="py-2 bg-white text-blue-800 text-sm rounded-sm border border-main-color shadow-sm">
                                     <a class="block px-4 py-2 mt-2 text-sm bg-white md:mt-0 focus:text-gray-900 hover:bg-indigo-100 focus:bg-gray-200 focus:outline-none focus:shadow-outline"
-                                        href="/users/{{ auth()->user()->name }}">User profile</a>
+                                        href="/users/{{ auth()->user()->name }}">Trang cá nhân</a>
                                     <button data-modal-toggle="profile-modal"
-                                        class="font-normal w-full text-left block px-4 py-2 mt-2 text-sm bg-white md:mt-0 focus:text-gray-900 hover:bg-indigo-100 focus:bg-gray-200 focus:outline-none focus:shadow-outline">Settings</button>
+                                        class="font-normal w-full text-left block px-4 py-2 mt-2 text-sm bg-white md:mt-0 focus:text-gray-900 hover:bg-indigo-100 focus:bg-gray-200 focus:outline-none focus:shadow-outline">Chỉnh sửa thông tin</button>
                                     <button data-modal-toggle="password-modal"
-                                        class="font-normal w-full text-left block px-4 py-2 mt-2 text-sm bg-white md:mt-0 focus:text-gray-900 hover:bg-indigo-100 focus:bg-gray-200 focus:outline-none focus:shadow-outline">Change
-                                        password</button>
+                                        class="font-normal w-full text-left block px-4 py-2 mt-2 text-sm bg-white md:mt-0 focus:text-gray-900 hover:bg-indigo-100 focus:bg-gray-200 focus:outline-none focus:shadow-outline">Đổi mật khẩu
+                                    </button>
                                 </div>
                             </div>
                         </div>
