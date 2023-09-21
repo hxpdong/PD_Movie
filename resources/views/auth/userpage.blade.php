@@ -29,6 +29,10 @@
     ::-webkit-scrollbar-thumb {
         background-color: #66CCFF;
     }
+
+    .no-select {
+        user-select: none;
+    }
     </style>
     <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js" defer></script>
 </head>
@@ -88,16 +92,42 @@
             <div class="w-full lg:w-9/12 h-auto">
                 <!-- Favorite Movie Section -->
                 <div class="bg-white p-3 shadow-sm border-2 border-[#66CCFF] rounded-xl">
-                    <div class="flex items-center space-x-2 font-semibold text-gray-900 leading-8">
+                    <div class="no-select flex items-center space-x-2 font-semibold text-gray-900 leading-8 p-3"
+                        onclick="expandContentContainer('container-favoritemovies');">
                         <span clas="text-green-500">
                             <img src="https://www.svgrepo.com/show/425554/like-rating-up.svg" class="w-5 h-5">
                         </span>
                         <span class="tracking-wide">Phim yêu thích</span>
+                        <span id="expand-container-favoritemovies" style="display: none;">
+                            <svg fill="#000000" height="15px" width="15px" version="1.1" id="Layer_1"
+                                xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                                viewBox="0 0 330.002 330.002" xml:space="preserve" transform="rotate(180)">
+                                <g id="SVGRepo_bgCarrier" stroke-width="0" />
+                                <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" />
+                                <g id="SVGRepo_iconCarrier">
+                                    <path id="XMLID_105_"
+                                        d="M324.001,209.25L173.997,96.75c-5.334-4-12.667-4-18,0L6.001,209.25c-6.627,4.971-7.971,14.373-3,21 c2.947,3.93,7.451,6.001,12.012,6.001c3.131,0,6.29-0.978,8.988-3.001L164.998,127.5l141.003,105.75c6.629,4.972,16.03,3.627,21-3 C331.972,223.623,330.628,214.221,324.001,209.25z" />
+                                </g>
+                            </svg>
+                        </span>
+                        <span id="shrink-container-favoritemovies">
+                            <svg fill="#000000" height="15px" width="15px" version="1.1" id="Layer_1"
+                                xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                                viewBox="0 0 330.002 330.002" xml:space="preserve" transform="rotate(0)">
+                                <g id="SVGRepo_bgCarrier" stroke-width="0" />
+                                <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" />
+                                <g id="SVGRepo_iconCarrier">
+                                    <path id="XMLID_105_"
+                                        d="M324.001,209.25L173.997,96.75c-5.334-4-12.667-4-18,0L6.001,209.25c-6.627,4.971-7.971,14.373-3,21 c2.947,3.93,7.451,6.001,12.012,6.001c3.131,0,6.29-0.978,8.988-3.001L164.998,127.5l141.003,105.75c6.629,4.972,16.03,3.627,21-3 C331.972,223.623,330.628,214.221,324.001,209.25z" />
+                                </g>
+                            </svg>
+                        </span>
                     </div>
-                    <div class="text-gray-700">
+                    <div class="text-gray-700" id="container-favoritemovies">
                         <div class="grid lg:grid-cols-2 text-sm overflow-y-scroll max-h-[300px] p-10"
                             id="us-favoriteList">
-                            <a href="/movies" id="us-fsvoriteItem" class="border-gray-300 border-2 rounded-xl w-full py-7 px-5 m-1">
+                            <a href="/movies" id="us-fsvoriteItem"
+                                class="border-gray-300 border-2 rounded-xl w-full py-7 px-5 m-1">
                                 <card>
                                     <div class="grid grid-cols-6 gap-3">
                                         <div class="col-span-1">
@@ -137,22 +167,80 @@
                         </div>
                         <div class="grid grid-cols-1 lg:grid-cols-2">
                             <div class="border-2 p-2 m-2">
-                                <div class="flex items-center space-x-2 font-semibold text-gray-900 leading-8 mb-3">
+                                <div class="no-select flex items-center space-x-2 font-semibold text-gray-900 leading-8 mb-3 p-3"
+                                    onclick="expandContentContainer('us-commentList')">
                                     <span clas="text-green-500">
                                         <img src="https://www.svgrepo.com/show/522073/comment-5.svg" class="w-5 h-5">
                                     </span>
                                     <span class="tracking-wide">Bình luận</span>
+                                    <span id="expand-us-commentList" style="display: none;">
+                                        <svg fill="#000000" height="15px" width="15px" version="1.1" id="Layer_1"
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 330.002 330.002"
+                                            xml:space="preserve" transform="rotate(180)">
+                                            <g id="SVGRepo_bgCarrier" stroke-width="0" />
+                                            <g id="SVGRepo_tracerCarrier" stroke-linecap="round"
+                                                stroke-linejoin="round" />
+                                            <g id="SVGRepo_iconCarrier">
+                                                <path id="XMLID_105_"
+                                                    d="M324.001,209.25L173.997,96.75c-5.334-4-12.667-4-18,0L6.001,209.25c-6.627,4.971-7.971,14.373-3,21 c2.947,3.93,7.451,6.001,12.012,6.001c3.131,0,6.29-0.978,8.988-3.001L164.998,127.5l141.003,105.75c6.629,4.972,16.03,3.627,21-3 C331.972,223.623,330.628,214.221,324.001,209.25z" />
+                                            </g>
+                                        </svg>
+                                    </span>
+                                    <span id="shrink-us-commentList">
+                                        <svg fill="#000000" height="15px" width="15px" version="1.1" id="Layer_1"
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 330.002 330.002"
+                                            xml:space="preserve" transform="rotate(0)">
+                                            <g id="SVGRepo_bgCarrier" stroke-width="0" />
+                                            <g id="SVGRepo_tracerCarrier" stroke-linecap="round"
+                                                stroke-linejoin="round" />
+                                            <g id="SVGRepo_iconCarrier">
+                                                <path id="XMLID_105_"
+                                                    d="M324.001,209.25L173.997,96.75c-5.334-4-12.667-4-18,0L6.001,209.25c-6.627,4.971-7.971,14.373-3,21 c2.947,3.93,7.451,6.001,12.012,6.001c3.131,0,6.29-0.978,8.988-3.001L164.998,127.5l141.003,105.75c6.629,4.972,16.03,3.627,21-3 C331.972,223.623,330.628,214.221,324.001,209.25z" />
+                                            </g>
+                                        </svg>
+                                    </span>
                                 </div>
                                 <ul class="list-inside space-y-2 overflow-y-scroll max-h-[300px]" id="us-commentList">
                                 </ul>
                                 <div id="us-notfoundcomment" class="text-center"></div>
                             </div>
                             <div class="border-2 p-2 m-2">
-                                <div class="flex items-center space-x-2 font-semibold text-gray-900 leading-8 mb-3">
+                                <div class="no-select flex items-center space-x-2 font-semibold text-gray-900 leading-8 mb-3 p-3"
+                                    onclick="expandContentContainer('us-ratingList')">
                                     <span clas="text-green-500">
                                         <img src="https://www.svgrepo.com/show/533052/star.svg" class="w-5 h-5">
                                     </span>
                                     <span class="tracking-wide">Đánh giá</span>
+                                    <span id="expand-us-ratingList" style="display: none;">
+                                        <svg fill="#000000" height="15px" width="15px" version="1.1" id="Layer_1"
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 330.002 330.002"
+                                            xml:space="preserve" transform="rotate(180)">
+                                            <g id="SVGRepo_bgCarrier" stroke-width="0" />
+                                            <g id="SVGRepo_tracerCarrier" stroke-linecap="round"
+                                                stroke-linejoin="round" />
+                                            <g id="SVGRepo_iconCarrier">
+                                                <path id="XMLID_105_"
+                                                    d="M324.001,209.25L173.997,96.75c-5.334-4-12.667-4-18,0L6.001,209.25c-6.627,4.971-7.971,14.373-3,21 c2.947,3.93,7.451,6.001,12.012,6.001c3.131,0,6.29-0.978,8.988-3.001L164.998,127.5l141.003,105.75c6.629,4.972,16.03,3.627,21-3 C331.972,223.623,330.628,214.221,324.001,209.25z" />
+                                            </g>
+                                        </svg>
+                                    </span>
+                                    <span id="shrink-us-ratingList">
+                                        <svg fill="#000000" height="15px" width="15px" version="1.1" id="Layer_1"
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 330.002 330.002"
+                                            xml:space="preserve" transform="rotate(0)">
+                                            <g id="SVGRepo_bgCarrier" stroke-width="0" />
+                                            <g id="SVGRepo_tracerCarrier" stroke-linecap="round"
+                                                stroke-linejoin="round" />
+                                            <g id="SVGRepo_iconCarrier">
+                                                <path id="XMLID_105_"
+                                                    d="M324.001,209.25L173.997,96.75c-5.334-4-12.667-4-18,0L6.001,209.25c-6.627,4.971-7.971,14.373-3,21 c2.947,3.93,7.451,6.001,12.012,6.001c3.131,0,6.29-0.978,8.988-3.001L164.998,127.5l141.003,105.75c6.629,4.972,16.03,3.627,21-3 C331.972,223.623,330.628,214.221,324.001,209.25z" />
+                                            </g>
+                                        </svg>
+                                    </span>
                                 </div>
                                 <ul class="list-inside space-y-2 overflow-y-scroll max-h-[300px]" id="us-ratingList">
                                 </ul>
@@ -166,6 +254,22 @@
             </div>
         </div>
     </div>
+    <script>
+    function expandContentContainer(idOfContainer) {
+        var container = document.getElementById(idOfContainer);
+        var expand = document.getElementById("expand-" + idOfContainer);
+        var shrink = document.getElementById("shrink-" + idOfContainer);
+        if (container.style.display === "") {
+            container.style.display = "none";
+            expand.style.display = "";
+            shrink.style.display = "none";
+        } else if (container.style.display = "none") {
+            container.style.display = "";
+            expand.style.display = "none";
+            shrink.style.display = "";
+        }
+    }
+    </script>
     <script src="/js/userpage.js"></script>
 </body>
 
