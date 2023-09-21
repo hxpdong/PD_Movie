@@ -440,7 +440,7 @@ CREATE TABLE pdmv_ratings (
     user_id INT,
     movie_id INT,
     rating DECIMAL(3,1) NOT NULL,
-	ratingtime DATETIME NOT NULL DEFAULT NOW(),
+	ratingTime DATETIME NOT NULL DEFAULT NOW(),
     FOREIGN KEY (user_id) REFERENCES pdmv_users(user_id),
     FOREIGN KEY (movie_id) REFERENCES pdmv_movies(movie_id),
 	UNIQUE(user_id, movie_id)
@@ -928,12 +928,42 @@ END //
 DELIMITER ;
 
 DELIMITER //
-CREATE PROCEDURE rating_post(IN uid INT, IN mvid INT, IN rating DECIMAL(3,2))
+CREATE PROCEDURE rating_post(IN uid INT, IN mvid INT, IN p_rating DECIMAL(3,2))
 BEGIN
-    DELETE FROM pdmv_ratings WHERE user_id = uid AND movie_id = mvid;
-    INSERT INTO pdmv_ratings (user_id, movie_id, rating) VALUES (uid, mvid, rating);
+    DECLARE record_count INT;
+    
+    -- Kiểm tra xem cặp (uid, mvid) đã tồn tại trong bảng hay chưa
+    SELECT COUNT(*) INTO record_count
+    FROM pdmv_ratings
+    WHERE user_id = uid AND movie_id = mvid;
+
+    -- Nếu đã tồn tại, thực hiện lệnh UPDATE
+    IF record_count > 0 THEN
+        UPDATE pdmv_ratings
+        SET rating = p_rating
+        WHERE user_id = uid AND movie_id = mvid;
+    ELSE
+        -- Nếu chưa tồn tại, thực hiện lệnh INSERT
+        INSERT INTO pdmv_ratings (user_id, movie_id, rating)
+        VALUES (uid, mvid, p_rating);
+    END IF;
 END //
 DELIMITER ;
+
+DELIMITER //
+CREATE PROCEDURE rating_drop(IN p_rating_id INT)
+BEGIN
+    DECLARE record_count INT;
+    SELECT COUNT(*) INTO record_count
+    FROM pdmv_ratings
+    WHERE rating_id = p_rating_id;
+    IF record_count > 0 THEN
+        DELETE FROM pdmv_ratings WHERE rating_id = p_rating_id;
+        SELECT 1 AS isDeleted;
+    END IF;
+END //
+DELIMITER ;
+
 
 DELIMITER //
 CREATE PROCEDURE comment_get(IN comment_id INT)
@@ -1051,7 +1081,7 @@ BEGIN
     FROM pdmv_ratings pr
     JOIN pdmv_movies pm ON pr.movie_id = pm.movie_id
     WHERE user_id = p_uid
-    ORDER BY ratingtime DESC;
+    ORDER BY ratingTime DESC;
 END //
 DELIMITER ;
 

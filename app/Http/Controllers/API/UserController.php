@@ -50,7 +50,7 @@ class UserController extends Controller
         try {
             $ratings = DB::select("CALL user_getRatingList(?)", array($uid));
             foreach ($ratings as $rt) {
-                $rt->ratingtime = Carbon::parse($rt->ratingtime)->format('H:i:s d/m/Y');
+                $rt->ratingTime = Carbon::parse($rt->ratingTime)->format('H:i:s d/m/Y');
             }
             return response()->json([
                 'success' => true,

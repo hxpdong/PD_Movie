@@ -135,7 +135,7 @@
                             </span>
                             <span class="tracking-wide">Các tương tác</span>
                         </div>
-                        <div class="grid grid-cols-2">
+                        <div class="grid grid-cols-1 lg:grid-cols-2">
                             <div class="border-2 p-2 m-2">
                                 <div class="flex items-center space-x-2 font-semibold text-gray-900 leading-8 mb-3">
                                     <span clas="text-green-500">
