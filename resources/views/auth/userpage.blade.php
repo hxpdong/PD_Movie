@@ -35,6 +35,7 @@
     }
     </style>
     <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js" defer></script>
+    <link rel="stylesheet" href="/css/demofilm.css">
 </head>
 
 <body class="bg-[#3a3a3a]">
@@ -124,6 +125,7 @@
                         </span>
                     </div>
                     <div class="text-gray-700" id="container-favoritemovies">
+                        <div id="us-notfoundFavoriteMovies" class="text-center text-black"></div>
                         <div class="grid lg:grid-cols-2 text-sm overflow-y-scroll max-h-[300px] p-10"
                             id="us-favoriteList">
                             <a href="/movies" id="us-fsvoriteItem"
@@ -145,7 +147,6 @@
                                 </card>
                             </a>
                         </div>
-                        <div id="us-notfoundFavoriteMovies" class="text-center"></div>
                     </div>
                     {{--
                         <button
@@ -202,9 +203,9 @@
                                         </svg>
                                     </span>
                                 </div>
+                                <div id="us-notfoundcomment" class="text-center"></div>
                                 <ul class="list-inside space-y-2 overflow-y-scroll max-h-[300px]" id="us-commentList">
                                 </ul>
-                                <div id="us-notfoundcomment" class="text-center"></div>
                             </div>
                             <div class="border-2 p-2 m-2">
                                 <div class="no-select flex items-center space-x-2 font-semibold text-gray-900 leading-8 mb-3 p-3"
@@ -242,9 +243,9 @@
                                         </svg>
                                     </span>
                                 </div>
+                                <div id="us-notfoundrating" class="text-center"></div>
                                 <ul class="list-inside space-y-2 overflow-y-scroll max-h-[300px]" id="us-ratingList">
                                 </ul>
-                                <div id="us-notfoundrating" class="text-center"></div>
                             </div>
                         </div>
                         <!-- End of User activity -->

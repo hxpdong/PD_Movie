@@ -142,7 +142,7 @@
                                 <div class="flex justify-center">
                                     <button type="submit"
                                         class="inline-flex items-center py-2.5 px-4 text-xs font-medium text-center text-white bg-[#66CCFF] rounded-lg focus:ring-4 focus:ring-primary-200 dark:focus:ring-primary-900 hover:bg-primary-800">
-                                        Gửi đánh giá
+                                        Gửi bình luận
                                     </button>
                                 </div>
                             </form>
@@ -151,7 +151,7 @@
                                 <button
                                     class="block text-white bg-[#66CCFF] hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                                     type="button" data-modal-toggle="authentication-modal">
-                                    Đăng nhập để gửi đánh giá
+                                    Đăng nhập để gửi đánh giá/bình luận
                                 </button>
                             </form>
                             @endif

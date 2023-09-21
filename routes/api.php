@@ -34,13 +34,18 @@ Route::group(['middleware' => ['auth:api']], function () {
 Route::get('/movies', [MovieController::class, 'index']);
 Route::get('/movies/{mid}', [MovieController::class, 'show']);
 Route::get('comments/{mid}', [MovieController::class, 'getCommentListOf']);
-Route::post('/postcomment' , [MovieController::class, 'postComment']);
-Route::get('/ratings/{uid}/{mid}' , [MovieController::class, 'getRatingOf']);
-Route::post('/postrating' , [MovieController::class, 'postRatingOf']);
 Route::get('/movies/recommended/{uid}', [RecommenderController::class, 'UserBased_CollaborativeFiltering']);
-Route::get('/genres', [MovieGenreController::class, 'listAllGenres']);
+Route::get('/ratings/{uid}/{mid}' , [MovieController::class, 'getRatingOf']);
+
+Route::post('/postcomment' , [MovieController::class, 'postComment']);
 Route::delete('/dropcomment/{cmtid}', [MovieController::class, 'dropComment']);
 Route::put('/editcomment/{cmtid}', [MovieController::class, 'editComment']);
+
+Route::post('/postrating' , [MovieController::class, 'postRatingOf']);
+Route::delete('/droprating/{rtid}', [MovieController::class, 'dropRating']);
+
+Route::get('/genres', [MovieGenreController::class, 'listAllGenres']);
+
 Route::get('/users/by-username/{usn}', [UserController::class, 'getInfoByUsername']);
 Route::get('/users/similarity-users/{uid}', [RecommenderController::class, 'UserBased_SimilarityUsers']);
 Route::get('/users/get-commentlist/{uid}', [UserController::class, 'getListOfComment']);

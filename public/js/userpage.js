@@ -3,7 +3,7 @@ var uid = null;
 document.addEventListener("DOMContentLoaded", function () {
     console.log('UID1: ', uid);
     var username = getUsernameFromURL();
-    if(username){
+    if (username) {
         getUserInfo(username);
     }
 });
@@ -93,7 +93,7 @@ function getUserInfo(username) {
                 var usActivitiesElement = document.getElementById("us-activities");
                 if (uid != accId) {
                     var usActItemElement = document.getElementById("us-act-item");
-                    if(usActItemElement)
+                    if (usActItemElement)
                         usActivitiesElement.removeChild(usActItemElement);
                 }
 
@@ -190,13 +190,166 @@ function getCommentList(user_id) {
                         btnDel.type = "button";
                         btnDel.className = "text-red-500 px-3 rounded-xl mb-3 mx-1 font-medium border-2 border-red-500";
                         btnDel.textContent = "Xóa";
-                        
+                        btnDel.onclick = function () {
+                            console.log("Xóa button clicked!");
+                            Swal.fire({
+                                title: 'Bạn muốn xóa bình luận?',
+                                showCancelButton: true,
+                                confirmButtonText: 'Xóa',
+                                cancelButtonText: 'Suy nghĩ lại'
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    var commentId = cmt.comment_id;
+                                    var apiUrl = `/api/dropcomment/${commentId}`;
+                                    fetch(apiUrl, {
+                                        method: "DELETE"
+                                    })
+                                        .then(function (response) {
+                                            return response.json();
+                                        })
+                                        .then(function (data) {
+                                            if (data.success === true) {
+                                                Swal.fire(
+                                                    'Đã xóa!',
+                                                    'Xóa bình luận thành công!',
+                                                    'success'
+                                                );
+                                                if (li && li.parentNode) {
+                                                    li.parentNode.removeChild(li);
+                                                }
+                                            } else {
+                                                Swal.fire(
+                                                    'Xóa thất bại!',
+                                                    'Xóa bình luận thất bại!',
+                                                    'error'
+                                                );
+                                                console.log("xoa that bai");
+                                            }
+                                        })
+                                        .catch(function (error) {
+                                            alert("An error occurred. Please try again later." + error);
+                                            console.trace();
+                                        });
+                                }
+                            });
+                        };
                         var btnUpt = document.createElement("button");
                         btnUpt.type = "button";
                         btnUpt.className = "text-[#66ccff] px-3 rounded-xl mb-3 mx-1 font-medium border-2 border-red-500";
                         btnUpt.textContent = "Sửa";
                         btnUpt.onclick = function () {
-                            uptComment(cmt.comment_id, "Nội dung mới");
+                            console.log("Sửa button clicked!");
+                            btnUpt.disabled = true;
+                            contentcmt.style.display = "none";
+                            var form = document.createElement("form");
+                            form.classList.add("mb-6");
+                            form.id = "editcmt";
+                            var div1 = document.createElement("div");
+                            div1.classList.add(
+                                "py-2",
+                                "px-4",
+                                "mb-4",
+                                "bg-white",
+                                "rounded-lg",
+                                "rounded-t-lg",
+                                "border",
+                                "border-gray-200",
+                                "dark:bg-gray-800",
+                                "dark:border-gray-700"
+                            );
+                            var label = document.createElement("label");
+                            label.htmlFor = "comment";
+                            label.classList.add("sr-only");
+                            label.textContent = "Your comment";
+
+                            // Tạo phần tử textarea
+                            var textarea = document.createElement("textarea");
+                            textarea.id = "editComment" + cmt.comment_id;
+                            textarea.rows = "6";
+                            textarea.cols = "100";
+                            textarea.name = "editComment";
+                            textarea.classList.add(
+                                "px-0",
+                                "w-full",
+                                "text-sm",
+                                "text-gray-900",
+                                "border-0",
+                                "focus:ring-0",
+                                "focus:outline-none",
+                                "dark:text-white",
+                                "dark:placeholder-gray-400",
+                                "dark:bg-gray-800"
+                            );
+                            textarea.placeholder = "Viết bình luận...";
+                            textarea.textContent = contentcmt.textContent;
+                            textarea.required = true;
+
+                            // Thêm label và textarea vào div đầu tiên
+                            div1.appendChild(label);
+                            div1.appendChild(textarea);
+
+                            // Tạo phần tử div thứ hai
+                            var div2 = document.createElement("div");
+                            div2.classList.add("flex", "justify-center");
+
+                            // Tạo nút submit
+                            var submitButton = document.createElement("button");
+                            submitButton.type = "submit";
+                            submitButton.classList.add(
+                                "inline-flex",
+                                "items-center",
+                                "py-2.5",
+                                "px-4",
+                                "text-xs",
+                                "font-medium",
+                                "text-center",
+                                "text-white",
+                                "bg-[#66CCFF]",
+                                "rounded-lg",
+                                "focus:ring-4",
+                                "focus:ring-primary-200",
+                                "dark:focus:ring-primary-900",
+                                "hover:bg-primary-800"
+                            );
+                            submitButton.textContent = "Sửa bình luận";
+                            submitButton.onclick = function () {
+
+                            }
+                            // Thêm nút submit vào div thứ hai
+                            div2.appendChild(submitButton);
+
+                            // Thêm div1 và div2 vào biểu mẫu form
+                            form.appendChild(div1);
+                            form.appendChild(div2);
+
+                            form.addEventListener("submit", function (event) {
+                                event.preventDefault(); // Ngăn form submit theo cách thông thường
+                                var editCommentUrl = '/api/editcomment/' + cmt.comment_id + "?editComment=" + document.getElementById("editComment" + cmt.comment_id).value;
+                                // Gửi request POST bằng AJAX hoặc Fetch API
+                                fetch(editCommentUrl, {
+                                    method: "PUT",
+                                    body: new FormData(form),
+                                })
+                                    .then(function (response) {
+                                        return response.json();
+                                    })
+                                    .then(function (data) {
+                                        if (data.success === true) {
+                                            contentcmt.style.display = "";
+                                            contentcmt.textContent = document.getElementById("editComment" + cmt.comment_id).value;
+                                            divBtn.removeChild(form);
+                                            btnUpt.disabled = false;
+                                        } else {
+                                            alert("Post failed. Please try again.");
+                                        }
+                                    })
+                                    .catch(function (error) {
+                                        alert("An error occurred. Please try again later." + error);
+                                        console.trace();
+                                    });
+                            });
+
+                            divBtn.appendChild(form);
                         };
                         divBtn.appendChild(btnUpt);
                         divBtn.appendChild(btnDel);
@@ -240,12 +393,16 @@ function getRatingList(user_id) {
                         movie.textContent = rt.title_vi;
                         var ratingpoint = document.createElement("div");
                         ratingpoint.className = "text-gray-500 font-bold mb-2";
+                        ratingpoint.id = 'ratingpoint' + rt.rating_id;
                         ratingpoint.textContent = rt.rating;
+                        ratingpoint.style.display = "none";
                         var hrtag = document.createElement("hr");
                         hrtag.className = "border-1 cursor-pointer duration-500";
                         var link = document.createElement("a");
                         link.href = "/movies/mv" + rt.movie_id + "-" + rt.movie_url;
                         link.appendChild(movie);
+                        var divEditRat = document.createElement("div");
+                        //divEditRat.style.display = "none";
                         var divBtn = document.createElement("div");
                         divBtn.className = "flex justify-end";
                         var btnDel = document.createElement("button");
@@ -253,23 +410,194 @@ function getRatingList(user_id) {
                         btnDel.className = "text-red-500 px-3 rounded-xl mb-3 mx-1 font-medium border-2 border-red-500";
                         btnDel.textContent = "Xóa";
                         btnDel.onclick = function () {
-                            delRating(rt.rating_id); // Truyền rating_id cụ thể
+                            console.log("Xóa button clicked!");
+                            Swal.fire({
+                                title: 'Bạn muốn xóa đánh giá?',
+                                showCancelButton: true,
+                                confirmButtonText: 'Xóa',
+                                cancelButtonText: 'Suy nghĩ lại'
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    var ratingId = rt.rating_id;
+                                    var apiUrl = `/api/droprating/${ratingId}`;
+                                    fetch(apiUrl, {
+                                        method: "DELETE"
+                                    })
+                                        .then(function (response) {
+                                            return response.json();
+                                        })
+                                        .then(function (data) {
+                                            if (data.success === true) {
+                                                Swal.fire(
+                                                    'Đã xóa!',
+                                                    'Xóa đánh giá thành công!',
+                                                    'success'
+                                                );
+                                                if (li && li.parentNode) {
+                                                    li.parentNode.removeChild(li);
+                                                }
+                                            } else {
+                                                Swal.fire(
+                                                    'Xóa thất bại!',
+                                                    'Xóa bình luận thất bại!',
+                                                    'error'
+                                                );
+                                                console.log("xoa that bai");
+                                            }
+                                        })
+                                        .catch(function (error) {
+                                            alert("An error occurred. Please try again later." + error);
+                                            console.trace();
+                                        });
+                                }
+                            });
                         };
                         var btnUpt = document.createElement("button");
                         btnUpt.type = "button";
                         btnUpt.className = "text-[#66ccff] px-3 rounded-xl mb-3 mx-1 font-medium border-2 border-red-500";
                         btnUpt.textContent = "Sửa";
                         btnUpt.onclick = function () {
-                            uptRating(rt.rating_id, "Điểm mới"); // Truyền rating_id và điểm mới cụ thể
+                            console.log("Sửa button clicked!");
+                            btnUpt.disabled = true;
+                            divEditRat.style.display = "";
                         };
-                        divBtn.appendChild(btnUpt);
+                        var div1 = document.createElement("div");
+                        div1.classList.add(
+                            "py-2",
+                            "px-4",
+                            "mb-4",
+                            "bg-white",
+                            "rounded-lg",
+                            "rounded-t-lg",
+                            "border",
+                            "border-gray-200",
+                            "dark:bg-gray-800",
+                            "dark:border-gray-700"
+                        );
+
+                        var starRatingDiv = document.createElement("div");
+                        starRatingDiv.className = "star-rating";
+                        var starTitles = ["Rất tệ", "Tệ", "Bình thường", "Tốt", "Rất tốt"];
+                        for (var i = 5; i >= 1; i--) {
+                            var starInput = document.createElement("input");
+                            starInput.type = "radio";
+                            starInput.name = "rating" + rt.rating_id;
+                            starInput.id = "star" + rt.rating_id + "-" + i;
+                            starInput.value = i;
+
+                            var starLabel = document.createElement("label");
+                            starLabel.htmlFor = "star" + rt.rating_id + "-" + i;
+                            starLabel.title = starTitles[i - 1];
+                            starRatingDiv.appendChild(starInput);
+                            starRatingDiv.appendChild(starLabel);
+                        }
+                        var starPointDiv = document.createElement("div");
+                        starPointDiv.id = "starpoint";
+                        div1.appendChild(starRatingDiv);
+                        div1.appendChild(starPointDiv);
+
+                        // Tạo phần tử div thứ hai
+                        var div2 = document.createElement("div");
+                        div2.classList.add("flex", "justify-center");
+
+                        // Tạo nút submit
+                        var submitButton = document.createElement("button");
+                        submitButton.type = "submit";
+                        submitButton.classList.add(
+                            "inline-flex",
+                            "items-center",
+                            "py-2.5",
+                            "px-4",
+                            "text-xs",
+                            "font-medium",
+                            "text-center",
+                            "text-white",
+                            "bg-[#66CCFF]",
+                            "rounded-lg",
+                            "focus:ring-4",
+                            "focus:ring-primary-200",
+                            "dark:focus:ring-primary-900",
+                            "hover:bg-primary-800"
+                        );
+                        submitButton.onclick = function () {
+                            btnUpt.disabled = false;
+                            divEditRat.style.display = "none";
+                        }
+                        submitButton.textContent = "Đóng";
+                        // Thêm nút submit vào div thứ hai
+                        //div2.appendChild(submitButton);
+                        //thuc hien danh gia
+                        axios.get('/api/ratings/' + accId + '/' + rt.movie_id)
+                            .then(function (response) {
+                                var rating = response.data.rating;
+                                if (rating) {
+                                    rating.forEach(function (rt) {
+                                        var ratingValue = parseFloat(rt.rating);
+                                        switch (ratingValue) {
+                                            case 1.0:
+                                                document.getElementById("star" + rt.rating_id + "-1").checked = true;
+                                                break;
+                                            case 2.0:
+                                                document.getElementById("star" + rt.rating_id + "-2").checked = true;
+                                                break;
+                                            case 3.0:
+                                                document.getElementById("star" + rt.rating_id + "-3").checked = true;
+                                                break;
+                                            case 4.0:
+                                                document.getElementById("star" + rt.rating_id + "-4").checked = true;
+                                                break;
+                                            case 5.0:
+                                                document.getElementById("star" + rt.rating_id + "-5").checked = true;
+                                                break;
+                                            default:
+                                                break;
+                                        }
+                                    });
+                                }
+                            });
+
+                        divEditRat.appendChild(div1);
+                        divEditRat.appendChild(div2);
+                        //divBtn.appendChild(btnUpt);
                         divBtn.appendChild(btnDel);
                         li.appendChild(ratingtime);
                         li.appendChild(link);
                         li.appendChild(ratingpoint);
+                        li.appendChild(divEditRat);
                         li.appendChild(divBtn);
                         li.appendChild(hrtag);
                         ratingListElement.appendChild(li);
+
+                        console.log("Đã thêm rating thứ: " + rt.rating_id);
+                        //xử lý sự kiện khi đánh giá thay đổi
+                        var rtName = 'rating' + rt.rating_id;
+                        console.log(rtName);
+                        const stars = document.getElementsByName(rtName);
+                        if (stars.length == 0) console.log("Mảng stars rỗng: " + rtName);
+                        const ratingOutput = document.getElementById(
+                            'ratingpoint' + rt.rating_id);
+                        stars.forEach(star => star.addEventListener('click', () => {
+                            console.log('clicked');
+                            var selectedRating = event.target.value;
+                            var acclogged = accId;
+                            var currentmov = rt.movie_id;
+                            ratingOutput.textContent = `Đánh giá: ${selectedRating} sao`;
+                            console.log('danhgia: ' + selectedRating);
+                            sendRatingToAPI(selectedRating, acclogged, currentmov);
+                        }));
+                        function sendRatingToAPI(rating, acclogged, currentmov) {
+                            axios.post('/api/postrating', {
+                                accId: acclogged,
+                                mId: currentmov,
+                                ratingpoint: rating
+                            })
+                                .then(function (response) {
+                                    // Xử lý phản hồi từ API nếu cần
+                                })
+                                .catch(function (error) {
+                                    console.error(error);
+                                });
+                        }
                     });
                 }
             } else {
@@ -283,17 +611,4 @@ function getRatingList(user_id) {
             console.log("Lỗi khi gửi yêu cầu: " + error);
             console.trace();
         });
-}
-
-function delComment(cmtId) {
-    alert("Xóa comment: " + cmtId);
-}
-function delRating(ratId) {
-    alert("Xóa rating: " + ratId);
-}
-function uptComment(cmtId, cmtContent) {
-    alert("Cập nhật comment: " + cmtId + ", nội dung: " + cmtContent);
-}
-function uptRating(ratId, ratPoint) {
-    alert("Cập nhật rating: " + ratId + ", điểm mới: " + ratPoint);
 }

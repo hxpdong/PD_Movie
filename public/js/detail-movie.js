@@ -322,7 +322,7 @@ function getComments(mid, page) {
                                     "dark:focus:ring-primary-900",
                                     "hover:bg-primary-800"
                                 );
-                                submitButton.textContent = "Sửa đánh giá";
+                                submitButton.textContent = "Sửa bình luận";
                                 submitButton.onclick = function () {
 
                                 }

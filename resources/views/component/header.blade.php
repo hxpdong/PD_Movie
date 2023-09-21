@@ -45,9 +45,11 @@
                                     <a class="block px-4 py-2 mt-2 text-sm bg-white md:mt-0 focus:text-gray-900 hover:bg-indigo-100 focus:bg-gray-200 focus:outline-none focus:shadow-outline"
                                         href="/users/{{ auth()->user()->name }}">Trang cá nhân</a>
                                     <button data-modal-toggle="profile-modal"
-                                        class="font-normal w-full text-left block px-4 py-2 mt-2 text-sm bg-white md:mt-0 focus:text-gray-900 hover:bg-indigo-100 focus:bg-gray-200 focus:outline-none focus:shadow-outline">Chỉnh sửa thông tin</button>
+                                        class="font-normal w-full text-left block px-4 py-2 mt-2 text-sm bg-white md:mt-0 focus:text-gray-900 hover:bg-indigo-100 focus:bg-gray-200 focus:outline-none focus:shadow-outline">Chỉnh
+                                        sửa thông tin</button>
                                     <button data-modal-toggle="password-modal"
-                                        class="font-normal w-full text-left block px-4 py-2 mt-2 text-sm bg-white md:mt-0 focus:text-gray-900 hover:bg-indigo-100 focus:bg-gray-200 focus:outline-none focus:shadow-outline">Đổi mật khẩu
+                                        class="font-normal w-full text-left block px-4 py-2 mt-2 text-sm bg-white md:mt-0 focus:text-gray-900 hover:bg-indigo-100 focus:bg-gray-200 focus:outline-none focus:shadow-outline">Đổi
+                                        mật khẩu
                                     </button>
                                 </div>
                             </div>
@@ -90,11 +92,13 @@
             <div class="hidden justify-between items-center w-full lg:flex lg:w-auto lg:order-1" id="mobile-menu-2">
                 <ul class="flex flex-col mt-4 font-medium lg:flex-row lg:space-x-8 lg:mt-0 lg:items-center">
                     <li>
-                        <a href="/" class="rounded text-white lg:text-black hover:text-black hover:bg-gray-200 bg-gray-700 lg:bg-transparent  focus:ring-4 focus:outline-none focus:bg-[#66CCFF] font-medium px-5 py-2.5 text-center inline-flex items-center w-full lg:w-auto">
+                        <a href="/"
+                            class="rounded text-white lg:text-black hover:text-black hover:bg-gray-200 bg-gray-700 lg:bg-transparent  focus:ring-4 focus:outline-none focus:bg-[#66CCFF] font-medium px-5 py-2.5 text-center inline-flex items-center w-full lg:w-auto">
                             <img src="/img/fav-removebg.png" class="mr-3 h-6 sm:h-9" alt="Flowbite Logo" />
-                            <span class="self-center text-xl font-semibold whitespace-nowrap dark:text-white">PDMovie</span>
+                            <span
+                                class="self-center text-xl font-semibold whitespace-nowrap dark:text-white">PDMovie</span>
                         </a>
-<!--
+                        <!--
                         <a href="/"
                         class="rounded text-white lg:text-black hover:text-black hover:bg-gray-200 bg-gray-700 lg:bg-transparent  focus:ring-4 focus:outline-none focus:bg-[#66CCFF] font-medium px-5 py-2.5 text-center inline-flex items-center w-full lg:w-auto"
                         aria-current="page">Trang chủ</a>
@@ -138,8 +142,8 @@
                     @if(auth()->check())
                     <li>
                         <a href="/recommend"
-                        class="rounded text-white lg:text-black hover:text-black hover:bg-gray-200 bg-gray-700 lg:bg-transparent  focus:ring-4 focus:outline-none focus:bg-[#66CCFF] font-medium px-5 py-2.5 text-center inline-flex items-center w-full lg:w-auto"
-                        aria-current="page">Đề xuất cho bạn</a>
+                            class="rounded text-white lg:text-black hover:text-black hover:bg-gray-200 bg-gray-700 lg:bg-transparent  focus:ring-4 focus:outline-none focus:bg-[#66CCFF] font-medium px-5 py-2.5 text-center inline-flex items-center w-full lg:w-auto"
+                            aria-current="page">Đề xuất cho bạn</a>
                     </li>
                     @endif
                 </ul>
@@ -254,6 +258,14 @@
                         class="text-sm font-medium text-gray-900 block mb-2 dark:text-gray-300">Mật
                         khẩu</label>
                     <input type="password" name="mdreguspassword" id="mdreguspassword" placeholder="••••••••"
+                        class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white">
+                </div>
+                <div>
+                    <label for="mdreguspassword-check"
+                        class="text-sm font-medium text-gray-900 block mb-2 dark:text-gray-300">Nhập lại mật
+                        khẩu</label>
+                    <input type="password" name="mdreguspassword-check" id="mdreguspassword-check"
+                        placeholder="••••••••"
                         class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white">
                 </div>
                 <button type="submit"
@@ -414,46 +426,58 @@ $(document).ready(function() {
 
     $('#modalRegisterForm').submit(function(e) {
         e.preventDefault();
-        $.ajax({
-            type: 'POST',
-            url: '{{ route('modalRegister') }}',
-            data: $(this).serialize(),
-            beforeSend: function() {
-                Swal.fire({
-                    title: 'Đang xử lý...',
-                    allowOutsideClick: false,
-                    allowEscapeKey: false,
-                    allowEnterKey: false,
-                    onBeforeOpen: () => {
-                        Swal.showLoading();
-                    },
-                    onClose: () => {
-                        Swal.hideLoading();
+        var passwordField = document.getElementById("mdreguspassword");
+        var confirmPasswordField = document.getElementById("mdreguspassword-check");
+        var password = passwordField.value;
+        var confirmPassword = confirmPasswordField.value;
+        if (password !== confirmPassword) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Mật khẩu không trùng khớp!',
+                text: 'Vui lòng kiểm tra lại mật khẩu và nhập lại mật khẩu'
+            });
+        } else {
+            $.ajax({
+                type: 'POST',
+                url: '{{ route('modalRegister') }}',
+                data: $(this).serialize(),
+                beforeSend: function() {
+                    Swal.fire({
+                        title: 'Đang xử lý...',
+                        allowOutsideClick: false,
+                        allowEscapeKey: false,
+                        allowEnterKey: false,
+                        onBeforeOpen: () => {
+                            Swal.showLoading();
+                        },
+                        onClose: () => {
+                            Swal.hideLoading();
+                        }
+                    });
+                },
+                success: function(response) {
+                    Swal.close();
+                    if (response.success) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Đăng ký thành công',
+                            confirmButtonText: 'OK',
+                        }).then((result) => {
+                            /* Read more about isConfirmed, isDenied below */
+                            if (result.isConfirmed) {
+                                location.reload();
+                            };
+                        });
+                    } else if (response.error) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Không thể đăng ký',
+                            text: response.message
+                        });
                     }
-                });
-            },
-            success: function(response) {
-                Swal.close();
-                if (response.success) {
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Đăng ký thành công',
-                        confirmButtonText: 'OK',
-                    }).then((result) => {
-                        /* Read more about isConfirmed, isDenied below */
-                        if (result.isConfirmed) {
-                            location.reload();
-                        };
-                    });
-                } else if (response.error) {
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Không thể đăng ký',
-                        text: response.message
-                    });
-                }
-            },
-        })
+                },
+            })
+        }
     });
 });
 
@@ -469,6 +493,7 @@ function closeModalRegister() {
     $('#mdregemail').val('');
     $('#mdregusname').val('');
     $('#mdreguspassword').val('');
+    $('#mdreguspassword-check').val('')
 };
 
 function getGenreList() {

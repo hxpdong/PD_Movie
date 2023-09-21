@@ -176,6 +176,19 @@ class MovieController extends Controller
        
     }
 
+    public function dropRating($rtid){
+        $isDel = DB::select('CALL rating_drop(?)', array($rtid));
+        if($isDel){
+            return response()->json([
+                'success' => true,
+            ]);
+        }
+        return response()->json([
+            'success' => false,
+            'message' => 'Không tồn tại rating'
+        ]);
+    }
+
     public function dropComment($cmtid)
     {
         try{
