@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
@@ -229,6 +230,78 @@ class AuthController extends Controller
         } catch (\Exception $e) {
             return response()->json([
                 "error:" => $e->getMessage(),
+            ]);
+        }
+    }
+
+    public function modalUpdateUserInfo(Request $request)
+    {
+        try {
+            $user_id = $request->input('uptAccId'); // Lấy ID của người dùng đã đăng nhập
+            $email = $request->input('uptemail');
+            $fullname = $request->input('uptfullname');
+
+            // Gọi stored procedure user_update truyền tham số vào
+            DB::select('CALL user_update(?, ?, ?)', [$user_id, $email, $fullname]);
+
+            DB::table('users')
+            ->join('pdmv_users', 'users.id', '=', 'pdmv_users.user_id')
+            ->where('users.id', '=', $user_id) // Replace $yourUserId with the specific user ID you want to update
+            ->update([
+                'users.email' => DB::raw('pdmv_users.email'),
+                'users.fullname' => DB::raw('pdmv_users.fullname'),
+            ]);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Cập nhật thông tin người dùng thành công',
+            ]);
+        } catch (\Exception $e) {
+            // Xử lý lỗi ở đây, ví dụ: in thông báo lỗi
+            return response()->json([
+                'success' => false,
+                'error' => true,
+                'message' => $e->getMessage(),
+            ]);
+        }
+    }
+    
+    public function modalUpateUserPassword(Request $request){
+        try {
+            // Validate the input data
+            $request->validate([
+                'uptoldpassword' => 'required',
+                'uptnewpassword' => 'required|min:5',
+                'uptconfirmpassword' => 'required|min:5', // You can adjust the validation rules as needed
+            ]);
+
+            // Get the current user
+            $user = Auth::user();
+
+            // Check if the old password matches the hashed password in the database
+            if (Hash::check($request->uptoldpassword, $user->password)) {
+                // Update the user's password with the new password
+                $newpass = bcrypt($request->uptnewpassword);
+                $user->password = $newpass;
+                $user->save();
+
+                DB::select('CALL user_changePassword(?, ?)', [$user->id, $newpass]);
+
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Mật khẩu đã được thay đổi thành công.',
+                ]);
+            } else {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Mật khẩu cũ không đúng. Vui lòng kiểm tra lại.',
+                ]);
+            }
+        } catch (\Exception $e) {
+            // Xử lý lỗi ở đây, ví dụ: in thông báo lỗi
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage(),
             ]);
         }
     }

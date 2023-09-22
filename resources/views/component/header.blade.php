@@ -44,12 +44,12 @@
                                     class="py-2 bg-white text-blue-800 text-sm rounded-sm border border-main-color shadow-sm">
                                     <a class="block px-4 py-2 mt-2 text-sm bg-white md:mt-0 focus:text-gray-900 hover:bg-indigo-100 focus:bg-gray-200 focus:outline-none focus:shadow-outline"
                                         href="/users/{{ auth()->user()->name }}">Trang cá nhân</a>
-                                    <button data-modal-toggle="profile-modal"
-                                        class="font-normal w-full text-left block px-4 py-2 mt-2 text-sm bg-white md:mt-0 focus:text-gray-900 hover:bg-indigo-100 focus:bg-gray-200 focus:outline-none focus:shadow-outline">Chỉnh
-                                        sửa thông tin</button>
+                                    <button data-modal-toggle="profile-modal" onclick="openProfileModal()"
+                                        class="font-normal w-full text-left block px-4 py-2 mt-2 text-sm bg-white md:mt-0 focus:text-gray-900 hover:bg-indigo-100 focus:bg-gray-200 focus:outline-none focus:shadow-outline">
+                                        Chỉnh sửa thông tin</button>
                                     <button data-modal-toggle="password-modal"
-                                        class="font-normal w-full text-left block px-4 py-2 mt-2 text-sm bg-white md:mt-0 focus:text-gray-900 hover:bg-indigo-100 focus:bg-gray-200 focus:outline-none focus:shadow-outline">Đổi
-                                        mật khẩu
+                                        class="font-normal w-full text-left block px-4 py-2 mt-2 text-sm bg-white md:mt-0 focus:text-gray-900 hover:bg-indigo-100 focus:bg-gray-200 focus:outline-none focus:shadow-outline">
+                                        Đổi mật khẩu
                                     </button>
                                 </div>
                             </div>
@@ -262,8 +262,9 @@
                 </div>
                 <div>
                     <label for="mdreguspassword-check"
-                        class="text-sm font-medium text-gray-900 block mb-2 dark:text-gray-300">Nhập lại mật
-                        khẩu</label>
+                        class="text-sm font-medium text-gray-900 block mb-2 dark:text-gray-300">
+                        Xác nhận mật khẩu
+                    </label>
                     <input type="password" name="mdreguspassword-check" id="mdreguspassword-check"
                         placeholder="••••••••"
                         class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white">
@@ -275,6 +276,7 @@
         </div>
     </div>
 </div>
+
 <!-- Edit profile modal -->
 <div id="profile-modal" aria-hidden="true"
     class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full"
@@ -299,32 +301,31 @@
             </div>
             <form id="modalProfileForm" class="space-y-6 px-6 lg:px-8 pb-4 sm:pb-6 xl:pb-8">
                 @csrf
+                @if(auth()->check())
+                <div>
+                    <input type="hidden" name="uptAccId" id="uptAccId"
+                        class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+                        value="{{ auth()->user()->id }}">
+                </div>
                 <div>
                     <label for="mdpf1" class="text-sm font-medium text-gray-900 block mb-2 dark:text-gray-300">Họ
                         tên</label>
-                    <input type="text" name="mdpf1" id="mdpf1"
+                    <input type="text" name="uptfullname" id="uptfullname"
                         class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
-                        placeholder="họ tên">
+                        value="{{ auth()->user()->fullname }}">
                 </div>
                 <div>
                     <label for="mdpf2"
                         class="text-sm font-medium text-gray-900 block mb-2 dark:text-gray-300">Email</label>
-                    <input type="text" name="mdpf2" id="mdpf2"
+                    <input type="text" name="uptemail" id="uptemail"
                         class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
-                        placeholder="email@gmail.com">
-                </div>
-                <div>
-                    <label for="mdpf3" class="text-sm font-medium text-gray-900 block mb-2 dark:text-gray-300">Tên
-                        đăng
-                        nhập</label>
-                    <input type="text" name="mdpf3" id="mdpf3"
-                        class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
-                        placeholder="tên đăng nhập">
+                        value="{{ auth()->user()->email }}">
                 </div>
 
                 <button type="submit"
                     class="w-full text-white bg-[#66CCFF] hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                    Đăng ký</button>
+                    Xác nhận</button>
+                @endif
             </form>
         </div>
     </div>
@@ -342,7 +343,7 @@
                 <div class="px-6">
                     <h3 class="text-xl font-medium text-white dark:text-white">Đổi mật khẩu</h3>
                 </div>
-                <button type="button" onclick=""
+                <button type="button" onclick="closeModalPassword()"
                     class="text-white bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-800 dark:hover:text-white"
                     data-modal-toggle="password-modal">
                     <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
@@ -352,29 +353,39 @@
                     </svg>
                 </button>
             </div>
-            <form id="modalPasswirdForm" class="space-y-6 px-6 lg:px-8 pb-4 sm:pb-6 xl:pb-8">
+            <form id="modalPasswordForm" class="space-y-6 px-6 lg:px-8 pb-4 sm:pb-6 xl:pb-8">
                 @csrf
+                @if(auth()->check())
                 <div>
-                    <label for="mdcp1" class="text-sm font-medium text-gray-900 block mb-2 dark:text-gray-300">Họ
-                        tên</label>
-                    <input type="text" name="mdcp1" id="mdcp1"
+                    <input type="hidden" name="uptPasswordAccId" id="uptPasswordAccId"
                         class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
-                        placeholder="họ tên">
+                        value="{{ auth()->user()->id }}">
+                </div>
+                @endif
+                <div>
+                    <label for="mdcp1" class="text-sm font-medium text-gray-900 block mb-2 dark:text-gray-300">
+                        Mật khẩu cũ
+                    </label>
+                    <input type="password" name="uptoldpassword" id="uptoldpassword"
+                        class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+                        >
                 </div>
                 <div>
                     <label for="mdcp2"
-                        class="text-sm font-medium text-gray-900 block mb-2 dark:text-gray-300">Email</label>
-                    <input type="text" name="mdcp2" id="mdcp2"
+                        class="text-sm font-medium text-gray-900 block mb-2 dark:text-gray-300">
+                    Mật khẩu mới
+                    </label>
+                    <input type="password" name="uptnewpassword" id="uptnewpassword"
                         class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
-                        placeholder="email@gmail.com">
+                        >
                 </div>
                 <div>
-                    <label for="mdcp3" class="text-sm font-medium text-gray-900 block mb-2 dark:text-gray-300">Tên
-                        đăng
-                        nhập</label>
-                    <input type="text" name="mdcp3" id="mdcp3"
+                    <label for="mdcp3" class="text-sm font-medium text-gray-900 block mb-2 dark:text-gray-300">
+                        Xác nhận mật khẩu mới
+                    </label>
+                    <input type="password" name="uptconfirmpassword" id="uptconfirmpassword"
                         class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
-                        placeholder="tên đăng nhập">
+                        >
                 </div>
 
                 <button type="submit"
@@ -385,8 +396,13 @@
     </div>
 </div>
 <!-- end of change password modal -->
+
 <script>
 var accId = document.getElementById("authUserId").value;
+var oldFullname = document.getElementById("uptfullname");
+if(oldFullname) oldFullname = oldFullname.value;
+var oldEmail = document.getElementById("uptemail");
+if(oldEmail) oldEmail = oldEmail.value;
 $(document).ready(function() {
     getGenreList();
     $('#modalLoginForm').submit(function(e) {
@@ -479,6 +495,115 @@ $(document).ready(function() {
             })
         }
     });
+
+    $('#modalProfileForm').submit(function(e) {
+        e.preventDefault();
+        $.ajax({
+            type: 'PUT',
+            url: '{{ route('modalUpdate') }}',
+            data: $(this).serialize(),
+            beforeSend: function() {
+                Swal.fire({
+                    title: 'Đang xử lý...',
+                    allowOutsideClick: false,
+                    allowEscapeKey: false,
+                    allowEnterKey: false,
+                    onBeforeOpen: () => {
+                        Swal.showLoading();
+                    },
+                    onClose: () => {
+                        Swal.hideLoading();
+                    }
+                });
+            },
+            success: function(response) {
+                Swal.close();
+                    if (response.success) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Cập nhật thông tin thành công',
+                            confirmButtonText: 'OK',
+                        }).then((result) => {
+                            /* Read more about isConfirmed, isDenied below */
+                            if (result.isConfirmed) {
+                                location.reload();
+                            };
+                        });
+                    } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Không thể cập nhật thông tin',
+                        text: response.message
+                    });
+                }
+            }
+        })
+    });
+
+    $('#modalPasswordForm').submit(function(e) {
+        e.preventDefault();
+        var passwordField = document.getElementById("uptnewpassword");
+        var confirmPasswordField = document.getElementById("uptconfirmpassword");
+        var oldPasswordField = document.getElementById("uptoldpassword");
+        var password = passwordField.value;
+        var confirmPassword = confirmPasswordField.value;
+        var oldPassword = oldPasswordField.value;
+        if (password === "" || confirmPassword === "" || oldPassword === "") {
+            Swal.fire({
+                icon: 'error',
+                title: 'Thông tin cung cấp không đủ!',
+                text: 'Vui lòng điền đầy đủ thông tin và thử lại.'
+            });
+        }
+        else if (password !== confirmPassword) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Mật khẩu không trùng khớp!',
+                text: 'Vui lòng kiểm tra lại mật khẩu và nhập lại mật khẩu'
+            });
+        } else {
+            $.ajax({
+                type: 'PUT',
+                url: '{{ route('modalChangePassword') }}',
+                data: $(this).serialize(),
+                beforeSend: function() {
+                    Swal.fire({
+                        title: 'Đang xử lý...',
+                        allowOutsideClick: false,
+                        allowEscapeKey: false,
+                        allowEnterKey: false,
+                        onBeforeOpen: () => {
+                            Swal.showLoading();
+                        },
+                        onClose: () => {
+                            Swal.hideLoading();
+                        }
+                    });
+                },
+                success: function(response) {
+                    Swal.close();
+                        if (response.success) {
+                            Swal.fire({
+                                icon: 'success',
+                                title: response.message,
+                                confirmButtonText: 'OK',
+                            }).then((result) => {
+                                /* Read more about isConfirmed, isDenied below */
+                                if (result.isConfirmed) {
+                                    location.reload();
+                                };
+                            });
+                        } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Không thể cập nhật mật khẩu',
+                            text: response.message
+                        });
+                    }
+                }
+            })
+        }
+    });
 });
 
 function closeModalLogin() {
@@ -518,6 +643,21 @@ function getGenreList() {
 };
 
 function closeModalEditProfile() {
-
+    $('#uptfullname').val(oldFullname);
+    $('#uptemail').val(oldEmail);
 };
+
+function closeModalPassword() {
+    $('#uptoldpassword').val('');
+    $('#uptnewpassword').val('');
+    $('#uptconfirmpassword').val('');
+};
+
+function openProfileModal() {
+        // Fill in the input fields with user data from Laravel
+        
+
+        // Show the modal
+        document.getElementById('profile-modal').classList.remove('hidden');
+    }
 </script>

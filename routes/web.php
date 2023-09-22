@@ -52,6 +52,8 @@ Route::middleware('pdmv_checkIsUser')->group(function (){
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/logout', [AuthController::class, 'logout']);
+Route::put('/users/update', [AuthController::class, 'modalUpdateUserInfo'])->name('modalUpdate');
+Route::put('/users/changepassword', [AuthController::class, 'modalUpateUserPassword'])->name('modalChangePassword');
 
 //in web-header
 Route::post('/modalLogin', [AuthController::class, 'modalPostAuthLogin'])->name('modalLogin');

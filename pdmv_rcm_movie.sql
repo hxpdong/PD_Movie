@@ -58,7 +58,7 @@ VALUES
 
 CREATE TABLE pdmv_users (
     user_id INT PRIMARY KEY,
-    email VARCHAR(255) NOT NULL,
+    email VARCHAR(255) NOT NULL UNIQUE,
 	fullname VARCHAR(255),
     FOREIGN KEY (user_id) REFERENCES pdmv_accounts(acc_id)
 );
@@ -1082,6 +1082,44 @@ BEGIN
     JOIN pdmv_movies pm ON pr.movie_id = pm.movie_id
     WHERE user_id = p_uid
     ORDER BY ratingTime DESC;
+END //
+DELIMITER ;
+
+DELIMITER //
+CREATE PROCEDURE user_update(
+    IN p_user_id INT,
+    IN p_email VARCHAR(255),
+    IN p_fullname VARCHAR(255)
+)
+BEGIN
+    -- Kiểm tra xem user_id có tồn tại trong bảng pdmv_users không
+    IF EXISTS (SELECT 1 FROM pdmv_users WHERE user_id = p_user_id) THEN
+        -- Cập nhật email và fullname cho user
+        UPDATE pdmv_users
+        SET email = p_email,
+            fullname = p_fullname
+        WHERE user_id = p_user_id;
+        
+        SELECT 'Cập nhật thông tin thành công' AS result;
+    END IF;
+END //
+DELIMITER ;
+
+DELIMITER //
+CREATE PROCEDURE user_changePassword(
+    IN p_user_id INT,
+    IN p_newpassword VARCHAR(255)
+)
+BEGIN
+    -- Kiểm tra xem user_id có tồn tại trong bảng pdmv_users không
+    IF EXISTS (SELECT 1 FROM pdmv_users WHERE user_id = p_user_id) THEN
+        -- Cập nhật mật khẩu cho tài khoản
+        UPDATE pdmv_accounts
+        SET password = p_newpassword
+        WHERE acc_id = p_user_id;
+        
+        SELECT 'Cập nhật mật khẩu thành công' AS result;
+    END IF;
 END //
 DELIMITER ;
 
