@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class UserController extends Controller
 {
@@ -31,12 +32,40 @@ class UserController extends Controller
     public function getListOfComment($uid){
         try {
             $cmt = DB::select("CALL user_getCommentList(?)", array($uid));
-            foreach ($cmt as $comment) {
+
+            $perPage = request()->get('num', 5);
+            $currentPage = request()->get('page', 1);
+            $total = count($cmt);
+            $offset = ($currentPage - 1) * $perPage;
+            $cmt = array_slice($cmt, $offset, $perPage); 
+
+            $comments = new LengthAwarePaginator(
+                $cmt,
+                $total,
+                $perPage,
+                $currentPage,
+                [
+                    'path' => request()->url(),
+                    'query' => request()->query(),
+                ]
+            );
+
+            foreach ($comments as $comment) {
                 $comment->commentTime = Carbon::parse($comment->commentTime)->format('H:i:s d/m/Y');
             }
+
+            $pagingArray = [
+                'comments' => $comments->items(),
+                'current_page' => $comments->currentPage(),
+                'total' => $comments->total(),
+                'per_page' => $comments->perPage(),
+                'last_page' => $comments->lastPage(),
+            ];
+
+            
             return response()->json([
                 'success' => true,
-                'listcomment' => $cmt
+                'listcomment' => $pagingArray
             ]);
         } catch (\Exception $e) {
             return response()->json([

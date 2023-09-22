@@ -1,4 +1,5 @@
 var uid = null;
+var currentCmtPage = 1;
 
 document.addEventListener("DOMContentLoaded", function () {
     console.log('UID1: ', uid);
@@ -39,7 +40,7 @@ function getUserInfo(username) {
                 uid = userInfo.user_id;
                 console.log('UID2: ', uid);
                 getSimilarityUsers(uid);
-                getCommentList(uid);
+                getCommentList(currentCmtPage, uid);
                 getRatingList(uid);
                 var listFavMovies = response.data.favmovies;
                 var favoriteList = document.getElementById("us-favoriteList");
@@ -160,10 +161,10 @@ function getSimilarityUsers(user_id) {
         });
 }
 
-function getCommentList(user_id) {
-    axios.get('/api/users/get-commentlist/' + user_id)
+function getCommentList(page, user_id) {
+    axios.get('/api/users/get-commentlist/' + user_id +"?page=" + page)
         .then(function (response) {
-            var commentList = response.data.listcomment;
+            var commentList = response.data.listcomment.comments;
             if (commentList && commentList.length > 0) {
                 var commentListElement = document.getElementById("us-commentList");
                 if (commentListElement) {
@@ -366,6 +367,16 @@ function getCommentList(user_id) {
                 var element = document.getElementById("us-notfoundcomment");
                 if (element !== null) {
                     element.innerHTML = "Không tìm thấy bình luận";
+                }
+            }
+            if(document.getElementById("load-more-cmt-button")){
+                document.getElementById("load-more-cmt-button").disabled = response.data.listcomment.current_page ===
+                response.data.listcomment.last_page;
+            if(response.data.listcomment.current_page ===
+                response.data.listcomment.last_page)
+                {
+                    document.getElementById("endOfCommentList").innerHTML = "Đã đến cuối danh sách";
+                    document.getElementById("load-more-cmt-button").style.display = "none";
                 }
             }
         })
@@ -611,4 +622,9 @@ function getRatingList(user_id) {
             console.log("Lỗi khi gửi yêu cầu: " + error);
             console.trace();
         });
+}
+
+function loadMoreComment() {
+    currentCmtPage = currentCmtPage + 1;
+    getCommentList(currentCmtPage, uid);
 }

@@ -206,6 +206,12 @@
                                 <div id="us-notfoundcomment" class="text-center"></div>
                                 <ul class="list-inside space-y-2 overflow-y-scroll max-h-[300px]" id="us-commentList">
                                 </ul>
+                                <div class="flex justify-center flex-col">
+                                    <div id="endOfCommentList" class="flex justify-center"></div>
+                                    <button onclick="loadMoreComment()" id="load-more-cmt-button" class="font-bold text-blue-500 border-2 px-2 rounded-lg mt-3">
+                                        Tải thêm
+                                    </button>
+                                </div>
                             </div>
                             <div class="border-2 p-2 m-2">
                                 <div class="no-select flex items-center space-x-2 font-semibold text-gray-900 leading-8 mb-3 p-3"
