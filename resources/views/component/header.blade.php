@@ -132,7 +132,7 @@
                                 </svg></button>
                             <!-- Dropdown menu -->
                             <div id="dropdown"
-                                class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-4/5 md:w-44 dark:bg-gray-700">
+                                class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-4/5 lg:w-44 dark:bg-gray-700">
                                 <ul class="max-h-48 w-auto overflow-y-auto py-2 text-sm text-gray-700 dark:text-gray-200"
                                     aria-labelledby="dropdownDefaultButton" id="genresList">
                                 </ul>

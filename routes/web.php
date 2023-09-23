@@ -36,9 +36,9 @@ Route::middleware('pdmv_checkIsUserOrGuest')->group(function (){
     Route::get('movies/{mid}', function(){
         return view('/movie.show');
     });
-    Route::get('genres', function(){
-        return view('/genre.index');
-    });
+    //Route::get('genres', function(){
+    //    return view('/genre.index');
+    //});
     Route::get('genres/{mvgid}', function(){
         return view('/genre.show');
     });
@@ -67,9 +67,9 @@ Route::middleware('pdmv_checkIsUserOrGuest','pdmv_checkHaveKWSearch')->group(fun
     Route::get('movies/{mid}', function(){
         return view('/movie.show');
     });
-    Route::get('genres', function(){
-        return view('/genre.index');
-    });
+    //Route::get('genres', function(){
+    //    return view('/genre.index');
+    //});
     Route::get('genres/{mvgid}', function(){
         return view('/genre.show');
     });
