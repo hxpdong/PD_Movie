@@ -99,9 +99,7 @@
                             </div>
                             <div>
                                 <div class="text-sm text-gray-400">Nội dung:</div>
-                                <div class=" text-gray-800 text-justify" id="mvdetail-content">
-                                    </divp>
-                                </div>
+                                <div class=" text-gray-800 text-justify" id="mvdetail-content"></div>
 
                                 <div class="flex text-2xl font-bold text-a"></div>
                             </div>

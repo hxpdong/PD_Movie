@@ -252,6 +252,12 @@
                                 <div id="us-notfoundrating" class="text-center"></div>
                                 <ul class="list-inside space-y-2 overflow-y-scroll max-h-[300px]" id="us-ratingList">
                                 </ul>
+                                <div class="flex justify-center flex-col">
+                                    <div id="endOfRatingList" class="flex justify-center"></div>
+                                    <button onclick="loadMoreRating()" id="load-more-rt-button" class="font-bold text-blue-500 border-2 px-2 rounded-lg mt-3">
+                                        Tải thêm
+                                    </button>
+                                </div>
                             </div>
                         </div>
                         <!-- End of User activity -->

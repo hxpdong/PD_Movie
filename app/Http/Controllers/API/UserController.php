@@ -77,13 +77,40 @@ class UserController extends Controller
 
     public function getListOfRating($uid){
         try {
-            $ratings = DB::select("CALL user_getRatingList(?)", array($uid));
+            $rts = DB::select("CALL user_getRatingList(?)", array($uid));
+
+            $perPage = request()->get('num', 5);
+            $currentPage = request()->get('page', 1);
+            $total = count($rts);
+            $offset = ($currentPage - 1) * $perPage;
+            $rts = array_slice($rts, $offset, $perPage); 
+
+            $ratings = new LengthAwarePaginator(
+                $rts,
+                $total,
+                $perPage,
+                $currentPage,
+                [
+                    'path' => request()->url(),
+                    'query' => request()->query(),
+                ]
+            );
+
             foreach ($ratings as $rt) {
                 $rt->ratingTime = Carbon::parse($rt->ratingTime)->format('H:i:s d/m/Y');
             }
+
+            $pagingArray = [
+                'ratings' => $ratings->items(),
+                'current_page' => $ratings->currentPage(),
+                'total' => $ratings->total(),
+                'per_page' => $ratings->perPage(),
+                'last_page' => $ratings->lastPage(),
+            ];
+
             return response()->json([
                 'success' => true,
-                'listrating' => $ratings
+                'listrating' => $pagingArray
             ]);
         } catch (\Exception $e) {
             return response()->json([
