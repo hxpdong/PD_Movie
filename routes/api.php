@@ -50,3 +50,5 @@ Route::get('/users/by-username/{usn}', [UserController::class, 'getInfoByUsernam
 Route::get('/users/similarity-users/{uid}', [RecommenderController::class, 'UserBased_SimilarityUsers']);
 Route::get('/users/get-commentlist/{uid}', [UserController::class, 'getListOfComment']);
 Route::get('/users/get-ratinglist/{uid}', [UserController::class, 'getListOfRating']);
+
+Route::post('/postreport' , [MovieController::class, 'postError']);

@@ -6,6 +6,61 @@ document.addEventListener("DOMContentLoaded", function () {
     if (accId) {
         getRecommendedMovies();
     }
+
+    var formReport = document.getElementById("reporterror");
+    if (formReport) {
+        var mid = getMovieIdFromURL();
+        var input2 = document.createElement("input");
+        input2.type = "hidden";
+        input2.name = "mId";
+        input2.value = mid;
+        formReport.appendChild(input2);
+
+        formReport.addEventListener("submit", function (event) {
+            event.preventDefault();
+            var errorContentValue = document.getElementById("errorContent").value;
+            if (!errorContentValue || errorContentValue.trim() === "") {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Nội dung báo cáo bị trống!',
+                    text: 'Vui lòng điền thông tin cần báo cáo'
+                });
+            }
+            else {
+                var postReportUrl = '/api/postreport';
+                fetch(postReportUrl, {
+                    method: "POST",
+                    body: new FormData(formReport),
+                })
+                    .then(function (response) {
+                        return response.json();
+                    })
+                    .then(function (data) {
+                        if (data.success === true) {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Báo cáo thành công!',
+                                text: 'Cảm ơn bạn đã báo cáo'
+                            });
+                            errorContentValue.value = '';
+                        } else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Lỗi máy chủ!',
+                                text: 'Vui lòng thực hiện lại sau'
+                            });
+                        }
+                    })
+                    .catch(function (error) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Lỗi hệ thống!',
+                            text: 'Vui lòng thực hiện lại sau'
+                        });
+                    });
+            }
+        });
+    }
 });
 
 function loadMovieDetail(movieId) {
@@ -139,11 +194,11 @@ function getComments(mid, page) {
                 authorName.textContent = cmt.usname;
 
                 var linkToUser = document.createElement("a");
-                linkToUser.setAttribute('href','/users/' + cmt.usname);
+                linkToUser.setAttribute('href', '/users/' + cmt.usname);
                 linkToUser.appendChild(authorName);
-                
+
                 var linkToUserImg = document.createElement("a");
-                linkToUserImg.setAttribute('href','/users/' + cmt.usname);
+                linkToUserImg.setAttribute('href', '/users/' + cmt.usname);
                 linkToUserImg.appendChild(img);
 
                 // Tạo phần tử p trong divFooter cho ngày đăng
@@ -335,7 +390,7 @@ function getComments(mid, page) {
 
                                 form.addEventListener("submit", function (event) {
                                     event.preventDefault(); // Ngăn form submit theo cách thông thường
-                                    var editCommentUrl = '/api/editcomment/'+cmt.comment_id+"?editComment=" +document.getElementById("editComment"+cmt.comment_id).value;
+                                    var editCommentUrl = '/api/editcomment/' + cmt.comment_id + "?editComment=" + document.getElementById("editComment" + cmt.comment_id).value;
                                     // Gửi request POST bằng AJAX hoặc Fetch API
                                     fetch(editCommentUrl, {
                                         method: "PUT",

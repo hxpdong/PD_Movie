@@ -231,4 +231,25 @@ class MovieController extends Controller
             ], 500); // 500 là mã lỗi nội bộ (Internal Server Error)
         }
     }
+
+    public function postError(Request $request)
+    {
+        try {
+            $mvid = $request->mId;
+            $rpct = $request->errorContent;
+    
+            // Insert the new user's account
+            DB::update('CALL error_post(?, ?)', [$mvid, $rpct]);
+    
+            return response()->json([
+                'success' => true
+            ]);
+        } catch (\Exception $e) {
+            // Xử lý ngoại lệ ở đây, ví dụ: ghi log, trả về lỗi
+            return response()->json([
+                'success' => false,
+                'error' => $e->getMessage()
+            ]);
+        }
+    }    
 }

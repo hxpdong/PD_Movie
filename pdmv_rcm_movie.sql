@@ -708,7 +708,10 @@ VALUES
 
 CREATE TABLE pdmv_errors (
 	err_id INT PRIMARY KEY AUTO_INCREMENT,
-	errContent TEXT
+    movie_id INT,
+	errContent TEXT,
+    isSolved TINYINT DEFAULT 0,
+    FOREIGN KEY (movie_id) REFERENCES pdmv_movies(movie_id)
 );
 
 ALTER TABLE pdmv_movies
@@ -1120,6 +1123,17 @@ BEGIN
         
         SELECT 'Cập nhật mật khẩu thành công' AS result;
     END IF;
+END //
+DELIMITER ;
+
+DELIMITER //
+CREATE PROCEDURE error_post(
+    IN p_mvid INT,
+    IN p_error_content TEXT
+)
+BEGIN
+    INSERT INTO pdmv_errors(movie_id, errContent)
+    VALUES(p_mvid, p_error_content);
 END //
 DELIMITER ;
 

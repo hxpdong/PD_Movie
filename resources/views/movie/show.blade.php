@@ -58,6 +58,21 @@
                                     onclick="getMovieInfoToWatch()">
                                     Xem phim
                                 </button>
+                                <form class="my-6" id="reporterror">
+                                <div
+                                    class="py-2 px-4 mb-4 bg-white rounded-lg rounded-t-lg border border-gray-200 dark:bg-gray-800 dark:border-gray-700">
+                                    <label for="errorContent" class="sr-only">Your report</label>
+                                    <textarea id="errorContent" rows="6" cols="100" name="errorContent"
+                                        class="px-0 w-full text-sm text-gray-900 border-0 focus:ring-0 focus:outline-none dark:text-white dark:placeholder-gray-400 dark:bg-gray-800"
+                                        placeholder="Báo cáo lỗi của phim..."></textarea>
+                                </div>
+                                <div class="flex justify-center">
+                                    <button type="submit"
+                                        class="inline-flex items-center py-2.5 px-4 text-xs font-medium text-center text-white bg-[#ff6666] rounded-lg focus:ring-4 focus:ring-primary-200 dark:focus:ring-primary-900 hover:bg-primary-800">
+                                        Báo lỗi
+                                    </button>
+                                </div>
+                            </form>
                             </div>
                         </div>
                         <div class="flex flex-col w-1/2 space-y-4">
