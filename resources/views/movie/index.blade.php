@@ -7,6 +7,7 @@
 </head>
 <body>
     <div class="main-container">
+        <div class="hidden" id="isMoviePage"></div>
         <div id="movie-list" class="grid-container">
         </div>
         <div id="pagination">

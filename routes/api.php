@@ -45,6 +45,7 @@ Route::post('/postrating' , [MovieController::class, 'postRatingOf']);
 Route::delete('/droprating/{rtid}', [MovieController::class, 'dropRating']);
 
 Route::get('/genres', [MovieGenreController::class, 'listAllGenres']);
+Route::get('/genres/{mvgid}', [MovieGenreController::class, 'listMovieOf']);
 
 Route::get('/users/by-username/{usn}', [UserController::class, 'getInfoByUsername']);
 Route::get('/users/similarity-users/{uid}', [RecommenderController::class, 'UserBased_SimilarityUsers']);

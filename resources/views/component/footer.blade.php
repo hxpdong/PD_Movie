@@ -17,7 +17,7 @@ window.onload = function() {
             // Nếu không có thanh cuộn, thêm lớp cho footerdiv
             footerdiv.classList.add("bottom-0", "fixed");
         }
-    }, 500); 
+    }, 1000); 
 }
 
 // When the user scrolls down 200px from the top of the document, show the button

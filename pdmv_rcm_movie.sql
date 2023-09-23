@@ -873,6 +873,13 @@ END//
 DELIMITER ;
 
 DELIMITER //
+CREATE PROCEDURE mvgenre_getGenre (IN p_mvgid INT)
+BEGIN
+    SELECT * FROM pdmv_mvgenres WHERE mvgenre_id = p_mvgid;
+END//
+DELIMITER ;
+
+DELIMITER //
 CREATE PROCEDURE mvgenre_listMovieOfGenre (IN mvgid INT)
 BEGIN
     SELECT * 
