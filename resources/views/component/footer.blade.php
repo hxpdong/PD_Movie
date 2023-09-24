@@ -8,7 +8,7 @@
 <script>
 var toTopButton = document.getElementById("to-top-button");
 var footerdiv = document.getElementById("footerdiv");
-
+var cntScroll = 0;
 window.onload = function() {
     footerdiv.classList.remove("bottom-0", "fixed");
     setTimeout(function() {
@@ -22,7 +22,10 @@ window.onload = function() {
 
 // When the user scrolls down 200px from the top of the document, show the button
 window.onscroll = function() {
-    footerdiv.classList.remove("bottom-0", "fixed");
+    if(cntScroll == 0) {
+        footerdiv.classList.remove("bottom-0", "fixed");
+        cntScroll++;
+    }
     if (document.body.scrollTop > 1 || document.documentElement.scrollTop > 1) {
         toTopButton.classList.remove("hidden");
     } else {
