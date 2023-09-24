@@ -36,6 +36,7 @@ Route::get('/movies/{mid}', [MovieController::class, 'show']);
 Route::get('comments/{mid}', [MovieController::class, 'getCommentListOf']);
 Route::get('/movies/recommended/{uid}', [RecommenderController::class, 'UserBased_CollaborativeFiltering']);
 Route::get('/ratings/{uid}/{mid}' , [MovieController::class, 'getRatingOf']);
+Route::get('/movies/recommended-by-movie/{mvid}', [RecommenderController::class, 'ContentBased_recommendMovies']);
 
 Route::post('/postcomment' , [MovieController::class, 'postComment']);
 Route::delete('/dropcomment/{cmtid}', [MovieController::class, 'dropComment']);

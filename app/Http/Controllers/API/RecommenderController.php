@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use App\Http\Controllers\Controller;
+use App\Models\Movie;
 
 class RecommenderController extends Controller
 {
@@ -39,5 +40,59 @@ class RecommenderController extends Controller
         return response()->json([
             'sameUsers' => $sameUsers,
         ]);
+    }
+
+    public function ContentBased_recommendMovies($mvid)
+    {
+        try {
+            $numofmov = request()->get('num', 12);
+            // Lấy thông tin về bộ phim được chọn
+            $selectedMovie = DB::table('pdmv_movies')
+                ->where('movie_id', $mvid)
+                ->first();
+    
+            if (!$selectedMovie) {
+                return response()->json([
+                    'error' => 'Bộ phim không tồn tại',
+                    'success' => false,
+                ], 404);
+            }
+    
+            $selectedTitleVi = $selectedMovie->title_vi;
+            $selectedTitleEn = $selectedMovie->title_en;
+            $selectedDirector = $selectedMovie->director;
+            $selectedActors = $selectedMovie->actors;
+            $selectedManufactureYear = $selectedMovie->manufactureYear;
+    
+            // Tính điểm tương đồng và lấy danh sách các bộ phim liên quan
+            $recommendedMovies = DB::table('pdmv_movies')
+                ->select('pdmv_movies.*')
+                ->addSelect(DB::raw('
+                    (
+                        -- Tính điểm tương đồng
+                        IFNULL(LevenshteinDistance(?, title_vi), 0) +
+                        IFNULL(LevenshteinDistance(?, title_en), 0) +
+                        IFNULL(LevenshteinDistance(?, director), 0) +
+                        IFNULL(LevenshteinDistance(?, actors), 0) +
+                        IF(manufactureYear = ?, 1, 0)
+                    ) AS similarity
+                '))
+                ->setBindings([$selectedTitleVi, $selectedTitleEn, $selectedDirector, $selectedActors, $selectedManufactureYear])
+                ->where('movie_id', '!=', $mvid)
+                ->orderBy('similarity', 'desc')
+                ->limit($numofmov)
+                ->get();
+    
+            return response()->json([
+                'success' => true,
+                'recommended_movies' => $recommendedMovies
+            ]);
+        } catch (\Exception $e) {
+           // Log::error($e->getMessage());
+            return response()->json([
+                'error' => 'Đã xảy ra lỗi trong quá trình xử lý yêu cầu. ' . $e,
+                'success' => false,
+            ], 500);
+        }
     }
 }
