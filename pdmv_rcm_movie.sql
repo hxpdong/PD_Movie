@@ -1189,6 +1189,17 @@ BEGIN
 END //
 DELIMITER ;
 
+DELIMITER //
+CREATE PROCEDURE movie_listByTag (IN kw TEXT)
+BEGIN
+    SET @search_term = REPLACE(kw, '-', ' '); -- Loại bỏ gạch nối và thay thế bằng khoảng trắng
+    SELECT *
+    FROM pdmv_movies
+    WHERE REPLACE(director, '-', ' ') COLLATE utf8mb4_unicode_ci LIKE CONCAT('%', @search_term, '%')
+    OR REPLACE(actors, '-', ' ') COLLATE utf8mb4_unicode_ci LIKE CONCAT('%', @search_term, '%')
+    ORDER BY movie_id DESC;
+END//
+DELIMITER ;
 /* LARAVEL
 INSERT INTO users (id, name, password, acctype_id)
 SELECT acc_id, usname, password, acctype_id FROM pdmv_accounts;
