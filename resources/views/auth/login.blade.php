@@ -31,12 +31,17 @@
                     </div>
                     <div class="mt-8 flex justify-center text-lg text-black">
                         <button type="submit"
-                            class="rounded-3xl bg-blue-400 bg-opacity-50 px-10 py-2 text-white shadow-xl backdrop-blur-md transition-colors duration-300 hover:bg-yellow-600">Đăng
+                            class="rounded-3xl bg-[#66ccff] bg-opacity-50 px-10 py-2 text-white shadow-xl backdrop-blur-md transition-colors duration-300 hover:bg-blue-800">Đăng
                             nhập</button>
                     </div>
                 </form>
                 <div class="text-sm font-medium text-white dark:text-white text-center">
-                    Chưa có tài khoản? <a href="/register" class="text-blue-700 hover:underline dark:text-blue-500">Đăng ký</a>
+                <a href="/" class="inline-flex items-center justify-center px-5 py-3 text-base font-medium text-center text-white bg-[#66ccff] rounded-lg hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 dark:focus:ring-blue-900">
+                    Trang chủ
+                    <svg class="w-3.5 h-3.5 ml-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
+                    </svg>
+                </a>
                 </div>
             </div>
         </div>

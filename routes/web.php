@@ -23,7 +23,7 @@ Route::middleware('pdmv_checkLogin')->group(function () {
 });
 Route::middleware('pdmv_checkIsAdmin')->group(function () {
     Route::get('/admin/dashboard', function () {
-        return view('auth.dashboard');
+        return view('auth.admin.dashboard');
     });
 });
 Route::middleware('pdmv_checkIsUserOrGuest')->group(function (){
@@ -57,7 +57,7 @@ Route::post('/modalLogin', [AuthController::class, 'modalPostAuthLogin'])->name(
 Route::post('/modalRegister', [AuthController::class, 'modalPostAuthRegister'])->name('modalRegister');
 
 Route::get('/test', function(){
-    return view('auth.dashboardtest');
+    return view('auth.admin.dashboardtest');
 });
 
 Route::middleware('pdmv_checkIsUserOrGuest','pdmv_checkHaveKWSearch')->group(function (){
