@@ -1145,51 +1145,6 @@ END //
 DELIMITER ;
 
 DELIMITER //
-CREATE DEFINER=`root`@`localhost` FUNCTION `LevenshteinDistance`(s1 VARCHAR(255), s2 VARCHAR(255)) RETURNS int(11)
-BEGIN
-    DECLARE s1_len, s2_len, i, j, c, c_temp INT;
-    DECLARE s1_char CHAR;
-    DECLARE cv0, cv1 INT;
-
-    SET s1_len = LENGTH(s1);
-    SET s2_len = LENGTH(s2);
-    SET cv1 = 0;
-
-    IF s1 = s2 THEN
-        RETURN s1_len;
-    END IF;
-
-    IF s1_len = 0 THEN
-        RETURN s2_len;
-    END IF;
-
-    IF s2_len = 0 THEN
-        RETURN s1_len;
-    END IF;
-
-    SET i = 1;
-
-    WHILE i <= s1_len DO
-        SET s1_char = SUBSTRING(s1, i, 1);
-        SET cv0 = i;
-        SET j = 1;
-
-        WHILE j <= s2_len DO
-            SET c_temp = IF(s1_char = SUBSTRING(s2, j, 1), 0, 1);
-            SET c = LEAST(LEAST(cv1 + 1, cv0 + 1), c_temp);
-            SET cv0 = cv1;
-            SET cv1 = c;
-            SET j = j + 1;
-        END WHILE;
-
-        SET i = i + 1;
-    END WHILE;
-
-    RETURN c;
-END //
-DELIMITER ;
-
-DELIMITER //
 CREATE PROCEDURE movie_listByTag (IN kw TEXT)
 BEGIN
     SET @search_term = REPLACE(kw, '-', ' '); -- Loại bỏ gạch nối và thay thế bằng khoảng trắng
@@ -1200,6 +1155,48 @@ BEGIN
     ORDER BY movie_id DESC;
 END//
 DELIMITER ;
+
+DELIMITER //
+
+CREATE FUNCTION CalculateHammingDistance(
+    input_string1 VARCHAR(255),
+    input_string2 VARCHAR(255)
+)
+RETURNS INT
+BEGIN
+    DECLARE len1 INT;
+    DECLARE len2 INT;
+    DECLARE min_len INT;
+    DECLARE i INT;
+    DECLARE hamming_distance INT;
+
+    SET len1 = LENGTH(input_string1);
+    SET len2 = LENGTH(input_string2);
+    
+    IF len1 < len2 THEN
+        SET min_len = len1;
+    ELSE
+        SET min_len = len2;
+    END IF;
+    
+    SET hamming_distance = 0;
+    SET i = 1;
+        
+    WHILE i <= min_len DO
+        IF SUBSTRING(input_string1, i, 1) != SUBSTRING(input_string2, i, 1) THEN
+            SET hamming_distance = hamming_distance + 1;
+        END IF;
+        SET i = i + 1;
+    END WHILE;
+    
+    SET hamming_distance = hamming_distance + ABS(len1 - len2);  -- Thêm sự chênh lệch độ dài
+    
+    RETURN hamming_distance;
+END;
+//
+DELIMITER ;
+
+
 /* LARAVEL
 INSERT INTO users (id, name, password, acctype_id)
 SELECT acc_id, usname, password, acctype_id FROM pdmv_accounts;

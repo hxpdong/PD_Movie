@@ -70,16 +70,16 @@ class RecommenderController extends Controller
                 ->addSelect(DB::raw('
                     (
                         -- Tính điểm tương đồng
-                        IFNULL(LevenshteinDistance(?, title_vi), 0) +
-                        IFNULL(LevenshteinDistance(?, title_en), 0) +
-                        IFNULL(LevenshteinDistance(?, director), 0) +
-                        IFNULL(LevenshteinDistance(?, actors), 0) +
+                        IFNULL(CalculateHammingDistance(?, title_vi), 0) +
+                        IFNULL(CalculateHammingDistance(?, title_en), 0) +
+                        IFNULL(CalculateHammingDistance(?, director), 0) +
+                        IFNULL(CalculateHammingDistance(?, actors), 0) +
                         IF(manufactureYear = ?, 1, 0)
                     ) AS similarity
                 '))
                 ->setBindings([$selectedTitleVi, $selectedTitleEn, $selectedDirector, $selectedActors, $selectedManufactureYear])
                 ->where('movie_id', '!=', $mvid)
-                ->orderBy('similarity', 'desc')
+                ->orderBy('similarity', 'asc')
                 ->limit($numofmov)
                 ->get();
     
