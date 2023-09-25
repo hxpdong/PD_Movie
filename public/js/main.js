@@ -2,6 +2,7 @@ var currentPage = 1;
 var defaultImageUrl = '/img/banner.png';
 var isPageMovie = document.getElementById("isMoviePage");
 var isPageGenre = document.getElementById("isGenrePage");
+var isPageTag = document.getElementById("isTagPage");
 
 document.addEventListener("DOMContentLoaded", function () {
     var initialPage = getPageFromURL();
@@ -12,6 +13,10 @@ document.addEventListener("DOMContentLoaded", function () {
     else if(isPageGenre){
         var mvgid = getMovieGenreFromURL();
         getMovieListOfGenre(mvgid, initialPage);
+    }
+    else if(isPageTag){
+        var kwtag = extractTagFromCurrentURL();
+        getMovieListOfTag(kwtag, initialPage);
     }
 });
 
@@ -273,4 +278,96 @@ function getMovieListOfGenre(mvgid, page) {
         .catch(function (error) {
             console.log(error);
         });
+}
+
+function getMovieListOfTag(tagkw, page) {
+
+    axios.get('/api/tags/' + tagkw + '?page=' + page)
+        .then(function (response) {
+            removeAllMovieItems();
+            var movieList = document.getElementById("movie-list");
+            var movies = response.data.results.movies;
+
+            // Lặp qua danh sách phim và tạo các thẻ <li> để hiển thị thông tin về mỗi bộ phim
+            movies.forEach(function (movie) {
+                var movieItem = document.createElement("div");
+                movieItem.className = "grid-item rounded-lg bg-white shadow-lg";
+
+                // Tạo thẻ <img> để hiển thị hình ảnh phim
+                var image = document.createElement("img");
+                image.alt = movie.title_vi;
+                image.style.width = '100%';
+                image.style.objectFit = "cover";
+                image.className = "rounded-t-lg";
+                if (movie.posterURL != null) {
+                    image.src = movie.posterURL;
+                }
+                else image.src = defaultImageUrl;
+                movieItem.insertAdjacentElement('afterbegin', image);
+
+                // Tạo thẻ <h3> để hiển thị tiêu đề phim
+                var mid = document.createElement("h6");
+                mid.textContent = movie.movie_id;
+                mid.className = "text-ellipsis mvid";
+                mid.style.height = "0px";
+                movieItem.appendChild(mid);
+                // Tạo thẻ <h3> để hiển thị tiêu đề phim
+                var murl = document.createElement("h5");
+                murl.textContent = movie.movie_url;
+                murl.className = "text-ellipsis mvurl";
+                murl.style.height = "0px";
+                movieItem.appendChild(murl);
+
+                // Tạo thẻ <h3> để hiển thị tiêu đề phim
+                var title = document.createElement("h3");
+                title.textContent = movie.title_vi;
+                title.className = "text-ellipsis mb-2 text-lg font-semibold";
+                movieItem.appendChild(title);
+
+                // Tạo thẻ <p> để hiển thị đạo diễn
+                var director = document.createElement("p");
+                director.textContent = "Năm: " + movie.manufactureYear;
+                director.className = "text-ellipsis";
+                movieItem.appendChild(director);
+
+                // Tạo thẻ <p> để hiển thị danh sách diễn viên
+                var actors = document.createElement("p");
+                actors.textContent = "Thời lượng: " + movie.videoLength;
+                actors.className = "text-ellipsis";
+                movieItem.appendChild(actors);
+
+                // Thêm thông tin về bộ phim vào danh sách
+                movieList.appendChild(movieItem);
+
+            });
+            addTooltip();
+            // Cập nhật trạng thái của nút Previous và Next
+            var prevButton = document.getElementById("prev-button");
+            var nextButton = document.getElementById("next-button");
+            prevButton.disabled = response.data.results.current_page === 1;
+            nextButton.disabled = response.data.results.current_page === response.data.results.last_page;
+            var pageButtons = document.getElementById("page-buttons");
+            pageButtons.innerHTML = generatePageButtons(response.data.results.current_page, response.data.results.last_page);
+            // Lưu trạng thái trang hiện tại
+            currentPage = response.data.results.current_page;
+            document.getElementById("numoftagfounded").innerHTML = response.data.results.total;
+            document.getElementById("tagname").innerHTML = tagkw;
+            document.title = "Tag | " + tagkw;
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
+}
+
+function extractTagFromCurrentURL() {
+    // Lấy URL hiện tại của trình duyệt
+    const currentURL = window.location.href;
+
+    // Sử dụng cùng một logic như ở ví dụ trước để trích xuất tag từ URL
+    const urlObj = new URL(currentURL);
+    const path = urlObj.pathname;
+    const pathParts = path.split('/');
+    const tag = pathParts[pathParts.length - 1];
+
+    return tag;
 }
