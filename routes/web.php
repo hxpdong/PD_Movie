@@ -36,11 +36,8 @@ Route::middleware('pdmv_checkIsUserOrGuest')->group(function (){
     Route::get('movies/{mid}', function(){
         return view('/movie.show');
     });
-    //Route::get('genres', function(){
-    //    return view('/genre.index');
-    //});
     Route::get('genres/{mvgid}', function(){
-        return view('/genre.show');
+        return view('/movie.genre');
     });
 });
 Route::middleware('pdmv_checkIsUser')->group(function (){
@@ -67,11 +64,11 @@ Route::middleware('pdmv_checkIsUserOrGuest','pdmv_checkHaveKWSearch')->group(fun
     Route::get('movies/{mid}', function(){
         return view('/movie.show');
     });
-    //Route::get('genres', function(){
-    //    return view('/genre.index');
-    //});
+    Route::get('tags/{tagname}', function(){
+        return view('/movie.tag');
+    });
     Route::get('genres/{mvgid}', function(){
-        return view('/genre.show');
+        return view('/movie.genre');
     });
     Route::get('recommend', function(){
         return view('/movie.recommender');
