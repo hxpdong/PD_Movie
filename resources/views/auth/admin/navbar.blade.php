@@ -8,9 +8,9 @@
 
     <input type="hidden" id="authUserId" value="">
     @endif
-    <nav class="bg-gray-500 border-gray-200 px-4 lg:px-6 py-2.5 dark:bg-gray-800">
+    <nav class="bg-gray-500 border-gray-200 px-4 md:px-6 py-2.5 dark:bg-gray-800">
 
-        <div class="block lg:hidden">
+        <div class="block md:hidden">
             <div class="flex items-center w-full justify-center">
                 <a href="/" class="flex">
                     <img src="/img/fav-removebg.png" class="mr-3 h-6 sm:h-9" alt="Flowbite Logo" />
@@ -20,9 +20,9 @@
         </div>
         <div class="flex flex-wrap justify-center items-center mx-auto max-w-screen-xl">
             <div class="flex w-full">
-                <div class="flex items-left justify-left lg:order-2 mt-3 lg:hidden">
+                <div class="flex items-left justify-left md:order-2 mt-3 md:hidden">
                     <button data-collapse-toggle="mobile-menu-2" type="button" id="btn-open-sidebar"
-                        class="inline-flex items-center p-2 ml-1 text-sm text-gray-500 bg-white rounded-lg lg:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
+                        class="inline-flex items-center p-2 ml-1 text-sm text-gray-500 bg-white rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
                         aria-controls="mobile-menu-2" aria-expanded="false">
                         <span class="sr-only">Open main menu</span>
                         <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
@@ -38,7 +38,7 @@
                         </svg>
                     </button>
                 </div>
-                <div class="flex items-center justify-center lg:order-2 w-full mt-3 lg:hidden">
+                <div class="flex items-center justify-center md:order-2 w-full mt-3 md:hidden">
                     @if(auth()->check())
                     <div class="px-5">
                         <nav>
@@ -54,18 +54,18 @@
                         </nav>
                     </div>
                     <a href="/logoutHeader"
-                                class="text-gray-800 bg-white mx-1 dark:text-white hover:bg-gray-50 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-gray-800">Đăng
+                                class="text-gray-800 bg-white mx-1 dark:text-white hover:bg-gray-50 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-4 md:px-5 py-2 md:py-2.5 mr-2 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-gray-800">Đăng
                                 xuất</a>
                     @endif
                 </div>
             </div>
 
 
-            <div class="hidden justify-between items-center w-full lg:flex lg:w-auto lg:order-1" id="mobile-menu-2">
-                <ul class="flex flex-col mt-4 font-medium lg:flex-row lg:space-x-8 lg:mt-0 lg:items-center">
+            <div class="hidden justify-between items-center w-full md:flex md:w-auto md:order-1" id="mobile-menu-2">
+                <ul class="flex flex-col mt-4 font-medium md:flex-row md:space-x-8 md:mt-0 md:items-center">
                     <li>
                         <a href="/"
-                            class="rounded text-white lg:text-black hover:text-black hover:bg-gray-200 bg-gray-700 lg:bg-transparent  focus:ring-4 focus:outline-none focus:bg-[#66CCFF] font-medium px-5 py-2.5 text-center inline-flex items-center w-full lg:w-auto">
+                            class="rounded text-white md:text-black hover:text-black hover:bg-gray-200 bg-gray-700 md:bg-transparent  focus:ring-4 focus:outline-none focus:bg-[#66CCFF] font-medium px-5 py-2.5 text-center inline-flex items-center w-full md:w-auto">
                             <img src="/img/fav-removebg.png" class="mr-3 h-6 sm:h-9" alt="Flowbite Logo" />
                             <span
                                 class="self-center text-xl font-semibold whitespace-nowrap dark:text-white">PDMovie</span>
@@ -75,7 +75,7 @@
                         <form class="mb-0">
                             <div class="relative">
                                 <input type="search" id="default-search"
-                                    class="lg:w-72 w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                    class="md:w-72 w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                     placeholder="tìm kiếm..." required name="kwsearch">
                                 <button type="submit"
                                     class="text-white absolute right-2.5 bottom-2.5 bg-[#66CCFF] hover:bg-[#00aaff] focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
@@ -89,7 +89,7 @@
                         </form>
                     </li>
                     <li>
-                        <div class="items-center justify-center lg:order-2 w-full hidden lg:flex">
+                        <div class="items-center justify-center md:order-2 w-full hidden md:flex">
                             @if(auth()->check())
                             <div>
                                 <nav>
@@ -108,7 +108,7 @@
                                 </nav>
                             </div>
                             <a href="/logoutHeader"
-                                class="text-gray-800 bg-white mx-1 dark:text-white hover:bg-gray-50 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-gray-800">Đăng
+                                class="text-gray-800 bg-white mx-1 dark:text-white hover:bg-gray-50 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-4 md:px-5 py-2 md:py-2.5 mr-2 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-gray-800">Đăng
                                 xuất</a>
                             @endif
                         </div>
