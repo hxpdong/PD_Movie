@@ -1,8 +1,4 @@
 @include ('component.head-script')
-<script>
-var userName = "{{ auth()->user()->name }}";
-console.log("day ne: " + userName);
-</script>
 @if(auth()->check())
 <!-- Trang của bạn.blade.php -->
 @include('auth.admin.navbar')
@@ -11,8 +7,8 @@ console.log("day ne: " + userName);
     @include('auth.admin.sidebar')
 
     <!-- Nội dung trang chính của bạn -->
-    <div class="p-5" id="isAd-DashboardPage">
-        <div class="text-4xl font-bold">Dashboard</div>
+    <div class="p-5" id="isAd-MoviePage">
+        <div class="text-4xl font-bold">Movies</div>
     </div>
 </div>
 @include ('component.footer')
