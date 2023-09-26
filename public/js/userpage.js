@@ -1,3 +1,4 @@
+const defaultImageUrl = '/img/banner.png';
 var uid = null;
 var currentCmtPage = 1;
 var currentRtPage = 1;
@@ -59,9 +60,39 @@ function getUserInfo(username) {
                         imageContainer.classList.add("col-span-1");
 
                         var image = document.createElement("img");
-                        if (movie.posterURL != null)
-                            image.src = movie.posterURL;
-                        else image.src = "/img/banner.png";
+                        if (movie.posterURL != null) {
+                            var imageUrl = movie.posterURL;
+                            var posterUrl = '/movie/poster/' + movie.movie_id;
+                            var cacheKey = 'movie_poster_' + movie.movie_id;
+                            if (localStorage.getItem(cacheKey)) {
+                                console.log("hinh cũ");
+                                // Nếu có trong cache, sử dụng dữ liệu từ cache
+                                var cachedImageData = localStorage.getItem(cacheKey);
+                                image.src = cachedImageData;
+                            } else {
+                                console.log("hinh moi");
+                                // Nếu không có trong cache, tải hình ảnh từ URL
+                                axios.get(posterUrl, { responseType: 'blob' }).then(function (response) {
+                                    var blob = new Blob([response.data]);
+                                    var objectURL = URL.createObjectURL(blob);
+                        
+                                    // Lưu hình ảnh vào cache
+                                    localStorage.setItem(cacheKey, objectURL);
+                        
+                                    // Đặt src của hình ảnh poster bằng URL từ cache
+                                    image.src = objectURL;
+                                }).catch(function (error) {
+                                    console.error(error);
+                                });
+                            }
+                        }
+                        else image.src = defaultImageUrl;
+                        image.onerror = function () {
+                            // Sử dụng hình ảnh mặc định nếu xảy ra lỗi
+                            if (movie.posterURL != null) {
+                                image.src = movie.posterURL;
+                            } else image.src = defaultImageUrl;
+                        };
 
                         var contentContainer = document.createElement("div");
                         contentContainer.classList.add("col-span-5");

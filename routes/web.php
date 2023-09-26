@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\AuthController;
+use App\Http\Controllers\CacheImageController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -84,3 +85,4 @@ Route::get('/users/{uid}', function(){
 Route::middleware('pdmv_checkHaveKWSearch')->group(function (){
     
 });
+Route::get('/movie/poster/{mid}', [CacheImageController::class, 'showDetail'])->name('movie.getPoster');

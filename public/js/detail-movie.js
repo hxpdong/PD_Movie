@@ -714,9 +714,38 @@ function getLatestMovies() {
                 image.style.objectFit = "cover";
                 image.className = "rounded-t-lg";
                 if (movie.posterURL != null) {
-                    image.src = movie.posterURL;
+                    var imageUrl = movie.posterURL;
+                    var posterUrl = '/movie/poster/' + movie.movie_id;
+                    var cacheKey = 'movie_poster_' + movie.movie_id;
+                    if (localStorage.getItem(cacheKey)) {
+                        console.log("hinh cũ");
+                        // Nếu có trong cache, sử dụng dữ liệu từ cache
+                        var cachedImageData = localStorage.getItem(cacheKey);
+                        image.src = cachedImageData;
+                    } else {
+                        console.log("hinh moi");
+                        // Nếu không có trong cache, tải hình ảnh từ URL
+                        axios.get(posterUrl, { responseType: 'blob' }).then(function (response) {
+                            var blob = new Blob([response.data]);
+                            var objectURL = URL.createObjectURL(blob);
+                
+                            // Lưu hình ảnh vào cache
+                            localStorage.setItem(cacheKey, objectURL);
+                
+                            // Đặt src của hình ảnh poster bằng URL từ cache
+                            image.src = objectURL;
+                        }).catch(function (error) {
+                            console.error(error);
+                        });
+                    }
                 }
                 else image.src = defaultImageUrl;
+                image.onerror = function () {
+                    // Sử dụng hình ảnh mặc định nếu xảy ra lỗi
+                    if (movie.posterURL != null) {
+                        image.src = movie.posterURL;
+                    } else image.src = defaultImageUrl;
+                };
                 movieItem.insertAdjacentElement('afterbegin', image);
 
                 // Tạo thẻ <h3> để hiển thị tiêu đề phim
@@ -781,9 +810,38 @@ function getRecommendedMovies() {
                 image.style.objectFit = "cover";
                 image.className = "rounded-t-lg";
                 if (movie.posterURL != null) {
-                    image.src = movie.posterURL;
+                    var imageUrl = movie.posterURL;
+                    var posterUrl = '/movie/poster/' + movie.movie_id;
+                    var cacheKey = 'movie_poster_' + movie.movie_id;
+                    if (localStorage.getItem(cacheKey)) {
+                        console.log("hinh cũ");
+                        // Nếu có trong cache, sử dụng dữ liệu từ cache
+                        var cachedImageData = localStorage.getItem(cacheKey);
+                        image.src = cachedImageData;
+                    } else {
+                        console.log("hinh moi");
+                        // Nếu không có trong cache, tải hình ảnh từ URL
+                        axios.get(posterUrl, { responseType: 'blob' }).then(function (response) {
+                            var blob = new Blob([response.data]);
+                            var objectURL = URL.createObjectURL(blob);
+                
+                            // Lưu hình ảnh vào cache
+                            localStorage.setItem(cacheKey, objectURL);
+                
+                            // Đặt src của hình ảnh poster bằng URL từ cache
+                            image.src = objectURL;
+                        }).catch(function (error) {
+                            console.error(error);
+                        });
+                    }
                 }
                 else image.src = defaultImageUrl;
+                image.onerror = function () {
+                    // Sử dụng hình ảnh mặc định nếu xảy ra lỗi
+                    if (movie.posterURL != null) {
+                        image.src = movie.posterURL;
+                    } else image.src = defaultImageUrl;
+                };
                 movieItem.insertAdjacentElement('afterbegin', image);
 
                 // Tạo thẻ <h3> để hiển thị tiêu đề phim
@@ -848,9 +906,38 @@ function getRelatedMovies() {
                 image.style.objectFit = "cover";
                 image.className = "rounded-t-lg";
                 if (movie.posterURL != null) {
-                    image.src = movie.posterURL;
+                    var imageUrl = movie.posterURL;
+                    var posterUrl = '/movie/poster/' + movie.movie_id;
+                    var cacheKey = 'movie_poster_' + movie.movie_id;
+                    if (localStorage.getItem(cacheKey)) {
+                        console.log("hinh cũ");
+                        // Nếu có trong cache, sử dụng dữ liệu từ cache
+                        var cachedImageData = localStorage.getItem(cacheKey);
+                        image.src = cachedImageData;
+                    } else {
+                        console.log("hinh moi");
+                        // Nếu không có trong cache, tải hình ảnh từ URL
+                        axios.get(posterUrl, { responseType: 'blob' }).then(function (response) {
+                            var blob = new Blob([response.data]);
+                            var objectURL = URL.createObjectURL(blob);
+                
+                            // Lưu hình ảnh vào cache
+                            localStorage.setItem(cacheKey, objectURL);
+                
+                            // Đặt src của hình ảnh poster bằng URL từ cache
+                            image.src = objectURL;
+                        }).catch(function (error) {
+                            console.error(error);
+                        });
+                    }
                 }
                 else image.src = defaultImageUrl;
+                image.onerror = function () {
+                    // Sử dụng hình ảnh mặc định nếu xảy ra lỗi
+                    if (movie.posterURL != null) {
+                        image.src = movie.posterURL;
+                    } else image.src = defaultImageUrl;
+                };
                 movieItem.insertAdjacentElement('afterbegin', image);
 
                 // Tạo thẻ <h3> để hiển thị tiêu đề phim
