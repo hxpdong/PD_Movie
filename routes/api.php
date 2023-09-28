@@ -8,6 +8,7 @@ use App\Http\Controllers\API\RecommenderController;
 use App\Http\Controllers\API\MovieGenreController;
 use App\Http\Controllers\API\UserController;
 use App\Http\Controllers\API\MovieTagController;
+use App\Http\Controllers\API\AccountController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -57,3 +58,6 @@ Route::get('/users/get-ratinglist/{uid}', [UserController::class, 'getListOfRati
 Route::post('/postreport' , [MovieController::class, 'postError']);
 
 Route::get('/tags/{tagkw}', [MovieTagController::class, 'listMovieOf']);
+
+Route::get('/admin/get-users', [AccountController::class, 'getAllUser']);
+Route::get('/admin/get-admins', [AccountController::class, 'getAllAdmin']);

@@ -11,18 +11,22 @@ document.addEventListener("DOMContentLoaded", function() {
 
     if (isPageDashboard) {
         changeClickedTag("btn-dashboard");
+        document.title = "Admin | Dashboard";
     }
 
     if (isPageActor) {
         changeClickedTag("btn-actors");
+        document.title = "Admin | Actors";
     }
 
     if (isPageGenre) {
         changeClickedTag("btn-genres");
+        document.title = "Admin | Genres";
     }
 
     if (isPageMovie) {
         changeClickedTag("btn-movies");
+        document.title = "Admin | Movies";
     }
 });
 

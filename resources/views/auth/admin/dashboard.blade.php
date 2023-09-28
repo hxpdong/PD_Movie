@@ -116,70 +116,30 @@
                 <div class="flex flex-wrap justify-center items-center">
                     @if(auth()->user()->acctype_id == 1)
                     <!--Admin tag-->
-                    <div class="w-full px-6 sm:w-1/2 xl:w-1/3 my-2">
+                    <div class="w-full px-6 sm:w-1/2 xl:w-1/3 my-2" onclick="showAccTable(1)">
                         <div class="flex items-center px-5 py-6 bg-white rounded-md shadow-sm">
-                            <div class="p-3 bg-indigo-600 bg-opacity-75 rounded-full">
-                                <svg class="w-8 h-8 text-white" viewBox="0 0 28 30" fill="none"
-                                    xmlns="http://www.w3.org/2000/svg">
-                                    <path
-                                        d="M18.2 9.08889C18.2 11.5373 16.3196 13.5222 14 13.5222C11.6804 13.5222 9.79999 11.5373 9.79999 9.08889C9.79999 6.64043 11.6804 4.65556 14 4.65556C16.3196 4.65556 18.2 6.64043 18.2 9.08889Z"
-                                        fill="currentColor"></path>
-                                    <path
-                                        d="M25.2 12.0444C25.2 13.6768 23.9464 15 22.4 15C20.8536 15 19.6 13.6768 19.6 12.0444C19.6 10.4121 20.8536 9.08889 22.4 9.08889C23.9464 9.08889 25.2 10.4121 25.2 12.0444Z"
-                                        fill="currentColor"></path>
-                                    <path
-                                        d="M19.6 22.3889C19.6 19.1243 17.0927 16.4778 14 16.4778C10.9072 16.4778 8.39999 19.1243 8.39999 22.3889V26.8222H19.6V22.3889Z"
-                                        fill="currentColor"></path>
-                                    <path
-                                        d="M8.39999 12.0444C8.39999 13.6768 7.14639 15 5.59999 15C4.05359 15 2.79999 13.6768 2.79999 12.0444C2.79999 10.4121 4.05359 9.08889 5.59999 9.08889C7.14639 9.08889 8.39999 10.4121 8.39999 12.0444Z"
-                                        fill="currentColor"></path>
-                                    <path
-                                        d="M22.4 26.8222V22.3889C22.4 20.8312 22.0195 19.3671 21.351 18.0949C21.6863 18.0039 22.0378 17.9556 22.4 17.9556C24.7197 17.9556 26.6 19.9404 26.6 22.3889V26.8222H22.4Z"
-                                        fill="currentColor"></path>
-                                    <path
-                                        d="M6.64896 18.0949C5.98058 19.3671 5.59999 20.8312 5.59999 22.3889V26.8222H1.39999V22.3889C1.39999 19.9404 3.2804 17.9556 5.59999 17.9556C5.96219 17.9556 6.31367 18.0039 6.64896 18.0949Z"
-                                        fill="currentColor"></path>
-                                </svg>
+                            <div class="p-3 bg-green-500 flex justify-center items-center h-16 rounded-full">
+                            <i class="fa-solid fa-users-gear fa-2xl" style="color: #ffffff;"></i>
                             </div>
 
                             <div class="mx-5">
-                                <h4 class="text-2xl font-semibold text-gray-700">3</h4>
-                                <div class="text-gray-500">Admins</div>
+                                <h4 class="text-2xl font-semibold text-gray-700" id="numOfAdmin">...</h4>
+                                <div class="text-gray-500">Quản trị viên</div>
                             </div>
                         </div>
                     </div>
                     <!--end admin tag-->
                     @endif
                     <!--User tag-->
-                    <div class="w-full px-6 sm:w-1/2 xl:w-1/3 my-2">
+                    <div class="w-full px-6 sm:w-1/2 xl:w-1/3 my-2" onclick="showAccTable(2)">
                         <div class="flex items-center px-5 py-6 bg-white rounded-md shadow-sm">
-                            <div class="p-3 bg-indigo-600 bg-opacity-75 rounded-full">
-                                <svg class="w-8 h-8 text-white" viewBox="0 0 28 30" fill="none"
-                                    xmlns="http://www.w3.org/2000/svg">
-                                    <path
-                                        d="M18.2 9.08889C18.2 11.5373 16.3196 13.5222 14 13.5222C11.6804 13.5222 9.79999 11.5373 9.79999 9.08889C9.79999 6.64043 11.6804 4.65556 14 4.65556C16.3196 4.65556 18.2 6.64043 18.2 9.08889Z"
-                                        fill="currentColor"></path>
-                                    <path
-                                        d="M25.2 12.0444C25.2 13.6768 23.9464 15 22.4 15C20.8536 15 19.6 13.6768 19.6 12.0444C19.6 10.4121 20.8536 9.08889 22.4 9.08889C23.9464 9.08889 25.2 10.4121 25.2 12.0444Z"
-                                        fill="currentColor"></path>
-                                    <path
-                                        d="M19.6 22.3889C19.6 19.1243 17.0927 16.4778 14 16.4778C10.9072 16.4778 8.39999 19.1243 8.39999 22.3889V26.8222H19.6V22.3889Z"
-                                        fill="currentColor"></path>
-                                    <path
-                                        d="M8.39999 12.0444C8.39999 13.6768 7.14639 15 5.59999 15C4.05359 15 2.79999 13.6768 2.79999 12.0444C2.79999 10.4121 4.05359 9.08889 5.59999 9.08889C7.14639 9.08889 8.39999 10.4121 8.39999 12.0444Z"
-                                        fill="currentColor"></path>
-                                    <path
-                                        d="M22.4 26.8222V22.3889C22.4 20.8312 22.0195 19.3671 21.351 18.0949C21.6863 18.0039 22.0378 17.9556 22.4 17.9556C24.7197 17.9556 26.6 19.9404 26.6 22.3889V26.8222H22.4Z"
-                                        fill="currentColor"></path>
-                                    <path
-                                        d="M6.64896 18.0949C5.98058 19.3671 5.59999 20.8312 5.59999 22.3889V26.8222H1.39999V22.3889C1.39999 19.9404 3.2804 17.9556 5.59999 17.9556C5.96219 17.9556 6.31367 18.0039 6.64896 18.0949Z"
-                                        fill="currentColor"></path>
-                                </svg>
+                            <div class="p-3 bg-indigo-600 flex justify-center items-center h-16 rounded-full">
+                            <i class="fa-solid fa-users fa-2xl" style="color: #ffffff;"></i>
                             </div>
 
                             <div class="mx-5">
-                                <h4 class="text-2xl font-semibold text-gray-700">20</h4>
-                                <div class="text-gray-500">Users</div>
+                                <h4 class="text-2xl font-semibold text-gray-700" id="numOfUser">...</h4>
+                                <div class="text-gray-500">Người dùng</div>
                             </div>
                         </div>
                     </div>
@@ -187,18 +147,17 @@
                 </div>
                 <div id="acctable" class="flex flex-col">
                     <!--User table-->
-                    <div class="bg-white p-4 my-5">
+                    <div class="bg-white p-4 my-5" id="ustb">
+                        <div class="font-bold text-xl pb-4">Người dùng</div>
                         <table id="usertable" class="stripe hover"
                             style="width:100%; padding-top: 1em;  padding-bottom: 1em;">
-                            <h3>Người dùng</h3>
                             <thead>
                                 <tr>
                                     <th data-priority="1">Id</th>
                                     <th data-priority="2">Họ tên</th>
                                     <th data-priority="3">Tên tài khoản</th>
                                     <th data-priority="4">Email</th>
-                                    <th data-priority="5">Số điện thoại</th>
-                                    <th data-priority="6">Actions</th>
+                                    <th data-priority="5">Thao tác</th>
                                 </tr>
                             </thead>
                             <tbody id="tbd-usertable">
@@ -208,10 +167,10 @@
                     <!--end user table-->
                     @if(auth()->user()->acctype_id == 1)
                     <!--admin table-->
-                    <div class="bg-white p-4 my-5">
+                    <div class="bg-white p-4 my-5" id="amtb">
+                        <div class="font-bold text-xl pb-4">Quản trị viên</div>
                         <table id="admintable" class="stripe hover"
                             style="width:100%; padding-top: 1em;  padding-bottom: 1em;">
-                            <h3>Quản trị viên</h3>
                             <thead>
                                 <tr>
                                     <th data-priority="1">Id</th>
@@ -219,7 +178,7 @@
                                     <th data-priority="3">Tên tài khoản</th>
                                     <th data-priority="4">Email</th>
                                     <th data-priority="5">Số điện thoại</th>
-                                    <th data-priority="6">Actions</th>
+                                    <th data-priority="6">Thao tác</th>
                                 </tr>
                             </thead>
                             <tbody id="tbd-admintable">
@@ -238,61 +197,195 @@
     <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/responsive/2.2.3/js/dataTables.responsive.min.js"></script>
     <script>
-        var table = document.getElementById("tbd-usertable");
-        var rows = table.getElementsByTagName("tr");
-        for (var i = 0; i < 16; i++) {
-            // Tạo một dòng mới
-            var newRow = table.insertRow();
+        var usertable = document.getElementById("tbd-usertable");
+        var admintable = document.getElementById("tbd-admintable");
+        var usertb = document.getElementById("ustb");
+        var admintb = document.getElementById("amtb");
+        if(usertable){
+            axios.get('/api/admin/get-users')
+            .then(function (response) {
+                if (response.status === 200) {
+                    if (response.data.success === true) {
+                        var usl = response.data.usersList;
+                        usl.forEach(function (us) {
+                            var newRow = usertable.insertRow();
+                            var idCell = newRow.insertCell(0);
+                            idCell.textContent = us.user_id;
+                            idCell.classList.add("text-center");
+                            var nameCell = newRow.insertCell(1);
+                            nameCell.classList.add("text-center");
+                            if(us.fullname)
+                                nameCell.textContent = us.fullname;
+                            else {
+                                nameCell.textContent = "_";
+                                nameCell.classList.add("italic");
+                            }
+                            var usernameCell = newRow.insertCell(2);
+                            usernameCell.textContent = us.usname;
+                            usernameCell.classList.add("text-center");
+                            var emailCell = newRow.insertCell(3);
+                            emailCell.textContent = us.email;
+                            emailCell.classList.add("text-center");
+                            var actionCell = newRow.insertCell(4);
+                            actionCell.classList.add("flex", "justify-around");
+                            var updateButton = document.createElement("button");
+                            updateButton.classList.add("border-2", "p-2", "rounded-lg");
+                            updateButton.title = "Cập nhật người dùng";
+                            var updateIcon = document.createElement("i");
+                            updateIcon.className = "fa-solid fa-user-pen";
+                            updateIcon.style.color = "#1355c9";
+                            updateButton.appendChild(updateIcon);
+                            actionCell.appendChild(updateButton);
 
-            // Tạo các ô td và thêm dữ liệu giả định vào mỗi ô
-            var idCell = newRow.insertCell(0);
-            idCell.textContent = (i + 1);
+                            // Tạo nút Đổi mật khẩu
+                            var changePasswordButton = document.createElement("button");
+                            changePasswordButton.classList.add("border-2", "p-2", "rounded-lg");
+                            changePasswordButton.title = "Cập nhật mật khẩu";
+                            var changePasswordIcon = document.createElement("i");
+                            changePasswordIcon.className = "fa-solid fa-rotate-left";
+                            changePasswordIcon.style.color = "#ffc800";
+                            var changePasswordIcon2 = document.createElement("i");
+                            changePasswordIcon2.className = "fa-solid fa-key";
+                            changePasswordIcon2.style.color = "#ffc800";
+                            changePasswordButton.appendChild(changePasswordIcon);
+                            changePasswordButton.appendChild(changePasswordIcon2);
+                            actionCell.appendChild(changePasswordButton);
 
-            var nameCell = newRow.insertCell(1);
-            nameCell.textContent = "Nguyễn Văn " + (i + 1);
+                            // Tạo nút Xóa
+                            var deleteButton = document.createElement("button");
+                            deleteButton.classList.add("border-2", "p-2", "rounded-lg");
+                            deleteButton.title = "Xóa người dùng";
+                            var deleteIcon = document.createElement("i");
+                            deleteIcon.className = "fa-solid fa-trash-can";
+                            deleteIcon.style.color = "#ff0000";
+                            deleteButton.appendChild(deleteIcon);
+                            actionCell.appendChild(deleteButton);
 
-            var usernameCell = newRow.insertCell(2);
-            usernameCell.textContent = "user_" + (i + 1);
+                        });
+                        $('#usertable').DataTable({
+                            responsive: true,
+                            language: {
+                                "url": "//cdn.datatables.net/plug-ins/1.10.19/i18n/Vietnamese.json" // URL của tệp ngôn ngữ tiếng Việt
+                            }
+                        })
+                        .columns.adjust()
+                        .responsive.recalc();
+                        document.getElementById("numOfUser").textContent = response.data.totaluser;
+                    }
+                } else if(response.status === 404 || response.status === 500) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Lỗi!',
+                        text: response.data.message
+                    });
+                }
+            })
+            .catch(function (error) {
+                console.error('Lỗi trong quá trình gửi yêu cầu:', error);
+            });
+        }
+        if(admintable){
+            axios.get('/api/admin/get-admins')
+            .then(function (response) {
+                if (response.status === 200) {
+                    if (response.data.success === true) {
+                        var usl = response.data.adminsList;
+                        usl.forEach(function (us) {
+                            var newRow = admintable.insertRow();
+                            var idCell = newRow.insertCell(0);
+                            idCell.textContent = us.admin_id;
+                            idCell.classList.add("text-center");
+                            var nameCell = newRow.insertCell(1);
+                            nameCell.classList.add("text-center");
+                            if(us.fullname)
+                                nameCell.textContent = us.fullname;
+                            else {
+                                nameCell.textContent = "_";
+                                nameCell.classList.add("italic");
+                            }
+                            var usernameCell = newRow.insertCell(2);
+                            usernameCell.textContent = us.usname;
+                            usernameCell.classList.add("text-center");
+                            var emailCell = newRow.insertCell(3);
+                            emailCell.textContent = us.email;
+                            emailCell.classList.add("text-center");
+                            var phoneCell = newRow.insertCell(4);
+                            phoneCell.textContent = us.phone;
+                            phoneCell.classList.add("text-center");
+                            var actionCell = newRow.insertCell(5);
+                            actionCell.classList.add("flex", "justify-around");
+                            var updateButton = document.createElement("button");
+                            updateButton.classList.add("border-2", "p-2", "rounded-lg");
+                            updateButton.title = "Cập nhật người dùng";
+                            var updateIcon = document.createElement("i");
+                            updateIcon.className = "fa-solid fa-user-pen";
+                            updateIcon.style.color = "#1355c9";
+                            updateButton.appendChild(updateIcon);
+                            actionCell.appendChild(updateButton);
 
-            var emailCell = newRow.insertCell(3);
-            //emailCell.textContent = Math.floor(Math.random() * 50) + 20; // Tuổi ngẫu nhiên từ 20 đến 69
-            emailCell.textContent = "email_" + (i + 1) + "@gmail.com"; // Tuổi ngẫu nhiên từ 20 đến 69
+                            // Tạo nút Đổi mật khẩu
+                            var changePasswordButton = document.createElement("button");
+                            changePasswordButton.classList.add("border-2", "p-2", "rounded-lg");
+                            changePasswordButton.title = "Cập nhật mật khẩu";
+                            var changePasswordIcon = document.createElement("i");
+                            changePasswordIcon.className = "fa-solid fa-rotate-left";
+                            changePasswordIcon.style.color = "#ffc800";
+                            var changePasswordIcon2 = document.createElement("i");
+                            changePasswordIcon2.className = "fa-solid fa-key";
+                            changePasswordIcon2.style.color = "#ffc800";
+                            changePasswordButton.appendChild(changePasswordIcon);
+                            changePasswordButton.appendChild(changePasswordIcon2);
+                            actionCell.appendChild(changePasswordButton);
 
-            var phoneCell = newRow.insertCell(4);
-            phoneCell.textContent = "0774839113"; // Ngày cố định
+                            // Tạo nút Xóa
+                            var deleteButton = document.createElement("button");
+                            deleteButton.classList.add("border-2", "p-2", "rounded-lg");
+                            deleteButton.title = "Xóa người dùng";
+                            var deleteIcon = document.createElement("i");
+                            deleteIcon.className = "fa-solid fa-trash-can";
+                            deleteIcon.style.color = "#ff0000";
+                            deleteButton.appendChild(deleteIcon);
+                            actionCell.appendChild(deleteButton);
 
-            var actionCell = newRow.insertCell(5);
-            actionCell.classList.add("flex", "flex-wrap", "justify-center", "items-center");
-            var updateButton = document.createElement("button");
-            updateButton.textContent = "Cập nhật";
-            updateButton.style.backgroundColor = "blue"; // Đặt màu nền của nút
-            updateButton.style.color = "white"; // Đặt màu văn bản của nút
-            actionCell.appendChild(updateButton);
-
-            // Tạo nút Đổi mật khẩu
-            var changePasswordButton = document.createElement("button");
-            changePasswordButton.textContent = "Đổi mật khẩu";
-            changePasswordButton.classList.add("m-2");
-            changePasswordButton.style.backgroundColor = "green"; // Đặt màu nền của nút
-            changePasswordButton.style.color = "white"; // Đặt màu văn bản của nút
-            actionCell.appendChild(changePasswordButton);
-
-            // Tạo nút Xóa
-            var deleteButton = document.createElement("button");
-            deleteButton.textContent = "Xóa";
-            deleteButton.style.backgroundColor = "red"; // Đặt màu nền của nút
-            deleteButton.style.color = "white"; // Đặt màu văn bản của nút
-            actionCell.appendChild(deleteButton);
+                        });
+                        $('#admintable').DataTable({
+                            responsive: true,
+                            language: {
+                                "url": "//cdn.datatables.net/plug-ins/1.10.19/i18n/Vietnamese.json" // URL của tệp ngôn ngữ tiếng Việt
+                            }
+                        })
+                        .columns.adjust()
+                        .responsive.recalc();
+                        document.getElementById("numOfAdmin").textContent = response.data.totaladmin;
+                    }
+                } else if(response.status === 404 || response.status === 500) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Lỗi!',
+                        text: response.data.message
+                    });
+                }
+            })
+            .catch(function (error) {
+                console.error('Lỗi trong quá trình gửi yêu cầu:', error);
+            });
         }
 
-        $(document).ready(function() {
+        function showAccTable(num){
+            switch (num){
+                case 1:
+                    
+                    break;
 
-            var table = $('#usertable').DataTable({
-                    responsive: true
-                })
-                .columns.adjust()
-                .responsive.recalc();
-        });
+                case 2:
+                   
+                    break;
+                
+                default:
+                    break;
+            }
+                
+        }
     </script>
 </body>
 @include ('component.footer')

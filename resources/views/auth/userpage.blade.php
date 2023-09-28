@@ -75,11 +75,7 @@
                 <div class="bg-white p-2 hover:shadow border-2 m-3">
                     <div class="flex items-center space-x-3 font-semibold text-gray-900 text-xl leading-8">
                         <span class="text-[#66CCFF]">
-                            <svg class="h-5 fill-current" xmlns="http://www.w3.org/2000/svg" fill="none"
-                                viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-                            </svg>
+                        <i class="fa-solid fa-people-group"></i>
                         </span>
                         <span>Người dùng tương đồng</span>
                     </div>
@@ -96,32 +92,14 @@
                     <div class="no-select flex items-center space-x-2 font-semibold text-gray-900 leading-8 p-3"
                         onclick="expandContentContainer('container-favoritemovies');">
                         <span clas="text-green-500">
-                            <img src="https://www.svgrepo.com/show/425554/like-rating-up.svg" class="w-5 h-5">
+                        <i class="fa-solid fa-thumbs-up fa-lg" style="color: #66ccff;"></i>
                         </span>
                         <span class="tracking-wide">Phim yêu thích</span>
                         <span id="expand-container-favoritemovies" style="display: none;">
-                            <svg fill="#000000" height="15px" width="15px" version="1.1" id="Layer_1"
-                                xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-                                viewBox="0 0 330.002 330.002" xml:space="preserve" transform="rotate(180)">
-                                <g id="SVGRepo_bgCarrier" stroke-width="0" />
-                                <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" />
-                                <g id="SVGRepo_iconCarrier">
-                                    <path id="XMLID_105_"
-                                        d="M324.001,209.25L173.997,96.75c-5.334-4-12.667-4-18,0L6.001,209.25c-6.627,4.971-7.971,14.373-3,21 c2.947,3.93,7.451,6.001,12.012,6.001c3.131,0,6.29-0.978,8.988-3.001L164.998,127.5l141.003,105.75c6.629,4.972,16.03,3.627,21-3 C331.972,223.623,330.628,214.221,324.001,209.25z" />
-                                </g>
-                            </svg>
+                        <i class="fa-solid fa-caret-down fa-2xl"></i>
                         </span>
                         <span id="shrink-container-favoritemovies">
-                            <svg fill="#000000" height="15px" width="15px" version="1.1" id="Layer_1"
-                                xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-                                viewBox="0 0 330.002 330.002" xml:space="preserve" transform="rotate(0)">
-                                <g id="SVGRepo_bgCarrier" stroke-width="0" />
-                                <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" />
-                                <g id="SVGRepo_iconCarrier">
-                                    <path id="XMLID_105_"
-                                        d="M324.001,209.25L173.997,96.75c-5.334-4-12.667-4-18,0L6.001,209.25c-6.627,4.971-7.971,14.373-3,21 c2.947,3.93,7.451,6.001,12.012,6.001c3.131,0,6.29-0.978,8.988-3.001L164.998,127.5l141.003,105.75c6.629,4.972,16.03,3.627,21-3 C331.972,223.623,330.628,214.221,324.001,209.25z" />
-                                </g>
-                            </svg>
+                        <i class="fa-solid fa-caret-up fa-2xl"></i>
                         </span>
                     </div>
                     <div class="text-gray-700" id="container-favoritemovies">
@@ -162,7 +140,7 @@
                     <div class="bg-white p-3 shadow-sm border-2 border-[#66CCFF] rounded-xl" id="us-act-item">
                         <div class="flex items-center space-x-2 font-semibold text-gray-900 leading-8">
                             <span clas="text-green-500">
-                                <img src="https://www.svgrepo.com/show/509175/note.svg" class="w-5 h-5">
+                            <i class="fa-solid fa-clock-rotate-left fa-lg" style="color: #66ccff"></i>
                             </span>
                             <span class="tracking-wide">Các tương tác</span>
                         </div>
@@ -171,36 +149,14 @@
                                 <div class="no-select flex items-center space-x-2 font-semibold text-gray-900 leading-8 mb-3 p-3"
                                     onclick="expandContentContainer('us-commentList')">
                                     <span clas="text-green-500">
-                                        <img src="https://www.svgrepo.com/show/522073/comment-5.svg" class="w-5 h-5">
+                                    <i class="fa-regular fa-message fa-lg"></i>
                                     </span>
                                     <span class="tracking-wide">Bình luận</span>
                                     <span id="expand-us-commentList" style="display: none;">
-                                        <svg fill="#000000" height="15px" width="15px" version="1.1" id="Layer_1"
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 330.002 330.002"
-                                            xml:space="preserve" transform="rotate(180)">
-                                            <g id="SVGRepo_bgCarrier" stroke-width="0" />
-                                            <g id="SVGRepo_tracerCarrier" stroke-linecap="round"
-                                                stroke-linejoin="round" />
-                                            <g id="SVGRepo_iconCarrier">
-                                                <path id="XMLID_105_"
-                                                    d="M324.001,209.25L173.997,96.75c-5.334-4-12.667-4-18,0L6.001,209.25c-6.627,4.971-7.971,14.373-3,21 c2.947,3.93,7.451,6.001,12.012,6.001c3.131,0,6.29-0.978,8.988-3.001L164.998,127.5l141.003,105.75c6.629,4.972,16.03,3.627,21-3 C331.972,223.623,330.628,214.221,324.001,209.25z" />
-                                            </g>
-                                        </svg>
+                                    <i class="fa-solid fa-caret-down fa-2xl"></i>
                                     </span>
                                     <span id="shrink-us-commentList">
-                                        <svg fill="#000000" height="15px" width="15px" version="1.1" id="Layer_1"
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 330.002 330.002"
-                                            xml:space="preserve" transform="rotate(0)">
-                                            <g id="SVGRepo_bgCarrier" stroke-width="0" />
-                                            <g id="SVGRepo_tracerCarrier" stroke-linecap="round"
-                                                stroke-linejoin="round" />
-                                            <g id="SVGRepo_iconCarrier">
-                                                <path id="XMLID_105_"
-                                                    d="M324.001,209.25L173.997,96.75c-5.334-4-12.667-4-18,0L6.001,209.25c-6.627,4.971-7.971,14.373-3,21 c2.947,3.93,7.451,6.001,12.012,6.001c3.131,0,6.29-0.978,8.988-3.001L164.998,127.5l141.003,105.75c6.629,4.972,16.03,3.627,21-3 C331.972,223.623,330.628,214.221,324.001,209.25z" />
-                                            </g>
-                                        </svg>
+                                    <i class="fa-solid fa-caret-up fa-2xl"></i>
                                     </span>
                                 </div>
                                 <div id="us-notfoundcomment" class="text-center"></div>
@@ -217,36 +173,14 @@
                                 <div class="no-select flex items-center space-x-2 font-semibold text-gray-900 leading-8 mb-3 p-3"
                                     onclick="expandContentContainer('us-ratingList')">
                                     <span clas="text-green-500">
-                                        <img src="https://www.svgrepo.com/show/533052/star.svg" class="w-5 h-5">
+                                    <i class="fa-regular fa-star fa-lg"></i>
                                     </span>
                                     <span class="tracking-wide">Đánh giá</span>
                                     <span id="expand-us-ratingList" style="display: none;">
-                                        <svg fill="#000000" height="15px" width="15px" version="1.1" id="Layer_1"
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 330.002 330.002"
-                                            xml:space="preserve" transform="rotate(180)">
-                                            <g id="SVGRepo_bgCarrier" stroke-width="0" />
-                                            <g id="SVGRepo_tracerCarrier" stroke-linecap="round"
-                                                stroke-linejoin="round" />
-                                            <g id="SVGRepo_iconCarrier">
-                                                <path id="XMLID_105_"
-                                                    d="M324.001,209.25L173.997,96.75c-5.334-4-12.667-4-18,0L6.001,209.25c-6.627,4.971-7.971,14.373-3,21 c2.947,3.93,7.451,6.001,12.012,6.001c3.131,0,6.29-0.978,8.988-3.001L164.998,127.5l141.003,105.75c6.629,4.972,16.03,3.627,21-3 C331.972,223.623,330.628,214.221,324.001,209.25z" />
-                                            </g>
-                                        </svg>
+                                    <i class="fa-solid fa-caret-down fa-2xl"></i>
                                     </span>
                                     <span id="shrink-us-ratingList">
-                                        <svg fill="#000000" height="15px" width="15px" version="1.1" id="Layer_1"
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 330.002 330.002"
-                                            xml:space="preserve" transform="rotate(0)">
-                                            <g id="SVGRepo_bgCarrier" stroke-width="0" />
-                                            <g id="SVGRepo_tracerCarrier" stroke-linecap="round"
-                                                stroke-linejoin="round" />
-                                            <g id="SVGRepo_iconCarrier">
-                                                <path id="XMLID_105_"
-                                                    d="M324.001,209.25L173.997,96.75c-5.334-4-12.667-4-18,0L6.001,209.25c-6.627,4.971-7.971,14.373-3,21 c2.947,3.93,7.451,6.001,12.012,6.001c3.131,0,6.29-0.978,8.988-3.001L164.998,127.5l141.003,105.75c6.629,4.972,16.03,3.627,21-3 C331.972,223.623,330.628,214.221,324.001,209.25z" />
-                                            </g>
-                                        </svg>
+                                    <i class="fa-solid fa-caret-up fa-2xl"></i>
                                     </span>
                                 </div>
                                 <div id="us-notfoundrating" class="text-center"></div>
