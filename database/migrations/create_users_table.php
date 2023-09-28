@@ -18,7 +18,7 @@ return new class extends Migration
             $table->integer('acctype_id');
             $table->string('name')->unique();
             $table->string('fullname')->nullable();
-            $table->string('email')->nullable();
+            $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();

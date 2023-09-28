@@ -231,34 +231,42 @@
                             var updateButton = document.createElement("button");
                             updateButton.classList.add("border-2", "p-2", "rounded-lg");
                             updateButton.title = "Cập nhật người dùng";
-                            var updateIcon = document.createElement("i");
-                            updateIcon.className = "fa-solid fa-user-pen";
+                            var updateIcon = document.createElement("span");
+                            updateIcon.className = "material-icons";
+                            updateIcon.textContent = "manage_accounts";
                             updateIcon.style.color = "#1355c9";
                             updateButton.appendChild(updateIcon);
+                            updateButton.onclick = function () {
+                                
+                            }
                             actionCell.appendChild(updateButton);
 
                             // Tạo nút Đổi mật khẩu
                             var changePasswordButton = document.createElement("button");
                             changePasswordButton.classList.add("border-2", "p-2", "rounded-lg");
                             changePasswordButton.title = "Cập nhật mật khẩu";
-                            var changePasswordIcon = document.createElement("i");
-                            changePasswordIcon.className = "fa-solid fa-rotate-left";
+                            var changePasswordIcon = document.createElement("span");
+                            changePasswordIcon.className = "material-icons";
+                            changePasswordIcon.textContent = "password";
                             changePasswordIcon.style.color = "#ffc800";
-                            var changePasswordIcon2 = document.createElement("i");
-                            changePasswordIcon2.className = "fa-solid fa-key";
-                            changePasswordIcon2.style.color = "#ffc800";
                             changePasswordButton.appendChild(changePasswordIcon);
-                            changePasswordButton.appendChild(changePasswordIcon2);
+                            changePasswordButton.onclick = function () {
+                                
+                            }
                             actionCell.appendChild(changePasswordButton);
 
                             // Tạo nút Xóa
                             var deleteButton = document.createElement("button");
                             deleteButton.classList.add("border-2", "p-2", "rounded-lg");
                             deleteButton.title = "Xóa người dùng";
-                            var deleteIcon = document.createElement("i");
-                            deleteIcon.className = "fa-solid fa-trash-can";
+                            var deleteIcon = document.createElement("span");
+                            deleteIcon.className = "material-icons";
+                            deleteIcon.textContent = "delete";
                             deleteIcon.style.color = "#ff0000";
                             deleteButton.appendChild(deleteIcon);
+                            deleteButton.onclick = function () {
+                                
+                            }
                             actionCell.appendChild(deleteButton);
 
                         });
@@ -266,6 +274,20 @@
                             responsive: true,
                             language: {
                                 "url": "//cdn.datatables.net/plug-ins/1.10.19/i18n/Vietnamese.json" // URL của tệp ngôn ngữ tiếng Việt
+                            },
+                            lengthMenu: [5, 10, 15, 20],
+                            responsive: {
+                                details: {
+                                    display: $.fn.dataTable.Responsive.display.modal({
+                                        header: function (row) {
+                                            var data = row.data();
+                                            return 'Thông tin của ' + data[2];
+                                        }
+                                    }),
+                                    renderer: $.fn.dataTable.Responsive.renderer.tableAll({
+                                        tableClass: 'table'
+                                    })
+                                }
                             }
                         })
                         .columns.adjust()
@@ -317,8 +339,9 @@
                             var updateButton = document.createElement("button");
                             updateButton.classList.add("border-2", "p-2", "rounded-lg");
                             updateButton.title = "Cập nhật người dùng";
-                            var updateIcon = document.createElement("i");
-                            updateIcon.className = "fa-solid fa-user-pen";
+                            var updateIcon = document.createElement("span");
+                            updateIcon.className = "material-icons";
+                            updateIcon.textContent = "manage_accounts";
                             updateIcon.style.color = "#1355c9";
                             updateButton.appendChild(updateIcon);
                             actionCell.appendChild(updateButton);
@@ -327,22 +350,20 @@
                             var changePasswordButton = document.createElement("button");
                             changePasswordButton.classList.add("border-2", "p-2", "rounded-lg");
                             changePasswordButton.title = "Cập nhật mật khẩu";
-                            var changePasswordIcon = document.createElement("i");
-                            changePasswordIcon.className = "fa-solid fa-rotate-left";
+                            var changePasswordIcon = document.createElement("span");
+                            changePasswordIcon.className = "material-icons";
+                            changePasswordIcon.textContent = "password";
                             changePasswordIcon.style.color = "#ffc800";
-                            var changePasswordIcon2 = document.createElement("i");
-                            changePasswordIcon2.className = "fa-solid fa-key";
-                            changePasswordIcon2.style.color = "#ffc800";
                             changePasswordButton.appendChild(changePasswordIcon);
-                            changePasswordButton.appendChild(changePasswordIcon2);
                             actionCell.appendChild(changePasswordButton);
 
                             // Tạo nút Xóa
                             var deleteButton = document.createElement("button");
                             deleteButton.classList.add("border-2", "p-2", "rounded-lg");
                             deleteButton.title = "Xóa người dùng";
-                            var deleteIcon = document.createElement("i");
-                            deleteIcon.className = "fa-solid fa-trash-can";
+                            var deleteIcon = document.createElement("span");
+                            deleteIcon.className = "material-icons";
+                            deleteIcon.textContent = "delete";
                             deleteIcon.style.color = "#ff0000";
                             deleteButton.appendChild(deleteIcon);
                             actionCell.appendChild(deleteButton);
@@ -352,6 +373,20 @@
                             responsive: true,
                             language: {
                                 "url": "//cdn.datatables.net/plug-ins/1.10.19/i18n/Vietnamese.json" // URL của tệp ngôn ngữ tiếng Việt
+                            },
+                            lengthMenu: [5, 10, 15, 20],
+                            responsive: {
+                                details: {
+                                    display: $.fn.dataTable.Responsive.display.modal({
+                                        header: function (row) {
+                                            var data = row.data();
+                                            return 'Thông tin của ' + data[2];
+                                        }
+                                    }),
+                                    renderer: $.fn.dataTable.Responsive.renderer.tableAll({
+                                        tableClass: 'table'
+                                    })
+                                }
                             }
                         })
                         .columns.adjust()

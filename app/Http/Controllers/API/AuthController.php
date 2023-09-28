@@ -9,6 +9,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rule;
 
 class AuthController extends Controller
 {
@@ -16,6 +17,20 @@ class AuthController extends Controller
     public function registerAPI(Request $request)
     {
         try {
+            $request->validate([
+                'name' => 'required|unique:pdmv_accounts,usname',
+                'email' => [
+                    'required',
+                    Rule::unique('pdmv_users', 'email'),
+                    Rule::unique('pdmv_admins', 'email'),
+                ],
+            ], [
+                'name.required' => 'Trường username là bắt buộc.',
+                'name.unique' => 'Username đã tồn tại. Vui lòng nhập lại!',
+                'email.required' => 'Trường email là bắt buộc.',
+                'email.unique' => 'Email này đã được sử dụng cho tài khoản khác, vui lòng sử dụng email khác!',
+            ]);
+            
             $usname = $request->name;
             $passwd = bcrypt($request->password);
             $email = $request->email;
@@ -87,6 +102,20 @@ class AuthController extends Controller
     public function register(Request $request)
     {
         try {
+            $request->validate([
+                'name' => 'required|unique:pdmv_accounts,usname',
+                'email' => [
+                    'required',
+                    Rule::unique('pdmv_users', 'email'),
+                    Rule::unique('pdmv_admins', 'email'),
+                ],
+            ], [
+                'name.required' => 'Trường username là bắt buộc.',
+                'name.unique' => 'Username đã tồn tại. Vui lòng nhập lại!',
+                'email.required' => 'Trường email là bắt buộc.',
+                'email.unique' => 'Email này đã được sử dụng cho tài khoản khác, vui lòng sử dụng email khác!',
+            ]);
+
             $usname = $request->name;
             $passwd = bcrypt($request->password);
             $email = $request->email;
@@ -150,14 +179,28 @@ class AuthController extends Controller
     public function modalPostAuthRegister(Request $request)
     {
         try {
+            $request->validate([
+                'mdregusname' => 'required|unique:pdmv_accounts,usname',
+                'mdregemail' => [
+                    'required',
+                    Rule::unique('pdmv_users', 'email'),
+                    Rule::unique('pdmv_admins', 'email'),
+                ],
+            ], [
+                'mdregusname.required' => 'Trường username là bắt buộc.',
+                'mdregusname.unique' => 'Username đã tồn tại. Vui lòng nhập lại!',
+                'mdregemail.required' => 'Trường email là bắt buộc.',
+                'mdregemail.unique' => 'Email này đã được sử dụng cho tài khoản khác, vui lòng sử dụng email khác!',
+            ]);
+
             $usname = $request->mdregusname;
             $passwd = bcrypt($request->mdreguspassword);
             $email = $request->mdregemail;
             $fullname = $request->mdregfullname;
-            if($usname == null || $passwd == null || $email == null || $fullname == null){
+            if($usname == null || $passwd == null){
                 return response()->json([
                     "error" => true,
-                    "message" => "Các trường không được bỏ trống",
+                    "message" => "Tài khoản và mật khẩu không được bỏ trống",
                 ]);
             }
             DB::insert('insert into pdmv_accounts (usname, password, acctype_id) values (?, ?, ?)', [$usname, $passwd, 3]);
@@ -237,6 +280,17 @@ class AuthController extends Controller
     public function modalUpdateUserInfo(Request $request)
     {
         try {
+            $request->validate([
+                'uptemail' => [
+                    'required',
+                    Rule::unique('pdmv_users', 'email')->ignore($request->input('uptAccId'), 'user_id'),
+                    Rule::unique('pdmv_admins', 'email')->ignore($request->input('uptAccId'), 'admin_id'),
+                ],
+            ], [
+                'uptemail.required' => 'Trường email là bắt buộc.',
+                'uptemail.unique' => 'Email này đã được sử dụng cho tài khoản khác, vui lòng sử dụng email khác!',
+            ]);
+
             $user_id = $request->input('uptAccId'); // Lấy ID của người dùng đã đăng nhập
             $email = $request->input('uptemail');
             $fullname = $request->input('uptfullname');
