@@ -69,10 +69,12 @@ class AuthController extends Controller
 
             if (Auth::guard('web')->attempt($credentials)) {
                 $user = Auth::guard('web')->user();
-                $user->api_token = Str::random(60);
-                $user->save();
+                if ($user->isLocked == 0) {
+                    $user->api_token = Str::random(60);
+                    $user->save();
 
-                return $user;
+                    return $user;
+                } else return response()->json(['message' => 'You are locked'], 404);
             }
 
             return response()->json(['message' => 'Something went wrong'], 401);
@@ -250,12 +252,18 @@ class AuthController extends Controller
             ];
 
             if (Auth::guard('web')->attempt($credentials)) {
-                return response()->json([
-                    'success' => true,
+                $user = Auth::guard('web')->user();
+                if ($user->isLocked == 0) {
+                    return response()->json([
+                        'success' => true,
+                    ]);
+                }
+                else return response()->json([
+                    'message' => "You are locked",
                 ]);
             } else {
                 return response()->json([
-                    'message' => "Invalid credentials",
+                    'message' => "Invalid username and password",
                 ]);
             }
         } catch (\Exception $e) {

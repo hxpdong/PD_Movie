@@ -1196,6 +1196,12 @@ END;
 //
 DELIMITER ;
 
+ALTER TABLE pdmv_accounts
+ADD COLUMN isLocked TINYINT(1) DEFAULT 0;
+
+UPDATE pdmv_accounts
+SET isLocked = 1
+WHERE acc_id IN (19, 22, 24);
 
 /* LARAVEL
 INSERT INTO users (id, name, password, acctype_id)

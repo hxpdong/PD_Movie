@@ -14,11 +14,12 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->integer('id')->primaryKey();
+            $table->tinyInteger('isLocked')->default(0);
             $table->string('api_token')->nullable();
             $table->integer('acctype_id');
             $table->string('name')->unique();
             $table->string('fullname')->nullable();
-            $table->string('email')->unique();
+            $table->string('email')->default('');
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();
@@ -28,8 +29,8 @@ return new class extends Migration
         });
 
         DB::table('users')
-        ->insertUsing(['id', 'name', 'password', 'acctype_id'], function ($query) {
-            $query->select(['acc_id', 'usname', 'password', 'acctype_id'])
+        ->insertUsing(['id', 'name', 'password', 'acctype_id', 'isLocked'], function ($query) {
+            $query->select(['acc_id', 'usname', 'password', 'acctype_id', 'isLocked'])
                 ->from('pdmv_accounts');
         });
 
