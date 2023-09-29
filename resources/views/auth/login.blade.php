@@ -16,18 +16,18 @@
                     <h1 class="mb-2 text-2xl text-gray-300">PDMovie</h1>
                     <span class="text-gray-300">Đăng nhập hệ thống</span>
                 </div>
-                <form method="post" enctype="multipart/form-data">
+                <form method="post" enctype="multipart/form-data" id="LoginForm">
                     @csrf
                     <div class="mb-4 text-lg">
                         <input
                             class="rounded-3xl border-none bg-white bg-opacity-50 px-6 py-2 text-black text-start text-inherit placeholder-black shadow-lg outline-none backdrop-blur-md"
-                            type="text" name="name" placeholder="tên đăng nhập" />
+                            type="text" name="mdusname" placeholder="tên đăng nhập" />
                     </div>
 
                     <div class="mb-4 text-lg">
                         <input
                             class="rounded-3xl border-none bg-white bg-opacity-50 px-6 py-2 text-black text-start text-inherit placeholder-black shadow-lg outline-none backdrop-blur-md"
-                            type="Password" name="password" placeholder="mật khẩu" />
+                            type="Password" name="mduspassword" placeholder="mật khẩu" />
                     </div>
                     <div class="mt-8 flex justify-center text-lg text-black">
                         <button type="submit"
@@ -47,5 +47,37 @@
         </div>
     </div>
 </body>
+<script>
+    $('#LoginForm').submit(function(e) {
+        e.preventDefault();
 
+        // Serialize the form data
+        const formData = $(this).serialize();
+
+        // Send a POST request with Axios
+        axios.post('{{ route('modalLogin') }}', formData)
+            .then(response => {
+                if (response.data.success) {
+                    const newToken = response.data.api_token;
+                    // Lưu newToken vào Local Storage hoặc Cookie
+                    localStorage.setItem('log_token', newToken);
+                    Swal.close();
+                    location.reload();
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Không thể đăng nhập',
+                        text: response.data.message
+                    });
+                }
+            })
+            .catch(error => {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Lỗi',
+                    text: 'Đã xảy ra lỗi trong quá trình xử lý yêu cầu.'
+                });
+            });
+    });
+</script>
 </html>

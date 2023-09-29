@@ -422,6 +422,11 @@
                 @csrf
                 @if(auth()->check())
                 <div>
+                    <input type="hidden" name="changePassAccId" id="changePassAccId"
+                        class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+                        value="{{ auth()->user()->id }}">
+                </div>
+                <div>
                     <input type="hidden" name="uptPasswordAccId" id="uptPasswordAccId"
                         class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
                         value="{{ auth()->user()->id }}">
@@ -472,11 +477,105 @@ $(document).ready(function() {
     getGenreList();
     $('#modalLoginForm').submit(function(e) {
         e.preventDefault();
+
+        // Serialize the form data
+        const formData = $(this).serialize();
+
+        // Send a POST request with Axios
+        axios.post('{{ route('modalLogin') }}', formData)
+            .then(response => {
+                if (response.data.success) {
+                    const newToken = response.data.api_token;
+                    // Lưu newToken vào Local Storage hoặc Cookie
+                    localStorage.setItem('log_token', newToken);
+                    Swal.close();
+                    location.reload();
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Không thể đăng nhập',
+                        text: response.data.message
+                    });
+                }
+            })
+            .catch(error => {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Lỗi',
+                    text: 'Đã xảy ra lỗi trong quá trình xử lý yêu cầu.'
+                });
+            });
+    });
+
+    $('#modalRegisterForm').submit(function(e) {
+        e.preventDefault();
+        var passwordField = document.getElementById("mdreguspassword");
+        var confirmPasswordField = document.getElementById("mdreguspassword-check");
+        var password = passwordField.value;
+        var confirmPassword = confirmPasswordField.value;
+        if (password === "" || confirmPassword === "") {
+            Swal.fire({
+                icon: 'error',
+                title: 'Thông tin cung cấp không đủ!',
+                text: 'Vui lòng điền đầy đủ thông tin và thử lại.'
+            });
+        }
+        else if (password !== confirmPassword) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Mật khẩu không trùng khớp!',
+                text: 'Vui lòng kiểm tra lại mật khẩu và nhập lại mật khẩu'
+            });
+        } else {
+            // Serialize the form data
+            const formData = $(this).serialize();
+
+            // Send a POST request with Axios
+            axios.post('{{ route('modalRegister') }}', formData)
+                .then(response => {
+                    Swal.close();
+                    if (response.data.success) {
+                        const newToken = response.data.api_token;
+                        // Lưu newToken vào Local Storage hoặc Cookie
+                        localStorage.setItem('log_token', newToken);
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Đăng ký thành công',
+                            confirmButtonText: 'OK',
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                location.reload();
+                            }
+                        });
+                    } else if (response.data.error) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Không thể đăng ký',
+                            text: response.data.message
+                        });
+                    }
+                })
+                .catch(error => {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Lỗi',
+                        text: 'Đã xảy ra lỗi trong quá trình xử lý yêu cầu.'
+                    });
+                });
+        }
+    });
+
+    $('#modalProfileForm').submit(function(e) {
+        e.preventDefault();
+        const apiToken = localStorage.getItem('log_token');
         $.ajax({
-            type: 'POST',
-            url: '{{ route('modalLogin') }}',
+            type: 'PUT',
+            url: '/api/users/update',
             data: $(this).serialize(),
-            beforeSend: function() {
+            beforeSend: function(xhr) {
+                // Đặt mã token vào tiêu đề "Authorization" của yêu cầu AJAX
+                xhr.setRequestHeader('Authorization', apiToken);
+
                 Swal.fire({
                     title: 'Đang xử lý...',
                     allowOutsideClick: false,
@@ -493,120 +592,37 @@ $(document).ready(function() {
             success: function(response) {
                 Swal.close();
                 if (response.success) {
-                    location.reload();
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Cập nhật thông tin thành công',
+                        confirmButtonText: 'OK',
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            location.reload();
+                        };
+                    });
                 } else {
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Không thể đăng nhập',
-                        text: response.message
-                    });
-                }
-            }
-        })
-    });
-
-    $('#modalRegisterForm').submit(function(e) {
-        e.preventDefault();
-        var passwordField = document.getElementById("mdreguspassword");
-        var confirmPasswordField = document.getElementById("mdreguspassword-check");
-        var password = passwordField.value;
-        var confirmPassword = confirmPasswordField.value;
-        if (password !== confirmPassword) {
-            Swal.fire({
-                icon: 'error',
-                title: 'Mật khẩu không trùng khớp!',
-                text: 'Vui lòng kiểm tra lại mật khẩu và nhập lại mật khẩu'
-            });
-        } else {
-            $.ajax({
-                type: 'POST',
-                url: '{{ route('modalRegister') }}',
-                data: $(this).serialize(),
-                beforeSend: function() {
-                    Swal.fire({
-                        title: 'Đang xử lý...',
-                        allowOutsideClick: false,
-                        allowEscapeKey: false,
-                        allowEnterKey: false,
-                        onBeforeOpen: () => {
-                            Swal.showLoading();
-                        },
-                        onClose: () => {
-                            Swal.hideLoading();
-                        }
-                    });
-                },
-                success: function(response) {
-                    Swal.close();
-                    if (response.success) {
-                        Swal.fire({
-                            icon: 'success',
-                            title: 'Đăng ký thành công',
-                            confirmButtonText: 'OK',
-                        }).then((result) => {
-                            /* Read more about isConfirmed, isDenied below */
-                            if (result.isConfirmed) {
-                                location.reload();
-                            };
-                        });
-                    } else if (response.error) {
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Không thể đăng ký',
-                            text: response.message
-                        });
-                    }
-                },
-            })
-        }
-    });
-
-    $('#modalProfileForm').submit(function(e) {
-        e.preventDefault();
-        $.ajax({
-            type: 'PUT',
-            url: '{{ route('modalUpdate') }}',
-            data: $(this).serialize(),
-            beforeSend: function() {
-                Swal.fire({
-                    title: 'Đang xử lý...',
-                    allowOutsideClick: false,
-                    allowEscapeKey: false,
-                    allowEnterKey: false,
-                    onBeforeOpen: () => {
-                        Swal.showLoading();
-                    },
-                    onClose: () => {
-                        Swal.hideLoading();
-                    }
-                });
-            },
-            success: function(response) {
-                Swal.close();
-                    if (response.success) {
-                        Swal.fire({
-                            icon: 'success',
-                            title: 'Cập nhật thông tin thành công',
-                            confirmButtonText: 'OK',
-                        }).then((result) => {
-                            /* Read more about isConfirmed, isDenied below */
-                            if (result.isConfirmed) {
-                                location.reload();
-                            };
-                        });
-                    } else {
                     Swal.fire({
                         icon: 'error',
                         title: 'Không thể cập nhật thông tin',
                         text: response.message
                     });
                 }
+            },
+            error: function(error) {
+                Swal.close();
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Lỗi',
+                    text: 'Đã xảy ra lỗi trong quá trình gửi yêu cầu.'
+                });
             }
-        })
+        });
     });
 
     $('#modalPasswordForm').submit(function(e) {
         e.preventDefault();
+        const apiToken = localStorage.getItem('log_token');
         var passwordField = document.getElementById("uptnewpassword");
         var confirmPasswordField = document.getElementById("uptconfirmpassword");
         var oldPasswordField = document.getElementById("uptoldpassword");
@@ -629,9 +645,10 @@ $(document).ready(function() {
         } else {
             $.ajax({
                 type: 'PUT',
-                url: '{{ route('modalChangePassword') }}',
+                url: '/api/users/changepassword',
                 data: $(this).serialize(),
-                beforeSend: function() {
+                beforeSend: function(xhr) {
+                    xhr.setRequestHeader('Authorization', apiToken);
                     Swal.fire({
                         title: 'Đang xử lý...',
                         allowOutsideClick: false,
@@ -653,7 +670,6 @@ $(document).ready(function() {
                                 title: response.message,
                                 confirmButtonText: 'OK',
                             }).then((result) => {
-                                /* Read more about isConfirmed, isDenied below */
                                 if (result.isConfirmed) {
                                     location.reload();
                                 };

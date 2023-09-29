@@ -61,3 +61,6 @@ Route::get('/tags/{tagkw}', [MovieTagController::class, 'listMovieOf']);
 
 Route::get('/admin/get-users', [AccountController::class, 'getAllUser']);
 Route::get('/admin/get-admins', [AccountController::class, 'getAllAdmin']);
+
+Route::put('/users/update', [AuthController::class, 'modalUpdateUserInfo']);
+Route::put('/users/changepassword', [AuthController::class, 'modalUpateUserPassword'])->name('modalChangePassword');

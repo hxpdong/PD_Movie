@@ -169,6 +169,9 @@ class AuthController extends Controller
     public function logout(Request $request)
     {
         try {
+            $user = Auth::guard('web')->user();
+            $user->api_token = null;
+            $user->save();
             Auth::guard('web')->logout();
             return redirect('/login'); // Chuyển hướng đến trang đăng nhập sau khi đăng xuất
         } catch (\Exception $e) {
@@ -226,8 +229,12 @@ class AuthController extends Controller
             ];
 
             if (Auth::guard('web')->attempt($credentials)) {
+                $user = Auth::guard('web')->user();
+                $user->api_token = Str::random(60);
+                $user->save();
                 return response()->json([
                     'success' => true,
+                    'api_token' => $user->api_token
                 ]);
             }
 
@@ -254,8 +261,11 @@ class AuthController extends Controller
             if (Auth::guard('web')->attempt($credentials)) {
                 $user = Auth::guard('web')->user();
                 if ($user->isLocked == 0) {
+                    $user->api_token = Str::random(60);
+                    $user->save();
                     return response()->json([
                         'success' => true,
+                        'api_token' => $user->api_token
                     ]);
                 }
                 else return response()->json([
@@ -276,6 +286,9 @@ class AuthController extends Controller
     public function logoutHeader(Request $request)
     {
         try {
+            $user = Auth::guard('web')->user();
+            $user->api_token = null;
+            $user->save();
             Auth::guard('web')->logout();
             return redirect()->back();
         } catch (\Exception $e) {
@@ -288,36 +301,59 @@ class AuthController extends Controller
     public function modalUpdateUserInfo(Request $request)
     {
         try {
-            $request->validate([
-                'uptemail' => [
-                    'required',
-                    Rule::unique('pdmv_users', 'email')->ignore($request->input('uptAccId'), 'user_id'),
-                    Rule::unique('pdmv_admins', 'email')->ignore($request->input('uptAccId'), 'admin_id'),
-                ],
-            ], [
-                'uptemail.required' => 'Trường email là bắt buộc.',
-                'uptemail.unique' => 'Email này đã được sử dụng cho tài khoản khác, vui lòng sử dụng email khác!',
-            ]);
-
-            $user_id = $request->input('uptAccId'); // Lấy ID của người dùng đã đăng nhập
-            $email = $request->input('uptemail');
-            $fullname = $request->input('uptfullname');
-
-            // Gọi stored procedure user_update truyền tham số vào
-            DB::select('CALL user_update(?, ?, ?)', [$user_id, $email, $fullname]);
-
-            DB::table('users')
-            ->join('pdmv_users', 'users.id', '=', 'pdmv_users.user_id')
-            ->where('users.id', '=', $user_id) // Replace $yourUserId with the specific user ID you want to update
-            ->update([
-                'users.email' => DB::raw('pdmv_users.email'),
-                'users.fullname' => DB::raw('pdmv_users.fullname'),
-            ]);
-
-            return response()->json([
-                'success' => true,
-                'message' => 'Cập nhật thông tin người dùng thành công',
-            ]);
+            $authorizationHeader = $request->header('Authorization');
+            if (strpos($authorizationHeader, 'Bearer ') === 0) {
+                $token = substr($authorizationHeader, 7);
+            } else {
+                $token = $request->header('Authorization');
+            }
+            $user = User::where('id', $request->input('uptAccId'))
+                ->whereNotNull('api_token')
+                ->first();
+            if($token !== null){
+                if ($user && $token === $user->api_token) {
+                    $request->validate([
+                        'uptemail' => [
+                            'required',
+                            Rule::unique('pdmv_users', 'email')->ignore($request->input('uptAccId'), 'user_id'),
+                            Rule::unique('pdmv_admins', 'email')->ignore($request->input('uptAccId'), 'admin_id'),
+                        ],
+                    ], [
+                        'uptemail.required' => 'Trường email là bắt buộc.',
+                        'uptemail.unique' => 'Email này đã được sử dụng cho tài khoản khác, vui lòng sử dụng email khác!',
+                    ]);
+        
+                    $user_id = $request->input('uptAccId'); // Lấy ID của người dùng đã đăng nhập
+                    $email = $request->input('uptemail');
+                    $fullname = $request->input('uptfullname');
+        
+                    // Gọi stored procedure user_update truyền tham số vào
+                    DB::select('CALL user_update(?, ?, ?)', [$user_id, $email, $fullname]);
+        
+                    DB::table('users')
+                    ->join('pdmv_users', 'users.id', '=', 'pdmv_users.user_id')
+                    ->where('users.id', '=', $user_id) // Replace $yourUserId with the specific user ID you want to update
+                    ->update([
+                        'users.email' => DB::raw('pdmv_users.email'),
+                        'users.fullname' => DB::raw('pdmv_users.fullname'),
+                    ]);
+        
+                    return response()->json([
+                        'success' => true,
+                        'message' => 'Cập nhật thông tin người dùng thành công',
+                    ]);
+                } else {
+                    return response()->json([
+                        'success' => false,
+                        'message' => 'Bạn không có quyền này',
+                    ]);
+                }
+            } else {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Bạn không có quyền này',
+                ]);
+            }
         } catch (\Exception $e) {
             // Xử lý lỗi ở đây, ví dụ: in thông báo lỗi
             return response()->json([
@@ -330,40 +366,57 @@ class AuthController extends Controller
     
     public function modalUpateUserPassword(Request $request){
         try {
-            // Validate the input data
-            $request->validate([
-                'uptoldpassword' => 'required',
-                'uptnewpassword' => 'required|min:5',
-                'uptconfirmpassword' => 'required|min:5', // You can adjust the validation rules as needed
-            ]);
-
-            // Get the current user
-            $user = Auth::user();
-
-            // Check if the old password matches the hashed password in the database
-            if (Hash::check($request->uptoldpassword, $user->password)) {
-                // Update the user's password with the new password
-                $newpass = bcrypt($request->uptnewpassword);
-                $user->password = $newpass;
-                $user->save();
-
-                DB::select('CALL user_changePassword(?, ?)', [$user->id, $newpass]);
-
-                return response()->json([
-                    'success' => true,
-                    'message' => 'Mật khẩu đã được thay đổi thành công.',
-                ]);
+            $authorizationHeader = $request->header('Authorization');
+            if (strpos($authorizationHeader, 'Bearer ') === 0) {
+                $token = substr($authorizationHeader, 7);
             } else {
-                return response()->json([
+                $token = $request->header('Authorization');
+            }
+            $userId = User::where('id', $request->input('changePassAccId'))
+                ->whereNotNull('api_token')
+                ->first();
+            if($token !== null){
+                if ($userId && $token === $userId->api_token) {
+                    // Validate the input data
+                    $request->validate([
+                        'uptoldpassword' => 'required',
+                        'uptnewpassword' => 'required|min:5',
+                        'uptconfirmpassword' => 'required|min:5', // You can adjust the validation rules as needed
+                    ]);
+    
+                    // Check if the old password matches the hashed password in the database
+                    if (Hash::check($request->uptoldpassword, $userId->password)) {
+                        // Update the user's password with the new password
+                        $newpass = bcrypt($request->uptnewpassword);
+                        $userId->password = $newpass;
+                        $userId->save();
+    
+                        DB::select('CALL user_changePassword(?, ?)', [$userId->id, $newpass]);
+    
+                        return response()->json([
+                            'success' => true,
+                            'message' => 'Mật khẩu đã được thay đổi thành công.',
+                        ]);
+                    } else {
+                        return response()->json([
+                            'success' => false,
+                            'message' => 'Mật khẩu cũ không đúng. Vui lòng kiểm tra lại.',
+                        ]);
+                    }
+                }else return response()->json([
                     'success' => false,
-                    'message' => 'Mật khẩu cũ không đúng. Vui lòng kiểm tra lại.',
+                    'message' => 'Bạn không có quyền này.',
                 ]);
             }
+            else return response()->json([
+                'success' => false,
+                'message' => 'Bạn không có quyền này.',
+            ]);
         } catch (\Exception $e) {
             // Xử lý lỗi ở đây, ví dụ: in thông báo lỗi
             return response()->json([
                 'success' => false,
-                'message' => $e->getMessage(),
+                'message' => 'Lỗi: '.$e->getMessage(),
             ]);
         }
     }
