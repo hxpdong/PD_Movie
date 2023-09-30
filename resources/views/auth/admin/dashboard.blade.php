@@ -202,7 +202,7 @@
         var usertb = document.getElementById("ustb");
         var admintb = document.getElementById("amtb");
         if(usertable){
-            axios.get('/api/admin/get-users')
+            axios.get('/api/admin/get-users/as/' + accId, { headers: headers })
             .then(function (response) {
                 if (response.status === 200) {
                     if (response.data.success === true) {
@@ -307,7 +307,7 @@
             });
         }
         if(admintable){
-            axios.get('/api/admin/get-admins')
+            axios.get('/api/admin/get-admins/as/' + accId, { headers: headers })
             .then(function (response) {
                 if (response.status === 200) {
                     if (response.data.success === true) {

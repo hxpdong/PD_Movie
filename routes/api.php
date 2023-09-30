@@ -59,8 +59,13 @@ Route::post('/postreport' , [MovieController::class, 'postError']);
 
 Route::get('/tags/{tagkw}', [MovieTagController::class, 'listMovieOf']);
 
-Route::get('/admin/get-users', [AccountController::class, 'getAllUser']);
-Route::get('/admin/get-admins', [AccountController::class, 'getAllAdmin']);
+Route::middleware(['pdmv_API_checkToken', 'pdmv_API_checkAdminRole'])->group(function () {
+    Route::get('/admin/get-users/as/{accid}', [AccountController::class, 'getAllUser']);
+});
+
+Route::middleware(['pdmv_API_checkToken', 'pdmv_API_checkSPAdminRole'])->group(function () {
+    Route::get('/admin/get-admins/as/{accid}', [AccountController::class, 'getAllAdmin']);
+});
 
 Route::put('/users/update', [AuthController::class, 'modalUpdateUserInfo']);
 Route::put('/users/changepassword', [AuthController::class, 'modalUpateUserPassword'])->name('modalChangePassword');

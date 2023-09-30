@@ -483,7 +483,7 @@ $(document).ready(function() {
         const formData = $(this).serialize();
 
         // Send a POST request with Axios
-        axios.post('{{ route('modalLogin') }}', formData)
+        axios.post('/modalLogin', formData)
             .then(response => {
                 if (response.data.success) {
                     const newToken = response.data.api_token;
@@ -532,7 +532,7 @@ $(document).ready(function() {
             const formData = $(this).serialize();
 
             // Send a POST request with Axios
-            axios.post('{{ route('modalRegister') }}', formData)
+            axios.post('/modalRegister', formData)
                 .then(response => {
                     Swal.close();
                     if (response.data.success) {

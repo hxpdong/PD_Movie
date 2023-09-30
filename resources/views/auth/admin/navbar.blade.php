@@ -118,3 +118,11 @@
         </div>
     </nav>
 </header>
+<script>
+    const accId = document.getElementById("authUserId").value;
+    const apiToken = localStorage.getItem('log_token');
+    const headers = {
+        'Authorization': apiToken,
+        'Content-Type': 'application/json'
+    };
+</script>

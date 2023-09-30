@@ -69,5 +69,8 @@ class Kernel extends HttpKernel
         'pdmv_checkIsUserOrGuest' => \App\Http\Middleware\PDMV_CheckTypeIsUserOrGuest::class,
         'pdmv_checkIsUser' =>\App\Http\Middleware\PDMV_CheckTypeIsUser::class,
         'pdmv_checkHaveKWSearch' =>\App\Http\Middleware\PDMV_CheckKwSearchParameter::class,
+        'pdmv_API_checkToken' => \App\Http\Middleware\PDMV_APICheckTokenMiddleware::class,
+        'pdmv_API_checkAdminRole' => \App\Http\Middleware\PDMV_APICheckAdminRole::class,
+        'pdmv_API_checkSPAdminRole' => \App\Http\Middleware\PDMV_APICheckSuperAdminRole::class,
     ];
 }
