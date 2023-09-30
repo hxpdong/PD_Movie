@@ -468,6 +468,7 @@
 <!-- end of change password modal -->
 
 <script>
+const apiToken = localStorage.getItem('log_token');
 var accId = document.getElementById("authUserId").value;
 var oldFullname = document.getElementById("uptfullname");
 if(oldFullname) oldFullname = oldFullname.value;

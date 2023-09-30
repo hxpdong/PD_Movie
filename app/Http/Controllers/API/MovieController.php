@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Session;
 use Carbon\Carbon;
+use App\Http\Controllers\Token;
+use App\Models\User;
 
 class MovieController extends Controller
 {
@@ -140,16 +142,52 @@ class MovieController extends Controller
 
     public function postcomment(Request $request)
     {
-        $usid = $request->accId;
-        $mid = $request->mId;
-        $cmt = $request->comment;
+        try{
+            $token = Token::getToken();
+            $user = User::where('id', $request->accId)
+                ->whereNotNull('api_token')
+                ->first();
+            if($token != null){
+                if ($user && $token === $user->api_token) {
 
-        // Insert the new user's account
-        DB::update('CALL comment_post(?, ?, ?)', [$usid, $mid, $cmt]);
+                    $request->validate([
+                        'accId' => ['required',],
+                        'mId' => ['required',],
+                        'comment' => ['required',]
+                    ], [
+                        'accId.required' => 'accId là bắt buộc.',
+                        'mId.required' => 'mId là bắt buộc.',
+                        'comment.required' => 'comment là bắt buộc.',
+                    ]);
 
-        return response()->json([
-            'success' => true
-        ]);
+                    $usid = $request->accId;
+                    $mid = $request->mId;
+                    $cmt = $request->comment;
+            
+                    // Insert the new user's account
+                    DB::update('CALL comment_post(?, ?, ?)', [$usid, $mid, $cmt]);
+            
+                    return response()->json([
+                        'success' => true
+                    ]);
+                }
+                else return response()->json([
+                    'success' => false,
+                    'message' => 'Bạn không có quyền này.',
+                    'uid1' => $request->accId
+                ]);
+            } else return response()->json([
+                'success' => false,
+                'message' => 'Bạn không có quyền này.',
+                'uid2' => $request->accId
+            ]);
+        } catch (\Exception $e) {
+            // Xử lý lỗi ở đây, ví dụ: in thông báo lỗi
+            return response()->json([
+                "error:" => $e->getMessage(),
+            ]);
+        }
+        
     }
 
     public function getRatingOf($uid, $mid){
@@ -166,43 +204,85 @@ class MovieController extends Controller
     }
 
     public function postRatingOf(Request $request){
-        $uid = $request->accId;
-        $mid = $request->mId;
-        $rating = $request->ratingpoint;
-        DB::update("CALL rating_post(?, ?, ?)", array($uid, $mid, $rating));
-        return response()->json([
-                'success' => true,
+        try{
+            $request->validate([
+                'accId' => ['required',],
+                'mId' => ['required',],
+                'ratingpoint' => ['required',]
+            ], [
+                'accId.required' => 'accId là bắt buộc.',
+                'mId.required' => 'mId là bắt buộc.',
+                'ratingpoint.required' => 'ratingpoint là bắt buộc.',
             ]);
-       
+            if(Token::checkToken($request->accId)){
+                $uid = $request->accId;
+                $mid = $request->mId;
+                $rating = $request->ratingpoint;
+                DB::update("CALL rating_post(?, ?, ?)", array($uid, $mid, $rating));
+                return response()->json([
+                        'success' => true,
+                    ]);
+            } else return response()->json([
+                'success' => false,
+                'message' => 'Bạn không có quyền này.'
+            ]);
+        } catch (\Exception $e) {
+            // Xử lý lỗi ở đây, ví dụ: in thông báo lỗi
+            return response()->json([
+                "error:" => $e->getMessage(),
+            ]);
+        }
     }
 
     public function dropRating($rtid){
-        $isDel = DB::select('CALL rating_drop(?)', array($rtid));
-        if($isDel){
+        try{
+            $accId = DB::select('select * from pdmv_ratings where rating_id=?', array($rtid));
+            $accId = $accId[0]->user_id;
+            if(Token::checkToken($accId)){
+                $isDel = DB::select('CALL rating_drop(?)', array($rtid));
+                if($isDel){
+                    return response()->json([
+                        'success' => true,
+                    ]);
+                }
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Không tồn tại rating'
+                ]);
+            } else return response()->json([
+                'success' => false,
+                'message' => 'Bạn không có quyền này.'
+            ]);
+        } catch (\Exception $e) {
+            // Xử lý lỗi ở đây, ví dụ: in thông báo lỗi
             return response()->json([
-                'success' => true,
+                "error:" => $e->getMessage(),
             ]);
         }
-        return response()->json([
-            'success' => false,
-            'message' => 'Không tồn tại rating'
-        ]);
     }
 
     public function dropComment($cmtid)
     {
         try{
-            $cmt = DB::select("CALL comment_get(?)", array($cmtid));
-            if($cmt){
-                DB::statement('CALL comment_drop(?)', [$cmtid]);
-                return response()->json([
-                    'success' => true
-                ]);
-            }else {
-                return response()->json([
-                    'success' => false
-                ]);
-            }
+            $accId = DB::select('select * from pdmv_comments where comment_id=?', array($cmtid));
+            $accId = $accId[0]->user_id;
+            if(Token::checkToken($accId)){
+                $cmt = DB::select("CALL comment_get(?)", array($cmtid));
+                if($cmt){
+                    DB::statement('CALL comment_drop(?)', [$cmtid]);
+                    return response()->json([
+                        'success' => true
+                    ]);
+                }else {
+                    return response()->json([
+                        'success' => false
+                    ]);
+                }
+            } else return response()->json([
+                'success' => false,
+                'message' => 'Bạn không có quyền này.'
+            ]);
+            
         }        
         catch (\Exception $e){
             return response()->json([
@@ -219,11 +299,19 @@ class MovieController extends Controller
           $cmt = "This comment is in error";  
         }
         try {
-            DB::update('CALL comment_edit(?,?);', array($cmtid,$cmt));
+            $accId = DB::select('select * from pdmv_comments where comment_id=?', array($cmtid));
+            $accId = $accId[0]->user_id;
+            if(Token::checkToken($accId)){
+                DB::update('CALL comment_edit(?,?);', array($cmtid,$cmt));
         
-            return response()->json([
-                'success' => true
+                return response()->json([
+                    'success' => true
+                ]);
+            } else return response()->json([
+                'success' => false,
+                'message' => 'Bạn không có quyền này.'
             ]);
+            
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,

@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
+use App\Http\Controllers\Token;
 
 class AuthController extends Controller
 {
@@ -301,12 +302,7 @@ class AuthController extends Controller
     public function modalUpdateUserInfo(Request $request)
     {
         try {
-            $authorizationHeader = $request->header('Authorization');
-            if (strpos($authorizationHeader, 'Bearer ') === 0) {
-                $token = substr($authorizationHeader, 7);
-            } else {
-                $token = $request->header('Authorization');
-            }
+            $token = Token::getToken();
             $user = User::where('id', $request->input('uptAccId'))
                 ->whereNotNull('api_token')
                 ->first();
@@ -366,12 +362,7 @@ class AuthController extends Controller
     
     public function modalUpateUserPassword(Request $request){
         try {
-            $authorizationHeader = $request->header('Authorization');
-            if (strpos($authorizationHeader, 'Bearer ') === 0) {
-                $token = substr($authorizationHeader, 7);
-            } else {
-                $token = $request->header('Authorization');
-            }
+            $token = Token::getToken();
             $userId = User::where('id', $request->input('changePassAccId'))
                 ->whereNotNull('api_token')
                 ->first();

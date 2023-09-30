@@ -392,10 +392,15 @@ function getComments(mid, page) {
                                 form.addEventListener("submit", function (event) {
                                     event.preventDefault(); // Ngăn form submit theo cách thông thường
                                     var editCommentUrl = '/api/editcomment/' + cmt.comment_id + "?editComment=" + document.getElementById("editComment" + cmt.comment_id).value;
+                                    const headers = {
+                                        'Authorization': apiToken,
+                                        'Content-Type': 'application/json'
+                                    };
                                     // Gửi request POST bằng AJAX hoặc Fetch API
                                     fetch(editCommentUrl, {
                                         method: "PUT",
                                         body: new FormData(form),
+                                        headers: headers
                                     })
                                         .then(function (response) {
                                             return response.json();
@@ -429,8 +434,13 @@ function getComments(mid, page) {
                                     if (result.isConfirmed) {
                                         var commentId = cmt.comment_id;
                                         var apiUrl = `/api/dropcomment/${commentId}`;
+                                        const headers = {
+                                            'Authorization': apiToken,
+                                            'Content-Type': 'application/json'
+                                        };
                                         fetch(apiUrl, {
-                                            method: "DELETE"
+                                            method: "DELETE",
+                                            headers: headers
                                         })
                                             .then(function (response) {
                                                 return response.json();
@@ -560,20 +570,35 @@ document.addEventListener("DOMContentLoaded", function () {
         }));
 
         function sendRatingToAPI(rating, acclogged, currentmov) {
-            axios.post('/api/postrating', {
+            const apiUrl = '/api/postrating';
+            const data = {
                 accId: acclogged,
                 mId: currentmov,
                 ratingpoint: rating
+            };
+            const headers = {
+                'Authorization': apiToken,
+                'Content-Type': 'application/json'
+            };
+            fetch(apiUrl, {
+                method: 'POST',
+                headers: headers,
+                body: JSON.stringify(data)
             })
-                .then(function (response) {
-                    // Xử lý phản hồi từ API nếu cần
-                })
-                .catch(function (error) {
-                    console.error(error);
-                });
-        }
-
-
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                // Handle the response from the API if needed
+                return response.json(); // If the response is JSON
+            })
+            .then(data => {
+                // Process the data returned by the API
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        }        
 
         // Thêm một trường input ẩn vào biểu mẫu để chứa giá trị accId
         var input = document.createElement("input");
@@ -595,9 +620,24 @@ document.addEventListener("DOMContentLoaded", function () {
             event.preventDefault(); // Ngăn form submit theo cách thông thường
             var postCommentUrl = '/api/postcomment';
             // Gửi request POST bằng AJAX hoặc Fetch API
+            const headers = {
+                'Authorization': apiToken,
+                'Content-Type': 'application/json'
+            };
+            // Lấy dữ liệu từ form và chuyển đổi thành đối tượng JavaScript
+            const formData = new FormData(form);
+            const formDataObject = {};
+            formData.forEach((value, key) => {
+                formDataObject[key] = value;
+            });
+            // Chuyển đổi đối tượng JavaScript thành chuỗi JSON
+            const jsonData = JSON.stringify(formDataObject);
+
+            
             fetch(postCommentUrl, {
                 method: "POST",
-                body: new FormData(form),
+                body: jsonData,
+                headers: headers
             })
                 .then(function (response) {
                     return response.json();
