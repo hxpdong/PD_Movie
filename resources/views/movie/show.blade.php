@@ -133,9 +133,9 @@
                             @if(auth()->check())
                             <div class="star-rating">
                                 <input type="radio" name="rating" id="star5" value="5" />
-                                <label for="star5" title="Rất tốt"></label>
+                                <label for="star5" title="Rất hay"></label>
                                 <input type="radio" name="rating" id="star4" value="4" />
-                                <label for="star4" title="Tốt"></label>
+                                <label for="star4" title="Hay"></label>
                                 <input type="radio" name="rating" id="star3" value="3" />
                                 <label for="star3" title="Bình thường"></label>
                                 <input type="radio" name="rating" id="star2" value="2" />

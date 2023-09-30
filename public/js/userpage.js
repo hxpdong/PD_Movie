@@ -3,7 +3,7 @@ var uid = null;
 var currentCmtPage = 1;
 var currentRtPage = 1;
 document.addEventListener("DOMContentLoaded", function () {
-    console.log('UID1: ', uid);
+    //console.log('UID1: ', uid);
     var username = getUsernameFromURL();
     if (username) {
         getUserInfo(username);
@@ -39,7 +39,7 @@ function getUserInfo(username) {
                 usernameElement.innerHTML = userInfo.usname;
                 uidElement.innerHTML = userInfo.user_id;
                 uid = userInfo.user_id;
-                console.log('UID2: ', uid);
+                //console.log('UID2: ', uid);
                 getSimilarityUsers(uid);
                 getCommentList(currentCmtPage, uid);
                 getRatingList(currentRtPage, uid);
@@ -534,7 +534,7 @@ function getRatingList(page, user_id) {
 
                         var starRatingDiv = document.createElement("div");
                         starRatingDiv.className = "star-rating";
-                        var starTitles = ["Rất tệ", "Tệ", "Bình thường", "Tốt", "Rất tốt"];
+                        var starTitles = ["Rất tệ", "Tệ", "Bình thường", "Hay", "Rất hay"];
                         for (var i = 5; i >= 1; i--) {
                             var starInput = document.createElement("input");
                             starInput.type = "radio";
