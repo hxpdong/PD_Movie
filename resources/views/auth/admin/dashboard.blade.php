@@ -1,5 +1,6 @@
 <html>
 @include ('component.head-script')
+
 <head>
     <!--Regular Datatables CSS-->
     <link href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css" rel="stylesheet">
@@ -100,8 +101,8 @@
 
 <body>
     <script>
-        var userName = "{{ auth()->user()->name }}";
-        console.log("day ne: " + userName);
+    var userName = "{{ auth()->user()->name }}";
+    console.log("day ne: " + userName);
     </script>
     @if(auth()->check())
     <!-- Trang của bạn.blade.php -->
@@ -119,7 +120,7 @@
                     <div class="w-full px-6 sm:w-1/2 xl:w-1/3 my-2" onclick="showAccTable(1)">
                         <div class="flex items-center px-5 py-6 bg-white rounded-md shadow-sm">
                             <div class="p-3 bg-green-500 flex justify-center items-center h-16 rounded-full">
-                            <i class="fa-solid fa-users-gear fa-2xl" style="color: #ffffff;"></i>
+                                <i class="fa-solid fa-users-gear fa-2xl" style="color: #ffffff;"></i>
                             </div>
 
                             <div class="mx-5">
@@ -134,7 +135,7 @@
                     <div class="w-full px-6 sm:w-1/2 xl:w-1/3 my-2" onclick="showAccTable(2)">
                         <div class="flex items-center px-5 py-6 bg-white rounded-md shadow-sm">
                             <div class="p-3 bg-indigo-600 flex justify-center items-center h-16 rounded-full">
-                            <i class="fa-solid fa-users fa-2xl" style="color: #ffffff;"></i>
+                                <i class="fa-solid fa-users fa-2xl" style="color: #ffffff;"></i>
                             </div>
 
                             <div class="mx-5">
@@ -145,7 +146,7 @@
                     </div>
                     <!--end User tag-->
                 </div>
-                <div id="acctable" class="flex flex-col">
+                <div id="acctable" class="flex flex-col mx-10">
                     <!--User table-->
                     <div class="bg-white p-4 my-5" id="ustb">
                         <div class="font-bold text-xl pb-4">Người dùng</div>
@@ -197,21 +198,23 @@
     <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/responsive/2.2.3/js/dataTables.responsive.min.js"></script>
     <script>
-        var usertable = document.getElementById("tbd-usertable");
-        var admintable = document.getElementById("tbd-admintable");
-        var usertb = document.getElementById("ustb");
-        var admintb = document.getElementById("amtb");
-        if(usertable){
-            axios.get('/api/admin/get-users/as/' + accId, { headers: headers })
-            .then(function (response) {
+    var usertable = document.getElementById("tbd-usertable");
+    var admintable = document.getElementById("tbd-admintable");
+    var usertb = document.getElementById("ustb");
+    var admintb = document.getElementById("amtb");
+    if (usertable) {
+        axios.get('/api/admin/get-users/as/' + accId, {
+                headers: headers
+            })
+            .then(function(response) {
                 if (response.status === 200) {
                     if (response.data.success === true) {
                         var usl = response.data.usersList;
-                        usl.forEach(function (us) {
+                        usl.forEach(function(us) {
                             var newRow = usertable.insertRow();
                             var nameCell = newRow.insertCell(0);
                             nameCell.classList.add("text-center");
-                            if(us.fullname)
+                            if (us.fullname)
                                 nameCell.textContent = us.fullname;
                             else {
                                 nameCell.textContent = "_";
@@ -224,7 +227,7 @@
                             emailCell.textContent = us.email;
                             emailCell.classList.add("text-center");
                             var stateCell = newRow.insertCell(3);
-                            if(us.isLocked == 1){
+                            if (us.isLocked == 1) {
                                 stateCell.textContent = 'Bị khóa';
                                 stateCell.classList.add('text-red-500');
                             } else {
@@ -242,7 +245,7 @@
                             updateIcon.textContent = "manage_accounts";
                             updateIcon.style.color = "#1355c9";
                             updateButton.appendChild(updateIcon);
-                            updateButton.onclick = function () {
+                            updateButton.onclick = function() {
                                 
                             }
                             actionCell.appendChild(updateButton);
@@ -256,8 +259,8 @@
                             changePasswordIcon.textContent = "password";
                             changePasswordIcon.style.color = "#ffc800";
                             changePasswordButton.appendChild(changePasswordIcon);
-                            changePasswordButton.onclick = function () {
-                                
+                            changePasswordButton.onclick = function() {
+
                             }
                             actionCell.appendChild(changePasswordButton);
 
@@ -266,7 +269,7 @@
                             deleteButton.classList.add("border-2", "p-2", "rounded-lg");
                             var deleteIcon = document.createElement("span");
                             deleteIcon.className = "material-icons";
-                            if(us.isLocked == 1){
+                            if (us.isLocked == 1) {
                                 deleteButton.title = "Mở khóa người dùng";
                                 deleteIcon.textContent = "lock_open";
                                 deleteIcon.classList.add('text-green-500');
@@ -276,14 +279,14 @@
                                 deleteIcon.classList.add('text-red-500');
                             }
                             deleteButton.appendChild(deleteIcon);
-                            deleteButton.onclick = function () {
+                            deleteButton.onclick = function() {
                                 var url = '/api/admin/lock-user/' + us.user_id + '/as/' + accId;
                                 $.ajax({
                                     url: url,
                                     type: 'PUT',
                                     headers: headers,
-                                    success: function (response) {
-                                        if(response.currentState == 0){
+                                    success: function(response) {
+                                        if (response.currentState == 0) {
                                             stateCell.textContent = 'Hoạt động';
                                             stateCell.classList.remove('text-red-500');
                                             stateCell.classList.add('text-green-500');
@@ -292,7 +295,7 @@
                                             deleteIcon.textContent = "lock";
                                             deleteIcon.classList.remove('text-green-500');
                                             deleteIcon.classList.add('text-red-500');
-                                        } else if(response.currentState == 1) {
+                                        } else if (response.currentState == 1) {
                                             stateCell.textContent = 'Bị khóa';
                                             stateCell.classList.remove('text-green-500');
                                             stateCell.classList.add('text-red-500');
@@ -303,7 +306,7 @@
                                             deleteIcon.classList.add('text-green-500');
                                         }
                                     },
-                                    error: function (error) {
+                                    error: function(error) {
                                         console.log("error: " + error);
                                     }
                                 });
@@ -312,30 +315,30 @@
 
                         });
                         $('#usertable').DataTable({
-                            responsive: true,
-                            language: {
-                                "url": "//cdn.datatables.net/plug-ins/1.10.19/i18n/Vietnamese.json" // URL của tệp ngôn ngữ tiếng Việt
-                            },
-                            lengthMenu: [5, 10, 15, 20],
-                            responsive: {
-                                details: {
-                                    display: $.fn.dataTable.Responsive.display.modal({
-                                        header: function (row) {
-                                            var data = row.data();
-                                            return 'Thông tin của ' + data[2];
-                                        }
-                                    }),
-                                    renderer: $.fn.dataTable.Responsive.renderer.tableAll({
-                                        tableClass: 'table'
-                                    })
+                                responsive: true,
+                                language: {
+                                    "url": "//cdn.datatables.net/plug-ins/1.10.19/i18n/Vietnamese.json" // URL của tệp ngôn ngữ tiếng Việt
+                                },
+                                lengthMenu: [5, 10, 15, 20],
+                                responsive: {
+                                    details: {
+                                        display: $.fn.dataTable.Responsive.display.modal({
+                                            header: function(row) {
+                                                var data = row.data();
+                                                return 'Thông tin của ' + data[2];
+                                            }
+                                        }),
+                                        renderer: $.fn.dataTable.Responsive.renderer.tableAll({
+                                            tableClass: 'table'
+                                        })
+                                    }
                                 }
-                            }
-                        })
-                        .columns.adjust()
-                        .responsive.recalc();
+                            })
+                            .columns.adjust()
+                            .responsive.recalc();
                         document.getElementById("numOfUser").textContent = response.data.totaluser;
                     }
-                } else if(response.status === 404 || response.status === 500) {
+                } else if (response.status === 404 || response.status === 500) {
                     Swal.fire({
                         icon: 'error',
                         title: 'Lỗi!',
@@ -343,21 +346,23 @@
                     });
                 }
             })
-            .catch(function (error) {
+            .catch(function(error) {
                 console.error('Lỗi trong quá trình gửi yêu cầu:', error);
             });
-        }
-        if(admintable){
-            axios.get('/api/admin/get-admins/as/' + accId, { headers: headers })
-            .then(function (response) {
+    }
+    if (admintable) {
+        axios.get('/api/admin/get-admins/as/' + accId, {
+                headers: headers
+            })
+            .then(function(response) {
                 if (response.status === 200) {
                     if (response.data.success === true) {
                         var usl = response.data.adminsList;
-                        usl.forEach(function (us) {
+                        usl.forEach(function(us) {
                             var newRow = admintable.insertRow();
                             var nameCell = newRow.insertCell(0);
                             nameCell.classList.add("text-center");
-                            if(us.fullname)
+                            if (us.fullname)
                                 nameCell.textContent = us.fullname;
                             else {
                                 nameCell.textContent = "_";
@@ -373,7 +378,7 @@
                             phoneCell.textContent = us.phone;
                             phoneCell.classList.add("text-center");
                             var stateCell = newRow.insertCell(4);
-                            if(us.isLocked == 1){
+                            if (us.isLocked == 1) {
                                 stateCell.textContent = 'Bị khóa';
                                 stateCell.classList.add('text-red-500');
                             } else {
@@ -409,7 +414,7 @@
                             deleteButton.classList.add("border-2", "p-2", "rounded-lg");
                             var deleteIcon = document.createElement("span");
                             deleteIcon.className = "material-icons";
-                            if(us.isLocked == 1){
+                            if (us.isLocked == 1) {
                                 deleteButton.title = "Mở khóa người dùng";
                                 deleteIcon.textContent = "lock_open";
                                 deleteIcon.classList.add('text-green-500');
@@ -419,14 +424,14 @@
                                 deleteIcon.classList.add('text-red-500');
                             }
                             deleteButton.appendChild(deleteIcon);
-                            deleteButton.onclick = function () {
+                            deleteButton.onclick = function() {
                                 var url = '/api/admin/lock-admin/' + us.admin_id + '/as/' + accId;
                                 $.ajax({
                                     url: url,
                                     type: 'PUT',
                                     headers: headers,
-                                    success: function (response) {
-                                        if(response.currentState == 0){
+                                    success: function(response) {
+                                        if (response.currentState == 0) {
                                             stateCell.textContent = 'Hoạt động';
                                             stateCell.classList.remove('text-red-500');
                                             stateCell.classList.add('text-green-500');
@@ -435,7 +440,7 @@
                                             deleteIcon.textContent = "lock";
                                             deleteIcon.classList.remove('text-green-500');
                                             deleteIcon.classList.add('text-red-500');
-                                        } else if(response.currentState == 1) {
+                                        } else if (response.currentState == 1) {
                                             stateCell.textContent = 'Bị khóa';
                                             stateCell.classList.remove('text-green-500');
                                             stateCell.classList.add('text-red-500');
@@ -446,7 +451,7 @@
                                             deleteIcon.classList.add('text-green-500');
                                         }
                                     },
-                                    error: function (error) {
+                                    error: function(error) {
                                         console.log("error: " + error);
                                     }
                                 });
@@ -455,30 +460,30 @@
 
                         });
                         $('#admintable').DataTable({
-                            responsive: true,
-                            language: {
-                                "url": "//cdn.datatables.net/plug-ins/1.10.19/i18n/Vietnamese.json" // URL của tệp ngôn ngữ tiếng Việt
-                            },
-                            lengthMenu: [5, 10, 15, 20],
-                            responsive: {
-                                details: {
-                                    display: $.fn.dataTable.Responsive.display.modal({
-                                        header: function (row) {
-                                            var data = row.data();
-                                            return 'Thông tin của ' + data[2];
-                                        }
-                                    }),
-                                    renderer: $.fn.dataTable.Responsive.renderer.tableAll({
-                                        tableClass: 'table'
-                                    })
+                                responsive: true,
+                                language: {
+                                    "url": "//cdn.datatables.net/plug-ins/1.10.19/i18n/Vietnamese.json" // URL của tệp ngôn ngữ tiếng Việt
+                                },
+                                lengthMenu: [5, 10, 15, 20],
+                                responsive: {
+                                    details: {
+                                        display: $.fn.dataTable.Responsive.display.modal({
+                                            header: function(row) {
+                                                var data = row.data();
+                                                return 'Thông tin của ' + data[2];
+                                            }
+                                        }),
+                                        renderer: $.fn.dataTable.Responsive.renderer.tableAll({
+                                            tableClass: 'table'
+                                        })
+                                    }
                                 }
-                            }
-                        })
-                        .columns.adjust()
-                        .responsive.recalc();
+                            })
+                            .columns.adjust()
+                            .responsive.recalc();
                         document.getElementById("numOfAdmin").textContent = response.data.totaladmin;
                     }
-                } else if(response.status === 404 || response.status === 500) {
+                } else if (response.status === 404 || response.status === 500) {
                     Swal.fire({
                         icon: 'error',
                         title: 'Lỗi!',
@@ -486,27 +491,28 @@
                     });
                 }
             })
-            .catch(function (error) {
+            .catch(function(error) {
                 console.error('Lỗi trong quá trình gửi yêu cầu:', error);
             });
+    }
+
+    function showAccTable(num) {
+        switch (num) {
+            case 1:
+
+                break;
+
+            case 2:
+
+                break;
+
+            default:
+                break;
         }
 
-        function showAccTable(num){
-            switch (num){
-                case 1:
-                    
-                    break;
-
-                case 2:
-                   
-                    break;
-                
-                default:
-                    break;
-            }
-                
-        }
+    }
     </script>
 </body>
 @include ('component.footer')
+
 </html>
