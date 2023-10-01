@@ -107,7 +107,7 @@
     @if(auth()->check())
     <!-- Trang của bạn.blade.php -->
     @include('auth.admin.navbar')
-    <div class="flex w-full bg-gray-200 h-full">
+    <div class="flex w-full bg-gray-200 h-auto">
         @include('auth.admin.sidebar')
 
         <!-- Nội dung trang chính của bạn -->
@@ -146,7 +146,7 @@
                     </div>
                     <!--end User tag-->
                 </div>
-                <div id="acctable" class="flex flex-col mx-10">
+                <div id="acctable" class="flex flex-col mx-5">
                     <!--User table-->
                     <div class="bg-white p-4 my-5" id="ustb">
                         <div class="font-bold text-xl pb-4">Người dùng</div>
@@ -192,6 +192,7 @@
             </div>
         </div>
     </div>
+    @include ('component.footer')
     @endif
     <script src="/js/checkAdminPage.js"></script>
     <!--Datatables -->
@@ -513,6 +514,4 @@
     }
     </script>
 </body>
-@include ('component.footer')
-
 </html>
