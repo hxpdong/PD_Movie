@@ -1116,6 +1116,28 @@ END //
 DELIMITER ;
 
 DELIMITER //
+CREATE PROCEDURE admin_update(
+    IN p_admin_id INT,
+    IN p_email VARCHAR(255),
+    IN p_fullname VARCHAR(255),
+    IN p_phone VARCHAR(255)
+)
+BEGIN
+    -- Kiểm tra xem user_id có tồn tại trong bảng pdmv_users không
+    IF EXISTS (SELECT 1 FROM pdmv_admins WHERE admin_id = p_admin_id) THEN
+        -- Cập nhật email và fullname cho user
+        UPDATE pdmv_admins
+        SET email = p_email,
+            fullname = p_fullname,
+            phone = p_phone
+        WHERE admin_id = p_admin_id;
+        
+        SELECT 'Cập nhật thông tin thành công' AS result;
+    END IF;
+END //
+DELIMITER ;
+
+DELIMITER //
 CREATE PROCEDURE user_changePassword(
     IN p_user_id INT,
     IN p_newpassword VARCHAR(255)

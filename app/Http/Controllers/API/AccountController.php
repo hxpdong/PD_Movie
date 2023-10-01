@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Models\User;
+use Illuminate\Validation\Rule;
 
 class AccountController extends Controller
 {
@@ -144,6 +145,59 @@ class AccountController extends Controller
                 'success' => false,
                 'error' => 'Server error when getting admins data: ' . $e->getMessage()
             ], 500); // Sử dụng 500 Internal Server Error cho lỗi ngoại lệ
+        }
+    }
+
+    public function changeAdminInfo($uid, Request $request)
+    {
+        try {
+            $email = $request->input('email');
+            $fullname = $request->input('fullname');
+            $phone = $request->input('phone');
+            $request->validate([
+                'email' => [
+                    'required',
+                    Rule::unique('pdmv_users', 'email')->ignore($uid, 'user_id'),
+                    Rule::unique('pdmv_admins', 'email')->ignore($uid, 'admin_id'),
+                ],
+                'phone' => 'required'
+            ], [
+                'email.required' => 'Trường email là bắt buộc.',
+                'email.unique' => 'Email này đã được sử dụng cho tài khoản khác, vui lòng sử dụng email khác!',
+                'phone.required' => 'Trường điện thoại là bắt buộc.'
+            ]);
+
+            // Gọi stored procedure user_update truyền tham số vào
+            $result = DB::select('CALL admin_update(?, ?, ?, ?)', [$uid, $email, $fullname, $phone]);
+            if($result){
+                DB::table('users')
+                ->join('pdmv_admins', 'users.id', '=', 'pdmv_admins.admin_id')
+                ->where('users.id', '=', $uid) // Replace $yourUserId with the specific user ID you want to update
+                ->update([
+                    'users.email' => DB::raw('pdmv_admins.email'),
+                    'users.fullname' => DB::raw('pdmv_admins.fullname'),
+                ]);
+    
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Cập nhật thông tin người dùng thành công',
+                ]);
+            } else {
+                return response()->json([
+                    'success' => false,
+                    'error' => true,
+                    'message' => 'Không cập nhật được',
+                ]);
+            }
+            
+        }
+        catch (\Exception $e) {
+            // Xử lý lỗi ở đây, ví dụ: in thông báo lỗi
+            return response()->json([
+                'success' => false,
+                'error' => true,
+                'message' => $e->getMessage(),
+            ]);
         }
     }
 }

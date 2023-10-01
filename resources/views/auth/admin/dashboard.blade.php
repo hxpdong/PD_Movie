@@ -397,6 +397,89 @@
                             updateIcon.textContent = "manage_accounts";
                             updateIcon.style.color = "#1355c9";
                             updateButton.appendChild(updateIcon);
+                            updateButton.onclick = function() {
+                                var newfullname;
+                                var newemail;
+                                var newphone;
+                                Swal.fire({
+                                    title: "Cập nhật thông tin quản trị viên",
+                                    html: `
+                                        <form id="updateForm">
+                                        <label for="fullName">Họ và Tên</label>
+                                        <input type="text" id="fullname" name="fullname" class="swal2-input" required value="${us.fullname}">
+                                        <label for="email">Email</label>
+                                        <input type="email" id="email" name="email" class="swal2-input" required value="${us.email}">
+                                        <label for="phone">Số điện thoại</label>
+                                        <input type="text" id="phone" name="phone" class="swal2-input" required value="${us.phone}">
+                                        </form>
+                                    `,
+                                    showCancelButton: true,
+                                    confirmButtonText: "Cập nhật",
+                                    showLoaderOnConfirm: true,
+                                    preConfirm: () => {
+                                        const apiToken = localStorage.getItem("log_token");
+                                        const fullname = document.getElementById("fullname")
+                                            .value;
+                                        const email = document.getElementById("email")
+                                        .value;
+                                        const phone = document.getElementById("phone")
+                                        .value;
+                                        newfullname = fullname;
+                                        newemail = email;
+                                        newphone = phone;
+                                        return fetch("/api/admin/changeInfo-admin/"+us.admin_id+"/as/"+accId, {
+                                                method: "PUT",
+                                                headers: {
+                                                    Authorization: apiToken,
+                                                    "Content-Type": "application/x-www-form-urlencoded",
+                                                },
+                                                body: new URLSearchParams({
+                                                    fullname,
+                                                    email,
+                                                    phone
+                                                }).toString(),
+                                            })
+                                            .then((response) => {
+                                                if (!response.ok) {
+                                                    throw new Error(response
+                                                    .statusText);
+                                                }
+                                                return response.json();
+                                            })
+                                            .catch((error) => {
+                                                Swal.showValidationMessage(
+                                                    `Request failed: ${error}`);
+                                            });
+                                    },
+                                    allowOutsideClick: () => !Swal.isLoading(),
+                                }).then((result) => {
+                                    if (result.isConfirmed) {
+                                        const response = result.value;
+                                        if (response.success) {
+                                            Swal.fire({
+                                                icon: "success",
+                                                title: "Cập nhật thông tin thành công",
+                                                confirmButtonText: "OK",
+                                            }).then((result) => {
+                                                if (result.isConfirmed) {
+                                                    nameCell.textContent = newfullname;
+                                                    emailCell.textContent = newemail;
+                                                    phoneCell.textContent = newphone;
+                                                    us.fullname = newfullname;
+                                                    us.email = newemail;
+                                                    us.phone = newphone;
+                                                }
+                                            });
+                                        } else {
+                                            Swal.fire({
+                                                icon: "error",
+                                                title: "Lỗi!",
+                                                text: "Lỗi: " + response.message
+                                            });
+                                        }
+                                    }
+                                });
+                            }
                             actionCell.appendChild(updateButton);
 
                             // Tạo nút Đổi mật khẩu
@@ -408,6 +491,9 @@
                             changePasswordIcon.textContent = "password";
                             changePasswordIcon.style.color = "#ffc800";
                             changePasswordButton.appendChild(changePasswordIcon);
+                            changePasswordButton.onclick = function() {
+
+                            }
                             actionCell.appendChild(changePasswordButton);
 
                             // Tạo nút Xóa
@@ -514,4 +600,5 @@
     }
     </script>
 </body>
+
 </html>
