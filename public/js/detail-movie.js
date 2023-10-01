@@ -410,12 +410,25 @@ function getComments(mid, page) {
                                                 getComments(mid, currentCmtPage);
                                             } else {
                                                 // Xử lý trường hợp không thành công (VD: hiển thị thông báo lỗi)
-                                                alert("Post failed. Please try again.");
+                                                Swal.fire({
+                                                    icon: 'error',
+                                                    title: 'Không thể thực hiện thao tác',
+                                                    html: 'Do bạn không có quyền hoặc tài khoản đang được đăng nhập ở nơi khác.<br/> Vui lòng đăng nhập lại!',
+                                                    confirmButtonText: 'Đăng nhập lại',
+                                                    allowOutsideClick: false,
+                                                }).then((result) => {
+                                                    if (result.isConfirmed) {
+                                                        window.location.href = '/logoutHeader';
+                                                    }
+                                                });
                                             }
                                         })
                                         .catch(function (error) {
-                                            // Xử lý lỗi kết nối hoặc lỗi từ server
-                                            alert("An error occurred. Please try again later.");
+                                            Swal.fire({
+                                                icon: 'error',
+                                                title: 'An error occurred: ' + error,
+                                                html: 'Please try again later',
+                                            });
                                         });
                                 });
 
@@ -447,9 +460,7 @@ function getComments(mid, page) {
                                             })
                                             .then(function (data) {
                                                 if (data.success === true) {
-                                                    // Thực hiện hành động nếu success là true (VD: điều hướng hoặc hiển thị thông báo)
-                                                    //alert("Post successful!\n");
-                                                    //getMovies(getPageFromURL());
+                                            
                                                     Swal.fire(
                                                         'Đã xóa!',
                                                         'Xóa bình luận thành công!',
@@ -459,17 +470,25 @@ function getComments(mid, page) {
                                                     getComments(mid, currentCmtPage);
                                                 } else {
                                                     // Xử lý trường hợp không thành công (VD: hiển thị thông báo lỗi)
-                                                    Swal.fire(
-                                                        'Xóa thất bại!',
-                                                        'Xóa bình luận thất bại!',
-                                                        'error'
-                                                    );
-                                                    console.log("xoa that bai");
+                                                    Swal.fire({
+                                                        icon: 'error',
+                                                        title: 'Không thể thực hiện thao tác',
+                                                        html: 'Do bạn không có quyền hoặc tài khoản đang được đăng nhập ở nơi khác.<br/> Vui lòng đăng nhập lại!',
+                                                        confirmButtonText: 'Đăng nhập lại',
+                                                        allowOutsideClick: false,
+                                                    }).then((result) => {
+                                                        if (result.isConfirmed) {
+                                                            window.location.href = '/logoutHeader';
+                                                        }
+                                                    });
                                                 }
                                             })
                                             .catch(function (error) {
-                                                // Xử lý lỗi kết nối hoặc lỗi từ server
-                                                alert("An error occurred. Please try again later.");
+                                                Swal.fire({
+                                                    icon: 'error',
+                                                    title: 'An error occurred: ' + error,
+                                                    html: 'Please try again later',
+                                                });
                                             });
                                     }
                                 });
@@ -585,20 +604,32 @@ document.addEventListener("DOMContentLoaded", function () {
                 headers: headers,
                 body: JSON.stringify(data)
             })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                // Handle the response from the API if needed
-                return response.json(); // If the response is JSON
-            })
-            .then(data => {
-                // Process the data returned by the API
-            })
-            .catch(error => {
-                console.error('Error:', error);
-            });
-        }        
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    } else if (!response.success){
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Không thể thực hiện thao tác',
+                            html: 'Do bạn không có quyền hoặc tài khoản đang được đăng nhập ở nơi khác.<br/> Vui lòng đăng nhập lại!',
+                            confirmButtonText: 'Đăng nhập lại',
+                            allowOutsideClick: false,
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                window.location.href = '/logoutHeader';
+                            }
+                        });
+                    }
+                    // Handle the response from the API if needed
+                    return response.json(); // If the response is JSON
+                })
+                .then(data => {
+                    // Process the data returned by the API
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        }
 
         // Thêm một trường input ẩn vào biểu mẫu để chứa giá trị accId
         var input = document.createElement("input");
@@ -633,7 +664,7 @@ document.addEventListener("DOMContentLoaded", function () {
             // Chuyển đổi đối tượng JavaScript thành chuỗi JSON
             const jsonData = JSON.stringify(formDataObject);
 
-            
+
             fetch(postCommentUrl, {
                 method: "POST",
                 body: jsonData,
@@ -644,20 +675,33 @@ document.addEventListener("DOMContentLoaded", function () {
                 })
                 .then(function (data) {
                     if (data.success === true) {
-                        // Thực hiện hành động nếu success là true (VD: điều hướng hoặc hiển thị thông báo)
-                        //alert("Post successful!\n");
-                        //getMovies(getPageFromURL());
+                        
                         document.getElementById("comment").value = '';
                         currentCmtPage = 1;
                         getComments(mid, currentCmtPage);
                     } else {
                         // Xử lý trường hợp không thành công (VD: hiển thị thông báo lỗi)
-                        alert("Post failed. Please try again.");
+
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Không thể thực hiện thao tác',
+                            html: 'Do bạn không có quyền hoặc tài khoản đang được đăng nhập ở nơi khác.<br/> Vui lòng đăng nhập lại!',
+                            confirmButtonText: 'Đăng nhập lại',
+                            allowOutsideClick: false,
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                window.location.href = '/logoutHeader';
+                            }
+                        });
+
                     }
                 })
                 .catch(function (error) {
-                    // Xử lý lỗi kết nối hoặc lỗi từ server
-                    alert("An error occurred. Please try again later.");
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'An error occurred: ' + error,
+                        html: 'Please try again later',
+                    });
                 });
         });
     }
@@ -768,10 +812,10 @@ function getLatestMovies() {
                         axios.get(posterUrl, { responseType: 'blob' }).then(function (response) {
                             var blob = new Blob([response.data]);
                             var objectURL = URL.createObjectURL(blob);
-                
+
                             // Lưu hình ảnh vào cache
                             localStorage.setItem(cacheKey, objectURL);
-                
+
                             // Đặt src của hình ảnh poster bằng URL từ cache
                             image.src = objectURL;
                         }).catch(function (error) {
@@ -864,10 +908,10 @@ function getRecommendedMovies() {
                         axios.get(posterUrl, { responseType: 'blob' }).then(function (response) {
                             var blob = new Blob([response.data]);
                             var objectURL = URL.createObjectURL(blob);
-                
+
                             // Lưu hình ảnh vào cache
                             localStorage.setItem(cacheKey, objectURL);
-                
+
                             // Đặt src của hình ảnh poster bằng URL từ cache
                             image.src = objectURL;
                         }).catch(function (error) {
@@ -960,10 +1004,10 @@ function getRelatedMovies() {
                         axios.get(posterUrl, { responseType: 'blob' }).then(function (response) {
                             var blob = new Blob([response.data]);
                             var objectURL = URL.createObjectURL(blob);
-                
+
                             // Lưu hình ảnh vào cache
                             localStorage.setItem(cacheKey, objectURL);
-                
+
                             // Đặt src của hình ảnh poster bằng URL từ cache
                             image.src = objectURL;
                         }).catch(function (error) {

@@ -604,10 +604,16 @@ $(document).ready(function() {
                     });
                 } else {
                     Swal.fire({
-                        icon: 'error',
-                        title: 'Không thể cập nhật thông tin',
-                        text: response.message
-                    });
+                            icon: 'error',
+                            title: 'Không thể thực hiện thao tác',
+                            html: 'Do bạn không có quyền hoặc tài khoản đang được đăng nhập ở nơi khác.<br/> Vui lòng đăng nhập lại!',
+                            confirmButtonText: 'Đăng nhập lại',
+                            allowOutsideClick: false,
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                window.location.href = '/logoutHeader';
+                            }
+                        });
                 }
             },
             error: function(error) {
@@ -676,12 +682,18 @@ $(document).ready(function() {
                                 };
                             });
                         } else {
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Không thể cập nhật mật khẩu',
-                            text: response.message
-                        });
-                    }
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Không thể thực hiện thao tác',
+                                html: 'Do bạn không có quyền hoặc tài khoản đang được đăng nhập ở nơi khác.<br/> Vui lòng đăng nhập lại!',
+                                confirmButtonText: 'Đăng nhập lại',
+                                allowOutsideClick: false,
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    window.location.href = '/logoutHeader';
+                                }
+                            });
+                        }
                 }
             })
         }

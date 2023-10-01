@@ -255,17 +255,25 @@ function getCommentList(page, user_id) {
                                                     li.parentNode.removeChild(li);
                                                 }
                                             } else {
-                                                Swal.fire(
-                                                    'Xóa thất bại!',
-                                                    'Xóa bình luận thất bại!',
-                                                    'error'
-                                                );
-                                                console.log("xoa that bai");
+                                                Swal.fire({
+                                                    icon: 'error',
+                                                    title: 'Không thể thực hiện thao tác',
+                                                    html: 'Do bạn không có quyền hoặc tài khoản đang được đăng nhập ở nơi khác.<br/> Vui lòng đăng nhập lại!',
+                                                    confirmButtonText: 'Đăng nhập lại',
+                                                    allowOutsideClick: false,
+                                                }).then((result) => {
+                                                    if (result.isConfirmed) {
+                                                        window.location.href = '/logoutHeader';
+                                                    }
+                                                });
                                             }
                                         })
                                         .catch(function (error) {
-                                            alert("An error occurred. Please try again later." + error);
-                                            console.trace();
+                                            Swal.fire({
+                                                icon: 'error',
+                                                title: 'An error occurred: ' + error,
+                                                html: 'Please try again later',
+                                            });
                                         });
                                 }
                             });
@@ -382,12 +390,25 @@ function getCommentList(page, user_id) {
                                             divBtn.removeChild(form);
                                             btnUpt.disabled = false;
                                         } else {
-                                            alert("Post failed. Please try again.");
+                                            Swal.fire({
+                                                icon: 'error',
+                                                title: 'Không thể thực hiện thao tác',
+                                                html: 'Do bạn không có quyền hoặc tài khoản đang được đăng nhập ở nơi khác.<br/> Vui lòng đăng nhập lại!',
+                                                confirmButtonText: 'Đăng nhập lại',
+                                                allowOutsideClick: false,
+                                            }).then((result) => {
+                                                if (result.isConfirmed) {
+                                                    window.location.href = '/logoutHeader';
+                                                }
+                                            });
                                         }
                                     })
                                     .catch(function (error) {
-                                        alert("An error occurred. Please try again later." + error);
-                                        console.trace();
+                                        Swal.fire({
+                                            icon: 'error',
+                                            title: 'An error occurred: ' + error,
+                                            html: 'Please try again later',
+                                        });
                                     });
                             });
 
@@ -494,17 +515,25 @@ function getRatingList(page, user_id) {
                                                     li.parentNode.removeChild(li);
                                                 }
                                             } else {
-                                                Swal.fire(
-                                                    'Xóa thất bại!',
-                                                    'Xóa bình luận thất bại!',
-                                                    'error'
-                                                );
-                                                console.log("xoa that bai");
+                                                Swal.fire({
+                                                    icon: 'error',
+                                                    title: 'Không thể thực hiện thao tác',
+                                                    html: 'Do bạn không có quyền hoặc tài khoản đang được đăng nhập ở nơi khác.<br/> Vui lòng đăng nhập lại!',
+                                                    confirmButtonText: 'Đăng nhập lại',
+                                                    allowOutsideClick: false,
+                                                }).then((result) => {
+                                                    if (result.isConfirmed) {
+                                                        window.location.href = '/logoutHeader';
+                                                    }
+                                                });
                                             }
                                         })
                                         .catch(function (error) {
-                                            alert("An error occurred. Please try again later." + error);
-                                            console.trace();
+                                            Swal.fire({
+                                                icon: 'error',
+                                                title: 'An error occurred: ' + error,
+                                                html: 'Please try again later',
+                                            });
                                         });
                                 }
                             });
@@ -661,6 +690,18 @@ function getRatingList(page, user_id) {
                             .then(response => {
                                 if (!response.ok) {
                                     throw new Error('Network response was not ok');
+                                } else if(!response.success){
+                                    Swal.fire({
+                                        icon: 'error',
+                                        title: 'Không thể thực hiện thao tác',
+                                        html: 'Do bạn không có quyền hoặc tài khoản đang được đăng nhập ở nơi khác.<br/> Vui lòng đăng nhập lại!',
+                                        confirmButtonText: 'Đăng nhập lại',
+                                        allowOutsideClick: false,
+                                    }).then((result) => {
+                                        if (result.isConfirmed) {
+                                            window.location.href = '/logoutHeader';
+                                        }
+                                    });
                                 }
                                 // Handle the response from the API if needed
                                 return response.json(); // If the response is JSON
