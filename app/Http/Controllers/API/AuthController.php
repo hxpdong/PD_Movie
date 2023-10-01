@@ -75,7 +75,7 @@ class AuthController extends Controller
                     $user->save();
 
                     return $user;
-                } else return response()->json(['message' => 'You are locked'], 404);
+                } else return response()->json(['message' => 'Bạn đã bị khóa'], 404);
             }
 
             return response()->json(['message' => 'Something went wrong'], 401);
@@ -270,7 +270,7 @@ class AuthController extends Controller
                     ]);
                 }
                 else return response()->json([
-                    'message' => "You are locked",
+                    'message' => "Bạn đã bị khóa",
                 ]);
             } else {
                 return response()->json([

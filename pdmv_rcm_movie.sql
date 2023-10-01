@@ -1035,7 +1035,7 @@ DELIMITER ;
 DELIMITER //
 CREATE PROCEDURE user_getAll()
 BEGIN
-    SELECT pa.usname, pa.acctype_id, pu.*
+    SELECT pa.usname, pa.acctype_id, pa.isLocked, pu.*
     FROM pdmv_users pu JOIN pdmv_accounts pa ON pu.user_id = pa.acc_id;
 END //
 DELIMITER ;
@@ -1057,7 +1057,7 @@ VALUES
 DELIMITER //
 CREATE PROCEDURE admin_getAll()
 BEGIN
-    SELECT pa.usname, pa.acctype_id, pu.*
+    SELECT pa.usname, pa.acctype_id, pa.isLocked, pu.*
     FROM pdmv_admins pu JOIN pdmv_accounts pa ON pu.admin_id = pa.acc_id;
 END //
 DELIMITER ;
@@ -1202,6 +1202,18 @@ ADD COLUMN isLocked TINYINT(1) DEFAULT 0;
 UPDATE pdmv_accounts
 SET isLocked = 1
 WHERE acc_id IN (19, 22, 24);
+
+
+DELIMITER //
+CREATE PROCEDURE account_changeLock (IN p_uid TEXT)
+BEGIN
+    UPDATE pdmv_accounts
+    SET isLocked = CASE WHEN isLocked = 0 THEN 1 ELSE 0 END
+    WHERE acc_id = p_uid;
+    
+    SELECT isLocked FROM pdmv_accounts WHERE acc_id = p_uid;
+END//
+DELIMITER ;
 
 /* LARAVEL
 INSERT INTO users (id, name, password, acctype_id)

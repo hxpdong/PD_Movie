@@ -153,10 +153,10 @@
                             style="width:100%; padding-top: 1em;  padding-bottom: 1em;">
                             <thead>
                                 <tr>
-                                    <th data-priority="1">Id</th>
-                                    <th data-priority="2">Họ tên</th>
-                                    <th data-priority="3">Tên tài khoản</th>
-                                    <th data-priority="4">Email</th>
+                                    <th data-priority="1">Họ tên</th>
+                                    <th data-priority="2">Tên tài khoản</th>
+                                    <th data-priority="3">Email</th>
+                                    <th data-priority="4">Trạng thái</th>
                                     <th data-priority="5">Thao tác</th>
                                 </tr>
                             </thead>
@@ -173,11 +173,11 @@
                             style="width:100%; padding-top: 1em;  padding-bottom: 1em;">
                             <thead>
                                 <tr>
-                                    <th data-priority="1">Id</th>
-                                    <th data-priority="2">Họ tên</th>
-                                    <th data-priority="3">Tên tài khoản</th>
-                                    <th data-priority="4">Email</th>
-                                    <th data-priority="5">Số điện thoại</th>
+                                    <th data-priority="1">Họ tên</th>
+                                    <th data-priority="2">Tên tài khoản</th>
+                                    <th data-priority="3">Email</th>
+                                    <th data-priority="4">Số điện thoại</th>
+                                    <th data-priority="5">Trạng thái</th>
                                     <th data-priority="6">Thao tác</th>
                                 </tr>
                             </thead>
@@ -209,10 +209,7 @@
                         var usl = response.data.usersList;
                         usl.forEach(function (us) {
                             var newRow = usertable.insertRow();
-                            var idCell = newRow.insertCell(0);
-                            idCell.textContent = us.user_id;
-                            idCell.classList.add("text-center");
-                            var nameCell = newRow.insertCell(1);
+                            var nameCell = newRow.insertCell(0);
                             nameCell.classList.add("text-center");
                             if(us.fullname)
                                 nameCell.textContent = us.fullname;
@@ -220,12 +217,21 @@
                                 nameCell.textContent = "_";
                                 nameCell.classList.add("italic");
                             }
-                            var usernameCell = newRow.insertCell(2);
+                            var usernameCell = newRow.insertCell(1);
                             usernameCell.textContent = us.usname;
                             usernameCell.classList.add("text-center");
-                            var emailCell = newRow.insertCell(3);
+                            var emailCell = newRow.insertCell(2);
                             emailCell.textContent = us.email;
                             emailCell.classList.add("text-center");
+                            var stateCell = newRow.insertCell(3);
+                            if(us.isLocked == 1){
+                                stateCell.textContent = 'Bị khóa';
+                                stateCell.classList.add('text-red-500');
+                            } else {
+                                stateCell.textContent = 'Hoạt động';
+                                stateCell.classList.add('text-green-500');
+                            }
+                            stateCell.classList.add("text-center");
                             var actionCell = newRow.insertCell(4);
                             actionCell.classList.add("flex", "justify-around");
                             var updateButton = document.createElement("button");
@@ -258,14 +264,49 @@
                             // Tạo nút Xóa
                             var deleteButton = document.createElement("button");
                             deleteButton.classList.add("border-2", "p-2", "rounded-lg");
-                            deleteButton.title = "Xóa người dùng";
                             var deleteIcon = document.createElement("span");
                             deleteIcon.className = "material-icons";
-                            deleteIcon.textContent = "delete";
-                            deleteIcon.style.color = "#ff0000";
+                            if(us.isLocked == 1){
+                                deleteButton.title = "Mở khóa người dùng";
+                                deleteIcon.textContent = "lock_open";
+                                deleteIcon.classList.add('text-green-500');
+                            } else {
+                                deleteButton.title = "Khóa người dùng";
+                                deleteIcon.textContent = "lock";
+                                deleteIcon.classList.add('text-red-500');
+                            }
                             deleteButton.appendChild(deleteIcon);
                             deleteButton.onclick = function () {
-                                
+                                var url = '/api/admin/lock-user/' + us.user_id + '/as/' + accId;
+                                $.ajax({
+                                    url: url,
+                                    type: 'PUT',
+                                    headers: headers,
+                                    success: function (response) {
+                                        if(response.currentState == 0){
+                                            stateCell.textContent = 'Hoạt động';
+                                            stateCell.classList.remove('text-red-500');
+                                            stateCell.classList.add('text-green-500');
+
+                                            deleteButton.title = "Khóa người dùng";
+                                            deleteIcon.textContent = "lock";
+                                            deleteIcon.classList.remove('text-green-500');
+                                            deleteIcon.classList.add('text-red-500');
+                                        } else if(response.currentState == 1) {
+                                            stateCell.textContent = 'Bị khóa';
+                                            stateCell.classList.remove('text-green-500');
+                                            stateCell.classList.add('text-red-500');
+
+                                            deleteButton.title = "Mở khóa người dùng";
+                                            deleteIcon.textContent = "lock_open";
+                                            deleteIcon.classList.remove('text-red-500');
+                                            deleteIcon.classList.add('text-green-500');
+                                        }
+                                    },
+                                    error: function (error) {
+                                        console.log("error: " + error);
+                                    }
+                                });
                             }
                             actionCell.appendChild(deleteButton);
 
@@ -314,10 +355,7 @@
                         var usl = response.data.adminsList;
                         usl.forEach(function (us) {
                             var newRow = admintable.insertRow();
-                            var idCell = newRow.insertCell(0);
-                            idCell.textContent = us.admin_id;
-                            idCell.classList.add("text-center");
-                            var nameCell = newRow.insertCell(1);
+                            var nameCell = newRow.insertCell(0);
                             nameCell.classList.add("text-center");
                             if(us.fullname)
                                 nameCell.textContent = us.fullname;
@@ -325,15 +363,24 @@
                                 nameCell.textContent = "_";
                                 nameCell.classList.add("italic");
                             }
-                            var usernameCell = newRow.insertCell(2);
+                            var usernameCell = newRow.insertCell(1);
                             usernameCell.textContent = us.usname;
                             usernameCell.classList.add("text-center");
-                            var emailCell = newRow.insertCell(3);
+                            var emailCell = newRow.insertCell(2);
                             emailCell.textContent = us.email;
                             emailCell.classList.add("text-center");
-                            var phoneCell = newRow.insertCell(4);
+                            var phoneCell = newRow.insertCell(3);
                             phoneCell.textContent = us.phone;
                             phoneCell.classList.add("text-center");
+                            var stateCell = newRow.insertCell(4);
+                            if(us.isLocked == 1){
+                                stateCell.textContent = 'Bị khóa';
+                                stateCell.classList.add('text-red-500');
+                            } else {
+                                stateCell.textContent = 'Hoạt động';
+                                stateCell.classList.add('text-green-500');
+                            }
+                            stateCell.classList.add("text-center");
                             var actionCell = newRow.insertCell(5);
                             actionCell.classList.add("flex", "justify-around");
                             var updateButton = document.createElement("button");
@@ -360,12 +407,50 @@
                             // Tạo nút Xóa
                             var deleteButton = document.createElement("button");
                             deleteButton.classList.add("border-2", "p-2", "rounded-lg");
-                            deleteButton.title = "Xóa người dùng";
                             var deleteIcon = document.createElement("span");
                             deleteIcon.className = "material-icons";
-                            deleteIcon.textContent = "delete";
-                            deleteIcon.style.color = "#ff0000";
+                            if(us.isLocked == 1){
+                                deleteButton.title = "Mở khóa người dùng";
+                                deleteIcon.textContent = "lock_open";
+                                deleteIcon.classList.add('text-green-500');
+                            } else {
+                                deleteButton.title = "Khóa người dùng";
+                                deleteIcon.textContent = "lock";
+                                deleteIcon.classList.add('text-red-500');
+                            }
                             deleteButton.appendChild(deleteIcon);
+                            deleteButton.onclick = function () {
+                                var url = '/api/admin/lock-admin/' + us.admin_id + '/as/' + accId;
+                                $.ajax({
+                                    url: url,
+                                    type: 'PUT',
+                                    headers: headers,
+                                    success: function (response) {
+                                        if(response.currentState == 0){
+                                            stateCell.textContent = 'Hoạt động';
+                                            stateCell.classList.remove('text-red-500');
+                                            stateCell.classList.add('text-green-500');
+
+                                            deleteButton.title = "Khóa người dùng";
+                                            deleteIcon.textContent = "lock";
+                                            deleteIcon.classList.remove('text-green-500');
+                                            deleteIcon.classList.add('text-red-500');
+                                        } else if(response.currentState == 1) {
+                                            stateCell.textContent = 'Bị khóa';
+                                            stateCell.classList.remove('text-green-500');
+                                            stateCell.classList.add('text-red-500');
+
+                                            deleteButton.title = "Mở khóa người dùng";
+                                            deleteIcon.textContent = "lock_open";
+                                            deleteIcon.classList.remove('text-red-500');
+                                            deleteIcon.classList.add('text-green-500');
+                                        }
+                                    },
+                                    error: function (error) {
+                                        console.log("error: " + error);
+                                    }
+                                });
+                            }
                             actionCell.appendChild(deleteButton);
 
                         });
