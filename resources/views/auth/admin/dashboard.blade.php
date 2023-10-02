@@ -99,7 +99,7 @@
     </style>
 </head>
 
-<body>
+<body class="bg-gray-200">
     <script>
     var userName = "{{ auth()->user()->name }}";
     console.log("day ne: " + userName);
@@ -147,28 +147,9 @@
                     <!--end User tag-->
                 </div>
                 <div id="acctable" class="flex flex-col mx-5">
-                    <!--User table-->
-                    <div class="bg-white p-4 my-5" id="ustb">
-                        <div class="font-bold text-xl pb-4">Người dùng</div>
-                        <table id="usertable" class="stripe hover"
-                            style="width:100%; padding-top: 1em;  padding-bottom: 1em;">
-                            <thead>
-                                <tr>
-                                    <th data-priority="1">Họ tên</th>
-                                    <th data-priority="2">Tên tài khoản</th>
-                                    <th data-priority="3">Email</th>
-                                    <th data-priority="4">Trạng thái</th>
-                                    <th data-priority="5">Thao tác</th>
-                                </tr>
-                            </thead>
-                            <tbody id="tbd-usertable">
-                            </tbody>
-                        </table>
-                    </div>
-                    <!--end user table-->
-                    @if(auth()->user()->acctype_id == 1)
+                @if(auth()->user()->acctype_id == 1)
                     <!--admin table-->
-                    <div class="bg-white p-4 my-5" id="amtb">
+                    <div class="bg-white p-4 my-5" id="amtb" hidden>
                         <div class="font-bold text-xl pb-4">Quản trị viên</div>
                         <table id="admintable" class="stripe hover"
                             style="width:100%; padding-top: 1em;  padding-bottom: 1em;">
@@ -188,6 +169,25 @@
                     </div>
                     <!--end admin table-->
                     @endif
+                    <!--User table-->
+                    <div class="bg-white p-4 my-5" id="ustb" hidden>
+                        <div class="font-bold text-xl pb-4">Người dùng</div>
+                        <table id="usertable" class="stripe hover"
+                            style="width:100%; padding-top: 1em;  padding-bottom: 1em;">
+                            <thead>
+                                <tr>
+                                    <th data-priority="1">Họ tên</th>
+                                    <th data-priority="2">Tên tài khoản</th>
+                                    <th data-priority="3">Email</th>
+                                    <th data-priority="4">Trạng thái</th>
+                                    <th data-priority="5">Thao tác</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tbd-usertable">
+                            </tbody>
+                        </table>
+                    </div>
+                    <!--end user table-->
                 </div>
             </div>
         </div>
@@ -586,11 +586,13 @@
     function showAccTable(num) {
         switch (num) {
             case 1:
-
+                document.getElementById("ustb").hidden = true;
+                document.getElementById("amtb").hidden = !document.getElementById("amtb").hidden;
                 break;
 
             case 2:
-
+                document.getElementById("amtb").hidden = true;
+                document.getElementById("ustb").hidden = !document.getElementById("ustb").hidden;
                 break;
 
             default:

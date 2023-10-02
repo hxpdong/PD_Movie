@@ -10,7 +10,7 @@
         <!-- Nội dung trang chính của bạn -->
         <div class="p-5 w-full flex-1 overflow-x-hidden overflow-y-auto" id="isAd-MoviePage">
             <div class="container mx-auto w-full">
-                <h3 class="text-4xl font-bold">Movies</h3>
+                <h3 class="text-4xl font-bold">Phim</h3>
             </div>
         </div>
     </div>
