@@ -274,7 +274,7 @@ class AuthController extends Controller
                 ]);
             } else {
                 return response()->json([
-                    'message' => "Invalid username and password",
+                    'message' => "Tài khoản hoặc mật khẩu không đúng",
                 ]);
             }
         } catch (\Exception $e) {
@@ -324,20 +324,28 @@ class AuthController extends Controller
                     $fullname = $request->input('uptfullname');
         
                     // Gọi stored procedure user_update truyền tham số vào
-                    DB::select('CALL user_update(?, ?, ?)', [$user_id, $email, $fullname]);
+                    $result = DB::select('CALL user_update(?, ?, ?)', [$user_id, $email, $fullname]);
         
-                    DB::table('users')
-                    ->join('pdmv_users', 'users.id', '=', 'pdmv_users.user_id')
-                    ->where('users.id', '=', $user_id) // Replace $yourUserId with the specific user ID you want to update
-                    ->update([
-                        'users.email' => DB::raw('pdmv_users.email'),
-                        'users.fullname' => DB::raw('pdmv_users.fullname'),
-                    ]);
-        
-                    return response()->json([
-                        'success' => true,
-                        'message' => 'Cập nhật thông tin người dùng thành công',
-                    ]);
+                    if($result){
+                        DB::table('users')
+                        ->join('pdmv_users', 'users.id', '=', 'pdmv_users.user_id')
+                        ->where('users.id', '=', $user_id) // Replace $yourUserId with the specific user ID you want to update
+                        ->update([
+                            'users.email' => DB::raw('pdmv_users.email'),
+                            'users.fullname' => DB::raw('pdmv_users.fullname'),
+                        ]);
+            
+                        return response()->json([
+                            'success' => true,
+                            'message' => 'Cập nhật thông tin người dùng thành công',
+                        ]);
+                    } else {
+                        return response()->json([
+                            'success' => false,
+                            'error' => true,
+                            'message' => 'Không cập nhật được',
+                        ]);
+                    }
                 } else {
                     return response()->json([
                         'success' => false,
@@ -379,14 +387,19 @@ class AuthController extends Controller
                     if (Hash::check($request->uptoldpassword, $userId->password)) {
                         // Update the user's password with the new password
                         $newpass = bcrypt($request->uptnewpassword);
-                        $userId->password = $newpass;
-                        $userId->save();
-    
-                        DB::select('CALL user_changePassword(?, ?)', [$userId->id, $newpass]);
-    
-                        return response()->json([
-                            'success' => true,
-                            'message' => 'Mật khẩu đã được thay đổi thành công.',
+
+                        $result = DB::select('CALL user_changePassword(?, ?)', [$userId->id, $newpass]);
+                        if($result){
+                            $userId->password = $newpass;
+                            $userId->save();
+
+                            return response()->json([
+                                'success' => true,
+                                'message' => 'Mật khẩu đã được thay đổi thành công.',
+                            ]);
+                        } else return response()->json([
+                            'success' => false,
+                            'message' => 'Không cập nhật được',
                         ]);
                     } else {
                         return response()->json([

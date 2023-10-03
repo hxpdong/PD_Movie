@@ -200,4 +200,54 @@ class AccountController extends Controller
             ]);
         }
     }
+
+    public function changeUserInfo($uid, Request $request)
+    {
+        try {
+            $email = $request->input('email');
+            $fullname = $request->input('fullname');
+            $request->validate([
+                'email' => [
+                    'required',
+                    Rule::unique('pdmv_users', 'email')->ignore($uid, 'user_id'),
+                    Rule::unique('pdmv_admins', 'email')->ignore($uid, 'admin_id'),
+                ],
+            ], [
+                'email.required' => 'Trường email là bắt buộc.',
+                'email.unique' => 'Email này đã được sử dụng cho tài khoản khác, vui lòng sử dụng email khác!',
+            ]);
+
+            // Gọi stored procedure user_update truyền tham số vào
+            $result = DB::select('CALL user_update(?, ?, ?)', [$uid, $email, $fullname]);
+            if($result){
+                DB::table('users')
+                ->join('pdmv_users', 'users.id', '=', 'pdmv_users.user_id')
+                ->where('users.id', '=', $uid) // Replace $yourUserId with the specific user ID you want to update
+                ->update([
+                    'users.email' => DB::raw('pdmv_users.email'),
+                    'users.fullname' => DB::raw('pdmv_users.fullname'),
+                ]);
+    
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Cập nhật thông tin người dùng thành công',
+                ]);
+            } else {
+                return response()->json([
+                    'success' => false,
+                    'error' => true,
+                    'message' => 'Không cập nhật được',
+                ]);
+            }
+            
+        }
+        catch (\Exception $e) {
+            // Xử lý lỗi ở đây, ví dụ: in thông báo lỗi
+            return response()->json([
+                'success' => false,
+                'error' => true,
+                'message' => $e->getMessage(),
+            ]);
+        }
+    }
 }

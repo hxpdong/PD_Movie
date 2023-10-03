@@ -62,6 +62,7 @@ Route::get('/tags/{tagkw}', [MovieTagController::class, 'listMovieOf']);
 Route::middleware(['pdmv_API_checkToken', 'pdmv_API_checkAdminRole'])->group(function () {
     Route::get('/admin/get-users/as/{accid}', [AccountController::class, 'getAllUser']);
     Route::put('/admin/lock-user/{uid}/as/{accid}', [AccountController::class, 'changeLockStateUser']);
+    Route::put('/admin/changeInfo-user/{uid}/as/{accid}', [AccountController::class, 'changeUserInfo']);
 });
 
 Route::middleware(['pdmv_API_checkToken', 'pdmv_API_checkSPAdminRole'])->group(function () {
