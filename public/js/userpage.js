@@ -2,6 +2,7 @@ const defaultImageUrl = '/img/banner.png';
 var uid = null;
 var currentCmtPage = 1;
 var currentRtPage = 1;
+
 document.addEventListener("DOMContentLoaded", function () {
     //console.log('UID1: ', uid);
     var username = getUsernameFromURL();
@@ -61,29 +62,49 @@ function getUserInfo(username) {
 
                         var image = document.createElement("img");
                         if (movie.posterURL != null) {
-                            var imageUrl = movie.posterURL;
-                            var posterUrl = '/movie/poster/' + movie.movie_id;
-                            var cacheKey = 'movie_poster_' + movie.movie_id;
-                            if (localStorage.getItem(cacheKey)) {
-                                console.log("hinh cũ");
-                                // Nếu có trong cache, sử dụng dữ liệu từ cache
-                                var cachedImageData = localStorage.getItem(cacheKey);
-                                image.src = cachedImageData;
+                            if (movie.typeOfPosterURL == 0) {
+                                var posterUrl = '/movie/poster/' + movie.movie_id;
+                                var cacheKey = 'movie_poster_' + movie.movie_id;
+                                if (localStorage.getItem(cacheKey)) {
+                                    //console.log("hinh cũ");
+                                    // Nếu có trong cache, sử dụng dữ liệu từ cache
+                                    var cachedImageData = localStorage.getItem(cacheKey);
+                                    image.src = cachedImageData;
+                                } else {
+                                    //console.log("hinh moi");
+                                    // Nếu không có trong cache, tải hình ảnh từ URL
+                                    axios.get(posterUrl, { responseType: 'blob' }).then(function (response) {
+                                        var blob = new Blob([response.data]);
+                                        var objectURL = URL.createObjectURL(blob);
+        
+                                        // Lưu hình ảnh vào cache
+                                        localStorage.setItem(cacheKey, objectURL);
+        
+                                        // Đặt src của hình ảnh poster bằng URL từ cache
+                                        image.src = objectURL;
+                                    }).catch(function (error) {
+                                        console.error(error);
+                                    });
+                                }
+                            } else if (movie.typeOfPosterURL == 1) {
+                                var movieId = movie.posterURL;
+                                var xhrmv = new XMLHttpRequest();
+                                xhrmv.open('GET', apiUrlFromThemoviedb.replace('{movie_id}', movieId), true);
+                                xhrmv.onload = function () {
+                                    if (xhrmv.status === 200) {
+                                        // Chuyển đổi dữ liệu JSON từ phản hồi API
+                                        var response = JSON.parse(xhrmv.responseText);
+        
+                                        // Lấy URL của ảnh bộ phim từ phản hồi API và gán cho defaultImageUrl
+                                        image.src = 'https://www.themoviedb.org/t/p/w300_and_h450_bestv2' + response.poster_path;
+                                    } else {
+                                        // Xử lý trường hợp lỗi khi gọi API
+                                        console.error('Error calling the API.');
+                                    }
+                                };
+                                xhrmv.send();
                             } else {
-                                console.log("hinh moi");
-                                // Nếu không có trong cache, tải hình ảnh từ URL
-                                axios.get(posterUrl, { responseType: 'blob' }).then(function (response) {
-                                    var blob = new Blob([response.data]);
-                                    var objectURL = URL.createObjectURL(blob);
-                        
-                                    // Lưu hình ảnh vào cache
-                                    localStorage.setItem(cacheKey, objectURL);
-                        
-                                    // Đặt src của hình ảnh poster bằng URL từ cache
-                                    image.src = objectURL;
-                                }).catch(function (error) {
-                                    console.error(error);
-                                });
+                                image.src =defaultImageUrl;
                             }
                         }
                         else image.src = defaultImageUrl;
@@ -690,7 +711,7 @@ function getRatingList(page, user_id) {
                             .then(response => {
                                 if (!response.ok) {
                                     throw new Error('Network response was not ok');
-                                } else if(!response.success){
+                                } else if(!success){
                                     Swal.fire({
                                         icon: 'error',
                                         title: 'Không thể thực hiện thao tác',

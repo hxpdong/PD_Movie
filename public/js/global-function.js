@@ -1,3 +1,5 @@
+var apiUrlFromThemoviedb = 'https://api.themoviedb.org/3/movie/{movie_id}?api_key=dee4bd9bc518b8011007f9f1ecc1bc17';
+
 function redirectToWebsite(url) {
     window.location.href = url;
 }

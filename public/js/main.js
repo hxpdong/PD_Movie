@@ -6,15 +6,15 @@ var isPageTag = document.getElementById("isTagPage");
 
 document.addEventListener("DOMContentLoaded", function () {
     var initialPage = getPageFromURL();
-    if(isPageMovie){
+    if (isPageMovie) {
         var kwSearch = getKeywordSearchFromCurrentURL();
         getMovies(initialPage, kwSearch);
     }
-    else if(isPageGenre){
+    else if (isPageGenre) {
         var mvgid = getMovieGenreFromURL();
         getMovieListOfGenre(mvgid, initialPage);
     }
-    else if(isPageTag){
+    else if (isPageTag) {
         var kwtag = extractTagFromCurrentURL();
         getMovieListOfTag(kwtag, initialPage);
     }
@@ -40,29 +40,49 @@ function getMovies(page, kwSearch) {
                 image.style.objectFit = "cover";
                 image.className = "rounded-t-lg";
                 if (movie.posterURL != null) {
-                    var imageUrl = movie.posterURL;
-                    var posterUrl = '/movie/poster/' + movie.movie_id;
-                    var cacheKey = 'movie_poster_' + movie.movie_id;
-                    if (localStorage.getItem(cacheKey)) {
-                        console.log("hinh cũ");
-                        // Nếu có trong cache, sử dụng dữ liệu từ cache
-                        var cachedImageData = localStorage.getItem(cacheKey);
-                        image.src = cachedImageData;
+                    if (movie.typeOfPosterURL == 0) {
+                        var posterUrl = '/movie/poster/' + movie.movie_id;
+                        var cacheKey = 'movie_poster_' + movie.movie_id;
+                        if (localStorage.getItem(cacheKey)) {
+                            //console.log("hinh cũ");
+                            // Nếu có trong cache, sử dụng dữ liệu từ cache
+                            var cachedImageData = localStorage.getItem(cacheKey);
+                            image.src = cachedImageData;
+                        } else {
+                            //console.log("hinh moi");
+                            // Nếu không có trong cache, tải hình ảnh từ URL
+                            axios.get(posterUrl, { responseType: 'blob' }).then(function (response) {
+                                var blob = new Blob([response.data]);
+                                var objectURL = URL.createObjectURL(blob);
+
+                                // Lưu hình ảnh vào cache
+                                localStorage.setItem(cacheKey, objectURL);
+
+                                // Đặt src của hình ảnh poster bằng URL từ cache
+                                image.src = objectURL;
+                            }).catch(function (error) {
+                                console.error(error);
+                            });
+                        }
+                    } else if (movie.typeOfPosterURL == 1) {
+                        var movieId = movie.posterURL;
+                        var xhrmv = new XMLHttpRequest();
+                        xhrmv.open('GET', apiUrlFromThemoviedb.replace('{movie_id}', movieId), true);
+                        xhrmv.onload = function () {
+                            if (xhrmv.status === 200) {
+                                // Chuyển đổi dữ liệu JSON từ phản hồi API
+                                var response = JSON.parse(xhrmv.responseText);
+
+                                // Lấy URL của ảnh bộ phim từ phản hồi API và gán cho defaultImageUrl
+                                image.src = 'https://www.themoviedb.org/t/p/w300_and_h450_bestv2' + response.poster_path;
+                            } else {
+                                // Xử lý trường hợp lỗi khi gọi API
+                                console.error('Error calling the API.');
+                            }
+                        };
+                        xhrmv.send();
                     } else {
-                        console.log("hinh moi");
-                        // Nếu không có trong cache, tải hình ảnh từ URL
-                        axios.get(posterUrl, { responseType: 'blob' }).then(function (response) {
-                            var blob = new Blob([response.data]);
-                            var objectURL = URL.createObjectURL(blob);
-                
-                            // Lưu hình ảnh vào cache
-                            localStorage.setItem(cacheKey, objectURL);
-                
-                            // Đặt src của hình ảnh poster bằng URL từ cache
-                            image.src = objectURL;
-                        }).catch(function (error) {
-                            console.error(error);
-                        });
+                        image.src =defaultImageUrl;
                     }
                 }
                 else image.src = defaultImageUrl;
@@ -181,21 +201,21 @@ function getKeywordSearchFromCurrentURL() {
     const currentURL = window.location.href;
     const startIndex = currentURL.indexOf('?kwsearch=');
     if (startIndex !== -1) {
-      const startIndexCopy = startIndex + 10; // Độ dài của '?kwsearch='
-      const pattern = /(?:(?:&)|$)/; // Tìm '&' hoặc kết thúc chuỗi
-      const endIndex = currentURL.indexOf('&', startIndexCopy);
-      const keyword = endIndex !== -1
-        ? currentURL.substring(startIndexCopy, endIndex)
-        : currentURL.substring(startIndexCopy).replace(pattern, '');
-  
-      if (keyword.trim() === '' || /^(\+)+$/.test(keyword)) {
-        return null;
-      }
-      return keyword;
+        const startIndexCopy = startIndex + 10; // Độ dài của '?kwsearch='
+        const pattern = /(?:(?:&)|$)/; // Tìm '&' hoặc kết thúc chuỗi
+        const endIndex = currentURL.indexOf('&', startIndexCopy);
+        const keyword = endIndex !== -1
+            ? currentURL.substring(startIndexCopy, endIndex)
+            : currentURL.substring(startIndexCopy).replace(pattern, '');
+
+        if (keyword.trim() === '' || /^(\+)+$/.test(keyword)) {
+            return null;
+        }
+        return keyword;
     }
     return null; // Trả về null nếu không tìm thấy cụm 'kwsearch='
-  }
-  
+}
+
 function getDriveFileId(url) {
     const match = url.match(/\/file\/d\/([a-zA-Z0-9_-]+)\//);
     if (match && match[1]) {
@@ -250,29 +270,49 @@ function getMovieListOfGenre(mvgid, page) {
                 image.style.objectFit = "cover";
                 image.className = "rounded-t-lg";
                 if (movie.posterURL != null) {
-                    var imageUrl = movie.posterURL;
-                    var posterUrl = '/movie/poster/' + movie.movie_id;
-                    var cacheKey = 'movie_poster_' + movie.movie_id;
-                    if (localStorage.getItem(cacheKey)) {
-                        console.log("hinh cũ");
-                        // Nếu có trong cache, sử dụng dữ liệu từ cache
-                        var cachedImageData = localStorage.getItem(cacheKey);
-                        image.src = cachedImageData;
+                    if (movie.typeOfPosterURL == 0) {
+                        var posterUrl = '/movie/poster/' + movie.movie_id;
+                        var cacheKey = 'movie_poster_' + movie.movie_id;
+                        if (localStorage.getItem(cacheKey)) {
+                            //console.log("hinh cũ");
+                            // Nếu có trong cache, sử dụng dữ liệu từ cache
+                            var cachedImageData = localStorage.getItem(cacheKey);
+                            image.src = cachedImageData;
+                        } else {
+                            //console.log("hinh moi");
+                            // Nếu không có trong cache, tải hình ảnh từ URL
+                            axios.get(posterUrl, { responseType: 'blob' }).then(function (response) {
+                                var blob = new Blob([response.data]);
+                                var objectURL = URL.createObjectURL(blob);
+
+                                // Lưu hình ảnh vào cache
+                                localStorage.setItem(cacheKey, objectURL);
+
+                                // Đặt src của hình ảnh poster bằng URL từ cache
+                                image.src = objectURL;
+                            }).catch(function (error) {
+                                console.error(error);
+                            });
+                        }
+                    } else if (movie.typeOfPosterURL == 1) {
+                        var movieId = movie.posterURL;
+                        var xhrmv = new XMLHttpRequest();
+                        xhrmv.open('GET', apiUrlFromThemoviedb.replace('{movie_id}', movieId), true);
+                        xhrmv.onload = function () {
+                            if (xhrmv.status === 200) {
+                                // Chuyển đổi dữ liệu JSON từ phản hồi API
+                                var response = JSON.parse(xhrmv.responseText);
+
+                                // Lấy URL của ảnh bộ phim từ phản hồi API và gán cho defaultImageUrl
+                                image.src = 'https://www.themoviedb.org/t/p/w300_and_h450_bestv2' + response.poster_path;
+                            } else {
+                                // Xử lý trường hợp lỗi khi gọi API
+                                console.error('Error calling the API.');
+                            }
+                        };
+                        xhrmv.send();
                     } else {
-                        console.log("hinh moi");
-                        // Nếu không có trong cache, tải hình ảnh từ URL
-                        axios.get(posterUrl, { responseType: 'blob' }).then(function (response) {
-                            var blob = new Blob([response.data]);
-                            var objectURL = URL.createObjectURL(blob);
-                
-                            // Lưu hình ảnh vào cache
-                            localStorage.setItem(cacheKey, objectURL);
-                
-                            // Đặt src của hình ảnh poster bằng URL từ cache
-                            image.src = objectURL;
-                        }).catch(function (error) {
-                            console.error(error);
-                        });
+                        image.src =defaultImageUrl;
                     }
                 }
                 else image.src = defaultImageUrl;
@@ -358,29 +398,49 @@ function getMovieListOfTag(tagkw, page) {
                 image.style.objectFit = "cover";
                 image.className = "rounded-t-lg";
                 if (movie.posterURL != null) {
-                    var imageUrl = movie.posterURL;
-                    var posterUrl = '/movie/poster/' + movie.movie_id;
-                    var cacheKey = 'movie_poster_' + movie.movie_id;
-                    if (localStorage.getItem(cacheKey)) {
-                        console.log("hinh cũ");
-                        // Nếu có trong cache, sử dụng dữ liệu từ cache
-                        var cachedImageData = localStorage.getItem(cacheKey);
-                        image.src = cachedImageData;
+                    if (movie.typeOfPosterURL == 0) {
+                        var posterUrl = '/movie/poster/' + movie.movie_id;
+                        var cacheKey = 'movie_poster_' + movie.movie_id;
+                        if (localStorage.getItem(cacheKey)) {
+                            //console.log("hinh cũ");
+                            // Nếu có trong cache, sử dụng dữ liệu từ cache
+                            var cachedImageData = localStorage.getItem(cacheKey);
+                            image.src = cachedImageData;
+                        } else {
+                            //console.log("hinh moi");
+                            // Nếu không có trong cache, tải hình ảnh từ URL
+                            axios.get(posterUrl, { responseType: 'blob' }).then(function (response) {
+                                var blob = new Blob([response.data]);
+                                var objectURL = URL.createObjectURL(blob);
+
+                                // Lưu hình ảnh vào cache
+                                localStorage.setItem(cacheKey, objectURL);
+
+                                // Đặt src của hình ảnh poster bằng URL từ cache
+                                image.src = objectURL;
+                            }).catch(function (error) {
+                                console.error(error);
+                            });
+                        }
+                    } else if (movie.typeOfPosterURL == 1) {
+                        var movieId = movie.posterURL;
+                        var xhrmv = new XMLHttpRequest();
+                        xhrmv.open('GET', apiUrlFromThemoviedb.replace('{movie_id}', movieId), true);
+                        xhrmv.onload = function () {
+                            if (xhrmv.status === 200) {
+                                // Chuyển đổi dữ liệu JSON từ phản hồi API
+                                var response = JSON.parse(xhrmv.responseText);
+
+                                // Lấy URL của ảnh bộ phim từ phản hồi API và gán cho defaultImageUrl
+                                image.src = 'https://www.themoviedb.org/t/p/w300_and_h450_bestv2' + response.poster_path;
+                            } else {
+                                // Xử lý trường hợp lỗi khi gọi API
+                                console.error('Error calling the API.');
+                            }
+                        };
+                        xhrmv.send();
                     } else {
-                        console.log("hinh moi");
-                        // Nếu không có trong cache, tải hình ảnh từ URL
-                        axios.get(posterUrl, { responseType: 'blob' }).then(function (response) {
-                            var blob = new Blob([response.data]);
-                            var objectURL = URL.createObjectURL(blob);
-                
-                            // Lưu hình ảnh vào cache
-                            localStorage.setItem(cacheKey, objectURL);
-                
-                            // Đặt src của hình ảnh poster bằng URL từ cache
-                            image.src = objectURL;
-                        }).catch(function (error) {
-                            console.error(error);
-                        });
+                        image.src =defaultImageUrl;
                     }
                 }
                 else image.src = defaultImageUrl;
