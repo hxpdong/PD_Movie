@@ -433,7 +433,67 @@
             changePasswordIcon.style.color = "#ffc800";
             changePasswordButton.appendChild(changePasswordIcon);
             changePasswordButton.onclick = function() {
-
+                var uptnewpassword;
+                Swal.fire({
+                    title: "Cập nhật mật khẩu quản trị viên",
+                    html: `
+                                        <form id="updatePasswordForm">
+                                        <label for="uptnewpassword">Mật khẩu mới</label>
+                                        <input type="text" id="uptnewpassword" name="uptnewpassword" class="swal2-input" required>
+                                        </form>
+                                    `,
+                    showCancelButton: true,
+                    confirmButtonText: "Cập nhật",
+                    showLoaderOnConfirm: true,
+                    preConfirm: () => {
+                        const apiToken = localStorage.getItem("log_token");
+                        const newpass = document.getElementById("uptnewpassword").value;
+                        uptnewpassword = newpass;
+                        return fetch("/api/admin/changePassword-admin/" + us[0] + "/as/" + accId, {
+                                method: "PUT",
+                                headers: {
+                                    Authorization: apiToken,
+                                    "Content-Type": "application/x-www-form-urlencoded",
+                                },
+                                body: new URLSearchParams({
+                                    uptnewpassword,
+                                }).toString(),
+                            })
+                            .then((response) => {
+                                if (!response.ok) {
+                                    throw new Error(response
+                                        .statusText);
+                                }
+                                return response.json();
+                            })
+                            .catch((error) => {
+                                Swal.showValidationMessage(
+                                    `Request failed: ${error}`);
+                            });
+                    },
+                    allowOutsideClick: () => !Swal.isLoading(),
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        const response = result.value;
+                        if (response.success) {
+                            Swal.fire({
+                                icon: "success",
+                                title: "Cập nhật mật khẩu thành công",
+                                confirmButtonText: "OK",
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    
+                                }
+                            });
+                        } else {
+                            Swal.fire({
+                                icon: "error",
+                                title: "Lỗi!",
+                                text: "Lỗi: " + response.message
+                            });
+                        }
+                    }
+                });
             }
             actionCell.appendChild(changePasswordButton);
 
@@ -632,7 +692,67 @@
             changePasswordIcon.style.color = "#ffc800";
             changePasswordButton.appendChild(changePasswordIcon);
             changePasswordButton.onclick = function() {
-
+                var uptnewpassword;
+                Swal.fire({
+                    title: "Cập nhật mật khẩu người dùng",
+                    html: `
+                                        <form id="updatePasswordForm">
+                                        <label for="uptnewpassword">Mật khẩu mới</label>
+                                        <input type="text" id="uptnewpassword" name="uptnewpassword" class="swal2-input" required>
+                                        </form>
+                                    `,
+                    showCancelButton: true,
+                    confirmButtonText: "Cập nhật",
+                    showLoaderOnConfirm: true,
+                    preConfirm: () => {
+                        const apiToken = localStorage.getItem("log_token");
+                        const newpass = document.getElementById("uptnewpassword").value;
+                        uptnewpassword = newpass;
+                        return fetch("/api/admin/changePassword-admin/" + us[0] + "/as/" + accId, {
+                                method: "PUT",
+                                headers: {
+                                    Authorization: apiToken,
+                                    "Content-Type": "application/x-www-form-urlencoded",
+                                },
+                                body: new URLSearchParams({
+                                    uptnewpassword,
+                                }).toString(),
+                            })
+                            .then((response) => {
+                                if (!response.ok) {
+                                    throw new Error(response
+                                        .statusText);
+                                }
+                                return response.json();
+                            })
+                            .catch((error) => {
+                                Swal.showValidationMessage(
+                                    `Request failed: ${error}`);
+                            });
+                    },
+                    allowOutsideClick: () => !Swal.isLoading(),
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        const response = result.value;
+                        if (response.success) {
+                            Swal.fire({
+                                icon: "success",
+                                title: "Cập nhật mật khẩu thành công",
+                                confirmButtonText: "OK",
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    
+                                }
+                            });
+                        } else {
+                            Swal.fire({
+                                icon: "error",
+                                title: "Lỗi!",
+                                text: "Lỗi: " + response.message
+                            });
+                        }
+                    }
+                });
             }
             actionCell.appendChild(changePasswordButton);
 

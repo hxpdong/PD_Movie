@@ -331,11 +331,12 @@ VALUES
     (40, 'FULL-EN', 'https://player.vimeo.com/video/854102726');
 
 CREATE TABLE pdmv_movies_genres (
+    movgen_id INT PRIMARY KEY AUTO_INCREMENT,
 	movie_id INT NOT NULL,
 	mvgenre_id INT NOT NULL,
 	FOREIGN KEY (mvgenre_id) REFERENCES pdmv_mvgenres(mvgenre_id),
 	FOREIGN KEY (movie_id) REFERENCES pdmv_movies(movie_id),
-	PRIMARY KEY (mvgenre_id, movie_id)
+	UNIQUE (mvgenre_id, movie_id)
 );
 
 INSERT INTO pdmv_movies_genres (movie_id, mvgenre_id)
@@ -1144,7 +1145,7 @@ CREATE PROCEDURE user_changePassword(
 )
 BEGIN
     -- Kiểm tra xem user_id có tồn tại trong bảng pdmv_users không
-    IF EXISTS (SELECT 1 FROM pdmv_users WHERE user_id = p_user_id) THEN
+    IF EXISTS (SELECT 1 FROM pdmv_accounts WHERE acc_id = p_user_id) THEN
         -- Cập nhật mật khẩu cho tài khoản
         UPDATE pdmv_accounts
         SET password = p_newpassword

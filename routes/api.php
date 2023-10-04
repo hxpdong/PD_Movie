@@ -63,12 +63,14 @@ Route::middleware(['pdmv_API_checkToken', 'pdmv_API_checkAdminRole'])->group(fun
     Route::get('/admin/get-users/as/{accid}', [AccountController::class, 'getAllUser']);
     Route::put('/admin/lock-user/{uid}/as/{accid}', [AccountController::class, 'changeLockStateUser']);
     Route::put('/admin/changeInfo-user/{uid}/as/{accid}', [AccountController::class, 'changeUserInfo']);
+    Route::put('/admin/changePassword-user/{uid}/as/{accid}', [AccountController::class, 'changeUserPassword']);
 });
 
 Route::middleware(['pdmv_API_checkToken', 'pdmv_API_checkSPAdminRole'])->group(function () {
     Route::get('/admin/get-admins/as/{accid}', [AccountController::class, 'getAllAdmin']);
     Route::put('/admin/lock-admin/{uid}/as/{accid}', [AccountController::class, 'changeLockStateAdmin']);
     Route::put('/admin/changeInfo-admin/{uid}/as/{accid}', [AccountController::class, 'changeAdminInfo']);
+    Route::put('/admin/changePassword-admin/{uid}/as/{accid}', [AccountController::class, 'changeAdminPassword']);
 });
 
 Route::put('/users/update', [AuthController::class, 'modalUpdateUserInfo']);

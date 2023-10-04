@@ -250,4 +250,74 @@ class AccountController extends Controller
             ]);
         }
     }
+
+    public function changeAdminPassword($uid, Request $request){
+        try {
+            $request->validate([
+                'uptnewpassword' => 'required|min:5'
+            ], [
+                'uptnewpassword.required' => 'Mật khẩu là bắt buộc.',
+            ]);
+    
+            // Update the user's password with the new password
+            $userId = User::where('id', $uid)
+                ->first();
+            $newpass = bcrypt($request->uptnewpassword);
+            $result = DB::select('CALL user_changePassword(?, ?)', [$uid, $newpass]);
+            if($result){
+                $userId->password = $newpass;
+                $userId->save();
+
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Mật khẩu tài khoản đã được thay đổi thành công.',
+                ]);
+            } else return response()->json([
+                'success' => false,
+                'message' => 'Không cập nhật được',
+            ]);
+        }
+        catch (\Exception $e) {
+            // Xử lý lỗi ở đây, ví dụ: in thông báo lỗi
+            return response()->json([
+                'success' => false,
+                'message' => 'Lỗi: '.$e->getMessage(),
+            ]);
+        }
+    }
+
+    public function changeUserPassword($uid, Request $request){
+        try {
+            $request->validate([
+                'uptnewpassword' => 'required|min:5'
+            ], [
+                'uptnewpassword.required' => 'Mật khẩu là bắt buộc.',
+            ]);
+    
+            // Update the user's password with the new password
+            $userId = User::where('id', $uid)
+                ->first();
+            $newpass = bcrypt($request->uptnewpassword);
+            $result = DB::select('CALL user_changePassword(?, ?)', [$uid, $newpass]);
+            if($result){
+                $userId->password = $newpass;
+                $userId->save();
+
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Mật khẩu tài khoản đã được thay đổi thành công.',
+                ]);
+            } else return response()->json([
+                'success' => false,
+                'message' => 'Không cập nhật được',
+            ]);
+        }
+        catch (\Exception $e) {
+            // Xử lý lỗi ở đây, ví dụ: in thông báo lỗi
+            return response()->json([
+                'success' => false,
+                'message' => 'Lỗi: '.$e->getMessage(),
+            ]);
+        }
+    }
 }
