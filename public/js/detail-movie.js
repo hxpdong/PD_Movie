@@ -122,7 +122,7 @@ function updateMovieDetail(movieDetail) {
                         //console.log("hinh cũ");
                         // Nếu có trong cache, sử dụng dữ liệu từ cache
                         var cachedImageData = localStorage.getItem(cacheKey);
-                        image.src = cachedImageData;
+                        posterElement.src = cachedImageData;
                     } else {
                         //console.log("hinh moi");
                         // Nếu không có trong cache, tải hình ảnh từ URL
@@ -134,7 +134,7 @@ function updateMovieDetail(movieDetail) {
                             localStorage.setItem(cacheKey, objectURL);
 
                             // Đặt src của hình ảnh poster bằng URL từ cache
-                            image.src = objectURL;
+                            posterElement.src = objectURL;
                         }).catch(function (error) {
                             console.error(error);
                         });
@@ -162,6 +162,12 @@ function updateMovieDetail(movieDetail) {
             }
                // posterElement.src = movie.posterURL;
             else posterElement.src = defaultImageUrl;
+            posterElement.onerror = function () {
+                // Sử dụng hình ảnh mặc định nếu xảy ra lỗi
+                if (movie.posterURL != null) {
+                    posterElement.src = movie.posterURL;
+                } else posterElement.src = defaultImageUrl;
+            };
             document.title = movie.title_vi;
         });
         console.log("đã update");
