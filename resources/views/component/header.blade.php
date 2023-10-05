@@ -26,7 +26,7 @@
                                     class="flex flex-row items-center space-x-2 w-full px-4 py-2 text-sm font-semibold text-left bg-transparent md:w-auto md:inline md:mt-0 md:ml-4 hover:bg-gray-200 focus:bg-[#66CCFF] focus:outline-none focus:shadow-outline">
                                     <span>
                                         @if(auth()->user()->fullname)
-                                        {{ auth()->user()->fullname }} ({{ auth()->user()->name }})
+                                        {{ auth()->user()->fullname }}
                                         @else
                                         {{ auth()->user()->name }}
                                         @endif
@@ -53,7 +53,7 @@
                                         <button data-modal-toggle="profile-modal" onclick="openProfileModal()"
                                             class="font-normal w-full text-left block px-4 py-2 mt-2 text-sm bg-white md:mt-0 focus:text-gray-900 hover:bg-indigo-100 focus:bg-gray-200 focus:outline-none focus:shadow-outline">
                                             Chỉnh sửa thông tin</button>
-                                        <button data-modal-toggle="password-modal"
+                                        <buton data-modal-toggle="password-modal"
                                             class="font-normal w-full text-left block px-4 py-2 mt-2 text-sm bg-white md:mt-0 focus:text-gray-900 hover:bg-indigo-100 focus:bg-gray-200 focus:outline-none focus:shadow-outline">
                                             Đổi mật khẩu
                                         </button>
@@ -62,9 +62,10 @@
                             </div>
                         </nav>
                     </div>
-                    <a href="/logoutHeader"
+                    <button onclick="window.location.href = '/logoutHeader';"
                         class="text-gray-800 bg-white mx-1 dark:text-white hover:bg-gray-50 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-gray-800">Đăng
-                        xuất</a>
+                        xuất
+                    </button>
 
                     @else
                     Khách!
@@ -103,11 +104,6 @@
                             <span
                                 class="self-center text-xl font-semibold whitespace-nowrap dark:text-white">PDMovie</span>
                         </a>
-                        <!--
-                        <a href="/"
-                        class="rounded text-white lg:text-black hover:text-black hover:bg-gray-200 bg-gray-700 lg:bg-transparent  focus:ring-4 focus:outline-none focus:bg-[#66CCFF] font-medium px-5 py-2.5 text-center inline-flex items-center w-full lg:w-auto"
-                        aria-current="page">Trang chủ</a>
--->
                     </li>
                     <li>
                         <form class="mb-0">
@@ -127,21 +123,11 @@
                         </form>
                     </li>
                     <li>
-                        <div>
-                            <button id="dropdownDefaultButton" data-dropdown-toggle="dropdown"
-                                class="rounded text-white lg:text-black hover:text-black hover:bg-gray-200 bg-gray-700 lg:bg-transparent  focus:ring-4 focus:outline-none focus:bg-[#66CCFF] font-medium px-5 py-2.5 text-center inline-flex items-center w-full lg:w-auto"
-                                type="button">Thể loại <svg class="w-2.5 h-2.5 ml-2.5" aria-hidden="true"
-                                    xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
-                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                                        stroke-width="2" d="m1 1 4 4 4-4" />
-                                </svg></button>
-                            <!-- Dropdown menu -->
-                            <div id="dropdown"
-                                class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-4/5 lg:w-44 dark:bg-gray-700">
-                                <ul class="max-h-48 w-auto overflow-y-auto py-2 text-sm text-gray-700 dark:text-gray-200"
-                                    aria-labelledby="dropdownDefaultButton" id="genresList">
-                                </ul>
-                            </div>
+                        <div class="flex justify-center rounded text-white lg:text-black hover:text-black hover:bg-gray-200 bg-gray-700 lg:bg-transparent  focus:ring-4 focus:outline-none focus:bg-[#66CCFF] font-medium px-2 py-2.5 text-center items-center w-full lg:w-auto">
+                        <span class="">Thể loại</span>    
+                        <select class="w-48"
+                                id="genresList" onchange="redirectToGenre()">
+                            </select>
                         </div>
                     </li>
                     @if(auth()->check())
@@ -161,7 +147,7 @@
                                             class="flex flex-row items-center space-x-2 w-full px-4 py-2 text-sm font-semibold text-left bg-transparent md:w-auto md:inline md:mt-0 md:ml-4 hover:bg-gray-200 focus:bg-[#66CCFF] focus:outline-none focus:shadow-outline">
                                             <span>
                                                 @if(auth()->user()->fullname)
-                                                {{ auth()->user()->fullname }} ({{ auth()->user()->name }})
+                                                {{ auth()->user()->fullname }}
                                                 @else
                                                 {{ auth()->user()->name }}
                                                 @endif
@@ -197,9 +183,10 @@
                                     </div>
                                 </nav>
                             </div>
-                            <a href="/logoutHeader"
+                            <button onclick="window.location.href = '/logoutHeader';"
                                 class="text-gray-800 bg-white mx-1 dark:text-white hover:bg-gray-50 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-gray-800">Đăng
-                                xuất</a>
+                                xuất
+                            </button>
                             @else
                             Khách!
                             <button data-modal-toggle="authentication-modal"
@@ -715,6 +702,15 @@ function closeModalRegister() {
     $('#mdreguspassword-check').val('')
 };
 
+function redirectToGenre() {
+    var selectedOption = document.getElementById("genresList").value;
+    if (selectedOption) {
+        var mvgenre_id = selectedOption.split("-")[0];
+        var mvgenre_en_name = selectedOption.split("-")[1];
+        window.location.href = "/genres/mvg" + mvgenre_id + "-" + mvgenre_en_name;
+    }
+}
+
 function getGenreList() {
     axios.get('/api/genres?type=1')
         .then(function(response) {
@@ -724,15 +720,12 @@ function getGenreList() {
             }
             var mvgenres = response.data.genres;
             mvgenres.forEach(function(mvg) {
-                var li = document.createElement("li");
-                var link = document.createElement("a");
-                link.href = "/genres/mvg" + mvg.mvgenre_id + "-" + mvg.mvgenre_en_name;
-                link.className =
-                    "block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white";
-                link.textContent = mvg.mvgenre_vi_name;
-                li.appendChild(link);
-                genList.appendChild(li);
+                var opt = document.createElement("option");
+                opt.value = mvg.mvgenre_id + "-" + mvg.mvgenre_en_name;
+                opt.textContent = mvg.mvgenre_vi_name;
+                genList.appendChild(opt);
             });
+            $('#genresList').select2();
         });
 };
 
@@ -755,3 +748,6 @@ function openProfileModal() {
         document.getElementById('profile-modal').classList.remove('hidden');
     }
 </script>
+
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
