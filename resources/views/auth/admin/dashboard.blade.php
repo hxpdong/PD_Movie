@@ -102,7 +102,6 @@
 <body class="bg-gray-200">
     <script>
     var userName = "{{ auth()->user()->name }}";
-    console.log("day ne: " + userName);
     </script>
     @if(auth()->check())
     <!-- Trang của bạn.blade.php -->
@@ -708,7 +707,7 @@
                         const apiToken = localStorage.getItem("log_token");
                         const newpass = document.getElementById("uptnewpassword").value;
                         uptnewpassword = newpass;
-                        return fetch("/api/admin/changePassword-admin/" + us[0] + "/as/" + accId, {
+                        return fetch("/api/admin/changePassword-user/" + us[0] + "/as/" + accId, {
                                 method: "PUT",
                                 headers: {
                                     Authorization: apiToken,
