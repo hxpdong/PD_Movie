@@ -167,17 +167,44 @@ function nextPage() {
 
 function generatePageButtons(currentPage, lastPage) {
     var pageButtons = '';
-    for (var i = 1; i <= lastPage; i++) {
-        if (i === currentPage) {
-            // Nếu đây là trang hiện tại, thì không thêm sự kiện onclick
-            pageButtons += '<button class="active" style="margin:2px">' + i + '</button>';
-        } else {
-            // Nếu không, thêm sự kiện onclick
-            pageButtons += '<button onclick="gotoPage(' + i + ')" style="margin:2px">' + i + '</button>';
-        }
+    var maxButtonsToShow = 5; // Số lượng nút trước và sau trang hiện tại để hiển thị
+
+    // Hiển thị nút trang đầu tiên
+    if(currentPage == 1){
+        pageButtons += '<button disabled style="margin:2px">Trang đầu</button>';
+    } else pageButtons += '<button onclick="gotoPage(1)" style="margin:2px">Trang đầu</button>';
+    
+    // Hiển thị nút "..." nếu currentPage > maxButtonsToShow + 2
+    if (currentPage > maxButtonsToShow + 2) {
+        pageButtons += '<button disabled style="margin:2px">...</button>';
     }
+
+    // Hiển thị nút các trang trước trang hiện tại
+    for (var i = Math.max(currentPage - maxButtonsToShow, 2); i < currentPage; i++) {
+        pageButtons += '<button onclick="gotoPage(' + i + ')" style="margin:2px">' + i + '</button>';
+    }
+
+    // Hiển thị nút trang hiện tại
+    pageButtons += '<button class="active" style="margin:2px">' + currentPage + '</button>';
+
+    // Hiển thị nút các trang sau trang hiện tại
+    for (var i = currentPage + 1; i <= Math.min(currentPage + maxButtonsToShow, lastPage - 1); i++) {
+        pageButtons += '<button onclick="gotoPage(' + i + ')" style="margin:2px">' + i + '</button>';
+    }
+
+    // Hiển thị nút "..." nếu cần
+    if (currentPage + maxButtonsToShow < lastPage - 1) {
+        pageButtons += '<button disabled style="margin:2px">...</button>';
+    }
+
+    // Hiển thị nút trang cuối cùng
+    if(currentPage == lastPage){
+        pageButtons += '<button disabled style="margin:2px">' + "Trang cuối" + '</button>';
+    } else pageButtons += '<button onclick="gotoPage(' + lastPage + ')" style="margin:2px">' + "Trang cuối" + '</button>';
+
     return pageButtons;
 }
+
 
 function gotoPage(page) {
     const newPage = page;
