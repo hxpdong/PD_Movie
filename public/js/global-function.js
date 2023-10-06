@@ -1,4 +1,4 @@
-var apiUrlFromThemoviedb = 'https://api.themoviedb.org/3/movie/{movie_id}?api_key=dee4bd9bc518b8011007f9f1ecc1bc17';
+//var apiUrlFromThemoviedb = 'https://api.themoviedb.org/3/movie/{movie_id}?api_key=dee4bd9bc518b8011007f9f1ecc1bc17';
 
 function redirectToWebsite(url) {
     window.location.href = url;
@@ -26,7 +26,7 @@ function addTooltip() {
         gridItem.onclick = function () {
             // Truyền URL bạn muốn chuyển hướng vào hàm redirectToWebsite
             redirectToWebsite("/movies/mv" + gridItem.querySelector('.mvid').textContent + "-" +
-            gridItem.querySelector('.mvurl').textContent); // Thay URL bằng URL thích hợp
+                gridItem.querySelector('.mvurl').textContent); // Thay URL bằng URL thích hợp
         };
     });
 }
@@ -34,14 +34,14 @@ function addTooltip() {
 // Xóa tất cả các phần tử con trong danh sách phim
 function removeAllMovieItems() {
     var movieList = document.getElementById("movie-list");
-    if(movieList){
+    if (movieList) {
         while (movieList.firstChild) {
             movieList.removeChild(movieList.firstChild);
         }
     }
 
     var movieRecommendedList = document.getElementById("recommended-list");
-    if(movieRecommendedList){
+    if (movieRecommendedList) {
         while (movieRecommendedList.firstChild) {
             movieRecommendedList.removeChild(movieRecommendedList.firstChild);
         }

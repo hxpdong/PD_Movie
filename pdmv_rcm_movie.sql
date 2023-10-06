@@ -1388,7 +1388,7 @@ INSERT INTO pdmv_movies(movie_id, title_vi, title_en, content, director, actors,
 INSERT INTO pdmv_movies(movie_id, title_vi, title_en, content, director, actors, manuFactureYear, videoLength, typeOfPosterURL, posterURL) VALUES(136, 'From the Journals of Jean Seberg (1995)', 'From the Journals of Jean Seberg (1995)', 'content', 'Director 10, Director 19', 'Actor 8, Actor 15, Actor 36', '1995', '1h21m', 1, '123360');
 INSERT INTO pdmv_movies(movie_id, title_vi, title_en, content, director, actors, manuFactureYear, videoLength, typeOfPosterURL, posterURL) VALUES(137, 'Man of the Year (1995)', 'Man of the Year (1995)', 'content', 'Director 7, Director 19', 'Actor 8, Actor 26, Actor 33', '1995', '2h16m', 1, '5757');
 INSERT INTO pdmv_movies(movie_id, title_vi, title_en, content, director, actors, manuFactureYear, videoLength, typeOfPosterURL, posterURL) VALUES(138, 'Neon Bible, The (1995)', 'Neon Bible, The (1995)', 'content', 'Director 7, Director 17', 'Actor 4, Actor 12, Actor 40', '1995', '1h20m', 1, '39428');
-INSERT INTO pdmv_movies(movie_id, title_vi, title_en, content, director, actors, manuFactureYear, videoLength, typeOfPosterURL, posterURL) VALUES(139, 'Target (1995)', 'Target (1995)', 'content', 'Director 6, Director 15', 'Actor 6, Actor 29, Actor 31', '1995', '1h27m', 1, '124639');
+INSERT INTO pdmv_movies(movie_id, title_vi, title_en, content, director, actors, manuFactureYear, videoLength, typeOfPosterURL, posterURL) VALUES(139, 'Target (1995)', 'Target (1995)', 'content', 'Director 6, Director 15', 'Actor 6, Actor 29, Actor 31', '1995', '1h27m', 1, '31600');
 INSERT INTO pdmv_movies(movie_id, title_vi, title_en, content, director, actors, manuFactureYear, videoLength, typeOfPosterURL, posterURL) VALUES(140, 'Up Close and Personal (1996)', 'Up Close and Personal (1996)', 'content', 'Director 9, Director 12', 'Actor 6, Actor 28, Actor 35', '1996', '2h11m', 1, '9302');
 INSERT INTO pdmv_movies(movie_id, title_vi, title_en, content, director, actors, manuFactureYear, videoLength, typeOfPosterURL, posterURL) VALUES(141, 'Birdcage, The (1996)', 'Birdcage, The (1996)', 'content', 'Director 7, Director 18', 'Actor 5, Actor 28, Actor 33', '1996', '1h40m', 1, '11000');
 INSERT INTO pdmv_movies(movie_id, title_vi, title_en, content, director, actors, manuFactureYear, videoLength, typeOfPosterURL, posterURL) VALUES(142, 'Shadows (Cienie) (1988)', 'Shadows (Cienie) (1988)', 'content', 'Director 9, Director 15', 'Actor 4, Actor 26, Actor 38', '1988', '1h38m', 1, '525153');
@@ -2185,7 +2185,14 @@ VALUES
     (299, 10),
     (300, 10);
 
+CREATE TABLE pdmv_systemVariable (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    varName VARCHAR(50) NOT NULL,
+    varValue VARCHAR(50) NOT NULL,
+    varLink VARCHAR(255)
+);
 
+INSERT INTO pdmv_systemVariable(varName, varValue, varLink) VALUES('themoviedb API KEY', 'dee4bd9bc518b8011007f9f1ecc1bc17', 'https://api.themoviedb.org/3/movie/{movie_id}?api_key=dee4bd9bc518b8011007f9f1ecc1bc17');
 /*
 DELIMITER //
 CREATE PROCEDURE insertMV_Genre_FromTheMVDB()

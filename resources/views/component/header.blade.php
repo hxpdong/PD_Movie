@@ -462,7 +462,7 @@ if(oldFullname) oldFullname = oldFullname.value;
 var oldEmail = document.getElementById("uptemail");
 if(oldEmail) oldEmail = oldEmail.value;
 $(document).ready(function() {
-    getGenreList();
+    getGenreList2();
     $('#modalLoginForm').submit(function(e) {
         e.preventDefault();
 
@@ -559,7 +559,6 @@ $(document).ready(function() {
 
     $('#modalProfileForm').submit(function(e) {
         e.preventDefault();
-        const apiToken = localStorage.getItem('log_token');
         $.ajax({
             type: 'PUT',
             url: '/api/users/update',
@@ -620,7 +619,6 @@ $(document).ready(function() {
 
     $('#modalPasswordForm').submit(function(e) {
         e.preventDefault();
-        const apiToken = localStorage.getItem('log_token');
         var passwordField = document.getElementById("uptnewpassword");
         var confirmPasswordField = document.getElementById("uptconfirmpassword");
         var oldPasswordField = document.getElementById("uptoldpassword");
@@ -726,12 +724,48 @@ function getGenreList() {
             mvgenres.forEach(function(mvg) {
                 var opt = document.createElement("option");
                 opt.value = mvg.mvgenre_id + "-" + mvg.mvgenre_en_name;
-                opt.textContent = mvg.mvgenre_vi_name;
+                opt.textContent = mvg.mvgenre_vi_name + "/" + mvg.mvgenre_en_name;
                 genList.appendChild(opt);
             });
             $('#genresList').select2();
         });
 };
+
+function getGenreList2() {
+    axios.get('/api/genres?type=1')
+        .then(function(response) {
+            var genList = document.getElementById("genresList");
+            while (genList.firstChild) {
+                genList.removeChild(genList.firstChild);
+            }
+            var mvgenres = response.data.genres;
+
+            var optgroupVi = document.createElement("optgroup");
+            optgroupVi.label = "Tiếng Việt";
+
+            var optgroupEn = document.createElement("optgroup");
+            optgroupEn.label = "English";
+
+            mvgenres.forEach(function(mvg) {
+                var optVi = document.createElement("option");
+                optVi.value = mvg.mvgenre_id + "-" + mvg.mvgenre_en_name;
+                optVi.textContent = mvg.mvgenre_vi_name;
+                optgroupVi.appendChild(optVi);
+
+                var optEn = document.createElement("option");
+                optEn.value = mvg.mvgenre_id + "-" + mvg.mvgenre_en_name;
+                optEn.textContent = mvg.mvgenre_en_name;
+                optgroupEn.appendChild(optEn);
+            });
+
+            genList.appendChild(optgroupVi);
+            genList.appendChild(optgroupEn);
+
+            // Thiết lập select2
+            $('#genresList').select2();
+        });
+};
+
 
 function closeModalEditProfile() {
     $('#uptfullname').val(oldFullname);

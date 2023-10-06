@@ -9,6 +9,7 @@ use App\Http\Controllers\API\MovieGenreController;
 use App\Http\Controllers\API\UserController;
 use App\Http\Controllers\API\MovieTagController;
 use App\Http\Controllers\API\AccountController;
+use App\Http\Controllers\API\SystemController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -75,3 +76,5 @@ Route::middleware(['pdmv_API_checkToken', 'pdmv_API_checkSPAdminRole'])->group(f
 
 Route::put('/users/update', [AuthController::class, 'modalUpdateUserInfo']);
 Route::put('/users/changepassword', [AuthController::class, 'modalUpateUserPassword'])->name('modalChangePassword');
+
+Route::get('/system/get-api', [SystemController::class, 'getSystemVar']);

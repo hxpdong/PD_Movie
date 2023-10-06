@@ -2,6 +2,7 @@
 <script src="https://cdn.tailwindcss.com"></script>
 -->
 @vite('resources/css/app.css')
+
 <head>
     <link rel="icon" href="/img/fav-removebg.png" type="image/x-icon">
     <link rel="shortcut icon" href="/img/fav-removebg.png" type="image/x-icon">
@@ -16,3 +17,21 @@
 <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<script>
+    var apiUrl = "/api/system/get-api";
+    var apiUrlFromThemoviedb;
+    fetch(apiUrl)
+        .then(function(response) {
+            if (!response.ok) {
+                throw new Error("Network response was not ok");
+            }
+            return response.json();
+        })
+        .then(function(data) {
+            apiUrlFromThemoviedb = data.themoviedbLINK;
+        })
+        .catch(function(error) {
+            // Xử lý lỗi nếu có
+            console.error("Lỗi: " + error.message);
+        });
+</script>

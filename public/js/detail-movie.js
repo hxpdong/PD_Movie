@@ -5,7 +5,7 @@ document.addEventListener("DOMContentLoaded", function () {
     loadMovieDetail(movieId);
     getLatestMovies();
     if (accId) {
-        getRecommendedMovies();
+        getRecommendedMoviesFrom();
     }
     getRelatedMovies();
 
@@ -1179,4 +1179,101 @@ function getRelatedMovies() {
         .catch(function (error) {
             console.log(error);
         });
+}
+
+function getRecommendedMoviesFrom() {
+    var movieList = document.getElementById("recommended-list");
+    var parsedArray = [];
+    var retrievedData = localStorage.getItem("recommendedMoviesForLoggedUser");
+    if (retrievedData) {
+        parsedArray = JSON.parse(retrievedData);
+    }
+    var movies = parsedArray;
+
+    for (var i = 0; i < 6; i++) {
+        var movie = movies[i];
+        var movieItem = document.createElement("div");
+        movieItem.className = "grid-item rounded-lg bg-white shadow-lg";
+
+        var image = document.createElement("img");
+        image.alt = movie[1];
+        image.style.width = '100%';
+        image.style.objectFit = "cover";
+        image.className = "rounded-t-lg";
+        if (movie[9] != null) {
+            if (movie[8] == 0) {
+                var posterUrl = '/movie/poster/' + movie[0];
+                var cacheKey = 'movie_poster_' + movie[0];
+                if (localStorage.getItem(cacheKey)) {
+                    var cachedImageData = localStorage.getItem(cacheKey);
+                    image.src = cachedImageData;
+                } else {
+                    axios.get(posterUrl, { responseType: 'blob' }).then(function (response) {
+                        var blob = new Blob([response.data]);
+                        var objectURL = URL.createObjectURL(blob);
+
+                        localStorage.setItem(cacheKey, objectURL);
+
+                        image.src = objectURL;
+                    }).catch(function (error) {
+                        console.error(error);
+                    });
+                }
+            } else if (movie[8] == 1) {
+                var movieId = movie[9];
+                var xhrmv = new XMLHttpRequest();
+                xhrmv.open('GET', apiUrlFromThemoviedb.replace('{movie_id}', movieId), true);
+                xhrmv.onload = function () {
+                    if (xhrmv.status === 200) {
+                        var response = JSON.parse(xhrmv.responseText);
+                        image.src = 'https://www.themoviedb.org/t/p/w300_and_h450_bestv2' + response.poster_path;
+                    } else {
+                        console.error('Error calling the API.');
+                    }
+                };
+                xhrmv.send();
+            } else {
+                image.src =defaultImageUrl;
+            }
+        }
+        else image.src = defaultImageUrl;
+        image.onerror = function () {
+            if (movie[9] != null) {
+                image.src = movie[9];
+            } else image.src = defaultImageUrl;
+        };
+        movieItem.insertAdjacentElement('afterbegin', image);
+
+        var mid = document.createElement("h6");
+        mid.textContent = movie[0];
+        mid.className = "text-ellipsis mvid";
+        mid.style.height = "0px";
+        movieItem.appendChild(mid);
+
+        var murl = document.createElement("h5");
+        murl.textContent = movie[11];
+        murl.className = "text-ellipsis mvurl";
+        murl.style.height = "0px";
+        movieItem.appendChild(murl);
+
+        var title = document.createElement("h3");
+        title.textContent = movie[1];
+        title.className = "text-ellipsis mb-2 text-lg font-semibold";
+        movieItem.appendChild(title);
+
+        var director = document.createElement("p");
+        director.textContent = "Năm: " + movie[6];
+        director.className = "text-ellipsis";
+        movieItem.appendChild(director);
+
+        var actors = document.createElement("p");
+        actors.textContent = "Thời lượng: " + movie[7];
+        actors.className = "text-ellipsis";
+        movieItem.appendChild(actors);
+
+
+        movieList.appendChild(movieItem);
+
+    };
+    addTooltip();
 }
