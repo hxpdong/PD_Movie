@@ -108,7 +108,7 @@ VALUES
 	(9, 'Trinh thám','Detective'),
     (10, 'Kịch', 'Drama'),
     (11, 'Giả tưởng', 'Fiction'),
-    (12, 'Huyền bí', 'Fantasy'),
+    (12, 'Huyền bí', 'Mystery'),
     (13, 'Phiêu lưu', 'Adventure'),
     (14, 'Giật gân', 'Thriller'),
     (15, 'Thảm họa', 'Disaster'),
