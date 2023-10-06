@@ -41,29 +41,7 @@ function getMovies(page, kwSearch) {
                 image.className = "rounded-t-lg";
                 if (movie.posterURL != null) {
                     if (movie.typeOfPosterURL == 0) {
-                        var posterUrl = '/movie/poster/' + movie.movie_id;
-                        var cacheKey = 'movie_poster_' + movie.movie_id;
-                        if (localStorage.getItem(cacheKey)) {
-                            //console.log("hinh cũ");
-                            // Nếu có trong cache, sử dụng dữ liệu từ cache
-                            var cachedImageData = localStorage.getItem(cacheKey);
-                            image.src = cachedImageData;
-                        } else {
-                            //console.log("hinh moi");
-                            // Nếu không có trong cache, tải hình ảnh từ URL
-                            axios.get(posterUrl, { responseType: 'blob' }).then(function (response) {
-                                var blob = new Blob([response.data]);
-                                var objectURL = URL.createObjectURL(blob);
-
-                                // Lưu hình ảnh vào cache
-                                localStorage.setItem(cacheKey, objectURL);
-
-                                // Đặt src của hình ảnh poster bằng URL từ cache
-                                image.src = objectURL;
-                            }).catch(function (error) {
-                                console.error(error);
-                            });
-                        }
+                        image.src = movie.posterURL;
                     } else if (movie.typeOfPosterURL == 1) {
                         var movieId = movie.posterURL;
                         var xhrmv = new XMLHttpRequest();
@@ -89,7 +67,9 @@ function getMovies(page, kwSearch) {
                 image.onerror = function () {
                     // Sử dụng hình ảnh mặc định nếu xảy ra lỗi
                     if (movie.posterURL != null) {
-                        image.src = movie.posterURL;
+                        if(movie.typeOfPosterURL == 0)
+                            image.src = movie.posterURL;
+                        else image.src = defaultImageUrl;
                     } else image.src = defaultImageUrl;
                 };
                 movieItem.insertAdjacentElement('afterbegin', image);
@@ -139,6 +119,15 @@ function getMovies(page, kwSearch) {
             pageButtons.innerHTML = generatePageButtons(response.data.results.current_page, response.data.results.last_page);
             // Lưu trạng thái trang hiện tại
             currentPage = response.data.results.current_page;
+            document.getElementById("numofmoviefounded").innerHTML = response.data.results.total;
+
+            var kwdiv = document.getElementById("keyw");
+            if(getKeywordSearchFromCurrentURL()){
+                kwdiv.hidden = false;
+                document.getElementById("keywk").innerHTML = getKeywordSearchFromCurrentURL();
+            } else {
+                kwdiv.hidden = true;
+            }
         })
         .catch(function (error) {
             console.log(error);
@@ -298,29 +287,7 @@ function getMovieListOfGenre(mvgid, page) {
                 image.className = "rounded-t-lg";
                 if (movie.posterURL != null) {
                     if (movie.typeOfPosterURL == 0) {
-                        var posterUrl = '/movie/poster/' + movie.movie_id;
-                        var cacheKey = 'movie_poster_' + movie.movie_id;
-                        if (localStorage.getItem(cacheKey)) {
-                            //console.log("hinh cũ");
-                            // Nếu có trong cache, sử dụng dữ liệu từ cache
-                            var cachedImageData = localStorage.getItem(cacheKey);
-                            image.src = cachedImageData;
-                        } else {
-                            //console.log("hinh moi");
-                            // Nếu không có trong cache, tải hình ảnh từ URL
-                            axios.get(posterUrl, { responseType: 'blob' }).then(function (response) {
-                                var blob = new Blob([response.data]);
-                                var objectURL = URL.createObjectURL(blob);
-
-                                // Lưu hình ảnh vào cache
-                                localStorage.setItem(cacheKey, objectURL);
-
-                                // Đặt src của hình ảnh poster bằng URL từ cache
-                                image.src = objectURL;
-                            }).catch(function (error) {
-                                console.error(error);
-                            });
-                        }
+                        image.src = movie.posterURL;
                     } else if (movie.typeOfPosterURL == 1) {
                         var movieId = movie.posterURL;
                         var xhrmv = new XMLHttpRequest();
@@ -346,7 +313,9 @@ function getMovieListOfGenre(mvgid, page) {
                 image.onerror = function () {
                     // Sử dụng hình ảnh mặc định nếu xảy ra lỗi
                     if (movie.posterURL != null) {
-                        image.src = movie.posterURL;
+                        if(movie.typeOfPosterURL == 0)
+                            image.src = movie.posterURL;
+                        else image.src = defaultImageUrl;
                     } else image.src = defaultImageUrl;
                 };
                 movieItem.insertAdjacentElement('afterbegin', image);
@@ -426,29 +395,7 @@ function getMovieListOfTag(tagkw, page) {
                 image.className = "rounded-t-lg";
                 if (movie.posterURL != null) {
                     if (movie.typeOfPosterURL == 0) {
-                        var posterUrl = '/movie/poster/' + movie.movie_id;
-                        var cacheKey = 'movie_poster_' + movie.movie_id;
-                        if (localStorage.getItem(cacheKey)) {
-                            //console.log("hinh cũ");
-                            // Nếu có trong cache, sử dụng dữ liệu từ cache
-                            var cachedImageData = localStorage.getItem(cacheKey);
-                            image.src = cachedImageData;
-                        } else {
-                            //console.log("hinh moi");
-                            // Nếu không có trong cache, tải hình ảnh từ URL
-                            axios.get(posterUrl, { responseType: 'blob' }).then(function (response) {
-                                var blob = new Blob([response.data]);
-                                var objectURL = URL.createObjectURL(blob);
-
-                                // Lưu hình ảnh vào cache
-                                localStorage.setItem(cacheKey, objectURL);
-
-                                // Đặt src của hình ảnh poster bằng URL từ cache
-                                image.src = objectURL;
-                            }).catch(function (error) {
-                                console.error(error);
-                            });
-                        }
+                        image.src = movie.posterURL;
                     } else if (movie.typeOfPosterURL == 1) {
                         var movieId = movie.posterURL;
                         var xhrmv = new XMLHttpRequest();
@@ -474,7 +421,9 @@ function getMovieListOfTag(tagkw, page) {
                 image.onerror = function () {
                     // Sử dụng hình ảnh mặc định nếu xảy ra lỗi
                     if (movie.posterURL != null) {
-                        image.src = movie.posterURL;
+                        if(movie.typeOfPosterURL == 0)
+                            image.src = movie.posterURL;
+                        else image.src = defaultImageUrl;
                     } else image.src = defaultImageUrl;
                 };
                 movieItem.insertAdjacentElement('afterbegin', image);

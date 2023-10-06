@@ -26,29 +26,7 @@ function getMovies() {
                 image.className = "rounded-t-lg";
                 if (movie.posterURL != null) {
                     if (movie.typeOfPosterURL == 0) {
-                        var posterUrl = '/movie/poster/' + movie.movie_id;
-                        var cacheKey = 'movie_poster_' + movie.movie_id;
-                        if (localStorage.getItem(cacheKey)) {
-                            //console.log("hinh cũ");
-                            // Nếu có trong cache, sử dụng dữ liệu từ cache
-                            var cachedImageData = localStorage.getItem(cacheKey);
-                            image.src = cachedImageData;
-                        } else {
-                            //console.log("hinh moi");
-                            // Nếu không có trong cache, tải hình ảnh từ URL
-                            axios.get(posterUrl, { responseType: 'blob' }).then(function (response) {
-                                var blob = new Blob([response.data]);
-                                var objectURL = URL.createObjectURL(blob);
-
-                                // Lưu hình ảnh vào cache
-                                localStorage.setItem(cacheKey, objectURL);
-
-                                // Đặt src của hình ảnh poster bằng URL từ cache
-                                image.src = objectURL;
-                            }).catch(function (error) {
-                                console.error(error);
-                            });
-                        }
+                        image.src = posterURL;
                     } else if (movie.typeOfPosterURL == 1) {
                         var movieId = movie.posterURL;
                         var xhrmv = new XMLHttpRequest();
@@ -74,7 +52,9 @@ function getMovies() {
                 image.onerror = function () {
                     // Sử dụng hình ảnh mặc định nếu xảy ra lỗi
                     if (movie.posterURL != null) {
-                        image.src = movie.posterURL;
+                        if(movie.typeOfPosterURL == 0)
+                            image.src = movie.posterURL;
+                        else image.src = defaultImageUrl;
                     } else image.src = defaultImageUrl;
                 };
                 movieItem.insertAdjacentElement('afterbegin', image);
@@ -143,29 +123,7 @@ function getMoviesFrom() {
         image.className = "rounded-t-lg";
         if (movie[9] != null) {
             if (movie[8] == 0) {
-                var posterUrl = '/movie/poster/' + movie[0];
-                var cacheKey = 'movie_poster_' + movie[0];
-                if (localStorage.getItem(cacheKey)) {
-                    //console.log("hinh cũ");
-                    // Nếu có trong cache, sử dụng dữ liệu từ cache
-                    var cachedImageData = localStorage.getItem(cacheKey);
-                    image.src = cachedImageData;
-                } else {
-                    //console.log("hinh moi");
-                    // Nếu không có trong cache, tải hình ảnh từ URL
-                    axios.get(posterUrl, { responseType: 'blob' }).then(function (response) {
-                        var blob = new Blob([response.data]);
-                        var objectURL = URL.createObjectURL(blob);
-
-                        // Lưu hình ảnh vào cache
-                        localStorage.setItem(cacheKey, objectURL);
-
-                        // Đặt src của hình ảnh poster bằng URL từ cache
-                        image.src = objectURL;
-                    }).catch(function (error) {
-                        console.error(error);
-                    });
-                }
+                image.src = movie[9];
             } else if (movie[8] == 1) {
                 var movieId = movie[9];
                 var xhrmv = new XMLHttpRequest();
@@ -191,7 +149,9 @@ function getMoviesFrom() {
         image.onerror = function () {
             // Sử dụng hình ảnh mặc định nếu xảy ra lỗi
             if (movie[9] != null) {
-                image.src = movie[9];
+                if(movie[8] == 0)
+                    image.src = movie[9];
+                else image.src = defaultImageUrl;
             } else image.src = defaultImageUrl;
         };
         movieItem.insertAdjacentElement('afterbegin', image);

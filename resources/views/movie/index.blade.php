@@ -7,6 +7,14 @@
 </head>
 <body>
     <div class="main-container">
+        <div id="keyw" class="text-white mb-2">Từ khóa: 
+            <span id="keywk">...</span>
+        </div>
+        <div class="text-lg text-white">
+            (Tìm thấy  
+                <span id="numofmoviefounded">...</span>
+            Kết quả)
+        </div>
         <div class="hidden" id="isMoviePage"></div>
         <div id="movie-list" class="grid-container">
         </div>

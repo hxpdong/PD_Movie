@@ -63,6 +63,8 @@ function getUserInfo(username) {
                         var image = document.createElement("img");
                         if (movie.posterURL != null) {
                             if (movie.typeOfPosterURL == 0) {
+                                image.src = movie.posterURL;
+                                /*
                                 var posterUrl = '/movie/poster/' + movie.movie_id;
                                 var cacheKey = 'movie_poster_' + movie.movie_id;
                                 if (localStorage.getItem(cacheKey)) {
@@ -85,7 +87,8 @@ function getUserInfo(username) {
                                     }).catch(function (error) {
                                         console.error(error);
                                     });
-                                }
+                                }*/
+
                             } else if (movie.typeOfPosterURL == 1) {
                                 var movieId = movie.posterURL;
                                 var xhrmv = new XMLHttpRequest();
@@ -111,7 +114,9 @@ function getUserInfo(username) {
                         image.onerror = function () {
                             // Sử dụng hình ảnh mặc định nếu xảy ra lỗi
                             if (movie.posterURL != null) {
-                                image.src = movie.posterURL;
+                                if(movie.typeOfPosterURL == 0)
+                                    image.src = movie.posterURL;
+                                else image.src = defaultImageUrl;
                             } else image.src = defaultImageUrl;
                         };
 
