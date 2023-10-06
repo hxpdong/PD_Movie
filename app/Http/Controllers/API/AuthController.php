@@ -235,7 +235,8 @@ class AuthController extends Controller
                 $user->save();
                 return response()->json([
                     'success' => true,
-                    'api_token' => $user->api_token
+                    'api_token' => $user->api_token,
+                    'accid' => $user->id
                 ]);
             }
 
@@ -266,7 +267,8 @@ class AuthController extends Controller
                     $user->save();
                     return response()->json([
                         'success' => true,
-                        'api_token' => $user->api_token
+                        'api_token' => $user->api_token,
+                        'accid' => $user->id
                     ]);
                 }
                 else return response()->json([

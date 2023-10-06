@@ -50,7 +50,7 @@ Route::middleware('pdmv_checkIsUserOrGuest')->group(function (){
         return view('/movie.genre');
     });
 });
-Route::middleware('pdmv_checkIsUser')->group(function (){
+Route::middleware('pdmv_checkIsUser', 'pdmv_checkHaveKWSearch')->group(function (){
     Route::get('recommend', function(){
         return view('/movie.recommender');
     });
@@ -75,9 +75,6 @@ Route::middleware('pdmv_checkIsUserOrGuest','pdmv_checkHaveKWSearch')->group(fun
     });
     Route::get('genres/{mvgid}', function(){
         return view('/movie.genre');
-    });
-    Route::get('recommend', function(){
-        return view('/movie.recommender');
     });
     Route::get('/users/{uid}', function(){
         return view('auth.userpage');

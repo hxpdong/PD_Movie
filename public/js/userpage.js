@@ -711,7 +711,11 @@ function getRatingList(page, user_id) {
                             .then(response => {
                                 if (!response.ok) {
                                     throw new Error('Network response was not ok');
-                                } else if(!success){
+                                }
+                                return response.json();
+                            })
+                            .then(function (data) {
+                                if (data.success === false) {
                                     Swal.fire({
                                         icon: 'error',
                                         title: 'Không thể thực hiện thao tác',
@@ -724,11 +728,6 @@ function getRatingList(page, user_id) {
                                         }
                                     });
                                 }
-                                // Handle the response from the API if needed
-                                return response.json(); // If the response is JSON
-                            })
-                            .then(data => {
-                                // Process the data returned by the API
                             })
                             .catch(error => {
                                 console.error('Error:', error);

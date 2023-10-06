@@ -62,7 +62,7 @@
                             </div>
                         </nav>
                     </div>
-                    <button onclick="window.location.href = '/logoutHeader';"
+                    <button onclick="window.location.href = '/logoutHeader'; localStorage.clear();"
                         class="text-gray-800 bg-white mx-1 dark:text-white hover:bg-gray-50 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-gray-800">Đăng
                         xuất
                     </button>
@@ -124,7 +124,7 @@
                     </li>
                     <li>
                         <div class="flex justify-center rounded text-white lg:text-black hover:text-black hover:bg-gray-200 bg-gray-700 lg:bg-transparent  focus:ring-4 focus:outline-none focus:bg-[#66CCFF] font-medium px-2 py-2.5 text-center items-center w-full lg:w-auto">
-                        <span class="">Thể loại</span>    
+                        <span class="mr-2">Thể loại</span>    
                         <select class="w-48"
                                 id="genresList" onchange="redirectToGenre()">
                             </select>
@@ -183,7 +183,7 @@
                                     </div>
                                 </nav>
                             </div>
-                            <button onclick="window.location.href = '/logoutHeader';"
+                            <button onclick="window.location.href = '/logoutHeader'; localStorage.clear();"
                                 class="text-gray-800 bg-white mx-1 dark:text-white hover:bg-gray-50 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-gray-800">Đăng
                                 xuất
                             </button>
@@ -453,7 +453,7 @@
     </div>
 </div>
 <!-- end of change password modal -->
-
+<script src="/js/storeRecommend.js"></script>
 <script>
 const apiToken = localStorage.getItem('log_token');
 var accId = document.getElementById("authUserId").value;
@@ -476,7 +476,9 @@ $(document).ready(function() {
                     const newToken = response.data.api_token;
                     // Lưu newToken vào Local Storage hoặc Cookie
                     localStorage.setItem('log_token', newToken);
+                    localStorage.setItem('accId', response.data.accid);
                     Swal.close();
+                    getRCMMoviesToLocalStorage();
                     location.reload();
                 } else {
                     Swal.fire({
@@ -526,6 +528,8 @@ $(document).ready(function() {
                         const newToken = response.data.api_token;
                         // Lưu newToken vào Local Storage hoặc Cookie
                         localStorage.setItem('log_token', newToken);
+                        localStorage.setItem('accId', response.data.accid);
+                        getRCMMoviesToLocalStorage();
                         Swal.fire({
                             icon: 'success',
                             title: 'Đăng ký thành công',
@@ -748,6 +752,3 @@ function openProfileModal() {
         document.getElementById('profile-modal').classList.remove('hidden');
     }
 </script>
-
-<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>

@@ -47,6 +47,7 @@
         </div>
     </div>
 </body>
+<script src="/js/storeRecommend.js"></script>
 <script>
     $('#LoginForm').submit(function(e) {
         e.preventDefault();
@@ -61,7 +62,9 @@
                     const newToken = response.data.api_token;
                     // Lưu newToken vào Local Storage hoặc Cookie
                     localStorage.setItem('log_token', newToken);
+                    localStorage.setItem('accId', response.data.accid);
                     Swal.close();
+                    getRCMMoviesToLocalStorage();
                     location.reload();
                 } else {
                     Swal.fire({
@@ -75,7 +78,7 @@
                 Swal.fire({
                     icon: 'error',
                     title: 'Lỗi',
-                    text: 'Đã xảy ra lỗi trong quá trình xử lý yêu cầu.'
+                    text: 'Đã xảy ra lỗi trong quá trình xử lý yêu cầu.' + error
                 });
             });
     });

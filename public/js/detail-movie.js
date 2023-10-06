@@ -114,7 +114,7 @@ function updateMovieDetail(movieDetail) {
             manufactureYearElement.innerHTML = movie.manufactureYear;
             videoLengthElement.innerHTML = movie.videoLength;
 
-            if (movie.posterURL != null){
+            if (movie.posterURL != null) {
                 if (movie.typeOfPosterURL == 0) {
                     var posterUrl = '/movie/poster/' + movie.movie_id;
                     var cacheKey = 'movie_poster_' + movie.movie_id;
@@ -157,10 +157,10 @@ function updateMovieDetail(movieDetail) {
                     };
                     xhrmv.send();
                 } else {
-                    posterElement.src =defaultImageUrl;
+                    posterElement.src = defaultImageUrl;
                 }
             }
-               // posterElement.src = movie.posterURL;
+            // posterElement.src = movie.posterURL;
             else posterElement.src = defaultImageUrl;
             posterElement.onerror = function () {
                 // Sử dụng hình ảnh mặc định nếu xảy ra lỗi
@@ -512,7 +512,7 @@ function getComments(mid, page) {
                                             })
                                             .then(function (data) {
                                                 if (data.success === true) {
-                                            
+
                                                     Swal.fire(
                                                         'Đã xóa!',
                                                         'Xóa bình luận thành công!',
@@ -659,7 +659,11 @@ document.addEventListener("DOMContentLoaded", function () {
                 .then(response => {
                     if (!response.ok) {
                         throw new Error('Network response was not ok');
-                    } else if (!success){
+                    }
+                    return response.json();
+                })
+                .then(function (data) {
+                    if (data.success === false) {
                         Swal.fire({
                             icon: 'error',
                             title: 'Không thể thực hiện thao tác',
@@ -672,11 +676,6 @@ document.addEventListener("DOMContentLoaded", function () {
                             }
                         });
                     }
-                    // Handle the response from the API if needed
-                    return response.json(); // If the response is JSON
-                })
-                .then(data => {
-                    // Process the data returned by the API
                 })
                 .catch(error => {
                     console.error('Error:', error);
@@ -727,7 +726,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 })
                 .then(function (data) {
                     if (data.success === true) {
-                        
+
                         document.getElementById("comment").value = '';
                         currentCmtPage = 1;
                         getComments(mid, currentCmtPage);
@@ -892,7 +891,7 @@ function getLatestMovies() {
                         };
                         xhrmv.send();
                     } else {
-                        image.src =defaultImageUrl;
+                        image.src = defaultImageUrl;
                     }
                 }
                 else image.src = defaultImageUrl;
@@ -1008,7 +1007,7 @@ function getRecommendedMovies() {
                         };
                         xhrmv.send();
                     } else {
-                        image.src =defaultImageUrl;
+                        image.src = defaultImageUrl;
                     }
                 }
                 else image.src = defaultImageUrl;
@@ -1124,7 +1123,7 @@ function getRelatedMovies() {
                         };
                         xhrmv.send();
                     } else {
-                        image.src =defaultImageUrl;
+                        image.src = defaultImageUrl;
                     }
                 }
                 else image.src = defaultImageUrl;
