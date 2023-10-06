@@ -532,6 +532,10 @@ function getRatingList(page, user_id) {
                                                     'Xóa đánh giá thành công!',
                                                     'success'
                                                 );
+                                                
+                                                localStorage.removeItem("recommendedMoviesForLoggedUser");
+                                                getRCMMoviesToLocalStorage();
+                                                
                                                 if (li && li.parentNode) {
                                                     li.parentNode.removeChild(li);
                                                 }
@@ -727,6 +731,10 @@ function getRatingList(page, user_id) {
                                             window.location.href = '/logoutHeader';
                                         }
                                     });
+                                }
+                                else {
+                                    localStorage.removeItem("recommendedMoviesForLoggedUser");
+                                    getRCMMoviesToLocalStorage();
                                 }
                             })
                             .catch(error => {

@@ -1,5 +1,3 @@
-var recommendedMoviesArray =[];
-
 function isValidId(accId) {
     if (accId && typeof accId === 'string' && accId.trim() !== '') {
         const idNumber = parseInt(accId, 10);
@@ -11,6 +9,7 @@ function isValidId(accId) {
 }
 
 function getRCMMoviesToLocalStorage() {
+    var recommendedMoviesArray =[];
     var id;
     if (localStorage.getItem('accId')) {
         var localStorageId = localStorage.getItem('accId');

@@ -676,6 +676,10 @@ document.addEventListener("DOMContentLoaded", function () {
                             }
                         });
                     }
+                    else {
+                        localStorage.removeItem("recommendedMoviesForLoggedUser");
+                        getRCMMoviesToLocalStorage();
+                    }
                 })
                 .catch(error => {
                     console.error('Error:', error);
