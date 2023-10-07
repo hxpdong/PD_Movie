@@ -364,7 +364,8 @@ class AccountController extends Controller
 
                 return response()->json([
                     'success' => true,
-                    'message' => 'Thêm quản trị viên thành công'
+                    'message' => 'Thêm quản trị viên thành công',
+                    'newadmin' => $reslt[0]->results
                 ]);
             }
             else {

@@ -101,6 +101,9 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 function getAdminList() {
+    while (admintable.firstChild) {
+        admintable.removeChild(admintable.firstChild);
+    }
     adminArray.forEach(function (us) {
         var newRow = admintable.insertRow();
         var nameCell = newRow.insertCell(0);
@@ -138,7 +141,7 @@ function getAdminList() {
             var newfullname;
             var newemail;
             var newphone;
-            var oldFullname = us[4]? us[4] : "";
+            var oldFullname = us[4] ? us[4] : "";
             Swal.fire({
                 title: "Cập nhật thông tin quản trị viên",
                 html: `
@@ -200,12 +203,13 @@ function getAdminList() {
                             confirmButtonText: "OK",
                         }).then((result) => {
                             if (result.isConfirmed) {
-                                nameCell.textContent = newfullname;
-                                emailCell.textContent = newemail;
-                                phoneCell.textContent = newphone;
                                 us[4] = newfullname;
                                 us[5] = newemail;
                                 us[6] = newphone;
+                                if ($.fn.DataTable.isDataTable('#admintable')) {
+                                    $('#admintable').DataTable().destroy();
+                                }
+                                getAdminList();
                             }
                         });
                     } else {
@@ -315,25 +319,10 @@ function getAdminList() {
                 headers: headers,
                 success: function (response) {
                     us[2] = response.currentState;
-                    if (us[2] == 0) {
-                        stateCell.textContent = 'Hoạt động';
-                        stateCell.classList.remove('text-red-500');
-                        stateCell.classList.add('text-green-500');
-
-                        deleteButton.title = "Khóa người dùng";
-                        deleteIcon.textContent = "lock";
-                        deleteIcon.classList.remove('text-green-500');
-                        deleteIcon.classList.add('text-red-500');
-                    } else if (us[2] == 1) {
-                        stateCell.textContent = 'Bị khóa';
-                        stateCell.classList.remove('text-green-500');
-                        stateCell.classList.add('text-red-500');
-
-                        deleteButton.title = "Mở khóa người dùng";
-                        deleteIcon.textContent = "lock_open";
-                        deleteIcon.classList.remove('text-red-500');
-                        deleteIcon.classList.add('text-green-500');
+                    if ($.fn.DataTable.isDataTable('#admintable')) {
+                        $('#admintable').DataTable().destroy();
                     }
+                    getAdminList();
                 },
                 error: function (error) {
                     console.log("error: " + error);
@@ -354,6 +343,9 @@ function getAdminList() {
 }
 
 function getUserList() {
+    while (usertable.firstChild) {
+        usertable.removeChild(usertable.firstChild);
+    }
     userArray.forEach(function (us) {
         var newRow = usertable.insertRow();
         var nameCell = newRow.insertCell(0);
@@ -387,7 +379,7 @@ function getUserList() {
         updateButton.onclick = function () {
             var newfullname;
             var newemail;
-            var oldFullname = us[4]? us[4] : "";
+            var oldFullname = us[4] ? us[4] : "";
             Swal.fire({
                 title: "Cập nhật thông tin người dùng",
                 html: `
@@ -443,10 +435,12 @@ function getUserList() {
                             confirmButtonText: "OK",
                         }).then((result) => {
                             if (result.isConfirmed) {
-                                nameCell.textContent = newfullname;
-                                emailCell.textContent = newemail;
                                 us[4] = newfullname;
                                 us[5] = newemail;
+                                if ($.fn.DataTable.isDataTable('#usertable')) {
+                                    $('#usertable').DataTable().destroy();
+                                }
+                                getUserList();
                             }
                         });
                     } else {
@@ -555,26 +549,11 @@ function getUserList() {
                 type: 'PUT',
                 headers: headers,
                 success: function (response) {
-                    userArray[2] = response.currentState;
-                    if (userArray[2] == 0) {
-                        stateCell.textContent = 'Hoạt động';
-                        stateCell.classList.remove('text-red-500');
-                        stateCell.classList.add('text-green-500');
-
-                        deleteButton.title = "Khóa người dùng";
-                        deleteIcon.textContent = "lock";
-                        deleteIcon.classList.remove('text-green-500');
-                        deleteIcon.classList.add('text-red-500');
-                    } else if (userArray[2] == 1) {
-                        stateCell.textContent = 'Bị khóa';
-                        stateCell.classList.remove('text-green-500');
-                        stateCell.classList.add('text-red-500');
-
-                        deleteButton.title = "Mở khóa người dùng";
-                        deleteIcon.textContent = "lock_open";
-                        deleteIcon.classList.remove('text-red-500');
-                        deleteIcon.classList.add('text-green-500');
+                    us[2] = response.currentState;
+                    if ($.fn.DataTable.isDataTable('#usertable')) {
+                        $('#usertable').DataTable().destroy();
                     }
+                    getUserList();
                 },
                 error: function (error) {
                     console.log("error: " + error);
@@ -593,8 +572,13 @@ function getUserList() {
     })
         .columns.adjust();
 }
-if(document.getElementById('btnAddNewAdmin')){
-    document.getElementById('btnAddNewAdmin').onclick = function() {
+if (document.getElementById('btnAddNewAdmin')) {
+    document.getElementById('btnAddNewAdmin').onclick = function () {
+        var newfullname;
+        var newemail;
+        var newphone;
+        var newusname;
+
         Swal.fire({
             title: "Thêm người dùng quản trị",
             html: `
@@ -621,12 +605,12 @@ if(document.getElementById('btnAddNewAdmin')){
                 const phone = document.getElementById("phone").value;
                 const username = document.getElementById("usname").value;
                 const password = document.getElementById("password").value;
-                
-                var newfullname = fullname;
-                var newemail = email;
-                var newphone = phone;
-                var newusname = usname;
-                var newpassword = password;
+
+                newfullname = fullname;
+                newemail = email;
+                newphone = phone;
+                newusname = username;
+
                 return fetch("/api/admin/create-admin/as/" + accId, {
                     method: "POST",
                     headers: {
@@ -641,36 +625,53 @@ if(document.getElementById('btnAddNewAdmin')){
                         password
                     }).toString(),
                 })
-                .then((response) => {
-                    if (!response.ok) {
-                        throw new Error(response.statusText);
-                    }
-                    return response.json();
-                })
-                .then((data) => {
-                    if (!data.success) {
-                        throw new Error(data.message);
-                    }
-                    return data;
-                })
-                .catch((error) => {
-                    Swal.showValidationMessage(
-                        `Request failed: ${error.message}`);
-                });
-                
+                    .then((response) => {
+                        if (!response.ok) {
+                            throw new Error(response.statusText);
+                        }
+                        return response.json();
+                    })
+                    .then((data) => {
+                        if (!data.success) {
+                            throw new Error(data.message);
+                        }
+                        return data;
+                    })
+                    .catch((error) => {
+                        Swal.showValidationMessage(
+                            `Request failed: ${error.message}`);
+                    });
+
             },
             allowOutsideClick: () => !Swal.isLoading(),
         }).then((result) => {
             if (result.isConfirmed) {
                 const response = result.value;
                 if (response.success) {
+                    const messageFromResponse = response.message;
+                    var amItem = [
+                        response.newadmin,
+                        2,
+                        0,
+                        newusname,
+                        newfullname,
+                        newemail,
+                        newphone
+                    ];
+                    adminArray.push(amItem);
+                    if ($.fn.DataTable.isDataTable('#admintable')) {
+                        $('#admintable').DataTable().destroy();
+                    }
+                    getAdminList();
+
+                    document.getElementById("numOfAdmin").textContent = parseInt(document.getElementById("numOfAdmin").textContent) + 1;
                     Swal.fire({
                         icon: "success",
-                        title: "Thêm tài khoản thành công",
+                        title: messageFromResponse,
                         confirmButtonText: "OK",
                     }).then((result) => {
                         if (result.isConfirmed) {
-                            
+
                         }
                     });
                 } else {
