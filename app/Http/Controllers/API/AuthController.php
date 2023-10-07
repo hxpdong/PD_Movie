@@ -75,7 +75,10 @@ class AuthController extends Controller
                     $user->save();
 
                     return $user;
-                } else return response()->json(['message' => 'Bạn đã bị khóa'], 404);
+                } else {
+                    Auth::guard('web')->logout();
+                    return response()->json(['message' => 'Bạn đã bị khóa'], 404);
+                }
             }
 
             return response()->json(['message' => 'Something went wrong'], 401);
@@ -271,11 +274,16 @@ class AuthController extends Controller
                         'accid' => $user->id
                     ]);
                 }
-                else return response()->json([
-                    'message' => "Bạn đã bị khóa",
-                ]);
+                else {
+                    Auth::guard('web')->logout();
+                    return response()->json([
+                        'success' => false,
+                        'message' => "Bạn đã bị khóa",
+                    ]);
+                }
             } else {
                 return response()->json([
+                    'success' => false,
                     'message' => "Tài khoản hoặc mật khẩu không đúng",
                 ]);
             }
