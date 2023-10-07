@@ -49,10 +49,10 @@
             <div class="mvdetail-grid">
                 <!--FILMDETAIL-->
                 <div class="pt-3 sm:mx-auto mvdetail-grid-item">
-                    <div class="bg-white shadow-lg border-gray-100 border rounded-3xl p-8 flex space-x-8">
-                        <div class="w-1/2 flex justify-center h-screen">
+                    <div class="bg-white shadow-lg border-gray-100 border rounded-3xl p-8 grid grid-cols-1 sm:grid-cols-2 sm:space-x-8">
+                        <div class="flex justify-center h-auto">
                             <div class="w-full mx-auto text-center">
-                                <img class="mx-auto rounded-3xl shadow-lg lg:w-3/5 md:w-full" id="mvdetail-img" src="">
+                                <img class="mx-auto rounded-3xl shadow-lg lg:w-3/5 w-full" id="mvdetail-img" src="">
                                 <button data-modal-target="watchMovieModal" data-modal-toggle="watchMovieModal"
                                     class="mt-2 bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow"
                                     onclick="getMovieInfoToWatch()">
@@ -75,7 +75,7 @@
                                 </form>
                             </div>
                         </div>
-                        <div class="flex flex-col w-1/2 space-y-4">
+                        <div class="flex flex-col space-y-4">
                             <div>
                                 <span class="text-sm text-gray-400">Số lượt đánh giá: </span><span
                                     class="text-sm text-gray-400" id="mvdetail-numrating"></span>
