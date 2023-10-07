@@ -424,10 +424,7 @@ function getComments(mid, page) {
                                 form.addEventListener("submit", function (event) {
                                     event.preventDefault(); // Ngăn form submit theo cách thông thường
                                     var editCommentUrl = '/api/editcomment/' + cmt.comment_id + "?editComment=" + document.getElementById("editComment" + cmt.comment_id).value;
-                                    const headers = {
-                                        'Authorization': apiToken,
-                                        'Content-Type': 'application/json'
-                                    };
+
                                     // Gửi request POST bằng AJAX hoặc Fetch API
                                     fetch(editCommentUrl, {
                                         method: "PUT",
@@ -479,10 +476,7 @@ function getComments(mid, page) {
                                     if (result.isConfirmed) {
                                         var commentId = cmt.comment_id;
                                         var apiUrl = `/api/dropcomment/${commentId}`;
-                                        const headers = {
-                                            'Authorization': apiToken,
-                                            'Content-Type': 'application/json'
-                                        };
+
                                         fetch(apiUrl, {
                                             method: "DELETE",
                                             headers: headers
@@ -627,10 +621,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 mId: currentmov,
                 ratingpoint: rating
             };
-            const headers = {
-                'Authorization': apiToken,
-                'Content-Type': 'application/json'
-            };
+
             fetch(apiUrl, {
                 method: 'POST',
                 headers: headers,
@@ -686,10 +677,7 @@ document.addEventListener("DOMContentLoaded", function () {
             event.preventDefault(); // Ngăn form submit theo cách thông thường
             var postCommentUrl = '/api/postcomment';
             // Gửi request POST bằng AJAX hoặc Fetch API
-            const headers = {
-                'Authorization': apiToken,
-                'Content-Type': 'application/json'
-            };
+
             // Lấy dữ liệu từ form và chuyển đổi thành đối tượng JavaScript
             const formData = new FormData(form);
             const formDataObject = {};

@@ -457,6 +457,10 @@
 <script>
 const apiToken = localStorage.getItem('log_token');
 var accId = document.getElementById("authUserId").value;
+const headers = {
+    'Authorization': apiToken,
+    'Content-Type': 'application/json'
+};
 var oldFullname = document.getElementById("uptfullname");
 if(oldFullname) oldFullname = oldFullname.value;
 var oldEmail = document.getElementById("uptemail");

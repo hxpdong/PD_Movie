@@ -259,10 +259,7 @@ function getCommentList(page, user_id) {
                                 if (result.isConfirmed) {
                                     var commentId = cmt.comment_id;
                                     var apiUrl = `/api/dropcomment/${commentId}`;
-                                    const headers = {
-                                        'Authorization': apiToken,
-                                        'Content-Type': 'application/json'
-                                    };
+
                                     fetch(apiUrl, {
                                         method: "DELETE",
                                         headers: headers
@@ -397,10 +394,7 @@ function getCommentList(page, user_id) {
                                 event.preventDefault(); // Ngăn form submit theo cách thông thường
                                 var editCommentUrl = '/api/editcomment/' + cmt.comment_id + "?editComment=" + document.getElementById("editComment" + cmt.comment_id).value;
                                 // Gửi request POST bằng AJAX hoặc Fetch API
-                                const headers = {
-                                    'Authorization': apiToken,
-                                    'Content-Type': 'application/json'
-                                };
+ 
                                 fetch(editCommentUrl, {
                                     method: "PUT",
                                     body: new FormData(form),
@@ -519,10 +513,7 @@ function getRatingList(page, user_id) {
                                 if (result.isConfirmed) {
                                     var ratingId = rt.rating_id;
                                     var apiUrl = `/api/droprating/${ratingId}`;
-                                    const headers = {
-                                        'Authorization': apiToken,
-                                        'Content-Type': 'application/json'
-                                    };
+
                                     fetch(apiUrl, {
                                         method: "DELETE",
                                         headers: headers
@@ -708,10 +699,7 @@ function getRatingList(page, user_id) {
                                 mId: currentmov,
                                 ratingpoint: rating
                             };
-                            const headers = {
-                                'Authorization': apiToken,
-                                'Content-Type': 'application/json'
-                            };
+
                             fetch(apiUrl, {
                                 method: 'POST',
                                 headers: headers,

@@ -56,7 +56,7 @@
         const formData = $(this).serialize();
 
         // Send a POST request with Axios
-        axios.post('{{ route('modalLogin') }}', formData)
+        axios.post('/modalLogin', formData)
             .then(response => {
                 if (response.data.success) {
                     const newToken = response.data.api_token;
