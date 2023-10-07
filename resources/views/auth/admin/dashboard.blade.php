@@ -96,6 +96,16 @@
         background-color: #667eea !important;
         /*bg-indigo-500*/
     }
+
+    .datatable-container {
+        width: 100%; /* Thiết lập chiều rộng của khung DataTable */
+        overflow-x: auto; /* Tạo thanh cuộn ngang khi cần thiết */
+    }
+
+    #usertable, #admintable {
+        width: 100%; /* Đặt chiều rộng của bảng DataTable là 100% */
+        table-layout: auto; /* Cho phép bảng tự động xác định kích thước cột */
+    }
     </style>
 </head>
 
@@ -154,41 +164,45 @@
                             <span class="material-icons">add</span>
                             Thêm quản trị viên
                         </button>
-                        <table id="admintable" class="stripe hover"
-                            style="width:100%; padding-top: 1em;  padding-bottom: 1em;">
-                            <thead>
-                                <tr>
-                                    <th data-priority="1">Họ tên</th>
-                                    <th data-priority="2">Tên tài khoản</th>
-                                    <th data-priority="3">Email</th>
-                                    <th data-priority="4">Số điện thoại</th>
-                                    <th data-priority="5">Trạng thái</th>
-                                    <th data-priority="6">Thao tác</th>
-                                </tr>
-                            </thead>
-                            <tbody id="tbd-admintable">
-                            </tbody>
-                        </table>
+                        <div class="datatable-container">
+                            <table id="admintable" class="stripe hover"
+                                style="width:100%; padding-top: 1em;  padding-bottom: 1em;">
+                                <thead>
+                                    <tr>
+                                        <th data-priority="1">Họ tên</th>
+                                        <th data-priority="2">Tên tài khoản</th>
+                                        <th data-priority="3">Email</th>
+                                        <th data-priority="4">Số điện thoại</th>
+                                        <th data-priority="5">Trạng thái</th>
+                                        <th data-priority="6">Thao tác</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tbd-admintable">
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                     <!--end admin table-->
                     @endif
                     <!--User table-->
                     <div class="bg-white p-4 my-5" id="ustb" hidden>
                         <div class="font-bold text-xl mb-4">Người dùng</div>
-                        <table id="usertable" class="stripe hover"
-                            style="width:100%; padding-top: 1em;  padding-bottom: 1em;">
-                            <thead>
-                                <tr>
-                                    <th data-priority="1">Họ tên</th>
-                                    <th data-priority="2">Tên tài khoản</th>
-                                    <th data-priority="3">Email</th>
-                                    <th data-priority="4">Trạng thái</th>
-                                    <th data-priority="5">Thao tác</th>
-                                </tr>
-                            </thead>
-                            <tbody id="tbd-usertable">
-                            </tbody>
-                        </table>
+                        <div class="datatable-container">
+                            <table id="usertable" class="stripe hover"
+                                style="width:100%; padding-top: 1em;  padding-bottom: 1em;">
+                                <thead>
+                                    <tr>
+                                        <th data-priority="1">Họ tên</th>
+                                        <th data-priority="2">Tên tài khoản</th>
+                                        <th data-priority="3">Email</th>
+                                        <th data-priority="4">Trạng thái</th>
+                                        <th data-priority="5">Thao tác</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tbd-usertable">
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                     <!--end user table-->
                 </div>

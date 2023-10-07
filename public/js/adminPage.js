@@ -346,27 +346,13 @@ function getAdminList() {
     });
 
     $('#admintable').DataTable({
-        responsive: true,
+        responsive: false,
         language: {
             "url": "//cdn.datatables.net/plug-ins/1.10.19/i18n/Vietnamese.json"
         },
         lengthMenu: [5, 10, 15, 20],
-        responsive: {
-            details: {
-                display: $.fn.dataTable.Responsive.display.modal({
-                    header: function (row) {
-                        var data = row.data();
-                        return 'Thông tin của ' + data[1];
-                    }
-                }),
-                renderer: $.fn.dataTable.Responsive.renderer.tableAll({
-                    tableClass: 'table'
-                })
-            }
-        }
     })
-        .columns.adjust()
-        .responsive.recalc();
+        .columns.adjust();
 }
 
 function getUserList() {
@@ -603,27 +589,13 @@ function getUserList() {
     });
 
     $('#usertable').DataTable({
-        responsive: true,
+        responsive: false,
         language: {
             "url": "//cdn.datatables.net/plug-ins/1.10.19/i18n/Vietnamese.json"
         },
         lengthMenu: [5, 10, 15, 20],
-        responsive: {
-            details: {
-                display: $.fn.dataTable.Responsive.display.modal({
-                    header: function (row) {
-                        var data = row.data();
-                        return 'Thông tin của ' + data[1];
-                    }
-                }),
-                renderer: $.fn.dataTable.Responsive.renderer.tableAll({
-                    tableClass: 'table'
-                })
-            }
-        }
     })
-        .columns.adjust()
-        .responsive.recalc();
+        .columns.adjust();
 }
 if(document.getElementById('btnAddNewAdmin')){
     document.getElementById('btnAddNewAdmin').onclick = function() {
