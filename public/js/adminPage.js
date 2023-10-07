@@ -105,12 +105,7 @@ function getAdminList() {
         var newRow = admintable.insertRow();
         var nameCell = newRow.insertCell(0);
         nameCell.classList.add("text-center");
-        if (us[4])
-            nameCell.textContent = us[4];
-        else {
-            nameCell.textContent = "_";
-            nameCell.classList.add("italic");
-        }
+        nameCell.textContent = us[4];
         var usernameCell = newRow.insertCell(1);
         usernameCell.textContent = us[3];
         usernameCell.classList.add("text-center");
@@ -130,9 +125,9 @@ function getAdminList() {
         }
         stateCell.classList.add("text-center");
         var actionCell = newRow.insertCell(5);
-        actionCell.classList.add("flex", "justify-around");
+        actionCell.classList.add("text-center");
         var updateButton = document.createElement("button");
-        updateButton.classList.add("border-2", "p-2", "rounded-lg");
+        updateButton.classList.add("border-2", "p-2", "rounded-lg", "bg-white", "m-1");
         updateButton.title = "Cập nhật người dùng";
         var updateIcon = document.createElement("span");
         updateIcon.className = "material-icons";
@@ -143,12 +138,13 @@ function getAdminList() {
             var newfullname;
             var newemail;
             var newphone;
+            var oldFullname = us[4]? us[4] : "";
             Swal.fire({
                 title: "Cập nhật thông tin quản trị viên",
                 html: `
                                         <form id="updateForm">
                                         <label for="fullName">Họ và Tên</label>
-                                        <input type="text" id="fullname" name="fullname" class="swal2-input" required value="${us[4]}">
+                                        <input type="text" id="fullname" name="fullname" class="swal2-input" required value="${oldFullname}">
                                         <label for="email">Email</label>
                                         <input type="email" id="email" name="email" class="swal2-input" required value="${us[5]}">
                                         <label for="phone">Số điện thoại</label>
@@ -157,6 +153,7 @@ function getAdminList() {
                                     `,
                 showCancelButton: true,
                 confirmButtonText: "Cập nhật",
+                cancelButtonText: "Hủy bỏ",
                 showLoaderOnConfirm: true,
                 preConfirm: () => {
                     const fullname = document.getElementById("fullname")
@@ -224,7 +221,7 @@ function getAdminList() {
         actionCell.appendChild(updateButton);
 
         var changePasswordButton = document.createElement("button");
-        changePasswordButton.classList.add("border-2", "p-2", "rounded-lg");
+        changePasswordButton.classList.add("border-2", "p-2", "rounded-lg", "bg-white", "m-1");
         changePasswordButton.title = "Cập nhật mật khẩu";
         var changePasswordIcon = document.createElement("span");
         changePasswordIcon.className = "material-icons";
@@ -243,6 +240,7 @@ function getAdminList() {
                                     `,
                 showCancelButton: true,
                 confirmButtonText: "Cập nhật",
+                cancelButtonText: "Hủy bỏ",
                 showLoaderOnConfirm: true,
                 preConfirm: () => {
                     const newpass = document.getElementById("uptnewpassword").value;
@@ -296,7 +294,7 @@ function getAdminList() {
         actionCell.appendChild(changePasswordButton);
 
         var deleteButton = document.createElement("button");
-        deleteButton.classList.add("border-2", "p-2", "rounded-lg");
+        deleteButton.classList.add("border-2", "p-2", "rounded-lg", "bg-white", "m-1");
         var deleteIcon = document.createElement("span");
         deleteIcon.className = "material-icons";
         if (us[2] == 1) {
@@ -360,12 +358,7 @@ function getUserList() {
         var newRow = usertable.insertRow();
         var nameCell = newRow.insertCell(0);
         nameCell.classList.add("text-center");
-        if (us[4])
-            nameCell.textContent = us[4];
-        else {
-            nameCell.textContent = "_";
-            nameCell.classList.add("italic");
-        }
+        nameCell.textContent = us[4];
         var usernameCell = newRow.insertCell(1);
         usernameCell.textContent = us[3];
         usernameCell.classList.add("text-center");
@@ -382,9 +375,9 @@ function getUserList() {
         }
         stateCell.classList.add("text-center");
         var actionCell = newRow.insertCell(4);
-        actionCell.classList.add("flex", "justify-around");
+        actionCell.classList.add("text-center");
         var updateButton = document.createElement("button");
-        updateButton.classList.add("border-2", "p-2", "rounded-lg");
+        updateButton.classList.add("border-2", "p-2", "rounded-lg", "bg-white", "m-1");
         updateButton.title = "Cập nhật người dùng";
         var updateIcon = document.createElement("span");
         updateIcon.className = "material-icons";
@@ -394,18 +387,20 @@ function getUserList() {
         updateButton.onclick = function () {
             var newfullname;
             var newemail;
+            var oldFullname = us[4]? us[4] : "";
             Swal.fire({
                 title: "Cập nhật thông tin người dùng",
                 html: `
                                         <form id="updateUserForm">
                                         <label for="fullName">Họ và Tên</label>
-                                        <input type="text" id="fullname" name="fullname" class="swal2-input" required value="${us[4]}">
+                                        <input type="text" id="fullname" name="fullname" class="swal2-input" required value="${oldFullname}">
                                         <label for="email">Email</label>
                                         <input type="email" id="email" name="email" class="swal2-input" required value="${us[5]}">
                                         </form>
                                     `,
                 showCancelButton: true,
                 confirmButtonText: "Cập nhật",
+                cancelButtonText: "Hủy bỏ",
                 showLoaderOnConfirm: true,
                 preConfirm: () => {
                     const fullname = document.getElementById("fullname")
@@ -467,7 +462,7 @@ function getUserList() {
         actionCell.appendChild(updateButton);
 
         var changePasswordButton = document.createElement("button");
-        changePasswordButton.classList.add("border-2", "p-2", "rounded-lg");
+        changePasswordButton.classList.add("border-2", "p-2", "rounded-lg", "bg-white", "m-1");
         changePasswordButton.title = "Cập nhật mật khẩu";
         var changePasswordIcon = document.createElement("span");
         changePasswordIcon.className = "material-icons";
@@ -486,6 +481,7 @@ function getUserList() {
                                     `,
                 showCancelButton: true,
                 confirmButtonText: "Cập nhật",
+                cancelButtonText: "Hủy bỏ",
                 showLoaderOnConfirm: true,
                 preConfirm: () => {
                     const newpass = document.getElementById("uptnewpassword").value;
@@ -539,7 +535,7 @@ function getUserList() {
         actionCell.appendChild(changePasswordButton);
 
         var deleteButton = document.createElement("button");
-        deleteButton.classList.add("border-2", "p-2", "rounded-lg");
+        deleteButton.classList.add("border-2", "p-2", "rounded-lg", "bg-white", "m-1");
         var deleteIcon = document.createElement("span");
         deleteIcon.className = "material-icons";
         if (us[2] == 1) {
@@ -617,6 +613,7 @@ if(document.getElementById('btnAddNewAdmin')){
                                 `,
             showCancelButton: true,
             confirmButtonText: "Thêm mới",
+            cancelButtonText: "Hủy bỏ",
             showLoaderOnConfirm: true,
             preConfirm: () => {
                 const fullname = document.getElementById("fullname").value;

@@ -1,6 +1,6 @@
 @include ('component.head-script')
 <!-- sidebar.blade.php -->
-<aside  id="pdmv-sidebar" class="min-h-screen idden md:block bg-gray-800 text-white p-4 transition-all duration-300">
+<aside  id="pdmv-sidebar" class="min-h-screen hidden md:block bg-gray-800 text-white p-4 transition-all duration-300">
     <!-- Sidebar content goes here -->
     <div>
         <div class="flex items-center justify-center mt-8">

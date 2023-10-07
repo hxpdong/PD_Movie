@@ -106,6 +106,37 @@
         width: 100%; /* Đặt chiều rộng của bảng DataTable là 100% */
         table-layout: auto; /* Cho phép bảng tự động xác định kích thước cột */
     }
+
+    #usertable th:first-child, #admintable th:first-child {
+        position: sticky;
+        left: 0;
+        z-index: 1;
+        background-color: #fff; /* Màu nền cho cột cố định */
+        border-right: 1px solid #C0C0C0;
+    }
+    #usertable td:first-child, #admintable td:first-child {
+        position: sticky;
+        left: 0;
+        background-color: #C0C0C0; /* Màu nền cho cột cố định */
+        border-right: 1px solid #fff;
+        border-bottom: 1px solid #fff; 
+    }
+
+    #usertable th:last-child, #admintable th:last-child {
+        position: sticky;
+        right: 0;
+        z-index: 1;
+        background-color: #fff; /* Màu nền cho cột cố định */
+        border-left: 1px solid #C0C0C0;
+    }
+    #usertable td:last-child, #admintable td:last-child {
+        position: sticky;
+        right: 0;
+        background-color: #C0C0C0; /* Màu nền cho cột cố định */
+        border-left: 1px solid #fff;
+        border-bottom: 1px solid #fff; 
+        ; 
+    }
     </style>
 </head>
 
