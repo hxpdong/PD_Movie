@@ -320,4 +320,64 @@ class AccountController extends Controller
             ]);
         }
     }
+
+    public function addNewAdminAccount(Request $request){
+        try{
+            $request->validate([
+                'fullname' => 'required',
+                'email' => [
+                    'required',
+                    Rule::unique('pdmv_users', 'email'),
+                    Rule::unique('pdmv_admins', 'email'),
+                ],
+                'phone' => 'required|max:10',
+                'username' => [
+                    'required',
+                    Rule::unique('pdmv_accounts', 'usname'),
+                ],
+                'password' => 'required',
+            ], [
+                'fullname.required' => 'Tên là bắt buộc.',
+                'email.required' => 'Trường email là bắt buộc.',
+                'email.unique' => 'Email đã được sử dụng, vui lòng dùng email khác.',
+                'phone.required' => 'Trường số điện thoại là bắt buộc.',
+                'username.required' => 'Trường username là bắt buộc.',
+                'username.unique' => 'Username đã được sử dụng, vui lòng dùng username khác.',
+                'password.required' => 'Trường mật khẩu là bắt buộc.',
+            ]);
+            $fn = $request->fullname;
+            $em = $request->email;
+            $ph = $request->phone;
+            $usn = $request->username;
+            $pw = bcrypt($request->password);
+
+            $reslt = DB::select("CALL admin_addNew(?,?,?,?,?)", [$fn, $em, $ph, $usn, $pw]);
+            if($reslt) {
+                $user = new User();
+                $user->id = $reslt[0]->results;
+                $user->name = $usn;
+                $user->email = $em;
+                $user->password = $pw;
+                $user->fullname = $fn;
+                $user->acctype_id = 2;
+                $user->save();
+
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Thêm quản trị viên thành công'
+                ]);
+            }
+            else {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Thêm thất bại'
+                ]);
+            }
+        }catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage(),
+            ]);
+        }
+    }
 }

@@ -2193,6 +2193,30 @@ CREATE TABLE pdmv_systemVariable (
 );
 
 INSERT INTO pdmv_systemVariable(varName, varValue, varLink) VALUES('themoviedb API KEY', 'dee4bd9bc518b8011007f9f1ecc1bc17', 'https://api.themoviedb.org/3/movie/{movie_id}?api_key=dee4bd9bc518b8011007f9f1ecc1bc17');
+
+DELIMITER //
+CREATE PROCEDURE admin_addNew(
+    IN p_fullname VARCHAR(255),
+    IN p_email VARCHAR(255),
+    IN p_phone VARCHAR(10),
+    IN p_usname VARCHAR(50),
+    IN p_password VARCHAR(100)
+    )
+BEGIN
+    DECLARE newAccId INT DEFAULT 0;
+    DECLARE newAdminId INT DEFAULT 0;
+
+    IF NOT EXISTS (SELECT usname FROM pdmv_accounts WHERE usname = p_usname) THEN
+        INSERT INTO pdmv_accounts (usname, password, acctype_id) VALUES (p_usname, p_password, 2);
+        SET newAccId = (SELECT LAST_INSERT_ID());
+        INSERT INTO pdmv_admins (admin_id, fullname, email, phone) VALUES (newAccId, p_fullname, p_email, p_phone);
+        SET newAdminId = (SELECT LAST_INSERT_ID());
+        IF newAdminId > 0 THEN
+            SELECT newAdminId AS results;
+        END IF;
+    END IF;
+END //
+DELIMITER ;
 /*
 DELIMITER //
 CREATE PROCEDURE insertMV_Genre_FromTheMVDB()
