@@ -46,6 +46,7 @@ class RecommenderController extends Controller
     {
         try {
             $numofmov = request()->get('num', 12);
+            /*
             // Lấy thông tin về bộ phim được chọn
             $selectedMovie = DB::table('pdmv_movies')
                 ->where('movie_id', $mvid)
@@ -82,7 +83,9 @@ class RecommenderController extends Controller
                 ->orderBy('similarity', 'asc')
                 ->limit($numofmov)
                 ->get();
-    
+                */
+                $uid = request()->get('userid', 0);
+                $recommendedMovies = DB::select("CALL Content_RecommendedMovies(?,?,?)", array($mvid, $numofmov, $uid));
             return response()->json([
                 'success' => true,
                 'recommended_movies' => $recommendedMovies

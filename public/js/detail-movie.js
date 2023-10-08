@@ -995,7 +995,7 @@ function getRecommendedMovies() {
 
 function getRelatedMovies() {
 
-    axios.get('/api/movies/recommended-by-movie/' + getMovieIdFromURL() + "?num=6")
+    axios.get('/api/movies/recommended-by-movie/' + getMovieIdFromURL() + "?num=6" + "&userid=" +accId)
         .then(function (response) {
             //removeAllMovieItems();
             var movieList = document.getElementById("related-list");

@@ -641,7 +641,7 @@ BEGIN
 	SET user_stt = (@row_number:=@row_number + 1)
 	ORDER BY cosine_similarity DESC;
 	SELECT
-		pdmv_movies.*, AVG(pdmv_ratings.rating) as mvrating
+		pdmv_movies.*, COALESCE(AVG(pdmv_ratings.rating), 0) AS mvrating
 	FROM
 		pdmv_movies
 	INNER JOIN
@@ -2217,6 +2217,170 @@ BEGIN
     END IF;
 END //
 DELIMITER ;
+
+
+/*
+RECOMMENDED MOVIE BASED CONTENT (BASED genres of movies)
+*/
+-- get vector dac trung cua phim (id) -> chuoi dac trung
+DELIMITER //
+CREATE FUNCTION movie_getFeatureVector(p_mvid INT)
+	RETURNS varchar(255)
+BEGIN
+	DECLARE varFeatureVector varchar(255) DEFAULT '';
+    DECLARE mvgTotal INT DEFAULT 0;
+    DECLARE i INT;
+    DECLARE replacement_character varchar(10) DEFAULT '1';
+    
+    DECLARE isDone INT DEFAULT 0;
+    DECLARE mvgId INT;
+    DECLARE mvgHaveList VARCHAR(255) DEFAULT '';
+    DECLARE cur CURSOR FOR SELECT mvgenre_id FROM pdmv_movies_genres WHERE movie_id = p_mvid ORDER BY mvgenre_id ASC;
+    DECLARE CONTINUE HANDLER FOR NOT FOUND SET isDone = 1;
+    
+    SET mvgTotal = (SELECT COUNT(*) AS genreTotal FROM pdmv_mvgenres);
+    SET i = 1;
+    WHILE i  <= mvgTotal DO
+    	SET  varFeatureVector = CONCAT(varFeatureVector,'0');
+		SET  i = i + 1; 
+    END WHILE;
+    
+    OPEN cur;
+    	read_loop: LOOP
+        	FETCH cur INTO mvgId;
+            IF isDone THEN
+                LEAVE read_loop;
+            END IF;
+            SET varFeatureVector = CONCAT(
+                SUBSTRING(varFeatureVector, 1, mvgId - 1),
+                replacement_character,
+                SUBSTRING(varFeatureVector,mvgId + 1)
+            );
+        END LOOP;
+    CLOSE cur;
+    
+    RETURN varFeatureVector;
+END //
+DELIMITER ;
+-- SELECT movie_id, movie_getFeatureVector(movie_id) FROM pdmv_movies ORDER BY movie_id ASC;
+
+
+-- tinh toan so ky  tu giong nhau (intersection) cua 2 chuoi (str1, str2) -> count ky tu giong nhau (phan giao)
+DELIMITER //
+
+CREATE FUNCTION CountMatchingCharacters(str1 VARCHAR(255), str2 VARCHAR(255))
+    RETURNS INT
+BEGIN
+    DECLARE len1 INT;
+    DECLARE len2 INT;
+    DECLARE matchingCount INT;
+    DECLARE i INT;
+
+    SET len1 = LENGTH(str1);
+    SET len2 = LENGTH(str2);
+    SET matchingCount = 0;
+
+    IF len1 <> len2 THEN
+        RETURN -1; -- Độ dài hai chuỗi không bằng nhau
+    END IF;
+
+    SET i = 1;
+    WHILE i <= len1 DO
+        IF SUBSTRING(str1, i, 1) = SUBSTRING(str2, i, 1) THEN
+            SET matchingCount = matchingCount + 1;
+        END IF;
+        SET i = i + 1;
+    END WHILE;
+
+    RETURN matchingCount;
+END //
+
+DELIMITER ;
+
+
+-- Tinh toan jascard cua 2 bo phim (id1, id2) -> ty le % giong nhau (intersection/union)
+DELIMITER //
+
+CREATE FUNCTION JaccardIndex(p_mv1 INT, p_mv2 INT)
+    RETURNS DECIMAL(5, 4)
+BEGIN
+    DECLARE set1 VARCHAR(255);
+    DECLARE set2 VARCHAR(255);
+    DECLARE intersectionCount INT;
+    DECLARE unionCount INT;
+
+ 	SET set1 = ( SELECT movie_getFeatureVector(p_mv1) );
+    SET set2 = ( SELECT movie_getFeatureVector(p_mv2) );
+
+    -- Tính số phần tử giao của hai tập hợp
+    SET intersectionCount = ( SELECT CountMatchingCharacters(set1, set2) );
+    -- Tính số phần tử hợp của hai tập hợp
+    SET unionCount = ( SELECT LENGTH(set1) );
+    -- Tính Jaccard index
+    IF unionCount = 0 THEN
+        RETURN 0; -- Trường hợp đặc biệt khi cả hai tập hợp đều rỗng
+    ELSE
+        RETURN CAST(intersectionCount AS DECIMAL) / CAST(unionCount AS DECIMAL);
+    END IF;
+END //
+
+DELIMITER ;
+
+-- get danh sach phim goi y
+DROP PROCEDURE IF EXISTS Content_RecommendedMovies;
+DELIMITER //
+CREATE PROCEDURE Content_RecommendedMovies(p_mvid INT, p_KNum INT, p_userid INT)
+BEGIN
+	DECLARE is_done INTEGER DEFAULT 0;
+    DECLARE mvid INT;
+    DECLARE similar DECIMAL(5, 4) default 0.0;
+    DECLARE cursor_movies CURSOR FOR SELECT movie_id FROM pdmv_movies WHERE movie_id <> p_mvid;
+    DECLARE CONTINUE HANDLER FOR NOT FOUND SET is_done = 1;
+    DROP TABLE IF EXISTS MOVIE_LIST;
+    CREATE TABLE MOVIE_LIST 
+      (
+		movie_stt int default 0,
+        movie_id INT,
+        jaccardPoint DECIMAL(5, 4)
+      )ENGINE=InnoDB DEFAULT CHARSET=utf8;
+      
+    OPEN cursor_movies;
+    get_list: LOOP
+   		FETCH cursor_movies INTO mvid;
+    	IF is_done = 1 THEN 
+        	LEAVE get_list;
+    	END IF;
+    SELECT JaccardIndex(p_mvid, mvid) INTO similar;
+    INSERT INTO MOVIE_LIST(movie_id, jaccardPoint) values(mvid, similar);
+    END LOOP get_list;
+    CLOSE cursor_movies;
+    
+	SET @row_number = 0;
+	UPDATE MOVIE_LIST
+	SET movie_stt = (@row_number:=@row_number + 1)
+	ORDER BY jaccardPoint DESC;
+    
+	SELECT
+		pdmv_movies.*, COALESCE(AVG(pdmv_ratings.rating), 0) AS mvrating, jaccardPoint as similarPoint
+	FROM
+		pdmv_movies
+	LEFT JOIN
+		pdmv_ratings ON pdmv_movies.movie_id = pdmv_ratings.movie_id
+	INNER JOIN
+		(
+			SELECT * from MOVIE_LIST ORDER BY movie_stt ASC
+		) AS movie_smlpoint_list ON pdmv_movies.movie_id = movie_smlpoint_list.movie_id
+	WHERE 
+    	pdmv_ratings.rating_id IS NULL OR pdmv_ratings.user_id != p_userid
+	GROUP BY
+		pdmv_movies.movie_id
+	ORDER BY
+		movie_smlpoint_list.jaccardPoint DESC
+		LIMIT p_KNum;
+    DROP TABLE MOVIE_LIST;
+END //
+DELIMITER ;
+
 /*
 DELIMITER //
 CREATE PROCEDURE insertMV_Genre_FromTheMVDB()
