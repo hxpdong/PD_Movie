@@ -84,7 +84,7 @@ Setup:
 
 4.2. Rename file .env.example to .env
 
-4.3. Change the information of Connection suitable with yourself (in .env):
+4.3. Change the information of Connection suitable with yourself (in .env) (OR DOWNLOAD IN: hxpdong.github.io/files/LUANVAN/.env):
 
         DB_CONNECTION=mysql
         
