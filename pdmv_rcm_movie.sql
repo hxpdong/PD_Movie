@@ -94,7 +94,7 @@ CREATE TABLE pdmv_mvgenres (
 	mvgenre_vi_name NVARCHAR(255) NOT NULL,
 	mvgenre_en_name NVARCHAR(255) NOT NULL
 );
-ALTER TABLE pdmv_mvgenres AUTO_INCREMENT = 0;
+
 INSERT INTO pdmv_mvgenres (mvgenre_id, mvgenre_vi_name, mvgenre_en_name)
 VALUES
     (1, 'Khác', 'Others'),
@@ -122,6 +122,16 @@ VALUES
     (23, 'Viễn Tây', 'Western'),
     (24, 'Phim Noir', 'Film-Noir');
 
+CREATE TABLE pdmv_api (
+    api_id INT PRIMARY KEY,
+    api_name NVARCHAR(100)
+);
+
+INSERT INTO pdmv_api (api_id, api_name)
+VALUES
+    (0, 'No API'),
+    (1, 'www.themoviedb.org');
+
 CREATE TABLE pdmv_movies (
     movie_id INT PRIMARY KEY AUTO_INCREMENT,
 	title_vi NVARCHAR(255) NOT NULL,
@@ -133,7 +143,8 @@ CREATE TABLE pdmv_movies (
 	videoLength NVARCHAR(100),
     typeOfPosterURL INT DEFAULT 0,
 	posterURL TEXT,
-	updateAt DATETIME NOT NULL DEFAULT NOW()
+	updateAt DATETIME NOT NULL DEFAULT NOW(),
+    FOREIGN KEY (typeOfPosterURL) REFERENCES pdmv_api(api_id)
 );
 
 INSERT INTO pdmv_movies (movie_id, title_vi, title_en, content, director, actors, manufactureYear, videoLength)

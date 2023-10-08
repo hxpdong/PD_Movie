@@ -124,7 +124,8 @@ function getMovies(page, kwSearch) {
             var kwdiv = document.getElementById("keyw");
             if(getKeywordSearchFromCurrentURL()){
                 kwdiv.hidden = false;
-                document.getElementById("keywk").innerHTML = getKeywordSearchFromCurrentURL();
+                document.title = "Tìm kiếm | " + getKeywordSearchFromCurrentURL().replaceAll("+", " ");
+                document.getElementById("keywk").innerHTML = getKeywordSearchFromCurrentURL().replaceAll("+", " ");
             } else {
                 kwdiv.hidden = true;
             }
@@ -227,7 +228,7 @@ function getKeywordSearchFromCurrentURL() {
         if (keyword.trim() === '' || /^(\+)+$/.test(keyword)) {
             return null;
         }
-        return keyword;
+        return decodeURIComponent(keyword);
     }
     return null; // Trả về null nếu không tìm thấy cụm 'kwsearch='
 }
