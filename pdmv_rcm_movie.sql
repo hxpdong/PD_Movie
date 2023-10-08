@@ -129,8 +129,8 @@ CREATE TABLE pdmv_api (
 
 INSERT INTO pdmv_api (api_id, api_name)
 VALUES
-    (0, 'No API'),
-    (1, 'www.themoviedb.org');
+    (0, 'Google Drive'),
+    (1, 'TheMovieDB/www.themoviedb.org');
 
 CREATE TABLE pdmv_movies (
     movie_id INT PRIMARY KEY AUTO_INCREMENT,
