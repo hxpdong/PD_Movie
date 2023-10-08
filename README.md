@@ -72,15 +72,21 @@ Setup:
 
         git clone https://github.com/hxpdong/PD_Movie.git <Project_Name>
 
-1.1. Copy the content of pdmv_rcm_movie.sql file and run them
+2. Update:
 
-1.2. run Migration:
+        composer update
 
-        php artisan migrate --path=/database/migrations/create_users_table.php
+3. Install tailwindcss:
 
-1.3. Rename file .env.example to .env
+        npm install -D tailwindcss postcss autoprefixer
 
-1.4. Change the information of Connection suitable with yourself (in .env):
+5. 
+
+5.1. Copy the content of pdmv_rcm_movie.sql file and run them
+
+5.2. Rename file .env.example to .env
+
+5.3. Change the information of Connection suitable with yourself (in .env):
 
         DB_CONNECTION=mysql
         
@@ -93,17 +99,12 @@ Setup:
         DB_USERNAME=
         
         DB_PASSWORD=
-        
 
-2. Update:
+5.4. run Migration:
 
-        composer update
+        php artisan migrate --path=/database/migrations/create_users_table.php
 
-3. Install tailwindcss:
-
-        npm install -D tailwindcss postcss autoprefixer
-
-Run:
+6. Run:
 
 1. Terminal:
 
