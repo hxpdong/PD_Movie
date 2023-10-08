@@ -79,12 +79,12 @@ Setup:
 3. Install tailwindcss:
 
         npm install -D tailwindcss postcss autoprefixer
-5. 
-5.1. Copy the content of pdmv_rcm_movie.sql file and run them
+4.
+4.1. Copy the content of pdmv_rcm_movie.sql file and run them
 
-5.2. Rename file .env.example to .env
+4.2. Rename file .env.example to .env
 
-5.3. Change the information of Connection suitable with yourself (in .env):
+4.3. Change the information of Connection suitable with yourself (in .env):
 
         DB_CONNECTION=mysql
         
@@ -98,12 +98,12 @@ Setup:
         
         DB_PASSWORD=
 
-5.4. run Migration:
+4.4. run Migration:
 
         php artisan migrate --path=/database/migrations/create_users_table.php
 
-6. Run:
+5. Run:
 
-1. Terminal:
+5,1. Terminal:
 
         npm start
