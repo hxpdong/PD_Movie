@@ -79,7 +79,6 @@ Setup:
 3. Install tailwindcss:
 
         npm install -D tailwindcss postcss autoprefixer
-
 5. 
 
 5.1. Copy the content of pdmv_rcm_movie.sql file and run them
