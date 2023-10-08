@@ -80,7 +80,6 @@ Setup:
 
         npm install -D tailwindcss postcss autoprefixer
 5. 
-
 5.1. Copy the content of pdmv_rcm_movie.sql file and run them
 
 5.2. Rename file .env.example to .env
