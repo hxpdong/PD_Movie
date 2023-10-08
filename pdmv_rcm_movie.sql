@@ -2218,7 +2218,12 @@ BEGIN
 END //
 DELIMITER ;
 
-
+-- ---------------------------------------------------------------
+-- ---------------------------------------------------------------
+-- ---------------------------------------------------------------
+-- ---------------------------------------------------------------
+-- ---------------------------------------------------------------
+-- ---------------------------------------------------------------
 /*
 RECOMMENDED MOVIE BASED CONTENT (BASED genres of movies)
 */
@@ -2267,7 +2272,6 @@ DELIMITER ;
 
 -- tinh toan so ky  tu giong nhau (intersection) cua 2 chuoi (str1, str2) -> count ky tu giong nhau (phan giao)
 DELIMITER //
-
 CREATE FUNCTION CountMatchingCharacters(str1 VARCHAR(255), str2 VARCHAR(255))
     RETURNS INT
 BEGIN
@@ -2284,23 +2288,19 @@ BEGIN
         RETURN -1; -- Độ dài hai chuỗi không bằng nhau
     END IF;
 
-    SET i = 1;
-    WHILE i <= len1 DO
+    FOR i IN 1..len1 DO
         IF SUBSTRING(str1, i, 1) = SUBSTRING(str2, i, 1) THEN
             SET matchingCount = matchingCount + 1;
         END IF;
-        SET i = i + 1;
-    END WHILE;
+    END FOR;
 
     RETURN matchingCount;
 END //
-
 DELIMITER ;
 
 
 -- Tinh toan jascard cua 2 bo phim (id1, id2) -> ty le % giong nhau (intersection/union)
 DELIMITER //
-
 CREATE FUNCTION JaccardIndex(p_mv1 INT, p_mv2 INT)
     RETURNS DECIMAL(5, 4)
 BEGIN
@@ -2323,7 +2323,6 @@ BEGIN
         RETURN CAST(intersectionCount AS DECIMAL) / CAST(unionCount AS DECIMAL);
     END IF;
 END //
-
 DELIMITER ;
 
 -- get danh sach phim goi y
@@ -2331,53 +2330,34 @@ DROP PROCEDURE IF EXISTS Content_RecommendedMovies;
 DELIMITER //
 CREATE PROCEDURE Content_RecommendedMovies(p_mvid INT, p_KNum INT, p_userid INT)
 BEGIN
-	DECLARE is_done INTEGER DEFAULT 0;
-    DECLARE mvid INT;
-    DECLARE similar DECIMAL(5, 4) default 0.0;
-    DECLARE cursor_movies CURSOR FOR SELECT movie_id FROM pdmv_movies WHERE movie_id <> p_mvid;
-    DECLARE CONTINUE HANDLER FOR NOT FOUND SET is_done = 1;
     DROP TABLE IF EXISTS MOVIE_LIST;
-    CREATE TABLE MOVIE_LIST 
-      (
-		movie_stt int default 0,
+    CREATE TEMPORARY TABLE MOVIE_LIST 
+    (
         movie_id INT,
         jaccardPoint DECIMAL(5, 4)
-      )ENGINE=InnoDB DEFAULT CHARSET=utf8;
-      
-    OPEN cursor_movies;
-    get_list: LOOP
-   		FETCH cursor_movies INTO mvid;
-    	IF is_done = 1 THEN 
-        	LEAVE get_list;
-    	END IF;
-    SELECT JaccardIndex(p_mvid, mvid) INTO similar;
-    INSERT INTO MOVIE_LIST(movie_id, jaccardPoint) values(mvid, similar);
-    END LOOP get_list;
-    CLOSE cursor_movies;
-    
-	SET @row_number = 0;
-	UPDATE MOVIE_LIST
-	SET movie_stt = (@row_number:=@row_number + 1)
-	ORDER BY jaccardPoint DESC;
-    
-	SELECT
-		pdmv_movies.*, COALESCE(AVG(pdmv_ratings.rating), 0) AS mvrating, jaccardPoint as similarPoint
-	FROM
-		pdmv_movies
-	LEFT JOIN
-		pdmv_ratings ON pdmv_movies.movie_id = pdmv_ratings.movie_id
-	INNER JOIN
-		(
-			SELECT * from MOVIE_LIST ORDER BY movie_stt ASC
-		) AS movie_smlpoint_list ON pdmv_movies.movie_id = movie_smlpoint_list.movie_id
-	WHERE 
-    	pdmv_ratings.rating_id IS NULL OR pdmv_ratings.user_id != p_userid
-	GROUP BY
-		pdmv_movies.movie_id
-	ORDER BY
-		movie_smlpoint_list.jaccardPoint DESC
-		LIMIT p_KNum;
-    DROP TABLE MOVIE_LIST;
+    );
+
+    -- Tính toán Jaccard Index và lưu vào bảng tạm thời
+    INSERT INTO MOVIE_LIST (movie_id, jaccardPoint)
+    SELECT m.movie_id, JaccardIndex(p_mvid, m.movie_id)
+    FROM pdmv_movies m
+    WHERE m.movie_id <> p_mvid;
+
+    -- Sắp xếp trong truy vấn SQL và giới hạn số kết quả
+    SELECT
+        m.*,
+        COALESCE(AVG(r.rating), 0) AS mvrating,
+        ml.jaccardPoint AS similarPoint
+    FROM pdmv_movies m
+    LEFT JOIN pdmv_ratings r ON m.movie_id = r.movie_id
+    INNER JOIN MOVIE_LIST ml ON m.movie_id = ml.movie_id
+    LEFT JOIN pdmv_ratings pr ON m.movie_id = pr.movie_id AND pr.user_id = p_userid
+    WHERE pr.rating_id IS NULL OR pr.user_id != p_userid
+    GROUP BY m.movie_id
+    ORDER BY ml.jaccardPoint DESC
+    LIMIT p_KNum;
+
+    DROP TEMPORARY TABLE MOVIE_LIST;
 END //
 DELIMITER ;
 
