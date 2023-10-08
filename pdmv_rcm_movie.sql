@@ -2189,7 +2189,8 @@ CREATE TABLE pdmv_systemVariable (
     id INT AUTO_INCREMENT PRIMARY KEY,
     varName VARCHAR(50) NOT NULL,
     varValue VARCHAR(50) NOT NULL,
-    varLink VARCHAR(255)
+    varLink VARCHAR(255),
+    updateAt DATETIME NOT NULL DEFAULT NOW() 
 );
 
 INSERT INTO pdmv_systemVariable(varName, varValue, varLink) VALUES('themoviedb API KEY', 'dee4bd9bc518b8011007f9f1ecc1bc17', 'https://api.themoviedb.org/3/movie/{movie_id}?api_key=dee4bd9bc518b8011007f9f1ecc1bc17');
