@@ -1,5 +1,4 @@
 <html>
-@include ('component.head-script')
 
 <head>
     <!--Regular Datatables CSS-->

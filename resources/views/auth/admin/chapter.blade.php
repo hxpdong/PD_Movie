@@ -1,4 +1,3 @@
-@include ('component.head-script')
 @if(auth()->check())
 <!-- Trang của bạn.blade.php -->
 <body class="bg-gray-200">

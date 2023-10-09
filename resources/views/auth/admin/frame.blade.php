@@ -1,8 +1,3 @@
-@include ('component.head-script')
-<script>
-var userName = "{{ auth()->user()->name }}";
-console.log("day ne: " + userName);
-</script>
 @if(auth()->check())
 <!-- Trang của bạn.blade.php -->
 <body class="bg-gray-200">

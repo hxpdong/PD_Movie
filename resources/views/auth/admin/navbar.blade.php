@@ -63,7 +63,7 @@
 
 
             <div class="hidden justify-between items-center w-full md:flex md:w-auto md:order-1" id="mobile-menu-2">
-                <ul class="flex flex-col mt-4 font-medium md:flex-row md:space-x-8 md:mt-0 md:items-center">
+                <ul class="flex flex-col mt-4 font-medium md:grid md:grid-cols-2 lg:gap-96 md:gap-56 md:space-x-8 md:mt-0 md:items-center">
                     <li>
                         <a href="/"
                             class="rounded text-white md:text-black hover:text-black hover:bg-gray-200 bg-gray-700 md:bg-transparent  focus:ring-4 focus:outline-none focus:bg-[#66CCFF] font-medium px-5 py-2.5 text-center inline-flex items-center w-full md:w-auto">
@@ -72,6 +72,7 @@
                                 class="self-center text-xl font-semibold whitespace-nowrap dark:text-white">PDMovie</span>
                         </a>
                     </li>
+                    <!--
                     <li>
                         <form class="mb-0">
                             <div class="relative">
@@ -89,6 +90,7 @@
                             </div>
                         </form>
                     </li>
+                    -->
                     <li>
                         <div class="items-center justify-center md:order-2 w-full hidden md:flex">
                             @if(auth()->check())
