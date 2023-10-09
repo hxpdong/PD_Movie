@@ -2302,7 +2302,10 @@ BEGIN
 
     FOR i IN 1..len1 DO
         IF SUBSTRING(str1, i, 1) = SUBSTRING(str2, i, 1) THEN
-            SET matchingCount = matchingCount + 1;
+            IF SUBSTRING(str1, i, 1) = '1' THEN
+                SET matchingCount = matchingCount + 1;
+            END IF;
+            
         END IF;
     END FOR;
 
@@ -2340,7 +2343,7 @@ DELIMITER ;
 -- get danh sach phim goi y
 DROP PROCEDURE IF EXISTS Content_RecommendedMovies;
 DELIMITER //
-CREATE PROCEDURE Content_RecommendedMovies(p_mvid INT, p_KNum INT, p_userid INT)
+CREATE PROCEDURE Content_RecommendedMovies(p_mvid INT, p_KNum INT, p_userid INT, p_min DECIMAL(5,4))
 BEGIN
     DROP TABLE IF EXISTS MOVIE_LIST;
     CREATE TEMPORARY TABLE MOVIE_LIST 
@@ -2364,7 +2367,10 @@ BEGIN
     LEFT JOIN pdmv_ratings r ON m.movie_id = r.movie_id
     INNER JOIN MOVIE_LIST ml ON m.movie_id = ml.movie_id
     LEFT JOIN pdmv_ratings pr ON m.movie_id = pr.movie_id AND pr.user_id = p_userid
-    WHERE pr.rating_id IS NULL OR pr.user_id != p_userid
+    WHERE (pr.rating_id IS NULL OR pr.user_id != p_userid)
+        AND (
+            CAST(ml.jaccardPoint AS DECIMAL(5, 4)) > 0 AND CAST(ml.jaccardPoint AS DECIMAL(5, 4)) >= CAST(p_min AS DECIMAL(5, 4))
+        )
     GROUP BY m.movie_id
     ORDER BY ml.jaccardPoint DESC
     LIMIT p_KNum;
