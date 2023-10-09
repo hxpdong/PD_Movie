@@ -1,65 +1,139 @@
+const timeout = 200;
+
 var usertable = document.getElementById("tbd-usertable");
 var admintable = document.getElementById("tbd-admintable");
-var usertb = document.getElementById("ustb");
-var admintb = document.getElementById("amtb");
 var userArray = [];
 var cntNumClickUser = 0;
 var adminArray = [];
 var cntNumClickAdmin = 0;
 
-if (usertable) {
-    axios.get('/api/admin/get-users/as/' + accId, {
-        headers: headers
-    })
-        .then(function (response) {
-            if (response.status === 200) {
-                if (response.data.success === true) {
-                    var usl = response.data.usersList;
-                    usl.forEach(function (us) {
-                        var usItem = [us.user_id, us.acctype_id, us.isLocked, us.usname, us.fullname, us.email
-                        ];
-                        userArray.push(usItem);
-                    });
-                    document.getElementById("numOfUser").textContent = response.data.totaluser;
-                }
-            } else if (response.status === 404 || response.status === 500) {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Lỗi!',
-                    text: response.data.message
-                });
-            }
+var movietable = document.getElementById("tbd-movietable");
+var movieArray = [];
+
+document.addEventListener("DOMContentLoaded", function () {
+    function hoanThanhCongViec() {
+        Swal.close();
+    }
+
+    Swal.fire({
+        title: 'Đang lấy dữ liệu...',
+        allowOutsideClick: false,
+        allowEscapeKey: false,
+        allowEnterKey: false,
+        showConfirmButton: false,
+        onBeforeOpen: () => {
+            Swal.showLoading();
+        },
+        onClose: () => {
+            Swal.hideLoading();
+        }
+    });
+    if (isPageDashboard) {
+        function simulateCongViecTieuHaoThoiGian(callback) {
+            setTimeout(() => {
+                addDataToUserArray();
+                addDataToAdminArray();
+                callback();
+            }, timeout);
+        }
+        simulateCongViecTieuHaoThoiGian(hoanThanhCongViec);
+        console.log("dashboardpage");
+    }
+
+    else if (isPageChapter) {
+        function simulateCongViecTieuHaoThoiGian(callback) {
+            setTimeout(() => {
+
+                callback();
+            }, timeout);
+        }
+        simulateCongViecTieuHaoThoiGian(hoanThanhCongViec);
+        console.log("chapterpage");
+    }
+
+    else if (isPageGenre) {
+        function simulateCongViecTieuHaoThoiGian(callback) {
+            setTimeout(() => {
+
+                callback();
+            }, timeout);
+        }
+        simulateCongViecTieuHaoThoiGian(hoanThanhCongViec);
+        console.log("genrepage");
+    }
+
+    else if (isPageMovie) {
+        const overlay = document.querySelector('#overlay');
+        overlay.style.display = 'none';
+        function simulateCongViecTieuHaoThoiGian(callback) {
+            setTimeout(() => {
+                addDataToMovieArray();
+                callback();
+            }, timeout);
+        }
+        simulateCongViecTieuHaoThoiGian(hoanThanhCongViec);
+        console.log("moviepage");
+    }
+});
+
+function addDataToUserArray() {
+    if (usertable) {
+        axios.get('/api/admin/get-users/as/' + accId, {
+            headers: headers
         })
-        .catch(function (error) {
-            console.error('Lỗi trong quá trình gửi yêu cầu:', error);
-        });
+            .then(function (response) {
+                if (response.status === 200) {
+                    if (response.data.success === true) {
+                        var usl = response.data.usersList;
+                        usl.forEach(function (us) {
+                            var usItem = [us.user_id, us.acctype_id, us.isLocked, us.usname, us.fullname, us.email
+                            ];
+                            userArray.push(usItem);
+                        });
+                        document.getElementById("numOfUser").textContent = response.data.totaluser;
+                    }
+                } else if (response.status === 404 || response.status === 500) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Lỗi!',
+                        text: response.data.message
+                    });
+                }
+            })
+            .catch(function (error) {
+                console.error('Lỗi trong quá trình gửi yêu cầu:', error);
+            });
+    }
 }
-if (admintable) {
-    axios.get('/api/admin/get-admins/as/' + accId, {
-        headers: headers
-    })
-        .then(function (response) {
-            if (response.status === 200) {
-                if (response.data.success === true) {
-                    var usl = response.data.adminsList;
-                    usl.forEach(function (us) {
-                        var amItem = [us.admin_id, us.acctype_id, us.isLocked, us.usname, us.fullname, us.email, us.phone
-                        ];
-                        adminArray.push(amItem);
-                    });
-                    document.getElementById("numOfAdmin").textContent = response.data.totaladmin;
-                }
-            } else if (response.status === 404 || response.status === 500) {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Lỗi!',
-                    text: response.data.message
-                });
-            }
+
+function addDataToAdminArray() {
+    if (admintable) {
+        axios.get('/api/admin/get-admins/as/' + accId, {
+            headers: headers
         })
-        .catch(function (error) {
-            console.error('Lỗi trong quá trình gửi yêu cầu:', error);
-        });
+            .then(function (response) {
+                if (response.status === 200) {
+                    if (response.data.success === true) {
+                        var usl = response.data.adminsList;
+                        usl.forEach(function (us) {
+                            var amItem = [us.admin_id, us.acctype_id, us.isLocked, us.usname, us.fullname, us.email, us.phone
+                            ];
+                            adminArray.push(amItem);
+                        });
+                        document.getElementById("numOfAdmin").textContent = response.data.totaladmin;
+                    }
+                } else if (response.status === 404 || response.status === 500) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Lỗi!',
+                        text: response.data.message
+                    });
+                }
+            })
+            .catch(function (error) {
+                console.error('Lỗi trong quá trình gửi yêu cầu:', error);
+            });
+    }
 }
 
 function showAccTable(num) {
@@ -95,10 +169,6 @@ function showAccTable(num) {
     }
 
 }
-
-document.addEventListener("DOMContentLoaded", function () {
-
-});
 
 function getAdminList() {
     while (admintable.firstChild) {
@@ -684,4 +754,157 @@ if (document.getElementById('btnAddNewAdmin')) {
             }
         });
     };
+}
+
+function addDataToMovieArray() {
+    if (movietable) {
+        axios.get('/api/admin/movies', {
+            headers: headers
+        }).then(function (response) {
+            if (response.status === 200) {
+                if (response.data.success === true) {
+                    var mvl = response.data.results;
+                    mvl.forEach(function (mv) {
+                        var mvItem = [
+                            mv.movie_id,
+                            mv.title_vi,
+                            mv.title_en,
+                            mv.content,
+                            mv.director,
+                            mv.actors,
+                            mv.manufactureYear,
+                            mv.videoLength,
+                            mv.typeOfPosterURL,
+                            mv.posterURL,
+                            mv.updateAt,
+                            mv.movie_url
+                        ];
+                        movieArray.push(mvItem);
+                    });
+                    getMovieList();
+                    document.getElementById("numOfMovie").textContent = response.data.totalMovies;
+                } else console.log("Error get movies");
+            }
+        });
+    }
+}
+
+function getMovieList() {
+    while (movietable.firstChild) {
+        movietable.removeChild(movietable.firstChild);
+    }
+    movieArray.forEach(function (mv) {
+        var newRow = movietable.insertRow();
+        var mvidCell = newRow.insertCell(0);
+        mvidCell.classList.add("text-center");
+        mvidCell.textContent = mv[0];
+        var mvViCell = newRow.insertCell(1);
+        mvViCell.classList.add("text-center");
+        mvViCell.textContent = mv[1];
+        var mvEnCell = newRow.insertCell(2);
+        mvEnCell.classList.add("text-center");
+        mvEnCell.textContent = mv[2];
+        var mvActionCell = newRow.insertCell(3);
+        mvActionCell.classList.add("text-center", "md:flex", "md:flex-row");
+
+        var infoButton = document.createElement("button");
+        infoButton.classList.add("border-2", "p-2", "rounded-lg", "bg-white", "m-1");
+        infoButton.title = "Chi tiết phim";
+        var infoIcon = document.createElement("span");
+        infoIcon.className = "material-icons";
+        infoIcon.textContent = "info";
+        infoIcon.style.color = "#1355c9";
+        infoButton.appendChild(infoIcon);
+        infoButton.onclick = function () {
+            var enNameElement =  document.getElementById("dtEnName");
+            var viNameElement = document.getElementById("dtViName");
+            var contentElement = document.getElementById("dtContent");
+            var directorElement = document.getElementById("dtDirector");
+            var actorElement = document.getElementById("dtActor");
+            var yearElement = document.getElementById("dtYear");
+            var typeposterElement = document.getElementById("dtTypePoster");
+            var posterURLElement = document.getElementById("dtPosterURL");
+            var vidlengthElement = document.getElementById("dtVidLength");
+            var titleElement = document.getElementById("dtMovieTitle");
+            var posterElement = document.getElementById("dtReviewIMG");
+            var errIMG = document.getElementById("dtIMGnotExists");
+            
+            enNameElement.value = "";
+            viNameElement.value = "";
+            contentElement.value = "";
+            directorElement.value = "";
+            actorElement.value = "";
+            yearElement.value = "";
+            typeposterElement.value = "";
+            posterURLElement.value = "";
+            vidlengthElement.value = "";
+            titleElement.textContent = "";
+            posterElement.src = "";
+            errIMG.textContent = "";
+
+            document.getElementById("detailMovie-modal").classList.remove("hidden");
+            const overlay = document.querySelector('#overlay');
+            overlay.style.display = 'block';
+
+            enNameElement.value = mv[2];
+            viNameElement.value = mv[1];
+            contentElement.value = mv[3];
+            directorElement.value = mv[4];
+            actorElement.value = mv[5];
+            yearElement.value = mv[6];
+            typeposterElement.value = mv[8];
+            posterURLElement.value = mv[9];
+            vidlengthElement.value = mv[7];
+            titleElement.textContent = mv[2];
+            if(mv[9] != null){
+                if (mv[8] == 0) {
+                    posterElement.src = mv[9];
+                } else if (mv[8] == 1) {
+                    var movieId = mv[9];
+                    var xhrmv = new XMLHttpRequest();
+                    xhrmv.open('GET', apiUrlFromThemoviedb.replace('{movie_id}', movieId), true);
+                    xhrmv.onload = function () {
+                        if (xhrmv.status === 200) {
+                            var response = JSON.parse(xhrmv.responseText);
+                            posterElement.src = 'https://www.themoviedb.org/t/p/w300_and_h450_bestv2' + response.poster_path;
+                        } else {
+                            console.error('Error calling the API.');
+                        }
+                    };
+                    xhrmv.send();
+                }
+            }
+            else errIMG.textContent = "Phim chưa có Poster hoặc bị lỗi";
+        };
+        mvActionCell.appendChild(infoButton);
+
+        var removeButton = document.createElement("button");
+        removeButton.classList.add("border-2", "p-2", "rounded-lg", "bg-white", "m-1");
+        removeButton.title = "Xóa phim";
+        var removeIcon = document.createElement("span");
+        removeIcon.className = "material-icons";
+        removeIcon.textContent = "delete";
+        removeIcon.style.color = "#ff0000";
+        removeButton.appendChild(removeIcon);
+        removeButton.onclick = function () {
+        }
+        mvActionCell.appendChild(removeButton);
+    });
+
+    $('#movietable').DataTable({
+        responsive: false,
+        language: {
+            "url": "//cdn.datatables.net/plug-ins/1.10.19/i18n/Vietnamese.json"
+        },
+        lengthMenu: [5, 10, 15, 20],
+    })
+        .columns.adjust();
+}
+
+function closeDetailModal() {
+    if (document.getElementById("detailMovie-modal")) {
+        document.getElementById("detailMovie-modal").classList.add("hidden");
+        const overlay = document.querySelector('#overlay');
+        overlay.style.display = 'none';
+    }
 }

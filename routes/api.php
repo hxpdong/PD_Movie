@@ -79,3 +79,4 @@ Route::put('/users/update', [AuthController::class, 'modalUpdateUserInfo']);
 Route::put('/users/changepassword', [AuthController::class, 'modalUpateUserPassword'])->name('modalChangePassword');
 
 Route::get('/system/get-api', [SystemController::class, 'getSystemVar']);
+Route::get('/admin/movies', [MovieController::class, 'indexAdmin']);

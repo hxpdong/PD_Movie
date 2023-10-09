@@ -340,4 +340,20 @@ class MovieController extends Controller
             ]);
         }
     }    
+
+    public function indexAdmin()
+    {
+        $results = DB::select("CALL movie_list()");
+        
+        if (!empty($results)) {
+        return response()->json([
+            'success' => true,
+            'results' => $results,
+            'totalMovies' => count($results)
+        ]);
+        } else {
+            return response()->json([
+                'success' => false]);
+        }
+    }
 }

@@ -20,13 +20,6 @@
             </a>
 
             <a class="flex items-center px-6 py-2 mt-4 text-gray-500 hover:bg-gray-700 hover:bg-opacity-25 hover:text-gray-100"
-                href="/admin/genres" id="btn-genres">
-                <i class="fa-solid fa-tags fa-xl"></i>
-
-                <span class="mx-3">Thể Loại</span>
-            </a>
-
-            <a class="flex items-center px-6 py-2 mt-4 text-gray-500 hover:bg-gray-700 hover:bg-opacity-25 hover:text-gray-100"
                 href="/admin/movies" id="btn-movies">
                 <i class="fa-solid fa-clapperboard fa-xl"></i>
 
@@ -40,7 +33,12 @@
                 <span class="mx-3">Tập Phim</span>
             </a>
 
-            
+            <a class="flex items-center px-6 py-2 mt-4 text-gray-500 hover:bg-gray-700 hover:bg-opacity-25 hover:text-gray-100"
+                href="/admin/genres" id="btn-genres">
+                <i class="fa-solid fa-tags fa-xl"></i>
+
+                <span class="mx-3">Thể Loại</span>
+            </a>
         </nav>
     </div>
 </aside>

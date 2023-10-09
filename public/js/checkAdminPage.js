@@ -1,10 +1,9 @@
+const isPageDashboard = document.getElementById("isAd-DashboardPage");
+const isPageChapter = document.getElementById("isAd-ChapterPage");
+const isPageGenre = document.getElementById("isAd-GenrePage");
+const isPageMovie = document.getElementById("isAd-MoviePage");
 
 document.addEventListener("DOMContentLoaded", function() {
-    var isPageDashboard = document.getElementById("isAd-DashboardPage");
-    var isPageChapter = document.getElementById("isAd-ChapterPage");
-    var isPageGenre = document.getElementById("isAd-GenrePage");
-    var isPageMovie = document.getElementById("isAd-MoviePage");
-
     if (isPageDashboard) {
         changeClickedTag("btn-dashboard");
         document.title = "Admin | Dashboard";
