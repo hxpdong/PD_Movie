@@ -44,6 +44,23 @@ function getMovies() {
                             }
                         };
                         xhrmv.send();
+                    } else if (movie.typeOfPosterURL == 2) {
+                        var movieId = movie.posterURL;
+                        var xhrmv = new XMLHttpRequest();
+                        xhrmv.open('GET', apiUrlFromThemoviedbTV.replace('{movie_id}', movieId), true);
+                        xhrmv.onload = function () {
+                            if (xhrmv.status === 200) {
+                                // Chuyển đổi dữ liệu JSON từ phản hồi API
+                                var response = JSON.parse(xhrmv.responseText);
+
+                                // Lấy URL của ảnh bộ phim từ phản hồi API và gán cho defaultImageUrl
+                                image.src = 'https://www.themoviedb.org/t/p/w300_and_h450_bestv2' + response.poster_path;
+                            } else {
+                                // Xử lý trường hợp lỗi khi gọi API
+                                console.error('Error calling the API.');
+                            }
+                        };
+                        xhrmv.send();
                     } else {
                         image.src =defaultImageUrl;
                     }
@@ -128,6 +145,23 @@ function getMoviesFrom() {
                 var movieId = movie[9];
                 var xhrmv = new XMLHttpRequest();
                 xhrmv.open('GET', apiUrlFromThemoviedb.replace('{movie_id}', movieId), true);
+                xhrmv.onload = function () {
+                    if (xhrmv.status === 200) {
+                        // Chuyển đổi dữ liệu JSON từ phản hồi API
+                        var response = JSON.parse(xhrmv.responseText);
+
+                        // Lấy URL của ảnh bộ phim từ phản hồi API và gán cho defaultImageUrl
+                        image.src = 'https://www.themoviedb.org/t/p/w300_and_h450_bestv2' + response.poster_path;
+                    } else {
+                        // Xử lý trường hợp lỗi khi gọi API
+                        console.error('Error calling the API.');
+                    }
+                };
+                xhrmv.send();
+            } else if (movie[8] == 2) {
+                var movieId = movie[9];
+                var xhrmv = new XMLHttpRequest();
+                xhrmv.open('GET', apiUrlFromThemoviedbTV.replace('{movie_id}', movieId), true);
                 xhrmv.onload = function () {
                     if (xhrmv.status === 200) {
                         // Chuyển đổi dữ liệu JSON từ phản hồi API

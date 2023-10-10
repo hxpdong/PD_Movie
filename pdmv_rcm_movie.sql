@@ -130,7 +130,8 @@ CREATE TABLE pdmv_api (
 INSERT INTO pdmv_api (api_id, api_name)
 VALUES
     (0, 'Google Drive'),
-    (1, 'TheMovieDB/www.themoviedb.org');
+    (1, 'TheMovieDB (movie)'),
+    (2, 'TheMovieDB (tv)');
 
 CREATE TABLE pdmv_movies (
     movie_id INT PRIMARY KEY AUTO_INCREMENT,
@@ -2204,7 +2205,8 @@ CREATE TABLE pdmv_systemVariable (
     updateAt DATETIME NOT NULL DEFAULT NOW() 
 );
 
-INSERT INTO pdmv_systemVariable(varName, varValue, varLink) VALUES('themoviedb API KEY', 'dee4bd9bc518b8011007f9f1ecc1bc17', 'https://api.themoviedb.org/3/movie/{movie_id}?api_key=dee4bd9bc518b8011007f9f1ecc1bc17');
+INSERT INTO pdmv_systemVariable(varName, varValue, varLink) VALUES('themoviedb API KEY (movie)', 'dee4bd9bc518b8011007f9f1ecc1bc17', 'https://api.themoviedb.org/3/movie/{movie_id}?api_key=dee4bd9bc518b8011007f9f1ecc1bc17');
+INSERT INTO pdmv_systemVariable(varName, varValue, varLink) VALUES('themoviedb API KEY (tv)', 'dee4bd9bc518b8011007f9f1ecc1bc17', 'https://api.themoviedb.org/3/tv/{movie_id}?api_key=dee4bd9bc518b8011007f9f1ecc1bc17');
 
 DELIMITER //
 CREATE PROCEDURE admin_addNew(

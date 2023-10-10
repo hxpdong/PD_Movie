@@ -875,6 +875,20 @@ function getMovieList() {
                     };
                     xhrmv.send();
                 }
+                else if (mv[8] == 2) {
+                    var movieId = mv[9];
+                    var xhrmv = new XMLHttpRequest();
+                    xhrmv.open('GET', apiUrlFromThemoviedbTV.replace('{movie_id}', movieId), true);
+                    xhrmv.onload = function () {
+                        if (xhrmv.status === 200) {
+                            var response = JSON.parse(xhrmv.responseText);
+                            posterElement.src = 'https://www.themoviedb.org/t/p/w300_and_h450_bestv2' + response.poster_path;
+                        } else {
+                            console.error('Error calling the API.');
+                        }
+                    };
+                    xhrmv.send();
+                }
             }
             else errIMG.textContent = "Phim chưa có Poster hoặc bị lỗi";
         };
@@ -930,13 +944,15 @@ function closeAddMovieModal() {
         selectFields.forEach(function(input) {
             input.value = 0;
         });
+        document.getElementById('newIMGnotExists').textContent = "";
+        document.getElementById('newReviewIMG').src = "";
     }
 }
 
 function getPosterType() {
     var selectAPI1 = document.getElementById("newTypePoster");
     var selectAPI2 = document.getElementById("dtTypePoster");
-    axios.get('/api/system/get-poster-api', {
+    axios.get('/api/system/get-poster-list', {
         headers: headers
     }).then(function (response) {
         if (response.status === 200) {
@@ -1029,4 +1045,40 @@ function postNewMovie(){
             });
         }
     });
+}
+
+function checkNewPoster(){
+    var imgtag = document.getElementById("newReviewIMG");
+    var imgnotfound = document.getElementById("newIMGnotExists");
+    var imgURL = document.getElementById("newPosterURL").value;
+    var imgType = document.getElementById("newTypePoster").value;
+    imgtag.src = "";
+    imgnotfound.textContent = "";
+    if(imgType == "0") {
+        imgtag.src = imgURL;
+    } else if (imgType == "1"){
+        var xhrmv = new XMLHttpRequest();
+        xhrmv.open('GET', apiUrlFromThemoviedb.replace('{movie_id}', imgURL), true);
+        xhrmv.onload = function () {
+            if (xhrmv.status === 200) {
+                var response = JSON.parse(xhrmv.responseText);
+                imgtag.src = 'https://www.themoviedb.org/t/p/w300_and_h450_bestv2' + response.poster_path;
+            } else {
+                imgnotfound.textContent = 'Với themoviedb, cần nhập vào id của phim ở themoviedb.';
+            }
+        };
+        xhrmv.send();
+    } else if (imgType == "2"){
+        var xhrmv = new XMLHttpRequest();
+        xhrmv.open('GET', apiUrlFromThemoviedbTV.replace('{movie_id}', imgURL), true);
+        xhrmv.onload = function () {
+            if (xhrmv.status === 200) {
+                var response = JSON.parse(xhrmv.responseText);
+                imgtag.src = 'https://www.themoviedb.org/t/p/w300_and_h450_bestv2' + response.poster_path;
+            } else {
+                imgnotfound.textContent = 'Với themoviedb, cần nhập vào id của phim ở themoviedb.';
+            }
+        };
+        xhrmv.send();
+    }
 }

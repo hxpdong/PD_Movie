@@ -152,6 +152,15 @@
                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white">
                         </div>
                     </div>
+                    <div class="grid grid-cols-2">
+                        <div>
+                        <button type="button" class="bg-blue-200 p-4 rounded-lg mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                        onclick="checkNewPoster()">Kiểm tra poster
+                        </button>
+                            <div id="newIMGnotExists" class="text-red-500">Chưa có poster</div>
+                        </div>
+                        <img src="" id="newReviewIMG" class="w-48">
+                    </div>
                     <div class="grid grid-cols-2 gap-4">
                         <div class="flex w-full justify-end">
                             <button type="submit"

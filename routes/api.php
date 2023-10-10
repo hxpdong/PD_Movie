@@ -80,5 +80,6 @@ Route::middleware(['pdmv_API_checkToken', 'pdmv_API_checkSPAdminRole'])->group(f
 Route::put('/users/update', [AuthController::class, 'modalUpdateUserInfo']);
 Route::put('/users/changepassword', [AuthController::class, 'modalUpateUserPassword'])->name('modalChangePassword');
 
-Route::get('/system/get-api', [SystemController::class, 'getSystemVar']);
-Route::get('/system/get-poster-api', [SystemController::class, 'getPosterAPI']);
+Route::get('/system/get-api/movie', [SystemController::class, 'getSystemVarMovie']);
+Route::get('/system/get-api/tv', [SystemController::class, 'getSystemVarTV']);
+Route::get('/system/get-poster-list', [SystemController::class, 'getPosterAPI']);
