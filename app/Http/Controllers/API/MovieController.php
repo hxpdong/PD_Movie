@@ -413,4 +413,26 @@ class MovieController extends Controller
             ]);
         }
     }
+
+    function dropMovie($mvid){
+        try{
+            $results = DB::select("CALL movie_drop(?)", array($mvid));
+            if($results){
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Xóa thành công'
+                ]);
+            } else {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Không thể xóa'
+                ]);
+            }
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'error' => $e->getMessage()
+            ]);
+        }
+    }
 }

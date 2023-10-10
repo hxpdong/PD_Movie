@@ -795,6 +795,7 @@ function getMovieList() {
     while (movietable.firstChild) {
         movietable.removeChild(movietable.firstChild);
     }
+    var cnt = 0;
     movieArray.forEach(function (mv) {
         var newRow = movietable.insertRow();
         var mvidCell = newRow.insertCell(0);
@@ -903,8 +904,69 @@ function getMovieList() {
         removeIcon.style.color = "#ff0000";
         removeButton.appendChild(removeIcon);
         removeButton.onclick = function () {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Bạn có chắc chắn muốn xóa phim ' + mv[0] + " - " + mv[2] + "?",
+                html: 'Khi đồng ý <span class="text-red-500 font-bold">XÓA</span>, toàn bộ thông tin liên quan đến phim (bình luận, đánh giá,...) đều sẽ bị xóa và <span class="text-red-500 font-bold">không thể</span> khôi phục lại',
+                showCancelButton: true,
+                confirmButtonText: 'Xóa',
+                confirmButtonColor: 'red',
+                cancelButtonText: 'Suy nghĩ lại'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    var apiUrl = `/api/admin/movies-drop/${mv[0]}/as/${accId}`;
+
+                    fetch(apiUrl, {
+                        method: "DELETE",
+                        headers: headers
+                    })
+                        .then(function (response) {
+                            return response.json();
+                        })
+                        .then(function (data) {
+                            if (data.success === true) {
+                                Swal.fire(
+                                    'Đã xóa!',
+                                    'Xóa phim thành công!',
+                                    'success'
+                                );
+                                for (var i = 0; i < movieArray.length; i++) {
+                                    if (movieArray[i][0] === mv[0]) {
+                                        movieArray.splice(i, 1); // Xóa đối tượng tại chỉ mục i
+                                      break; // Sau khi xóa, bạn có thể thoát khỏi vòng lặp
+                                    }
+                                  }
+                                if ($.fn.DataTable.isDataTable('#movietable')) {
+                                    $('#movietable').DataTable().destroy();
+                                }
+                                getMovieList();
+                                document.getElementById("numOfMovie").textContent = parseInt(document.getElementById("numOfMovie").textContent) - 1;
+                            } else {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Không thể thực hiện thao tác',
+                                    html: 'Do bạn không có quyền hoặc tài khoản đang được đăng nhập ở nơi khác.<br/> Vui lòng đăng nhập lại!',
+                                    confirmButtonText: 'Đăng nhập lại',
+                                    allowOutsideClick: false,
+                                }).then((result) => {
+                                    if (result.isConfirmed) {
+                                        window.location.href = '/logoutHeader';
+                                    }
+                                });
+                            }
+                        })
+                        .catch(function (error) {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'An error occurred: ' + error,
+                                html: 'Please try again later',
+                            });
+                        });
+                }
+            });
         }
         mvActionCell.appendChild(removeButton);
+        cnt++;
     });
 
     $('#movietable').DataTable({
@@ -929,19 +991,19 @@ function closeAddMovieModal() {
     var modal = document.getElementById("addnewMovie-modal");
     if (modal) {
         var inputFields = modal.querySelectorAll('input[type="text"]');
-        inputFields.forEach(function(input) {
+        inputFields.forEach(function (input) {
             input.value = '';
         });
         var textAreaFields = modal.querySelectorAll('textarea');
-        textAreaFields.forEach(function(input) {
+        textAreaFields.forEach(function (input) {
             input.value = '';
         });
         var numberFields = modal.querySelectorAll('input[type="number"]');
-        numberFields.forEach(function(input) {
+        numberFields.forEach(function (input) {
             input.value = '';
         });
         var selectFields = modal.querySelectorAll('select');
-        selectFields.forEach(function(input) {
+        selectFields.forEach(function (input) {
             input.value = 0;
         });
         document.getElementById('newIMGnotExists').textContent = "";
@@ -962,7 +1024,7 @@ function getPosterType() {
                     var newOption = document.createElement("option");
                     newOption.value = api.api_id;
                     newOption.textContent = api.api_name;
-                    
+
                     var newOption2 = document.createElement("option");
                     newOption2.value = api.api_id;
                     newOption2.textContent = api.api_name;
@@ -975,12 +1037,12 @@ function getPosterType() {
     });
 }
 
-function postNewMovie(){
-    $('#modalNewMovieForm').submit(function(e) {
+function postNewMovie() {
+    $('#modalNewMovieForm').submit(function (e) {
         e.preventDefault();
-        if(false){
+        if (false) {
 
-        }else{
+        } else {
             Swal.fire({
                 title: 'Đang xử lý...',
                 allowOutsideClick: false,
@@ -999,64 +1061,64 @@ function postNewMovie(){
                     Authorization: apiToken,
                     "Content-Type": "application/x-www-form-urlencoded",
                 }
-            })            
-            .then(response => {
-                Swal.close();
-                if (response.data.success) {
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Thêm phim mới thành công',
-                        confirmButtonText: 'OK',
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            //ocation.reload();
-                            document.getElementById("numOfMovie").textContent = parseInt(document.getElementById("numOfMovie").textContent) + 1;
-                            var mv = response.data.newmv;
-                            mv = mv[0];
-                            var mvItem = [
-                                mv.movie_id,
-                                mv.title_vi,
-                                mv.title_en,
-                                mv.content,
-                                mv.director,
-                                mv.actors,
-                                mv.manufactureYear,
-                                mv.videoLength,
-                                mv.typeOfPosterURL,
-                                mv.posterURL,
-                                mv.updateAt,
-                                mv.movie_url
-                            ];
-                            movieArray.push(mvItem);
+            })
+                .then(response => {
+                    Swal.close();
+                    if (response.data.success) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Thêm phim mới thành công',
+                            confirmButtonText: 'OK',
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                //ocation.reload();
+                                document.getElementById("numOfMovie").textContent = parseInt(document.getElementById("numOfMovie").textContent) + 1;
+                                var mv = response.data.newmv;
+                                mv = mv[0];
+                                var mvItem = [
+                                    mv.movie_id,
+                                    mv.title_vi,
+                                    mv.title_en,
+                                    mv.content,
+                                    mv.director,
+                                    mv.actors,
+                                    mv.manufactureYear,
+                                    mv.videoLength,
+                                    mv.typeOfPosterURL,
+                                    mv.posterURL,
+                                    mv.updateAt,
+                                    mv.movie_url
+                                ];
+                                movieArray.push(mvItem);
 
-                            if ($.fn.DataTable.isDataTable('#movietable')) {
-                                $('#movietable').DataTable().destroy();
+                                if ($.fn.DataTable.isDataTable('#movietable')) {
+                                    $('#movietable').DataTable().destroy();
+                                }
+                                getMovieList();
                             }
-                            getMovieList();
-                        }
-                    });
-                } else if (response.data.error){
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Không thể thêm phim',
-                        text: response.data.error
-                    });
-                }
-            });
+                        });
+                    } else if (response.data.error) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Không thể thêm phim',
+                            text: response.data.error
+                        });
+                    }
+                });
         }
     });
 }
 
-function checkNewPoster(){
+function checkNewPoster() {
     var imgtag = document.getElementById("newReviewIMG");
     var imgnotfound = document.getElementById("newIMGnotExists");
     var imgURL = document.getElementById("newPosterURL").value;
     var imgType = document.getElementById("newTypePoster").value;
     imgtag.src = "";
     imgnotfound.textContent = "";
-    if(imgType == "0") {
+    if (imgType == "0") {
         imgtag.src = imgURL;
-    } else if (imgType == "1"){
+    } else if (imgType == "1") {
         var xhrmv = new XMLHttpRequest();
         xhrmv.open('GET', apiUrlFromThemoviedb.replace('{movie_id}', imgURL), true);
         xhrmv.onload = function () {
@@ -1068,7 +1130,7 @@ function checkNewPoster(){
             }
         };
         xhrmv.send();
-    } else if (imgType == "2"){
+    } else if (imgType == "2") {
         var xhrmv = new XMLHttpRequest();
         xhrmv.open('GET', apiUrlFromThemoviedbTV.replace('{movie_id}', imgURL), true);
         xhrmv.onload = function () {

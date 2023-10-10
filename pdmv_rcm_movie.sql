@@ -2456,6 +2456,21 @@ BEGIN
 END //
 DELIMITER ;
 
+DROP PROCEDURE IF EXISTS movie_drop;
+DELIMITER //
+CREATE PROCEDURE movie_drop(IN p_mvid INT)
+BEGIN
+    IF EXISTS (SELECT movie_id FROM pdmv_movies WHERE movie_id = p_mvid) THEN
+        DELETE FROM pdmv_comments WHERE movie_id = p_mvid;
+        DELETE FROM pdmv_ratings WHERE movie_id = p_mvid;
+        DELETE FROM pdmv_movies_genres WHERE movie_id = p_mvid;
+        DELETE FROM pdmv_errors WHERE movie_id = p_mvid;
+        DELETE FROM pdmv_mvchapters WHERE movie_id = p_mvid;
+        DELETE FROM pdmv_movies WHERE movie_id = p_mvid;
+        SELECT 'Xóa thành công' AS results;
+    END IF;
+END //
+DELIMITER ;
 /*
 DELIMITER //
 CREATE PROCEDURE insertMV_Genre_FromTheMVDB()

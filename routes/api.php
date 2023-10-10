@@ -67,6 +67,7 @@ Route::middleware(['pdmv_API_checkToken', 'pdmv_API_checkAdminRole'])->group(fun
     Route::put('/admin/changePassword-user/{uid}/as/{accid}', [AccountController::class, 'changeUserPassword']);
     Route::get('/admin/movies/as/{accid}', [MovieController::class, 'indexAdmin']);
     Route::post('/admin/movies/as/{accid}', [MovieController::class, 'createMovie']);
+    Route::delete('/admin/movies-drop/{mvid}/as/{accid}', [MovieController::class, 'dropMovie']);
 });
 
 Route::middleware(['pdmv_API_checkToken', 'pdmv_API_checkSPAdminRole'])->group(function () {
