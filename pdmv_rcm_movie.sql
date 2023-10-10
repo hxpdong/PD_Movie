@@ -564,118 +564,6 @@ VALUES
     (20, 304, 5.0);
 
 DELIMITER //
-CREATE FUNCTION Collab_SimilarityCosine(user1 INT, user2 INT) RETURNS DECIMAL(10, 5)
-BEGIN
-    DECLARE cosine_similarity DECIMAL(10, 5);
-    
-    SELECT SUM(r1.rating * r2.rating) / (m1.magnitude * m2.magnitude) INTO cosine_similarity
-    FROM pdmv_ratings r1
-    INNER JOIN pdmv_ratings r2 ON r1.movie_id = r2.movie_id
-    CROSS JOIN (
-        SELECT SQRT(SUM(rating * rating)) AS magnitude
-        FROM pdmv_ratings
-        WHERE user_id = user1
-    ) m1
-    CROSS JOIN (
-        SELECT SQRT(SUM(rating * rating)) AS magnitude
-        FROM pdmv_ratings
-        WHERE user_id = user2
-    ) m2
-    WHERE r1.user_id = user1 AND r2.user_id = user2;
-    IF cosine_similarity IS NULL THEN
-	RETURN 0.0;
-	END IF;
-    RETURN cosine_similarity;
-END//
-DELIMITER ;
-
-DELIMITER //
-CREATE PROCEDURE Collab_SimilarityUsers (IN user1 INT)
-BEGIN
-	DECLARE is_done INTEGER DEFAULT 0;
-    DECLARE uid INTEGER default 0;
-    DECLARE similar DECIMAL(10, 5) default 0.0;
-    DECLARE cursor_users CURSOR FOR SELECT user_id FROM pdmv_users WHERE user_id <> user1;
-    DECLARE CONTINUE HANDLER FOR NOT FOUND SET is_done = 1;
-    DROP TABLE IF EXISTS USER_LIST;
-    CREATE TABLE USER_LIST 
-      (
-		user_stt int default 0,
-        user_id INT,
-        cosine_similarity DECIMAL(10, 5)
-      )ENGINE=InnoDB DEFAULT CHARSET=utf8;
-    OPEN cursor_users;
-    get_list: LOOP
-    FETCH cursor_users INTO uid;
-    IF is_done = 1 THEN LEAVE get_list;
-    END IF;
-    SELECT Collab_SimilarityCosine(user1, uid) INTO similar;
-    INSERT INTO USER_LIST(user_id, cosine_similarity) values(uid, similar);
-    END LOOP get_list;
-    CLOSE cursor_users;
-	SET @row_number = 0;
-	UPDATE USER_LIST
-	SET user_stt = (@row_number:=@row_number + 1)
-	ORDER BY cosine_similarity DESC;
-    SELECT ul.*, pa.usname FROM USER_LIST ul
-    JOIN pdmv_accounts pa ON ul.user_id = pa.acc_id
-    WHERE cosine_similarity > 0 ORDER BY cosine_similarity DESC;
-	DROP TABLE USER_LIST;
-END//
-DELIMITER ;
-
-DELIMITER //
-CREATE PROCEDURE Collab_RecommendedMovies (IN user1 INT, IN numoffilm INT)
-BEGIN
-	DECLARE is_done INTEGER DEFAULT 0;
-    DECLARE uid INTEGER default 0;
-    DECLARE similar DECIMAL(10, 5) default 0.0;
-    DECLARE cursor_users CURSOR FOR SELECT user_id FROM pdmv_users WHERE user_id <> user1;
-    DECLARE CONTINUE HANDLER FOR NOT FOUND SET is_done = 1;
-    DROP TABLE IF EXISTS USER_LIST;
-    CREATE TABLE USER_LIST 
-      (
-		user_stt int default 0,
-        user_id INT,
-        cosine_similarity DECIMAL(10, 5)
-      )ENGINE=InnoDB DEFAULT CHARSET=utf8;
-    OPEN cursor_users;
-    get_list: LOOP
-    FETCH cursor_users INTO uid;
-    IF is_done = 1 THEN LEAVE get_list;
-    END IF;
-    SELECT Collab_SimilarityCosine(user1, uid) INTO similar;
-    INSERT INTO USER_LIST(user_id, cosine_similarity) values(uid, similar);
-    END LOOP get_list;
-    CLOSE cursor_users;
-	SET @row_number = 0;
-	UPDATE USER_LIST
-	SET user_stt = (@row_number:=@row_number + 1)
-	ORDER BY cosine_similarity DESC;
-	SELECT
-		pdmv_movies.*, COALESCE(AVG(pdmv_ratings.rating), 0) AS mvrating
-	FROM
-		pdmv_movies
-	INNER JOIN
-		pdmv_ratings ON pdmv_movies.movie_id = pdmv_ratings.movie_id
-	INNER JOIN
-		(
-			SELECT * from USER_LIST ORDER BY user_stt ASC
-		) AS similar_users ON pdmv_ratings.user_id = similar_users.user_id
-	WHERE
-		pdmv_ratings.user_id <> user1
-		AND pdmv_ratings.movie_id NOT IN (SELECT movie_id FROM pdmv_ratings WHERE user_id = user1)
-		AND pdmv_ratings.rating >= 4.0
-	GROUP BY
-		pdmv_movies.movie_id
-	ORDER BY
-		similar_users.user_stt ASC, pdmv_ratings.rating DESC , AVG(pdmv_ratings.rating) DESC
-		LIMIT numoffilm;
-    DROP TABLE USER_LIST;
-END//
-DELIMITER ;
-
-DELIMITER //
 CREATE PROCEDURE user_login (IN username VARCHAR(50), IN userpassword VARCHAR(100))
 BEGIN
 	SELECT usname, acc_id, acctype_id FROM pdmv_accounts 
@@ -2307,6 +2195,194 @@ BEGIN
     END IF;
 END //
 DELIMITER ;
+
+DROP PROCEDURE IF EXISTS movie_drop;
+DELIMITER //
+CREATE PROCEDURE movie_drop(IN p_mvid INT)
+BEGIN
+    IF EXISTS (SELECT movie_id FROM pdmv_movies WHERE movie_id = p_mvid) THEN
+        DELETE FROM pdmv_comments WHERE movie_id = p_mvid;
+        DELETE FROM pdmv_ratings WHERE movie_id = p_mvid;
+        DELETE FROM pdmv_movies_genres WHERE movie_id = p_mvid;
+        DELETE FROM pdmv_errors WHERE movie_id = p_mvid;
+        DELETE FROM pdmv_mvchapters WHERE movie_id = p_mvid;
+        DELETE FROM pdmv_movies WHERE movie_id = p_mvid;
+        SELECT 'Xóa thành công' AS results;
+    END IF;
+END //
+DELIMITER ;
+
+DELIMITER //
+CREATE PROCEDURE movie_update(
+    IN p_mvid INT,
+    IN p_titlevi VARCHAR(255),
+    IN p_titleen VARCHAR(255),
+    IN p_content TEXT,
+    IN p_director TEXT,
+    IN p_actors TEXT,
+    IN p_manufactureYear INT,
+    IN p_videoLength VARCHAR(100),
+    IN p_typeOfPosterURL INT,
+    IN p_posterURL TEXT
+)
+BEGIN
+    DECLARE p_movieURL VARCHAR(255) DEFAULT '';
+    SET p_movieURL = convertToURL(p_titleen);
+    IF EXISTS (SELECT movie_id FROM pdmv_movies WHERE movie_id = p_mvid) THEN
+        IF p_titlevi IS NULL THEN
+            SET p_titlevi = p_titleen;
+        END IF;
+        IF p_titlevi = '' THEN
+            SET p_titlevi = p_titleen;
+        END IF;
+        IF p_posterURL = '' THEN
+            SET p_posterURL = NULL;
+        END IF;
+        IF p_titleen = '' THEN
+            SET p_titleen = NULL;
+        END IF;
+        IF NOT EXISTS (SELECT movie_id FROM pdmv_movies WHERE title_en = p_titleen AND movie_id != p_mvid) THEN
+            UPDATE pdmv_movies
+            SET
+            title_vi = p_titlevi,
+            title_en = p_titleen,
+            content = p_content,
+            director = p_director,
+            actors = p_actors,
+            manuFactureYear = p_manufactureYear,
+            videoLength = p_videoLength,
+            typeOfPosterURL = p_typeOfPosterURL,
+            posterURL = p_posterURL,
+            movie_url = p_movieURL
+            WHERE movie_id = p_mvid;
+        SELECT * FROM pdmv_movies WHERE movie_id = p_mvid;
+        END IF;
+    END IF;
+END //
+DELIMITER ;
+-- -----------------------------------------------------RECOMMENNDER---------------------------------------------------------------------------------------------------------------------------------------
+-- -----------------------------------------------------RECOMMENNDER---------------------------------------------------------------------------------------------------------------------------------------
+-- -----------------------------------------------------RECOMMENNDER---------------------------------------------------------------------------------------------------------------------------------------
+-- ---------------------------------------------------------------
+-- ---------------------------------------------------------------
+-- ---------------------------------------------------------------
+-- ---------------------------------------------------------------
+-- ---------------------------------------------------------------
+-- ---------------------------------------------------------------
+/*
+RECOMMENDED MOVIE BASED USER (COLLAB FILTERING - SIMILAR USERS)
+*/
+DELIMITER //
+CREATE FUNCTION Collab_SimilarityCosine(user1 INT, user2 INT) RETURNS DECIMAL(10, 5)
+BEGIN
+    DECLARE cosine_similarity DECIMAL(10, 5);
+    
+    SELECT SUM(r1.rating * r2.rating) / (m1.magnitude * m2.magnitude) INTO cosine_similarity
+    FROM pdmv_ratings r1
+    INNER JOIN pdmv_ratings r2 ON r1.movie_id = r2.movie_id
+    CROSS JOIN (
+        SELECT SQRT(SUM(rating * rating)) AS magnitude
+        FROM pdmv_ratings
+        WHERE user_id = user1
+    ) m1
+    CROSS JOIN (
+        SELECT SQRT(SUM(rating * rating)) AS magnitude
+        FROM pdmv_ratings
+        WHERE user_id = user2
+    ) m2
+    WHERE r1.user_id = user1 AND r2.user_id = user2;
+    IF cosine_similarity IS NULL THEN
+	RETURN 0.0;
+	END IF;
+    RETURN cosine_similarity;
+END//
+DELIMITER ;
+
+DELIMITER //
+CREATE PROCEDURE Collab_SimilarityUsers (IN user1 INT)
+BEGIN
+	DECLARE is_done INTEGER DEFAULT 0;
+    DECLARE uid INTEGER default 0;
+    DECLARE similar DECIMAL(10, 5) default 0.0;
+    DECLARE cursor_users CURSOR FOR SELECT user_id FROM pdmv_users WHERE user_id <> user1;
+    DECLARE CONTINUE HANDLER FOR NOT FOUND SET is_done = 1;
+    DROP TABLE IF EXISTS USER_LIST;
+    CREATE TABLE USER_LIST 
+      (
+		user_stt int default 0,
+        user_id INT,
+        cosine_similarity DECIMAL(10, 5)
+      )ENGINE=InnoDB DEFAULT CHARSET=utf8;
+    OPEN cursor_users;
+    get_list: LOOP
+    FETCH cursor_users INTO uid;
+    IF is_done = 1 THEN LEAVE get_list;
+    END IF;
+    SELECT Collab_SimilarityCosine(user1, uid) INTO similar;
+    INSERT INTO USER_LIST(user_id, cosine_similarity) values(uid, similar);
+    END LOOP get_list;
+    CLOSE cursor_users;
+	SET @row_number = 0;
+	UPDATE USER_LIST
+	SET user_stt = (@row_number:=@row_number + 1)
+	ORDER BY cosine_similarity DESC;
+    SELECT ul.*, pa.usname FROM USER_LIST ul
+    JOIN pdmv_accounts pa ON ul.user_id = pa.acc_id
+    WHERE cosine_similarity > 0 ORDER BY cosine_similarity DESC;
+	DROP TABLE USER_LIST;
+END//
+DELIMITER ;
+
+DELIMITER //
+CREATE PROCEDURE Collab_RecommendedMovies (IN user1 INT, IN numoffilm INT)
+BEGIN
+	DECLARE is_done INTEGER DEFAULT 0;
+    DECLARE uid INTEGER default 0;
+    DECLARE similar DECIMAL(10, 5) default 0.0;
+    DECLARE cursor_users CURSOR FOR SELECT user_id FROM pdmv_users WHERE user_id <> user1;
+    DECLARE CONTINUE HANDLER FOR NOT FOUND SET is_done = 1;
+    DROP TABLE IF EXISTS USER_LIST;
+    CREATE TABLE USER_LIST 
+      (
+		user_stt int default 0,
+        user_id INT,
+        cosine_similarity DECIMAL(10, 5)
+      )ENGINE=InnoDB DEFAULT CHARSET=utf8;
+    OPEN cursor_users;
+    get_list: LOOP
+    FETCH cursor_users INTO uid;
+    IF is_done = 1 THEN LEAVE get_list;
+    END IF;
+    SELECT Collab_SimilarityCosine(user1, uid) INTO similar;
+    INSERT INTO USER_LIST(user_id, cosine_similarity) values(uid, similar);
+    END LOOP get_list;
+    CLOSE cursor_users;
+	SET @row_number = 0;
+	UPDATE USER_LIST
+	SET user_stt = (@row_number:=@row_number + 1)
+	ORDER BY cosine_similarity DESC;
+	SELECT
+		pdmv_movies.*, COALESCE(AVG(pdmv_ratings.rating), 0) AS mvrating
+	FROM
+		pdmv_movies
+	INNER JOIN
+		pdmv_ratings ON pdmv_movies.movie_id = pdmv_ratings.movie_id
+	INNER JOIN
+		(
+			SELECT * from USER_LIST ORDER BY user_stt ASC
+		) AS similar_users ON pdmv_ratings.user_id = similar_users.user_id
+	WHERE
+		pdmv_ratings.user_id <> user1
+		AND pdmv_ratings.movie_id NOT IN (SELECT movie_id FROM pdmv_ratings WHERE user_id = user1)
+		AND pdmv_ratings.rating >= 4.0
+	GROUP BY
+		pdmv_movies.movie_id
+	ORDER BY
+		similar_users.user_stt ASC, pdmv_ratings.rating DESC , AVG(pdmv_ratings.rating) DESC
+		LIMIT numoffilm;
+    DROP TABLE USER_LIST;
+END//
+DELIMITER ;
 -- ---------------------------------------------------------------
 -- ---------------------------------------------------------------
 -- ---------------------------------------------------------------
@@ -2456,21 +2532,6 @@ BEGIN
 END //
 DELIMITER ;
 
-DROP PROCEDURE IF EXISTS movie_drop;
-DELIMITER //
-CREATE PROCEDURE movie_drop(IN p_mvid INT)
-BEGIN
-    IF EXISTS (SELECT movie_id FROM pdmv_movies WHERE movie_id = p_mvid) THEN
-        DELETE FROM pdmv_comments WHERE movie_id = p_mvid;
-        DELETE FROM pdmv_ratings WHERE movie_id = p_mvid;
-        DELETE FROM pdmv_movies_genres WHERE movie_id = p_mvid;
-        DELETE FROM pdmv_errors WHERE movie_id = p_mvid;
-        DELETE FROM pdmv_mvchapters WHERE movie_id = p_mvid;
-        DELETE FROM pdmv_movies WHERE movie_id = p_mvid;
-        SELECT 'Xóa thành công' AS results;
-    END IF;
-END //
-DELIMITER ;
 /*
 DELIMITER //
 CREATE PROCEDURE insertMV_Genre_FromTheMVDB()
