@@ -2289,11 +2289,23 @@ BEGIN
             p_posterURL,
             p_movieURL);
     SET newMovieId = LAST_INSERT_ID();
+    CALL movie_genre_add(newMovieId, 1);
     SELECT * FROM pdmv_movies WHERE movie_id = newMovieId;
     END IF;
 END //
 DELIMITER ;
 
+DELIMITER //
+CREATE PROCEDURE movie_genre_add(
+    IN p_mvid INT,
+    IN p_mvgid INT
+)
+BEGIN
+    IF NOT EXISTS(SELECT movie_id FROM pdmv_movies_genres WHERE movie_id = p_mvid AND mvgenre_id = p_mvgid) THEN
+        INSERT INTO pdmv_movies_genres (movie_id, mvgenre_id) VALUES (p_mvid, p_mvgid);
+    END IF;
+END //
+DELIMITER ;
 -- ---------------------------------------------------------------
 -- ---------------------------------------------------------------
 -- ---------------------------------------------------------------
