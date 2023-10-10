@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Session;
 use Carbon\Carbon;
 use App\Http\Controllers\Token;
 use App\Models\User;
+use Illuminate\Validation\Rule;
 
 class MovieController extends Controller
 {
@@ -354,6 +355,62 @@ class MovieController extends Controller
         } else {
             return response()->json([
                 'success' => false]);
+        }
+    }
+
+    public function createMovie(Request $request){
+        try {
+            $request->validate([
+                'newEnName' => [
+                    'required',
+                    Rule::unique('pdmv_movies', 'title_en'),
+                ],
+
+            ], [
+                'newEnName.required' => 'Tên tiếng Anh là bắt buộc.',
+                'newEnName.unique' => "Tên phim đã tồn tại, vui lòng thêm chapter mới cho phim hoặc dùng tên khác."
+            ]);
+
+            $titlevi = request()->get('newViName', '');
+            $titleen = request()->get('newEnName', ''); // Thêm các giá trị còn lại
+            $content = request()->get('newContent', '');
+            $director = request()->get('newDirector', '');
+            $actors = request()->get('newActor', '');
+            $manufactureYear = request()->get('newYear', '');
+            $videoLength = request()->get('newVidLength', '');
+            $typeOfPosterURL = request()->get('newTypePoster', '');
+            $posterURL = request()->get('newPosterURL', '');
+
+            $results = DB::select("CALL movie_add(?,?,?,?,?,?,?,?,?)", array(
+                $titlevi,
+                $titleen,
+                $content,
+                $director,
+                $actors,
+                $manufactureYear,
+                $videoLength,
+                $typeOfPosterURL,
+                $posterURL
+            ));
+
+            if($results){
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Phim được thêm thành công',
+                    'newmv' => $results
+                ]);
+            }
+            else {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Không thêm được phim mới'
+                ]);
+            }
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'error' => $e->getMessage()
+            ]);
         }
     }
 }

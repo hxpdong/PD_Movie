@@ -17,4 +17,18 @@ class SystemController extends Controller
             'themoviedbLINK' => $themoviedb
         ]);        
     }
+
+    public function getPosterAPI(){
+        $results = DB::select("SELECT * FROM pdmv_api");
+        if ($results){
+            return response()->json([
+                'success' => true,
+                'apiList' => $results
+            ]);
+        }
+        else return response()->json([
+            'success' => false,
+            'message' => 'Cannot get APIs'
+        ]);
+    }
 }

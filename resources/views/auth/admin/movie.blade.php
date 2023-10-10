@@ -65,7 +65,7 @@
                 <h3 class="text-xl font-medium text-white">
                     Thêm mới phim
                 </h3>
-                <button type="button"
+                <button type="button" onclick="closeAddMovieModal()"
                     class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ml-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
                     data-modal-hide="addnewMovie-modal">
                     <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
@@ -86,7 +86,7 @@
                             <label for="newEnName"
                                 class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Tên
                                 tiếng Anh</label>
-                            <input type="text" name="newEnName" id="newEnName"
+                            <input type="text" name="newEnName" id="newEnName" required
                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white">
                         </div>
                         <div>
@@ -128,13 +128,13 @@
                             <label for="newYear"
                                 class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Năm
                                 phát hành</label>
-                            <input type="number" name="newYear" id="newYear"
+                            <input type="number" name="newYear" id="newYear" required
                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white">
                         </div>
                         <div>
                             <label for="newVidLength"
                                 class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Thời lượng</label>
-                            <input type="text" name="newVidLength" id="newVidLength" placeholder="dạng: xhym - 1h30m"
+                            <input type="text" name="newVidLength" id="newVidLength" required placeholder="dạng: xhym - 1h30m"
                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white">
                         </div>
                         <div>
@@ -142,8 +142,6 @@
                                 class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Kiểu poster</label>
                             <select name="newTypePoster" id="newTypePoster"
                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white">
-                                <option value="0">Google Drive URL</option>
-                                <option value="1">TheMovieDB</option>
                             </select>
                         </div>
                         <div>
@@ -162,7 +160,7 @@
                             </button>
                         </div>
                         <div class="flex w-full justify-start">
-                            <button type="button" data-modal-hide="addnewMovie-modal"
+                            <button type="button" data-modal-hide="addnewMovie-modal" onclick="closeAddMovieModal()"
                                 class="w-1/2 text-white bg-gray-500 hover:bg-gray-900 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                                 Hủy bỏ
                             </button>
@@ -264,8 +262,6 @@
                                 class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Kiểu poster</label>
                             <select name="dtTypePoster" id="dtTypePoster"
                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white">
-                                <option value="0">Google Drive URL</option>
-                                <option value="1">TheMovieDB</option>
                             </select>
                         </div>
                         <div>

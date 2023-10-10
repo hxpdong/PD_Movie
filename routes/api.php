@@ -65,6 +65,8 @@ Route::middleware(['pdmv_API_checkToken', 'pdmv_API_checkAdminRole'])->group(fun
     Route::put('/admin/lock-user/{uid}/as/{accid}', [AccountController::class, 'changeLockStateUser']);
     Route::put('/admin/changeInfo-user/{uid}/as/{accid}', [AccountController::class, 'changeUserInfo']);
     Route::put('/admin/changePassword-user/{uid}/as/{accid}', [AccountController::class, 'changeUserPassword']);
+    Route::get('/admin/movies/as/{accid}', [MovieController::class, 'indexAdmin']);
+    Route::post('/admin/movies/as/{accid}', [MovieController::class, 'createMovie']);
 });
 
 Route::middleware(['pdmv_API_checkToken', 'pdmv_API_checkSPAdminRole'])->group(function () {
@@ -79,4 +81,4 @@ Route::put('/users/update', [AuthController::class, 'modalUpdateUserInfo']);
 Route::put('/users/changepassword', [AuthController::class, 'modalUpateUserPassword'])->name('modalChangePassword');
 
 Route::get('/system/get-api', [SystemController::class, 'getSystemVar']);
-Route::get('/admin/movies', [MovieController::class, 'indexAdmin']);
+Route::get('/system/get-poster-api', [SystemController::class, 'getPosterAPI']);

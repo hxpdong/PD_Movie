@@ -67,12 +67,14 @@ document.addEventListener("DOMContentLoaded", function () {
         overlay.style.display = 'none';
         function simulateCongViecTieuHaoThoiGian(callback) {
             setTimeout(() => {
+                getPosterType();
                 addDataToMovieArray();
                 callback();
             }, timeout);
         }
         simulateCongViecTieuHaoThoiGian(hoanThanhCongViec);
         console.log("moviepage");
+        postNewMovie();
     }
 });
 
@@ -758,7 +760,7 @@ if (document.getElementById('btnAddNewAdmin')) {
 
 function addDataToMovieArray() {
     if (movietable) {
-        axios.get('/api/admin/movies', {
+        axios.get('/api/admin/movies/as/' + accId, {
             headers: headers
         }).then(function (response) {
             if (response.status === 200) {
@@ -816,7 +818,7 @@ function getMovieList() {
         infoIcon.style.color = "#1355c9";
         infoButton.appendChild(infoIcon);
         infoButton.onclick = function () {
-            var enNameElement =  document.getElementById("dtEnName");
+            var enNameElement = document.getElementById("dtEnName");
             var viNameElement = document.getElementById("dtViName");
             var contentElement = document.getElementById("dtContent");
             var directorElement = document.getElementById("dtDirector");
@@ -828,7 +830,7 @@ function getMovieList() {
             var titleElement = document.getElementById("dtMovieTitle");
             var posterElement = document.getElementById("dtReviewIMG");
             var errIMG = document.getElementById("dtIMGnotExists");
-            
+
             enNameElement.value = "";
             viNameElement.value = "";
             contentElement.value = "";
@@ -856,7 +858,7 @@ function getMovieList() {
             posterURLElement.value = mv[9];
             vidlengthElement.value = mv[7];
             titleElement.textContent = mv[2];
-            if(mv[9] != null){
+            if (mv[9] != null) {
                 if (mv[8] == 0) {
                     posterElement.src = mv[9];
                 } else if (mv[8] == 1) {
@@ -907,4 +909,124 @@ function closeDetailModal() {
         const overlay = document.querySelector('#overlay');
         overlay.style.display = 'none';
     }
+}
+
+function closeAddMovieModal() {
+    var modal = document.getElementById("addnewMovie-modal");
+    if (modal) {
+        var inputFields = modal.querySelectorAll('input[type="text"]');
+        inputFields.forEach(function(input) {
+            input.value = '';
+        });
+        var textAreaFields = modal.querySelectorAll('textarea');
+        textAreaFields.forEach(function(input) {
+            input.value = '';
+        });
+        var numberFields = modal.querySelectorAll('input[type="number"]');
+        numberFields.forEach(function(input) {
+            input.value = '';
+        });
+        var selectFields = modal.querySelectorAll('select');
+        selectFields.forEach(function(input) {
+            input.value = 0;
+        });
+    }
+}
+
+function getPosterType() {
+    var selectAPI1 = document.getElementById("newTypePoster");
+    var selectAPI2 = document.getElementById("dtTypePoster");
+    axios.get('/api/system/get-poster-api', {
+        headers: headers
+    }).then(function (response) {
+        if (response.status === 200) {
+            if (response.data.success === true) {
+                var apil = response.data.apiList;
+                apil.forEach(function (api) {
+                    var newOption = document.createElement("option");
+                    newOption.value = api.api_id;
+                    newOption.textContent = api.api_name;
+                    
+                    var newOption2 = document.createElement("option");
+                    newOption2.value = api.api_id;
+                    newOption2.textContent = api.api_name;
+
+                    selectAPI2.appendChild(newOption2);
+                    selectAPI1.appendChild(newOption);
+                });
+            }
+        }
+    });
+}
+
+function postNewMovie(){
+    $('#modalNewMovieForm').submit(function(e) {
+        e.preventDefault();
+        if(false){
+
+        }else{
+            Swal.fire({
+                title: 'Đang xử lý...',
+                allowOutsideClick: false,
+                allowEscapeKey: false,
+                allowEnterKey: false,
+                onBeforeOpen: () => {
+                    Swal.showLoading();
+                },
+                onClose: () => {
+                    Swal.hideLoading();
+                }
+            });
+            const formData = $(this).serialize();
+            axios.post('/api/admin/movies/as/' + accId, formData, {
+                headers: {
+                    Authorization: apiToken,
+                    "Content-Type": "application/x-www-form-urlencoded",
+                }
+            })            
+            .then(response => {
+                Swal.close();
+                if (response.data.success) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Thêm phim mới thành công',
+                        confirmButtonText: 'OK',
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            //ocation.reload();
+                            document.getElementById("numOfMovie").textContent = parseInt(document.getElementById("numOfMovie").textContent) + 1;
+                            var mv = response.data.newmv;
+                            mv = mv[0];
+                            var mvItem = [
+                                mv.movie_id,
+                                mv.title_vi,
+                                mv.title_en,
+                                mv.content,
+                                mv.director,
+                                mv.actors,
+                                mv.manufactureYear,
+                                mv.videoLength,
+                                mv.typeOfPosterURL,
+                                mv.posterURL,
+                                mv.updateAt,
+                                mv.movie_url
+                            ];
+                            movieArray.push(mvItem);
+
+                            if ($.fn.DataTable.isDataTable('#movietable')) {
+                                $('#movietable').DataTable().destroy();
+                            }
+                            getMovieList();
+                        }
+                    });
+                } else if (response.data.error){
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Không thể thêm phim',
+                        text: response.data.error
+                    });
+                }
+            });
+        }
+    });
 }

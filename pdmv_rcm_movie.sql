@@ -2230,6 +2230,68 @@ BEGIN
 END //
 DELIMITER ;
 
+DELIMITER //
+CREATE PROCEDURE movie_add(
+    IN p_titlevi VARCHAR(255),
+    IN p_titleen VARCHAR(255),
+    IN p_content TEXT,
+    IN p_director TEXT,
+    IN p_actors TEXT,
+    IN p_manufactureYear INT,
+    IN p_videoLength VARCHAR(100),
+    IN p_typeOfPosterURL INT,
+    IN p_posterURL TEXT
+)
+BEGIN
+    DECLARE p_movieURL VARCHAR(255) DEFAULT '';
+    DECLARE newMovieId INT DEFAULT 0;
+    SET p_movieURL = convertToURL(p_titleen);
+
+    IF p_titlevi IS NULL THEN
+        SET p_titlevi = p_titleen;
+    END IF;
+
+    IF p_titlevi = '' THEN
+        SET p_titlevi = p_titleen;
+    END IF;
+
+    IF p_posterURL = '' THEN
+        SET p_posterURL = NULL;
+    END IF;
+
+    IF p_titleen = '' THEN
+        SET p_titleen = NULL;
+    END IF;
+
+    IF p_titleen IS NOT NULL THEN
+        INSERT INTO pdmv_movies(
+            title_vi,
+            title_en,
+            content,
+            director,
+            actors,
+            manuFactureYear,
+            videoLength,
+            typeOfPosterURL,
+            posterURL,
+            movie_url
+            ) VALUES(
+            p_titlevi,
+            p_titleen,
+            p_content,
+            p_director,
+            p_actors,
+            p_manufactureYear,
+            p_videoLength,
+            p_typeOfPosterURL,
+            p_posterURL,
+            p_movieURL);
+    SET newMovieId = LAST_INSERT_ID();
+    SELECT * FROM pdmv_movies WHERE movie_id = newMovieId;
+    END IF;
+END //
+DELIMITER ;
+
 -- ---------------------------------------------------------------
 -- ---------------------------------------------------------------
 -- ---------------------------------------------------------------
