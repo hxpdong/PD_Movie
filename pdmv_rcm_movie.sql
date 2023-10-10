@@ -2201,12 +2201,13 @@ CREATE TABLE pdmv_systemVariable (
     id INT AUTO_INCREMENT PRIMARY KEY,
     varName VARCHAR(50) NOT NULL,
     varValue VARCHAR(50) NOT NULL,
-    varLink VARCHAR(255),
+    prefix VARCHAR(100) NOT NULL,
+    varLink VARCHAR(255) NOT NULL,
     updateAt DATETIME NOT NULL DEFAULT NOW() 
 );
 
-INSERT INTO pdmv_systemVariable(varName, varValue, varLink) VALUES('themoviedb API KEY (movie)', 'dee4bd9bc518b8011007f9f1ecc1bc17', 'https://api.themoviedb.org/3/movie/{movie_id}?api_key=dee4bd9bc518b8011007f9f1ecc1bc17');
-INSERT INTO pdmv_systemVariable(varName, varValue, varLink) VALUES('themoviedb API KEY (tv)', 'dee4bd9bc518b8011007f9f1ecc1bc17', 'https://api.themoviedb.org/3/tv/{movie_id}?api_key=dee4bd9bc518b8011007f9f1ecc1bc17');
+INSERT INTO pdmv_systemVariable(varName, varValue, prefix, varLink) VALUES('themoviedb API KEY (movie)', 'dee4bd9bc518b8011007f9f1ecc1bc17', 'https://api.themoviedb.org/3/movie/{movie_id}?api_key=', 'https://api.themoviedb.org/3/movie/{movie_id}?api_key=dee4bd9bc518b8011007f9f1ecc1bc17');
+INSERT INTO pdmv_systemVariable(varName, varValue, prefix, varLink) VALUES('themoviedb API KEY (tv)', 'dee4bd9bc518b8011007f9f1ecc1bc17', 'https://api.themoviedb.org/3/tv/{movie_id}?api_key=', 'https://api.themoviedb.org/3/tv/{movie_id}?api_key=dee4bd9bc518b8011007f9f1ecc1bc17');
 
 DELIMITER //
 CREATE PROCEDURE admin_addNew(
