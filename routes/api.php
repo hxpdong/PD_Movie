@@ -70,6 +70,8 @@ Route::middleware(['pdmv_API_checkToken', 'pdmv_API_checkAdminRole'])->group(fun
     Route::delete('/admin/movies-drop/{mvid}/as/{accid}', [MovieController::class, 'dropMovie']);
     Route::put('/admin/movies-update/{mvid}/as/{accid}', [MovieController::class, 'updateMovie']);
     Route::post('/admin/genres/as/{accid}', [MovieGenreController::class, 'createGenre']);
+    Route::put('/admin/genres/{gid}/as/{accid}', [MovieGenreController::class, 'updateGenre']);
+    Route::delete('/admin/genres/{gid}/as/{accid}', [MovieGenreController::class, 'dropGenre']);
 });
 
 Route::middleware(['pdmv_API_checkToken', 'pdmv_API_checkSPAdminRole'])->group(function () {

@@ -7613,6 +7613,30 @@ BEGIN
 END //
 DELIMITER ;
 
+DELIMITER //
+CREATE PROCEDURE mvgenre_update(IN p_genreId INT, IN p_genreVI VARCHAR(255), IN p_genreEN VARCHAR(255))
+BEGIN
+    IF NOT EXISTS (SELECT mvgenre_id FROM pdmv_mvgenres WHERE mvgenre_en_name = p_genreEN AND mvgenre_id != p_genreId) THEN
+        UPDATE pdmv_mvgenres
+        SET mvgenre_vi_name = p_genreVI,
+        mvgenre_en_name = p_genreEN
+        WHERE mvgenre_id = p_genreId;
+
+    SELECT * FROM pdmv_mvgenres WHERE mvgenre_id = p_genreId;
+    END IF;
+END //
+DELIMITER ;
+
+DELIMITER //
+CREATE PROCEDURE mvgenre_drop(IN p_genreId INT)
+BEGIN
+    IF NOT EXISTS (SELECT mvgenre_id FROM pdmv_movies_genres WHERE mvgenre_id = p_genreId) THEN
+        DELETE FROM pdmv_movies_genres WHERE mvgenre_id = p_genreId;
+        DELETE FROM pdmv_mvgenres WHERE mvgenre_id = p_genreId;
+        SELECT 'Đã xóa' AS results;
+    END IF;
+END; //
+DELIMITER ;
 -- -----------------------------------------------------RECOMMENNDER---------------------------------------------------------------------------------------------------------------------------------------
 -- -----------------------------------------------------RECOMMENNDER---------------------------------------------------------------------------------------------------------------------------------------
 -- -----------------------------------------------------RECOMMENNDER---------------------------------------------------------------------------------------------------------------------------------------

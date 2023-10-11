@@ -1277,6 +1277,7 @@ function updateMovie() {
                 });
         }
     });
+
 }
 
 function addDataToGenreArray() {
@@ -1295,7 +1296,7 @@ function addDataToGenreArray() {
         });
 }
 function getMVGenreList() {
-    const backgroundColors = ['#FF5733', '#33FF57', '#5733FF'];
+    const backgroundColors = ['#995733', '#339957', '#573399'];
 
     var mvgListDiv = document.getElementById("mvgList");
     while (mvgListDiv.firstChild) {
@@ -1331,13 +1332,169 @@ function getMVGenreList() {
         contentContainer.appendChild(description);
 
         const divButton = document.createElement("div");
+        divButton.className = "w-32 grid grid-cols-2";
         const editBtn = document.createElement("button");
-        editBtn.textContent = "Sửa";
+        editBtn.title = "Sửa";
+        editBtn.style.backgroundColor = "#66ccff";
+        editBtn.style.color = "#fff";
+        editBtn.className = "rounded-t-lg py-1";
+        const editIcon = document.createElement("span");
+        editIcon.className = "material-icons";
+        editIcon.textContent = "edit";
+        editBtn.appendChild(editIcon);
+        editBtn.onclick = function () {
+            var newEnName;
+            var newViName;
+            Swal.fire({
+                title: "Cập nhật thông tin thể loại",
+                html: `
+                                        <form id="modalUpdateGenreForm">
+                                        <label for="uptGenreId"><b>Thể loại:</b></label>
+                                        <input type="text" id="uptGenreId" name="uptGenreId" value='${mvg[0]}' class="swal2-input" required disabled>
+                                        <label for="uptGenreEn">Tên tiếng Anh mới</label>
+                                        <input type="text" id="uptGenreEn" name="uptGenreEn" value='${mvg[2]}' class="swal2-input" required>
+                                        <label for="uptGenreVi">Tên tiếng Việt mới</label>
+                                        <input type="text" id="uptGenreVi" name="uptGenreVi" value='${mvg[1]}' class="swal2-input" required>
+                                        </form>
+                                    `,
+                showCancelButton: true,
+                confirmButtonText: "Cập nhật",
+                cancelButtonText: "Thoát",
+                showLoaderOnConfirm: true,
+                preConfirm: () => {
+                    const uptGenreEn = document.getElementById("uptGenreEn").value;
+                    newEnName = uptGenreEn;
+                    const uptGenreVi = document.getElementById("uptGenreVi").value;
+                    newViName = uptGenreVi;
+                    return fetch("/api/admin/genres/" + mvg[0] + "/as/" + accId, {
+                        method: "PUT",
+                        headers: {
+                            Authorization: apiToken,
+                            "Content-Type": "application/x-www-form-urlencoded",
+                        },
+                        body: new URLSearchParams({
+                            uptGenreEn,
+                            uptGenreVi,
+                        }).toString(),
+                    })
+                        .then((response) => {
+                            if (!response.ok) {
+                                throw new Error(response
+                                    .statusText);
+                            }
+                            return response.json();
+                        })
+                        .catch((error) => {
+                            Swal.showValidationMessage(
+                                `Request failed: ${error}`);
+                        });
+                },
+                allowOutsideClick: () => !Swal.isLoading(),
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    const response = result.value;
+                    if (response.success) {
+                        var updatedGenre = response.newgenre;
+                        console.log(updatedGenre);
+                        updatedGenre = updatedGenre[0];
+                        console.log(updatedGenre);
+                        var mvgItem = [
+                            updatedGenre.mvgenre_id,
+                            updatedGenre.mvgenre_vi_name,
+                            updatedGenre.mvgenre_en_name
+                        ];
+                        console.log(mvgItem);
+                        for (var i = 0; i < genreArray.length; i++) {
+                            if (genreArray[i][0] === mvgItem[0]) {
+                                genreArray[i][1] = mvgItem[1];
+                                genreArray[i][2] = mvgItem[2];
+                                break;
+                            }
+                        }
+                        getMVGenreList();
+
+                        Swal.fire({
+                            icon: "success",
+                            title: "Cập nhật thể loại thành công",
+                            confirmButtonText: "OK",
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+
+                            }
+                        });
+                    } else {
+                        Swal.fire({
+                            icon: "error",
+                            title: "Lỗi!",
+                            text: "Lỗi: " + response.message
+                        });
+                    }
+                }
+            });
+        }
         const rmvBtn = document.createElement("button");
-        rmvBtn.textContent = "Xóa";
+        rmvBtn.title = "Xóa";
+        rmvBtn.style.backgroundColor = "#EF4444";
+        rmvBtn.style.color = "#fff";
+        rmvBtn.className = "rounded-t-lg py-1";
+        const rmIcon = document.createElement("span");
+        rmIcon.className = "material-icons";
+        rmIcon.textContent = "delete";
+        rmvBtn.appendChild(rmIcon);
+        rmvBtn.onclick = function () {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Bạn có chắc chắn muốn xóa thể loại ' + mvg[0] + " - " + mvg[2] + "/" + mvg[1] + "?",
+                html: 'Khi đồng ý <span class="text-red-500 font-bold">XÓA</span>, thể loại này của phim cũng sẽ bị xóa và <span class="text-red-500 font-bold">không thể</span> khôi phục lại',
+                showCancelButton: true,
+                confirmButtonText: 'Xóa',
+                confirmButtonColor: 'red',
+                cancelButtonText: 'Suy nghĩ lại'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    var apiUrl = `/api/admin/genres/${mvg[0]}/as/${accId}`;
+
+                    fetch(apiUrl, {
+                        method: "DELETE",
+                        headers: headers
+                    })
+                        .then(function (response) {
+                            return response.json();
+                        })
+                        .then(function (data) {
+                            if (data.success === true) {
+                                for (var i = 0; i < genreArray.length; i++) {
+                                    if (genreArray[i][0] === mvg[0]) {
+                                        genreArray.splice(i, 1); 
+                                        break; 
+                                    }
+                                }
+                                getMVGenreList();
+                                Swal.fire(
+                                    'Đã xóa!',
+                                    'Xóa thể loại thành công!',
+                                    'success'
+                                );
+                            }
+                            else Swal.fire(
+                                'Không thể xóa!',
+                                data.message,
+                                'error'
+                            );
+                        })
+                        .catch(function (error) {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'An error occurred: ' + error,
+                                html: 'Please try again later',
+                            });
+                        });
+                }
+            });
+        }
         divButton.appendChild(editBtn);
         divButton.appendChild(rmvBtn);
-        
+
         card.appendChild(iconContainer);
         card.appendChild(contentContainer);
         container.appendChild(divButton);
