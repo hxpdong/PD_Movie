@@ -1329,8 +1329,18 @@ function getMVGenreList() {
         description.textContent = '';
         contentContainer.appendChild(title);
         contentContainer.appendChild(description);
+
+        const divButton = document.createElement("div");
+        const editBtn = document.createElement("button");
+        editBtn.textContent = "Sửa";
+        const rmvBtn = document.createElement("button");
+        rmvBtn.textContent = "Xóa";
+        divButton.appendChild(editBtn);
+        divButton.appendChild(rmvBtn);
+        
         card.appendChild(iconContainer);
         card.appendChild(contentContainer);
+        container.appendChild(divButton);
         container.appendChild(card);
         mvgListDiv.appendChild(container);
     });
@@ -1364,6 +1374,16 @@ function postNewGenre() {
                 .then(response => {
                     Swal.close();
                     if (response.data.success) {
+                        var mvg = response.data.newgenre;
+                        mvg = mvg[0];
+                        var mvgItem = [
+                            mvg.mvgenre_id,
+                            mvg.mvgenre_vi_name,
+                            mvg.mvgenre_en_name
+                        ];
+                        genreArray.push(mvgItem);
+
+                        getMVGenreList();
                         Swal.fire({
                             icon: 'success',
                             title: 'Thêm thể loại thành công',
@@ -1371,17 +1391,6 @@ function postNewGenre() {
                         }).then((result) => {
                             if (result.isConfirmed) {
                                 //ocation.reload();
-
-                                var mvg = response.data.newgenre;
-                                mvg = mvg[0];
-                                var mvgItem = [
-                                    mvg.mvgenre_id,
-                                    mvg.mvgenre_vi_name,
-                                    mvg.mvgenre_en_name
-                                ];
-                                genreArray.push(mvgItem);
-
-                                getMVGenreList();
                             }
                         });
                     } else if (response.data.error) {
