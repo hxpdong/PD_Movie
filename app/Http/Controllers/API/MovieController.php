@@ -435,4 +435,61 @@ class MovieController extends Controller
             ]);
         }
     }
+
+    public function updateMovie($mvid, Request $request){
+        try {
+            $request->validate([
+                'dtEnName' => [
+                    'required',
+                    Rule::unique('pdmv_movies', 'title_en')->ignore($mvid, 'movie_id'),
+                ],
+
+            ], [
+                'dtEnName.required' => 'Tên tiếng Anh là bắt buộc.',
+                'dtEnName.unique' => "Tên phim đã tồn tại, vui lòng thêm chapter mới cho phim hoặc dùng tên khác."
+            ]);
+
+            $titlevi = request()->get('dtViName', '');
+            $titleen = request()->get('dtEnName', ''); // Thêm các giá trị còn lại
+            $content = request()->get('dtContent', '');
+            $director = request()->get('dtDirector', '');
+            $actors = request()->get('dtActor', '');
+            $manufactureYear = request()->get('dtYear', '');
+            $videoLength = request()->get('dtVidLength', '');
+            $typeOfPosterURL = request()->get('dtTypePoster', '');
+            $posterURL = request()->get('dtPosterURL', '');
+
+            $results = DB::select("CALL movie_update(?,?,?,?,?,?,?,?,?,?)", array(
+                $mvid,
+                $titlevi,
+                $titleen,
+                $content,
+                $director,
+                $actors,
+                $manufactureYear,
+                $videoLength,
+                $typeOfPosterURL,
+                $posterURL
+            ));
+
+            if($results){
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Phim được cập nhật thành công',
+                    'newmv' => $results
+                ]);
+            }
+            else {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Không thể cập nhật phim'
+                ]);
+            }
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'error' => $e->getMessage()
+            ]);
+        }
+    }
 }

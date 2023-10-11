@@ -75,6 +75,7 @@ document.addEventListener("DOMContentLoaded", function () {
         simulateCongViecTieuHaoThoiGian(hoanThanhCongViec);
         console.log("moviepage");
         postNewMovie();
+        updateMovie();
     }
 });
 
@@ -819,6 +820,7 @@ function getMovieList() {
         infoIcon.style.color = "#1355c9";
         infoButton.appendChild(infoIcon);
         infoButton.onclick = function () {
+            var mvidElement = document.getElementById("dtmvid");
             var enNameElement = document.getElementById("dtEnName");
             var viNameElement = document.getElementById("dtViName");
             var contentElement = document.getElementById("dtContent");
@@ -832,6 +834,8 @@ function getMovieList() {
             var posterElement = document.getElementById("dtReviewIMG");
             var errIMG = document.getElementById("dtIMGnotExists");
 
+            mvidElement.disabled = true;
+            mvidElement.value = "";
             enNameElement.value = "";
             viNameElement.value = "";
             contentElement.value = "";
@@ -849,6 +853,7 @@ function getMovieList() {
             const overlay = document.querySelector('#overlay');
             overlay.style.display = 'block';
 
+            mvidElement.value = mv[0];
             enNameElement.value = mv[2];
             viNameElement.value = mv[1];
             contentElement.value = mv[3];
@@ -1114,33 +1119,158 @@ function checkNewPoster() {
     var imgnotfound = document.getElementById("newIMGnotExists");
     var imgURL = document.getElementById("newPosterURL").value;
     var imgType = document.getElementById("newTypePoster").value;
-    imgtag.src = "";
-    imgnotfound.textContent = "";
-    if (imgType == "0") {
-        imgtag.src = imgURL;
-    } else if (imgType == "1") {
-        var xhrmv = new XMLHttpRequest();
-        xhrmv.open('GET', apiUrlFromThemoviedb.replace('{movie_id}', imgURL), true);
-        xhrmv.onload = function () {
-            if (xhrmv.status === 200) {
-                var response = JSON.parse(xhrmv.responseText);
-                imgtag.src = 'https://www.themoviedb.org/t/p/w300_and_h450_bestv2' + response.poster_path;
-            } else {
-                imgnotfound.textContent = 'Với themoviedb, cần nhập vào id của phim ở themoviedb.';
-            }
-        };
-        xhrmv.send();
-    } else if (imgType == "2") {
-        var xhrmv = new XMLHttpRequest();
-        xhrmv.open('GET', apiUrlFromThemoviedbTV.replace('{movie_id}', imgURL), true);
-        xhrmv.onload = function () {
-            if (xhrmv.status === 200) {
-                var response = JSON.parse(xhrmv.responseText);
-                imgtag.src = 'https://www.themoviedb.org/t/p/w300_and_h450_bestv2' + response.poster_path;
-            } else {
-                imgnotfound.textContent = 'Với themoviedb, cần nhập vào id của phim ở themoviedb.';
-            }
-        };
-        xhrmv.send();
+    
+    var imgtagDt = document.getElementById("dtReviewIMG");
+    var imgnotfoundDt = document.getElementById("dtIMGnotExists");
+    var imgURLDt = document.getElementById("dtPosterURL").value;
+    var imgTypeDt = document.getElementById("dtTypePoster").value;
+
+    if(imgURL) {
+        imgtag.src = "";
+        imgnotfound.textContent = "";
+        if (imgType == "0") {
+            imgtag.src = imgURL;
+        } else if (imgType == "1") {
+            var xhrmv = new XMLHttpRequest();
+            xhrmv.open('GET', apiUrlFromThemoviedb.replace('{movie_id}', imgURL), true);
+            xhrmv.onload = function () {
+                if (xhrmv.status === 200) {
+                    var response = JSON.parse(xhrmv.responseText);
+                    imgtag.src = 'https://www.themoviedb.org/t/p/w300_and_h450_bestv2' + response.poster_path;
+                } else {
+                    imgnotfound.textContent = 'Với themoviedb, cần nhập vào id của phim ở themoviedb.';
+                }
+            };
+            xhrmv.send();
+        } else if (imgType == "2") {
+            var xhrmv = new XMLHttpRequest();
+            xhrmv.open('GET', apiUrlFromThemoviedbTV.replace('{movie_id}', imgURL), true);
+            xhrmv.onload = function () {
+                if (xhrmv.status === 200) {
+                    var response = JSON.parse(xhrmv.responseText);
+                    imgtag.src = 'https://www.themoviedb.org/t/p/w300_and_h450_bestv2' + response.poster_path;
+                } else {
+                    imgnotfound.textContent = 'Với themoviedb, cần nhập vào id của phim ở themoviedb.';
+                }
+            };
+            xhrmv.send();
+        }
     }
+
+    if(imgURLDt){
+        imgtagDt.src = "";
+        imgnotfoundDt.textContent = "";
+        if (imgTypeDt == "0") {
+            imgtagDt.src = imgURLDt;
+        } else if (imgTypeDt == "1") {
+            var xhrmv = new XMLHttpRequest();
+            xhrmv.open('GET', apiUrlFromThemoviedb.replace('{movie_id}', imgURLDt), true);
+            xhrmv.onload = function () {
+                if (xhrmv.status === 200) {
+                    var response = JSON.parse(xhrmv.responseText);
+                    imgtagDt.src = 'https://www.themoviedb.org/t/p/w300_and_h450_bestv2' + response.poster_path;
+                } else {
+                    imgnotfoundDt.textContent = 'Với themoviedb, cần nhập vào id của phim ở themoviedb.';
+                }
+            };
+            xhrmv.send();
+        } else if (imgTypeDt == "2") {
+            var xhrmv = new XMLHttpRequest();
+            xhrmv.open('GET', apiUrlFromThemoviedbTV.replace('{movie_id}', imgURLDt), true);
+            xhrmv.onload = function () {
+                if (xhrmv.status === 200) {
+                    var response = JSON.parse(xhrmv.responseText);
+                    imgtagDt.src = 'https://www.themoviedb.org/t/p/w300_and_h450_bestv2' + response.poster_path;
+                } else {
+                    imgnotfoundDt.textContent = 'Với themoviedb, cần nhập vào id của phim ở themoviedb.';
+                }
+            };
+            xhrmv.send();
+        }
+    }
+}
+
+function updateMovie() {
+    $('#modalUpdateMovieForm').submit(function (e) {
+        e.preventDefault();
+        if (false) {
+
+        } else {
+            mvid = document.getElementById("dtmvid").value;
+            Swal.fire({
+                title: 'Đang xử lý...',
+                allowOutsideClick: false,
+                allowEscapeKey: false,
+                allowEnterKey: false,
+                onBeforeOpen: () => {
+                    Swal.showLoading();
+                },
+                onClose: () => {
+                    Swal.hideLoading();
+                }
+            });
+            const formData = $(this).serialize();
+            axios.put('/api/admin/movies-update/' + mvid +'/as/' + accId, formData, {
+                headers: {
+                    Authorization: apiToken,
+                    "Content-Type": "application/x-www-form-urlencoded",
+                }
+            })
+                .then(response => {
+                    Swal.close();
+                    if (response.data.success) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Cập nhật thành công',
+                            confirmButtonText: 'OK',
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                var mv = response.data.newmv;
+                                mv = mv[0];
+                                var mvItem = [
+                                    mv.movie_id,
+                                    mv.title_vi,
+                                    mv.title_en,
+                                    mv.content,
+                                    mv.director,
+                                    mv.actors,
+                                    mv.manufactureYear,
+                                    mv.videoLength,
+                                    mv.typeOfPosterURL,
+                                    mv.posterURL,
+                                    mv.updateAt,
+                                    mv.movie_url
+                                ];
+                                for (var i = 0; i < movieArray.length; i++) {
+                                    if (movieArray[i][0] === mvItem[0]) {
+                                        movieArray[i][1] = mvItem[1];
+                                        movieArray[i][2] = mvItem[2];
+                                        movieArray[i][3] = mvItem[3];
+                                        movieArray[i][4] = mvItem[4];
+                                        movieArray[i][5] = mvItem[5];
+                                        movieArray[i][6] = mvItem[6];
+                                        movieArray[i][7] = mvItem[7];
+                                        movieArray[i][8] = mvItem[8];
+                                        movieArray[i][9] = mvItem[9];
+                                        movieArray[i][10] = mvItem[10];
+                                        movieArray[i][11] = mvItem[11];
+                                      break;
+                                    }
+                                }
+                                if ($.fn.DataTable.isDataTable('#movietable')) {
+                                    $('#movietable').DataTable().destroy();
+                                }
+                                getMovieList();
+                            }
+                        });
+                    } else if (response.data.error) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Không thể cập nhật phim',
+                            text: response.data.error
+                        });
+                    }
+                });
+        }
+    });
 }

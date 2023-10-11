@@ -134,7 +134,8 @@
                         <div>
                             <label for="newVidLength"
                                 class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Thời lượng</label>
-                            <input type="text" name="newVidLength" id="newVidLength" required placeholder="dạng: xhym - 1h30m"
+                            <input type="text" name="newVidLength" id="newVidLength" required
+                                placeholder="dạng: xhym - 1h30m"
                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white">
                         </div>
                         <div>
@@ -154,9 +155,10 @@
                     </div>
                     <div class="grid grid-cols-2">
                         <div>
-                        <button type="button" class="bg-blue-200 p-4 rounded-lg mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                        onclick="checkNewPoster()">Kiểm tra poster
-                        </button>
+                            <button type="button"
+                                class="bg-blue-200 p-4 rounded-lg mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                                onclick="checkNewPoster()">Kiểm tra poster
+                            </button>
                             <div id="newIMGnotExists" class="text-red-500">Chưa có poster</div>
                         </div>
                         <img src="" id="newReviewIMG" class="w-48">
@@ -208,9 +210,14 @@
             </div>
             <div class="px-6 py-6 lg:px-8">
                 <h3 class="mb-4 text-xl font-medium text-gray-900 dark:text-white"></h3>
-                <form class="space-y-6" id="modalNewMovieForm">
-                    @csrf
+                <form class="space-y-6" id="modalUpdateMovieForm">
                     @method('PUT')
+                    <div>
+                        <label for="dtmvid" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Mã
+                            phim</label>
+                        <input type="text" name="dtmvid" id="dtmvid"
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white">
+                    </div>
                     <div class="grid md:grid-cols-2 gap-4">
                         <div>
                             <label for="dtEnName"
@@ -282,8 +289,12 @@
                         </div>
                     </div>
                     <div class="grid grid-cols-2">
-                        <div class="mb-2 text-sm font-medium text-gray-900 dark:text-white">Xem trước poster
-                            <div id="dtIMGnotExists" class="text-red-500"></div>
+                        <div>
+                            <button type="button"
+                                class="bg-blue-200 p-4 rounded-lg mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                                onclick="checkNewPoster()">Kiểm tra poster
+                            </button>
+                            <div id="dtIMGnotExists" class="text-red-500">Chưa có poster</div>
                         </div>
                         <img src="" id="dtReviewIMG" class="w-48">
                     </div>
@@ -297,7 +308,7 @@
                         <div class="flex w-full justify-start">
                             <button type="button" data-modal-hide="detailMovie-modal" onclick="closeDetailModal()"
                                 class="w-1/2 text-white bg-gray-500 hover:bg-gray-900 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                                Hủy bỏ
+                                Đóng
                             </button>
                         </div>
                     </div>
