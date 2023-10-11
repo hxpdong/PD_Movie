@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Validation\Rule;
 
 class MovieGenreController extends Controller
 {
@@ -61,6 +62,48 @@ class MovieGenreController extends Controller
         } else {
             return response()->json([
                 'success' => false]);
+        }
+    }
+
+    public function createGenre(Request $request){
+        try {
+            $request->validate([
+                'newEnGenre' => [
+                    'required',
+                    Rule::unique('pdmv_mvgenres', 'mvgenre_en_name'),
+                ],
+
+            ], [
+                'newEnGenre.required' => 'Tên tiếng Anh là bắt buộc.',
+                'newEnGenre.unique' => "Tên phim đã tồn tại, vui lòng thêm chapter mới cho phim hoặc dùng tên khác."
+            ]);
+
+            $titlevi = request()->get('newViGenre', '');
+            $titleen = request()->get('newEnGenre', '');
+
+            $results = DB::select("CALL mvgenre_add(?,?)", array(
+                $titlevi,
+                $titleen
+            ));
+
+            if($results){
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Phim được thêm thành công',
+                    'newgenre' => $results
+                ]);
+            }
+            else {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Không thêm được phim mới'
+                ]);
+            }
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'error' => $e->getMessage()
+            ]);
         }
     }
 }

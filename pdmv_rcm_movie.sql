@@ -7599,6 +7599,20 @@ BEGIN
     END IF;
 END //
 DELIMITER ;
+
+DELIMITER //
+CREATE PROCEDURE mvgenre_add(IN p_genreVI VARCHAR(255), IN p_genreEN VARCHAR(255))
+BEGIN
+    DECLARE newGenreId INT DEFAULT 0;
+    IF NOT EXISTS (SELECT mvgenre_id FROM pdmv_mvgenres WHERE mvgenre_en_name = p_genreEN) THEN
+        INSERT INTO pdmv_mvgenres (mvgenre_vi_name, mvgenre_en_name)
+        VALUES(p_genreVI, p_genreEN);
+    SET newGenreId = (SELECT LAST_INSERT_ID());
+    SELECT * FROM pdmv_mvgenres WHERE mvgenre_id = newGenreId;
+    END IF;
+END //
+DELIMITER ;
+
 -- -----------------------------------------------------RECOMMENNDER---------------------------------------------------------------------------------------------------------------------------------------
 -- -----------------------------------------------------RECOMMENNDER---------------------------------------------------------------------------------------------------------------------------------------
 -- -----------------------------------------------------RECOMMENNDER---------------------------------------------------------------------------------------------------------------------------------------

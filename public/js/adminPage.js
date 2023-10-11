@@ -10,6 +10,8 @@ var cntNumClickAdmin = 0;
 var movietable = document.getElementById("tbd-movietable");
 var movieArray = [];
 
+var genreArray = [];
+
 document.addEventListener("DOMContentLoaded", function () {
     function hoanThanhCongViec() {
         Swal.close();
@@ -54,12 +56,13 @@ document.addEventListener("DOMContentLoaded", function () {
     else if (isPageGenre) {
         function simulateCongViecTieuHaoThoiGian(callback) {
             setTimeout(() => {
-
+                addDataToGenreArray();
                 callback();
             }, timeout);
         }
         simulateCongViecTieuHaoThoiGian(hoanThanhCongViec);
         console.log("genrepage");
+        postNewGenre();
     }
 
     else if (isPageMovie) {
@@ -938,9 +941,9 @@ function getMovieList() {
                                 for (var i = 0; i < movieArray.length; i++) {
                                     if (movieArray[i][0] === mv[0]) {
                                         movieArray.splice(i, 1); // Xóa đối tượng tại chỉ mục i
-                                      break; // Sau khi xóa, bạn có thể thoát khỏi vòng lặp
+                                        break; // Sau khi xóa, bạn có thể thoát khỏi vòng lặp
                                     }
-                                  }
+                                }
                                 if ($.fn.DataTable.isDataTable('#movietable')) {
                                     $('#movietable').DataTable().destroy();
                                 }
@@ -1119,13 +1122,13 @@ function checkNewPoster() {
     var imgnotfound = document.getElementById("newIMGnotExists");
     var imgURL = document.getElementById("newPosterURL").value;
     var imgType = document.getElementById("newTypePoster").value;
-    
+
     var imgtagDt = document.getElementById("dtReviewIMG");
     var imgnotfoundDt = document.getElementById("dtIMGnotExists");
     var imgURLDt = document.getElementById("dtPosterURL").value;
     var imgTypeDt = document.getElementById("dtTypePoster").value;
 
-    if(imgURL) {
+    if (imgURL) {
         imgtag.src = "";
         imgnotfound.textContent = "";
         if (imgType == "0") {
@@ -1157,7 +1160,7 @@ function checkNewPoster() {
         }
     }
 
-    if(imgURLDt){
+    if (imgURLDt) {
         imgtagDt.src = "";
         imgnotfoundDt.textContent = "";
         if (imgTypeDt == "0") {
@@ -1210,7 +1213,149 @@ function updateMovie() {
                 }
             });
             const formData = $(this).serialize();
-            axios.put('/api/admin/movies-update/' + mvid +'/as/' + accId, formData, {
+            axios.put('/api/admin/movies-update/' + mvid + '/as/' + accId, formData, {
+                headers: {
+                    Authorization: apiToken,
+                    "Content-Type": "application/x-www-form-urlencoded",
+                }
+            })
+                .then(response => {
+                    Swal.close();
+                    if (response.data.success) {
+                        var mv = response.data.newmv;
+                        mv = mv[0];
+                        var mvItem = [
+                            mv.movie_id,
+                            mv.title_vi,
+                            mv.title_en,
+                            mv.content,
+                            mv.director,
+                            mv.actors,
+                            mv.manufactureYear,
+                            mv.videoLength,
+                            mv.typeOfPosterURL,
+                            mv.posterURL,
+                            mv.updateAt,
+                            mv.movie_url
+                        ];
+                        for (var i = 0; i < movieArray.length; i++) {
+                            if (movieArray[i][0] === mvItem[0]) {
+                                movieArray[i][1] = mvItem[1];
+                                movieArray[i][2] = mvItem[2];
+                                movieArray[i][3] = mvItem[3];
+                                movieArray[i][4] = mvItem[4];
+                                movieArray[i][5] = mvItem[5];
+                                movieArray[i][6] = mvItem[6];
+                                movieArray[i][7] = mvItem[7];
+                                movieArray[i][8] = mvItem[8];
+                                movieArray[i][9] = mvItem[9];
+                                movieArray[i][10] = mvItem[10];
+                                movieArray[i][11] = mvItem[11];
+                                break;
+                            }
+                        }
+                        if ($.fn.DataTable.isDataTable('#movietable')) {
+                            $('#movietable').DataTable().destroy();
+                        }
+                        getMovieList();
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Cập nhật thành công',
+                            confirmButtonText: 'OK',
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+
+                            }
+                        });
+                    } else if (response.data.error) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Không thể cập nhật phim',
+                            text: response.data.error
+                        });
+                    }
+                });
+        }
+    });
+}
+
+function addDataToGenreArray() {
+    axios.get('/api/genres?type=0')
+        .then(function (response) {
+            var mvgenres = response.data.genres;
+            mvgenres.forEach(function (mvg) {
+                genreItem = [
+                    mvg.mvgenre_id,
+                    mvg.mvgenre_vi_name,
+                    mvg.mvgenre_en_name
+                ];
+                genreArray.push(genreItem);
+            });
+            getMVGenreList();
+        });
+}
+function getMVGenreList() {
+    const backgroundColors = ['#FF5733', '#33FF57', '#5733FF'];
+
+    var mvgListDiv = document.getElementById("mvgList");
+    while (mvgListDiv.firstChild) {
+        mvgListDiv.removeChild(mvgListDiv.firstChild);
+    }
+
+    genreArray.forEach(function (mvg, index) {
+        const container = document.createElement('div');
+        container.className = 'w-full px-6 sm:w-1/2 xl:w-1/3 my-2';
+        const card = document.createElement('div');
+        card.className = 'flex items-center px-5 py-6 bg-white rounded-md shadow-sm overflow-x-hidden';
+        card.onclick = function () {
+            //
+            alert("Mã thể loại: " + mvg[0]);
+        };
+        const iconContainer = document.createElement('div');
+        iconContainer.className = 'p-3 flex justify-center items-center h-16 rounded-md';
+        const colorIndex = index % backgroundColors.length;
+        iconContainer.style.backgroundColor = backgroundColors[colorIndex];
+        const icon = document.createElement('i');
+        icon.className = 'fa-solid fa-tags fa-2xl';
+        icon.style.color = '#ffffff';
+        iconContainer.appendChild(icon);
+        const contentContainer = document.createElement('div');
+        contentContainer.className = 'mx-5';
+        const title = document.createElement('h4');
+        title.className = 'text-md font-semibold text-gray-700';
+        title.textContent = mvg[1] + "/" + mvg[2];
+        const description = document.createElement('div');
+        description.className = 'text-gray-500';
+        description.textContent = '';
+        contentContainer.appendChild(title);
+        contentContainer.appendChild(description);
+        card.appendChild(iconContainer);
+        card.appendChild(contentContainer);
+        container.appendChild(card);
+        mvgListDiv.appendChild(container);
+    });
+};
+
+function postNewGenre() {
+    $('#modalNewGenreForm').submit(function (e) {
+        e.preventDefault();
+        if (false) {
+
+        } else {
+            Swal.fire({
+                title: 'Đang xử lý...',
+                allowOutsideClick: false,
+                allowEscapeKey: false,
+                allowEnterKey: false,
+                onBeforeOpen: () => {
+                    Swal.showLoading();
+                },
+                onClose: () => {
+                    Swal.hideLoading();
+                }
+            });
+            const formData = $(this).serialize();
+            axios.post('/api/admin/genres/as/' + accId, formData, {
                 headers: {
                     Authorization: apiToken,
                     "Content-Type": "application/x-www-form-urlencoded",
@@ -1221,52 +1366,28 @@ function updateMovie() {
                     if (response.data.success) {
                         Swal.fire({
                             icon: 'success',
-                            title: 'Cập nhật thành công',
+                            title: 'Thêm thể loại thành công',
                             confirmButtonText: 'OK',
                         }).then((result) => {
                             if (result.isConfirmed) {
-                                var mv = response.data.newmv;
-                                mv = mv[0];
-                                var mvItem = [
-                                    mv.movie_id,
-                                    mv.title_vi,
-                                    mv.title_en,
-                                    mv.content,
-                                    mv.director,
-                                    mv.actors,
-                                    mv.manufactureYear,
-                                    mv.videoLength,
-                                    mv.typeOfPosterURL,
-                                    mv.posterURL,
-                                    mv.updateAt,
-                                    mv.movie_url
+                                //ocation.reload();
+
+                                var mvg = response.data.newgenre;
+                                mvg = mvg[0];
+                                var mvgItem = [
+                                    mvg.mvgenre_id,
+                                    mvg.mvgenre_vi_name,
+                                    mvg.mvgenre_en_name
                                 ];
-                                for (var i = 0; i < movieArray.length; i++) {
-                                    if (movieArray[i][0] === mvItem[0]) {
-                                        movieArray[i][1] = mvItem[1];
-                                        movieArray[i][2] = mvItem[2];
-                                        movieArray[i][3] = mvItem[3];
-                                        movieArray[i][4] = mvItem[4];
-                                        movieArray[i][5] = mvItem[5];
-                                        movieArray[i][6] = mvItem[6];
-                                        movieArray[i][7] = mvItem[7];
-                                        movieArray[i][8] = mvItem[8];
-                                        movieArray[i][9] = mvItem[9];
-                                        movieArray[i][10] = mvItem[10];
-                                        movieArray[i][11] = mvItem[11];
-                                      break;
-                                    }
-                                }
-                                if ($.fn.DataTable.isDataTable('#movietable')) {
-                                    $('#movietable').DataTable().destroy();
-                                }
-                                getMovieList();
+                                genreArray.push(mvgItem);
+
+                                getMVGenreList();
                             }
                         });
                     } else if (response.data.error) {
                         Swal.fire({
                             icon: 'error',
-                            title: 'Không thể cập nhật phim',
+                            title: 'Không thể thêm thể loại',
                             text: response.data.error
                         });
                     }
