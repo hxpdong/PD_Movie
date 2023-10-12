@@ -1164,7 +1164,7 @@ function getRecommendedMoviesFrom() {
     if (retrievedData) {
         parsedArray = JSON.parse(retrievedData);
     }
-    var movies = parsedArray;
+    var movies = parsedArray.slice(0, 6);
 
     movies.forEach(function (movie) {
         var movieItem = document.createElement("div");
