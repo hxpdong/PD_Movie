@@ -7523,18 +7523,6 @@ BEGIN
 END //
 DELIMITER ;
 
-DELIMITER //
-CREATE PROCEDURE movie_genre_add(
-    IN p_mvid INT,
-    IN p_mvgid INT
-)
-BEGIN
-    IF NOT EXISTS(SELECT movie_id FROM pdmv_movies_genres WHERE movie_id = p_mvid AND mvgenre_id = p_mvgid) THEN
-        INSERT INTO pdmv_movies_genres (movie_id, mvgenre_id) VALUES (p_mvid, p_mvgid);
-    END IF;
-END //
-DELIMITER ;
-
 DROP PROCEDURE IF EXISTS movie_drop;
 DELIMITER //
 CREATE PROCEDURE movie_drop(IN p_mvid INT)
@@ -7636,6 +7624,43 @@ BEGIN
         SELECT 'Đã xóa' AS results;
     END IF;
 END; //
+DELIMITER ;
+
+DELIMITER //
+CREATE PROCEDURE mvgenre_listMovieOfGenreWithId(
+    IN p_mvgid INT
+)
+BEGIN
+    SELECT mvg.movgen_id, mv.*
+    FROM pdmv_movies mv
+    JOIN pdmv_movies_genres mvg ON mv.movie_id = mvg.movie_id
+    WHERE mvg.mvgenre_id = p_mvgid
+    ORDER BY mv.movie_id DESC;
+END //
+DELIMITER ;
+
+DELIMITER //
+CREATE PROCEDURE movie_genre_add(
+    IN p_mvid INT,
+    IN p_mvgid INT
+)
+BEGIN
+    IF NOT EXISTS(SELECT movie_id FROM pdmv_movies_genres WHERE movie_id = p_mvid AND mvgenre_id = p_mvgid) THEN
+        INSERT INTO pdmv_movies_genres (movie_id, mvgenre_id) VALUES (p_mvid, p_mvgid);
+    END IF;
+END //
+DELIMITER ;
+
+DELIMITER //
+CREATE PROCEDURE movie_genre_drop(
+    IN p_movgenid INT
+)
+BEGIN
+    IF EXISTS (SELECT * FROM pdmv_movies_genres WHERE movgen_id = p_movgenid) THEN
+		DELETE FROM pdmv_movies_genres WHERE movgen_id = p_movgenid;
+        SELECT p_movgenid AS results;
+	END IF;
+END //
 DELIMITER ;
 -- -----------------------------------------------------RECOMMENNDER---------------------------------------------------------------------------------------------------------------------------------------
 -- -----------------------------------------------------RECOMMENNDER---------------------------------------------------------------------------------------------------------------------------------------
@@ -7827,7 +7852,7 @@ BEGIN
     SET matchingCount = 0;
 
     IF len1 <> len2 THEN
-        RETURN -1; -- Độ dài hai chuỗi không bằng nhau
+        RETURN -1; 
     END IF;
 
     FOR i IN 1..len1 DO

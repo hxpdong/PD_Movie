@@ -186,7 +186,7 @@ class MovieGenreController extends Controller
     {
         $genreInfo = DB::select("CALL mvgenre_getGenre(?)", array($mvgid));
 
-        $results = DB::select("CALL mvgenre_listMovieOfGenre(?)", array($mvgid));
+        $results = DB::select("CALL mvgenre_listMovieOfGenreWithId(?)", array($mvgid));
         
         $total = count($results);
 
@@ -202,6 +202,29 @@ class MovieGenreController extends Controller
         } else {
             return response()->json([
                 'success' => false]);
+        }
+    }
+
+    public function dropGenreOfMovie($movgenid){
+        try{
+            $results = DB::select("CALL movie_genre_drop(?)", array($movgenid));
+            if($results){
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Xóa thể loại này của phim thành công',
+                    'movgenid' => $results[0]->results,
+                ]);
+            }else {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Không thể xóa thể loại này của phim'
+                ]);
+            }
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'error' => $e->getMessage()
+            ]);
         }
     }
 }

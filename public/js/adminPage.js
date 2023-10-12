@@ -1601,12 +1601,14 @@ function AddDataToMovieGenreArray(mvgid) {
                             var mvItem = [
                                 mv.movie_id,
                                 mv.title_vi,
-                                mv.title_en
+                                mv.title_en,
+                                mv.movgen_id
                             ];
                             moviegenreArray.push(mvItem);
                         });
-                        document.getElementById("listmvofgenre").textContent = "Mã:" + response.data.infogenre.mvgenre_id + " - " + response.data.infogenre.mvgenre_vi_name + "/" + response.data.infogenre.mvgenre_en_name;
+                        document.getElementById("listmvofgenre").textContent = "Mã: " + response.data.infogenre.mvgenre_id + " - " + response.data.infogenre.mvgenre_vi_name + "/" + response.data.infogenre.mvgenre_en_name;
                         document.getElementById("numMVOfthisGenre").textContent = response.data.results.total;
+                        document.getElementById("currentMVG").value = response.data.infogenre.mvgenre_vi_name + "/" + response.data.infogenre.mvgenre_en_name;
                         if ($.fn.DataTable.isDataTable('#movie-genre-table')) {
                             $('#movie-genre-table').DataTable().destroy();
                         }
@@ -1640,8 +1642,61 @@ function getMovieOfGenreList() {
         titleViCell.classList.add("text-center");
         var titleEnCell = newRow.insertCell(2);
         titleEnCell.textContent = mv[2];
+        titleEnCell.classList.add("text-center");
         var actionCell = newRow.insertCell(3);
-        actionCell.textContent = "Action";
+        actionCell.classList.add("text-center");
+        var removeButton = document.createElement("button");
+        removeButton.classList.add("border-2", "p-2", "rounded-lg", "bg-white", "m-1");
+        removeButton.title = "Xóa thể loại " + document.getElementById("currentMVG").value + " của phim";
+        var removeIcon = document.createElement("span");
+        removeIcon.className = "material-icons";
+        removeIcon.textContent = "delete";
+        removeIcon.style.color = "#EF4444";
+        removeButton.appendChild(removeIcon);
+        removeButton.onclick = function () {
+            var apiUrl = `/api/admin/genre-movie/${mv[3]}/as/${accId}`;
+
+            fetch(apiUrl, {
+                method: "DELETE",
+                headers: headers
+            })
+                .then(function (response) {
+                    return response.json();
+                })
+                .then(function (data) {
+                    if (data.success === true) {
+                        for (var i = 0; i < moviegenreArray.length; i++) {
+                            if (moviegenreArray[i][3] === mv[3]) {
+                                moviegenreArray.splice(i, 1);
+                                break;
+                            }
+                        }
+                        document.getElementById("numMVOfthisGenre").textContent = parseInt(document.getElementById("numMVOfthisGenre").textContent) - 1;
+                        if ($.fn.DataTable.isDataTable('#movie-genre-table')) {
+                            $('#movie-genre-table').DataTable().destroy();
+                        }
+                        getMovieOfGenreList();
+                        Swal.fire(
+                            'Đã xóa!',
+                            'Xóa thành công!',
+                            'success'
+                        );
+                    }
+                    else Swal.fire(
+                        'Không thể xóa!',
+                        data.message,
+                        'error'
+                    );
+                })
+                .catch(function (error) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'An error occurred: ' + error,
+                        html: 'Please try again later',
+                    });
+                });
+        }
+        actionCell.appendChild(removeButton);
     });
 
     $('#movie-genre-table').DataTable({
