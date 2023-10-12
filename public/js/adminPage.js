@@ -1421,15 +1421,15 @@ function getMVGenreList() {
                     const response = result.value;
                     if (response.success) {
                         var updatedGenre = response.newgenre;
-                        console.log(updatedGenre);
+                        
                         updatedGenre = updatedGenre[0];
-                        console.log(updatedGenre);
+                        
                         var mvgItem = [
                             updatedGenre.mvgenre_id,
                             updatedGenre.mvgenre_vi_name,
                             updatedGenre.mvgenre_en_name
                         ];
-                        console.log(mvgItem);
+                        
                         for (var i = 0; i < genreArray.length; i++) {
                             if (genreArray[i][0] === mvgItem[0]) {
                                 genreArray[i][1] = mvgItem[1];
