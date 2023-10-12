@@ -7,6 +7,7 @@
 </head>
 <body>
     <div class="main-container">
+        <button onclick="location.reload();">Reload</button>
         <div class="text-white">
             Có thể bạn sẽ thích:
         </div>

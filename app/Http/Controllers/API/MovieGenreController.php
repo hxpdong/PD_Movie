@@ -181,4 +181,27 @@ class MovieGenreController extends Controller
             ]);
         }
     }
+
+    public function AdminlistMovieOf($mvgid)
+    {
+        $genreInfo = DB::select("CALL mvgenre_getGenre(?)", array($mvgid));
+
+        $results = DB::select("CALL mvgenre_listMovieOfGenre(?)", array($mvgid));
+        
+        $total = count($results);
+
+        $resultArray = [
+            'movies' => $results,
+            'total' => $total,
+        ];
+        if (!empty($resultArray)) {
+        return response()->json([
+            'success' => true,
+            'infogenre' => $genreInfo[0],
+            'results' => $resultArray]);
+        } else {
+            return response()->json([
+                'success' => false]);
+        }
+    }
 }

@@ -11,6 +11,8 @@ var movietable = document.getElementById("tbd-movietable");
 var movieArray = [];
 
 var genreArray = [];
+var moviegenretable = document.getElementById("tbd-movie-genre-table");
+var moviegenreArray = [];
 
 document.addEventListener("DOMContentLoaded", function () {
     function hoanThanhCongViec() {
@@ -54,6 +56,8 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     else if (isPageGenre) {
+        const overlay = document.querySelector('#overlay');
+        overlay.style.display = 'none';
         function simulateCongViecTieuHaoThoiGian(callback) {
             setTimeout(() => {
                 addDataToGenreArray();
@@ -1019,6 +1023,23 @@ function closeAddMovieModal() {
     }
 }
 
+function closeAddGenreModal() {
+    var modal = document.getElementById("addnewGenre-modal");
+    if (modal) {
+        var inputFields = modal.querySelectorAll('input[type="text"]');
+        inputFields.forEach(function (input) {
+            input.value = '';
+        });
+    }
+}
+
+function closeListMovieGenreModal() {
+    var modal = document.getElementById("listMovieGenre-modal");
+    modal.classList.add("hidden");
+    const overlay = document.querySelector('#overlay');
+    overlay.style.display = 'none';
+}
+
 function getPosterType() {
     var selectAPI1 = document.getElementById("newTypePoster");
     var selectAPI2 = document.getElementById("dtTypePoster");
@@ -1310,7 +1331,11 @@ function getMVGenreList() {
         card.className = 'flex items-center px-5 py-6 bg-white rounded-md shadow-sm overflow-x-hidden';
         card.onclick = function () {
             //
-            alert("Mã thể loại: " + mvg[0]);
+            document.getElementById("listMovieGenre-modal").classList.remove("hidden");
+            const overlay = document.querySelector('#overlay');
+            overlay.style.display = 'block';
+
+            AddDataToMovieGenreArray(mvg[0]);
         };
         const iconContainer = document.createElement('div');
         iconContainer.className = 'p-3 flex justify-center items-center h-16 rounded-md';
@@ -1465,8 +1490,8 @@ function getMVGenreList() {
                             if (data.success === true) {
                                 for (var i = 0; i < genreArray.length; i++) {
                                     if (genreArray[i][0] === mvg[0]) {
-                                        genreArray.splice(i, 1); 
-                                        break; 
+                                        genreArray.splice(i, 1);
+                                        break;
                                     }
                                 }
                                 getMVGenreList();
@@ -1560,4 +1585,71 @@ function postNewGenre() {
                 });
         }
     });
+}
+
+function AddDataToMovieGenreArray(mvgid) {
+    if (moviegenretable) {
+        axios.get('/api/admin/movie-of-genres/' + mvgid + "/as/" + accId, {
+            headers: headers
+        })
+            .then(function (response) {
+                if (response.status === 200) {
+                    if (response.data.success === true) {
+                        var mvl = response.data.results.movies;
+                        moviegenreArray.splice(0, moviegenreArray.length);
+                        mvl.forEach(function (mv) {
+                            var mvItem = [
+                                mv.movie_id,
+                                mv.title_vi,
+                                mv.title_en
+                            ];
+                            moviegenreArray.push(mvItem);
+                        });
+                        document.getElementById("listmvofgenre").textContent = "Mã:" + response.data.infogenre.mvgenre_id + " - " + response.data.infogenre.mvgenre_vi_name + "/" + response.data.infogenre.mvgenre_en_name;
+                        document.getElementById("numMVOfthisGenre").textContent = response.data.results.total;
+                        if ($.fn.DataTable.isDataTable('#movie-genre-table')) {
+                            $('#movie-genre-table').DataTable().destroy();
+                        }
+                        getMovieOfGenreList();
+                    }
+                } else if (response.status === 404 || response.status === 500) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Lỗi!',
+                        text: response.data.message
+                    });
+                }
+            })
+            .catch(function (error) {
+                console.error('Lỗi trong quá trình gửi yêu cầu:', error);
+            });
+    }
+}
+
+function getMovieOfGenreList() {
+    while (moviegenretable.firstChild) {
+        moviegenretable.removeChild(moviegenretable.firstChild);
+    }
+    moviegenreArray.forEach(function (mv) {
+        var newRow = moviegenretable.insertRow();
+        var idCell = newRow.insertCell(0);
+        idCell.classList.add("text-center");
+        idCell.textContent = mv[0];
+        var titleViCell = newRow.insertCell(1);
+        titleViCell.textContent = mv[1];
+        titleViCell.classList.add("text-center");
+        var titleEnCell = newRow.insertCell(2);
+        titleEnCell.textContent = mv[2];
+        var actionCell = newRow.insertCell(3);
+        actionCell.textContent = "Action";
+    });
+
+    $('#movie-genre-table').DataTable({
+        responsive: false,
+        language: {
+            "url": "//cdn.datatables.net/plug-ins/1.10.19/i18n/Vietnamese.json"
+        },
+        lengthMenu: [5, 10, 15, 20],
+    })
+        .columns.adjust();
 }

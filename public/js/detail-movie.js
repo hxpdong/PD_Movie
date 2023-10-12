@@ -160,7 +160,7 @@ function updateMovieDetail(movieDetail) {
             posterElement.onerror = function () {
                 // Sử dụng hình ảnh mặc định nếu xảy ra lỗi
                 if (movie.posterURL != null) {
-                    if(movie.typeOfPosterURL == 0)
+                    if (movie.typeOfPosterURL == 0)
                         posterElement.src = movie.posterURL;
                     else posterElement.src = defaultImageUrl;
                 } else posterElement.src = defaultImageUrl;
@@ -882,7 +882,7 @@ function getLatestMovies() {
                 image.onerror = function () {
                     // Sử dụng hình ảnh mặc định nếu xảy ra lỗi
                     if (movie.posterURL != null) {
-                        if(movie.typeOfPosterURL == 0)
+                        if (movie.typeOfPosterURL == 0)
                             image.src = movie.posterURL;
                         else image.src = defaultImageUrl;
                     } else image.src = defaultImageUrl;
@@ -995,7 +995,7 @@ function getRecommendedMovies() {
                 image.onerror = function () {
                     // Sử dụng hình ảnh mặc định nếu xảy ra lỗi
                     if (movie.posterURL != null) {
-                        if(movie.typeOfPosterURL == 0)
+                        if (movie.typeOfPosterURL == 0)
                             image.src = movie.posterURL;
                         else image.src = defaultImageUrl;
                     } else image.src = defaultImageUrl;
@@ -1046,7 +1046,7 @@ function getRecommendedMovies() {
 
 function getRelatedMovies() {
 
-    axios.get('/api/movies/recommended-by-movie/' + getMovieIdFromURL() + "?num=6" + "&userid=" +accId)
+    axios.get('/api/movies/recommended-by-movie/' + getMovieIdFromURL() + "?num=6" + "&userid=" + accId)
         .then(function (response) {
             //removeAllMovieItems();
             var movieList = document.getElementById("related-list");
@@ -1108,7 +1108,7 @@ function getRelatedMovies() {
                 image.onerror = function () {
                     // Sử dụng hình ảnh mặc định nếu xảy ra lỗi
                     if (movie.posterURL != null) {
-                        if(movie.typeOfPosterURL == 0)
+                        if (movie.typeOfPosterURL == 0)
                             image.src = movie.posterURL;
                         else image.src = defaultImageUrl;
                     } else image.src = defaultImageUrl;
@@ -1166,8 +1166,7 @@ function getRecommendedMoviesFrom() {
     }
     var movies = parsedArray;
 
-    for (var i = 0; i < 6; i++) {
-        var movie = movies[i];
+    movies.forEach(function (movie) {
         var movieItem = document.createElement("div");
         movieItem.className = "grid-item rounded-lg bg-white shadow-lg";
 
@@ -1206,13 +1205,13 @@ function getRecommendedMoviesFrom() {
                 };
                 xhrmv.send();
             } else {
-                image.src =defaultImageUrl;
+                image.src = defaultImageUrl;
             }
         }
         else image.src = defaultImageUrl;
         image.onerror = function () {
             if (movie[9] != null) {
-                if(movie[8] == 0)
+                if (movie[8] == 0)
                     image.src = movie[9];
                 else image.src = defaultImageUrl;
             } else image.src = defaultImageUrl;
@@ -1249,6 +1248,6 @@ function getRecommendedMoviesFrom() {
 
         movieList.appendChild(movieItem);
 
-    };
+    });
     addTooltip();
 }
