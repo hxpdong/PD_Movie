@@ -67,6 +67,7 @@ document.addEventListener("DOMContentLoaded", function () {
         simulateCongViecTieuHaoThoiGian(hoanThanhCongViec);
         console.log("genrepage");
         postNewGenre();
+        inputSearchGenre();
     }
 
     else if (isPageMovie) {
@@ -1326,7 +1327,7 @@ function getMVGenreList() {
 
     genreArray.forEach(function (mvg, index) {
         const container = document.createElement('div');
-        container.className = 'w-full px-6 sm:w-1/2 xl:w-1/3 my-2';
+        container.className = 'w-full px-6 sm:w-1/2 xl:w-1/3 my-2 mvgItem';
         const card = document.createElement('div');
         card.className = 'flex items-center px-5 py-6 bg-white rounded-md shadow-sm overflow-x-hidden';
         card.onclick = function () {
@@ -1707,4 +1708,24 @@ function getMovieOfGenreList() {
         lengthMenu: [5, 10, 15, 20],
     })
         .columns.adjust();
+}
+
+function inputSearchGenre() {
+    const searchInput = document.getElementById('searchGenre');
+    const mvgList = document.getElementById('mvgList');
+    const mvgItems = mvgList.getElementsByClassName('mvgItem');
+    searchInput.addEventListener('input', function () {
+        const searchText = searchInput.value.toLowerCase();
+
+        for (let i = 0; i < mvgItems.length; i++) {
+            const item = mvgItems[i];
+            const itemText = item.textContent.toLowerCase();
+
+            if (itemText.includes(searchText) || searchText.includes(itemText)) {
+                item.style.display = 'block';
+            } else {
+                item.style.display = 'none';
+            }
+        }
+    });
 }

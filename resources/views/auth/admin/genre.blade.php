@@ -193,6 +193,7 @@
                 <span class="material-icons">add</span>
                 Thêm thể loại
             </button>
+            <input type="text" id="searchGenre" placeholder="Tìm thể loại..." class="p-2 mx-2 rounded-lg w-1/2 lg:w-1/3">
             <div id="mvgList" class="flex flex-wrap justify-center items-center">
             </div>
         </div>
