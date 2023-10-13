@@ -7619,9 +7619,11 @@ DELIMITER //
 CREATE PROCEDURE mvgenre_drop(IN p_genreId INT)
 BEGIN
     IF NOT EXISTS (SELECT mvgenre_id FROM pdmv_movies_genres WHERE mvgenre_id = p_genreId) THEN
-        DELETE FROM pdmv_movies_genres WHERE mvgenre_id = p_genreId;
-        DELETE FROM pdmv_mvgenres WHERE mvgenre_id = p_genreId;
-        SELECT 'Đã xóa' AS results;
+		IF p_genreId != "1" THEN
+			DELETE FROM pdmv_movies_genres WHERE mvgenre_id = p_genreId;
+			DELETE FROM pdmv_mvgenres WHERE mvgenre_id = p_genreId;
+			SELECT 'Đã xóa' AS results;
+		END IF;
     END IF;
 END; //
 DELIMITER ;
@@ -7659,6 +7661,31 @@ BEGIN
     IF EXISTS (SELECT * FROM pdmv_movies_genres WHERE movgen_id = p_movgenid) THEN
 		DELETE FROM pdmv_movies_genres WHERE movgen_id = p_movgenid;
         SELECT p_movgenid AS results;
+	END IF;
+END //
+DELIMITER ;
+
+DELIMITER //
+CREATE PROCEDURE movie_genre_get(
+	IN p_mvid INT
+)
+BEGIN
+	IF EXISTS (SELECT * FROM pdmv_movies WHERE movie_id = p_mvid) THEN
+		SELECT g.*, movgen_id FROM pdmv_mvgenres g 
+		LEFT JOIN (SELECT * FROM pdmv_movies_genres WHERE movie_id = p_mvid) AS mvg ON g.mvgenre_id = mvg.mvgenre_id
+		ORDER BY g.mvgenre_id ASC;
+    END IF;
+END //
+DELIMITER ;
+
+DELIMITER //
+CREATE PROCEDURE movie_genre_drop_all_of_movie(
+    IN p_mvid INT
+)
+BEGIN
+    IF EXISTS (SELECT * FROM pdmv_movies_genres WHERE movie_id = p_mvid) THEN
+		DELETE FROM pdmv_movies_genres WHERE movie_id = p_mvid;
+        SELECT p_mvid AS results;
 	END IF;
 END //
 DELIMITER ;
