@@ -438,6 +438,11 @@ class MovieController extends Controller
 
     public function updateMovie($mvid, Request $request){
         try {
+            $uptRequest = "uptgenre-";
+            $matchingRequests = $request->all();
+            $hasMatchingRequest = false;
+
+            $totalMvg = request()->get('totalGenre');
             $request->validate([
                 'dtEnName' => [
                     'required',
@@ -473,6 +478,17 @@ class MovieController extends Controller
             ));
 
             if($results){
+                $rmgenre = DB::select("CALL movie_genre_drop_all_of_movie(?)", array($mvid));
+                foreach ($matchingRequests as $key => $value) {
+                    if (strpos($key, $uptRequest) === 0) {
+                        $genreId = substr($key, strlen($uptRequest)); // Lấy phần số sau "uptgenre-"
+                        $addgenre = DB::select("CALL movie_genre_add(?,?)", array($mvid, $value));
+                        $hasMatchingRequest = true;
+                    }
+                }
+                if (!$hasMatchingRequest) {
+                    $noseegenre = DB::select("CALL movie_genre_add(?, ?)", array($mvid, 1));
+                }
                 return response()->json([
                     'success' => true,
                     'message' => 'Phim được cập nhật thành công',

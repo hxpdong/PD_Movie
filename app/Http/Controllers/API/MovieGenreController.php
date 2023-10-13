@@ -160,20 +160,27 @@ class MovieGenreController extends Controller
 
     public function dropGenre($gid){
         try {
-            $results = DB::select("CALL mvgenre_drop(?)", array($gid));
+            if($gid != 1){
+                $results = DB::select("CALL mvgenre_drop(?)", array($gid));
 
-            if($results){
-                return response()->json([
-                    'success' => true,
-                    'message' => 'Đã xóa thể loại',
-                ]);
-            }
-            else {
+                if($results){
+                    return response()->json([
+                        'success' => true,
+                        'message' => 'Đã xóa thể loại',
+                    ]);
+                } else {
+                    return response()->json([
+                        'success' => false,
+                        'message' => 'Thể loại tồn tại phim, không thể xóa thể loại'
+                    ]);
+                }
+            } else {
                 return response()->json([
                     'success' => false,
-                    'message' => 'Thể loại tồn tại phim, không thể xóa thể loại'
+                    'message' => 'Không thể xóa thể loại này'
                 ]);
             }
+            
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
@@ -218,6 +225,30 @@ class MovieGenreController extends Controller
                 return response()->json([
                     'success' => false,
                     'message' => 'Không thể xóa thể loại này của phim'
+                ]);
+            }
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'error' => $e->getMessage()
+            ]);
+        }
+    }
+
+    public function getGenresOfMovie($mvid){
+        try{
+            $genres = DB::select("CALL movie_genre_get(?)", array($mvid));
+            if($genres){
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Lấy thể loại thành công',
+                    'genres' => $genres,
+                    'total' => count($genres)
+                ]);
+            }else {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Phim không tồn tại'
                 ]);
             }
         } catch (\Exception $e) {

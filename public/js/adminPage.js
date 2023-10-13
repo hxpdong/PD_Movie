@@ -84,6 +84,7 @@ document.addEventListener("DOMContentLoaded", function () {
         console.log("moviepage");
         postNewMovie();
         updateMovie();
+        inputSearchGenreOfMovie();
     }
 });
 
@@ -828,6 +829,7 @@ function getMovieList() {
         infoIcon.style.color = "#1355c9";
         infoButton.appendChild(infoIcon);
         infoButton.onclick = function () {
+            getGenreForUptMovie(mv[0]);
             var mvidElement = document.getElementById("dtmvid");
             var enNameElement = document.getElementById("dtEnName");
             var viNameElement = document.getElementById("dtViName");
@@ -987,6 +989,7 @@ function getMovieList() {
         language: {
             "url": "//cdn.datatables.net/plug-ins/1.10.19/i18n/Vietnamese.json"
         },
+        "order": [[0, 'desc']],
         lengthMenu: [5, 10, 15, 20],
     })
         .columns.adjust();
@@ -1421,15 +1424,15 @@ function getMVGenreList() {
                     const response = result.value;
                     if (response.success) {
                         var updatedGenre = response.newgenre;
-                        
+
                         updatedGenre = updatedGenre[0];
-                        
+
                         var mvgItem = [
                             updatedGenre.mvgenre_id,
                             updatedGenre.mvgenre_vi_name,
                             updatedGenre.mvgenre_en_name
                         ];
-                        
+
                         for (var i = 0; i < genreArray.length; i++) {
                             if (genreArray[i][0] === mvgItem[0]) {
                                 genreArray[i][1] = mvgItem[1];
@@ -1705,6 +1708,7 @@ function getMovieOfGenreList() {
         language: {
             "url": "//cdn.datatables.net/plug-ins/1.10.19/i18n/Vietnamese.json"
         },
+        "order": [[0, 'desc']],
         lengthMenu: [5, 10, 15, 20],
     })
         .columns.adjust();
@@ -1714,6 +1718,66 @@ function inputSearchGenre() {
     const searchInput = document.getElementById('searchGenre');
     const mvgList = document.getElementById('mvgList');
     const mvgItems = mvgList.getElementsByClassName('mvgItem');
+    searchInput.addEventListener('input', function () {
+        const searchText = searchInput.value.toLowerCase();
+
+        for (let i = 0; i < mvgItems.length; i++) {
+            const item = mvgItems[i];
+            const itemText = item.textContent.toLowerCase();
+
+            if (itemText.includes(searchText) || searchText.includes(itemText)) {
+                item.style.display = 'block';
+            } else {
+                item.style.display = 'none';
+            }
+        }
+    });
+}
+
+function getGenreForUptMovie(mvid) {
+    var list = document.getElementById("DivItemsSearchGenre");
+    while (list.firstChild) {
+        list.removeChild(list.firstChild);
+    }
+    axios.get('/api/get-genres-of-movie/' + mvid)
+        .then(function (response) {
+            var mvgenres = response.data.genres;
+            document.getElementById("totalGenre").value = response.data.total;
+            mvgenres.forEach(function (mvg) {
+                if(mvg.mvgenre_id != "1"){
+                    var listItem = document.createElement("li");
+                    var div = document.createElement("div");
+                    div.className = "ItemSearchGenre flex items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-600";
+                    var checkbox = document.createElement("input");
+                    checkbox.id = "uptgenre-" + mvg.mvgenre_id;
+                    checkbox.type = "checkbox";
+                    checkbox.value = mvg.mvgenre_id;
+                    checkbox.name = "uptgenre-" + mvg.mvgenre_id;
+                    checkbox.className = "w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500";
+    
+                    var label = document.createElement("label");
+                    label.setAttribute("for", "checkbox-item-12");
+                    label.className = "w-full ml-2 text-sm font-medium text-gray-900 rounded dark:text-gray-300";
+                    label.textContent = mvg.mvgenre_vi_name + "/" + mvg.mvgenre_en_name;
+    
+                    if(mvg.movgen_id){
+                        checkbox.checked = true;
+                    }
+                    div.appendChild(checkbox);
+                    div.appendChild(label);
+    
+                    listItem.appendChild(div);
+    
+                    list.appendChild(listItem);
+                }
+            });
+        });
+}
+
+function inputSearchGenreOfMovie(){
+    var list = document.getElementById("DivItemsSearchGenre");
+    const searchInput = document.getElementById('input-group-search-genre');
+    const mvgItems = list.getElementsByClassName('ItemSearchGenre');
     searchInput.addEventListener('input', function () {
         const searchText = searchInput.value.toLowerCase();
 
