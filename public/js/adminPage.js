@@ -830,6 +830,7 @@ function getMovieList() {
         infoButton.appendChild(infoIcon);
         infoButton.onclick = function () {
             getGenreForUptMovie(mv[0]);
+            document.getElementById('input-group-search-genre').value = "";
             var mvidElement = document.getElementById("dtmvid");
             var enNameElement = document.getElementById("dtEnName");
             var viNameElement = document.getElementById("dtViName");
