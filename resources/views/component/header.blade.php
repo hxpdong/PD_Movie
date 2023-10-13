@@ -600,13 +600,7 @@ $(document).ready(function() {
                     Swal.fire({
                             icon: 'error',
                             title: 'Không thể thực hiện thao tác',
-                            html: 'Do bạn không có quyền hoặc tài khoản đang được đăng nhập ở nơi khác.<br/> Vui lòng đăng nhập lại!',
-                            confirmButtonText: 'Đăng nhập lại',
-                            allowOutsideClick: false,
-                        }).then((result) => {
-                            if (result.isConfirmed) {
-                                window.location.href = '/logoutHeader';
-                            }
+                            html: response.message,
                         });
                 }
             },
@@ -678,13 +672,7 @@ $(document).ready(function() {
                             Swal.fire({
                                 icon: 'error',
                                 title: 'Không thể thực hiện thao tác',
-                                html: 'Do bạn không có quyền hoặc tài khoản đang được đăng nhập ở nơi khác.<br/> Vui lòng đăng nhập lại!',
-                                confirmButtonText: 'Đăng nhập lại',
-                                allowOutsideClick: false,
-                            }).then((result) => {
-                                if (result.isConfirmed) {
-                                    window.location.href = '/logoutHeader';
-                                }
+                                html: response.message, 
                             });
                         }
                 }
