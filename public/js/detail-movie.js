@@ -1,5 +1,8 @@
 const defaultImageUrl = '/img/banner.png';
-
+const constMvid = getMovieIdFromURL();
+if (!constMvid) {
+    window.location.href = "/";
+}
 document.addEventListener("DOMContentLoaded", function () {
     var movieId = getMovieIdFromURL();
     loadMovieDetail(movieId);
@@ -73,6 +76,8 @@ function loadMovieDetail(movieId) {
             console.log("đã load");
             if (moviedt) {
                 updateMovieDetail(moviedt);
+            }else {
+                window.location.href = "/";
             };
             if (mvgenres) {
                 var genresGroupElement = document.getElementById("mvdetail-genres-group");
@@ -166,6 +171,7 @@ function updateMovieDetail(movieDetail) {
                 } else posterElement.src = defaultImageUrl;
             };
             document.title = movie.title_vi;
+            window.history.pushState({}, '', "mv" + movie.movie_id + "-" + movie.movie_url);
         });
         console.log("đã update");
     }
@@ -550,6 +556,31 @@ function getComments(mid, page) {
                     divContent2.appendChild(dropdownDiv);
 
                 }
+                else {
+                    var divContentReport = document.createElement("div");
+                    divContentReport.className = 'flex justify-end';
+                    var btnReportCmt = document.createElement("button");
+                    btnReportCmt.textContent = "Báo cáo";
+                    btnReportCmt.style.backgroundColor = "#ff6666";
+                    btnReportCmt.style.color = "#fff";
+                    btnReportCmt.onclick = function () {
+                        Swal.fire({
+                            title: 'Bạn muốn báo cáo bình luận?',
+                            showCancelButton: true,
+                            confirmButtonText: 'Báo cáo',
+                            cancelButtonText: 'Hủy bỏ'
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Báo cáo bình luận thành công!',
+                                    text: 'Cảm ơn bạn đã báo cáo'
+                                });
+                            }
+                        });
+                    }
+                    divContentReport.appendChild(btnReportCmt);
+                }
                 // Gắn các phần tử con vào article
                 commentItem.appendChild(footer);
                 commentItem.appendChild(articleContent);
@@ -557,6 +588,9 @@ function getComments(mid, page) {
                 if (accId == cmt.user_id) {
                     //commentItem.appendChild(divContent);
                     commentItem.appendChild(divContent2);
+                }
+                else {
+                    commentItem.appendChild(divContentReport);
                 }
 
                 commentList.appendChild(commentItem);
