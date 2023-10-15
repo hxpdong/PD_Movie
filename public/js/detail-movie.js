@@ -563,6 +563,8 @@ function getComments(mid, page) {
                     btnReportCmt.textContent = "Báo cáo";
                     btnReportCmt.style.backgroundColor = "#ff6666";
                     btnReportCmt.style.color = "#fff";
+                    btnReportCmt.style.fontSize = '10px';
+                    btnReportCmt.style.padding = '4px';
                     btnReportCmt.onclick = function () {
                         Swal.fire({
                             title: 'Bạn muốn báo cáo bình luận?',

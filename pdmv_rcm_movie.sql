@@ -7689,6 +7689,26 @@ BEGIN
 	END IF;
 END //
 DELIMITER ;
+
+DELIMITER //
+CREATE PROCEDURE movie_genre_if_not_exists(
+	IN p_mvid INT
+)
+BEGIN
+	IF NOT EXISTS (SELECT movie_id FROM pdmv_movies_genres WHERE movie_id = p_mvid) THEN
+		CALL movie_genre_add(p_mvid, 1);
+    END IF;
+END //
+DELIMITER ;
+
+DELIMITER //
+CREATE PROCEDURE movie_genre_get_info(
+	IN p_mvgid INT
+)
+BEGIN
+	SELECT movie_id, mvgenre_id FROM pdmv_movies_genres WHERE movgen_id = p_mvgid;
+END //
+DELIMITER ;
 -- -----------------------------------------------------RECOMMENNDER---------------------------------------------------------------------------------------------------------------------------------------
 -- -----------------------------------------------------RECOMMENNDER---------------------------------------------------------------------------------------------------------------------------------------
 -- -----------------------------------------------------RECOMMENNDER---------------------------------------------------------------------------------------------------------------------------------------

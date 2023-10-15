@@ -214,8 +214,11 @@ class MovieGenreController extends Controller
 
     public function dropGenreOfMovie($movgenid){
         try{
+            $mvgInfo = DB::select("CALL movie_genre_get_info(?);", array($movgenid));
             $results = DB::select("CALL movie_genre_drop(?)", array($movgenid));
             if($results){
+                $mvid = $mvgInfo[0]->movie_id;
+                $addToOther = DB::select("CALL movie_genre_if_not_exists(?);", array($mvid));
                 return response()->json([
                     'success' => true,
                     'message' => 'Xóa thể loại này của phim thành công',
