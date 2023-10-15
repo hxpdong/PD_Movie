@@ -802,6 +802,9 @@ function loadPrevComment() {
 function getMovieInfoToWatch() {
     var movieId = getMovieIdFromURL();
     var chapterBtn = document.getElementById("list-chapter-btns");
+    while (chapterBtn.firstChild){
+        chapterBtn.removeChild(chapterBtn.firstChild);
+    }
     var chapterSrc = "";
     axios.get('/api/movies/' + movieId)
         .then(function (response) {

@@ -25,13 +25,13 @@
 
                 <span class="mx-3">Phim</span>
             </a>
-
+            <!--
             <a class="flex items-center px-6 py-2 mt-4 text-gray-500 hover:bg-gray-700 hover:bg-opacity-25 hover:text-gray-100"
                 href="/admin/chapters" id="btn-chapters">
                 <i class="fa-solid fa-video fa-xl"></i>
                 <span class="mx-3">Tập Phim</span>
             </a>
-
+            -->
             <a class="flex items-center px-6 py-2 mt-4 text-gray-500 hover:bg-gray-700 hover:bg-opacity-25 hover:text-gray-100"
                 href="/admin/genres" id="btn-genres">
                 <i class="fa-solid fa-tags fa-xl"></i>
