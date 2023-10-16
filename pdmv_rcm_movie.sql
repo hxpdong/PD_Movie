@@ -7752,6 +7752,23 @@ BEGIN
     END IF;
 END; //
 DELIMITER ;
+
+DELIMITER //
+CREATE PROCEDURE mvchapter_add(
+	IN p_mvid INT,
+    IN p_ctname VARCHAR(255),
+    IN p_cturl TEXT
+	)
+BEGIN
+	DECLARE newId INT DEFAULT 0;
+	IF EXISTS (SELECT movie_id FROM pdmv_movies WHERE movie_id = p_mvid) THEN
+		INSERT INTO pdmv_mvchapters(movie_id, chapter_name, chapterURL) VALUES 
+        (p_mvid, p_ctname, p_cturl);
+        SET newId = (SELECT LAST_INSERT_ID());
+		SELECT * FROM pdmv_mvchapters WHERE chapter_id = newId;
+    END IF;
+END; //
+DELIMITER ;
 -- -----------------------------------------------------RECOMMENNDER---------------------------------------------------------------------------------------------------------------------------------------
 -- -----------------------------------------------------RECOMMENNDER---------------------------------------------------------------------------------------------------------------------------------------
 -- -----------------------------------------------------RECOMMENNDER---------------------------------------------------------------------------------------------------------------------------------------

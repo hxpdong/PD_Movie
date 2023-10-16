@@ -2062,3 +2062,107 @@ function uptCheckURL() {
     var valueURL = document.getElementById("uptURL").value;
     iframe.src = valueURL;
 }
+
+function addCheckURL() {
+    var iframe = document.getElementById("iframeaddURL");
+    var valueURL = document.getElementById("chapterurl").value;
+    iframe.src = valueURL;
+}
+
+function addNewChapter(){
+    var mvid = document.getElementById("dtmvid").value;
+    Swal.fire({
+        title: "Thêm tập phim mới",
+        html: `
+            <form id="addNewChapterForm">
+                <label for="mvid">Phim</label>
+                <input type="text" id="mvid" name="mvid" class="swal2-input" value="${mvid}" required disabled>
+                <label for="chaptername">Tên tập phim</label>
+                <input type="text" id="chaptername" name="chaptername" class="swal2-input" required>
+                <label for="chapterurl">Đường dẫn</label>
+                <input type="text" id="chapterurl" name="chapterurl" class="swal2-input" required>
+                <button type="button" onclick="addCheckURL()" class="bg-[#66ccff] text-white p-2 rounded-lg";">Kiểm tra phim</button>
+            </form>
+            <iframe class="w-auto" id="iframeaddURL"
+            src="" frameborder="0" allowfullscreen></iframe>
+                            `,
+        showCancelButton: true,
+        confirmButtonText: "Thêm mới",
+        cancelButtonText: "Hủy bỏ",
+        showLoaderOnConfirm: true,
+        preConfirm: () => {
+            const mvid = document.getElementById("mvid").value;
+            const chaptername = document.getElementById("chaptername").value;
+            const chapterurl = document.getElementById("chapterurl").value;
+
+            return fetch("/api/admin/chapters/as/" + accId, {
+                method: "POST",
+                headers: {
+                    Authorization: apiToken,
+                    "Content-Type": "application/x-www-form-urlencoded",
+                },
+                body: new URLSearchParams({
+                    mvid,
+                    chaptername,
+                    chapterurl,
+                }).toString(),
+            })
+                .then((response) => {
+                    if (!response.ok) {
+                        throw new Error(response.statusText);
+                    }
+                    return response.json();
+                })
+                .then((data) => {
+                    if (!data.success) {
+                        throw new Error(data.message);
+                    }
+                    return data;
+                })
+                .catch((error) => {
+                    Swal.showValidationMessage(
+                        `Request failed: ${error.message}`);
+                });
+
+        },
+        allowOutsideClick: () => !Swal.isLoading(),
+    }).then((result) => {
+        if (result.isConfirmed) {
+            const response = result.value;
+            if (response.success) {
+                const messageFromResponse = response.message;
+                var rpItem = response.chapter;
+                rpItem = rpItem[0];
+                var ctItem = [
+                    rpItem.chapter_id,
+                    rpItem.movie_id,
+                    rpItem.chapter_name,
+                    rpItem.chapterURL
+                ];
+                chapterArray.push(ctItem);
+                console.log(chapterArray);
+                if ($.fn.DataTable.isDataTable('#chaptertable')) {
+                    $('#chaptertable').DataTable().destroy();
+                }
+                getChapterOfMovieList();
+                document.getElementById("numChapterOfMovie").textContent = parseInt(document.getElementById("numChapterOfMovie").textContent) + 1;
+
+                Swal.fire({
+                    icon: "success",
+                    title: messageFromResponse,
+                    confirmButtonText: "OK",
+                }).then((result) => {
+                    if (result.isConfirmed) {
+
+                    }
+                });
+            } else {
+                Swal.fire({
+                    icon: "error",
+                    title: "Lỗi!",
+                    text: "Lỗi: " + response.message
+                });
+            }
+        }
+    });
+}

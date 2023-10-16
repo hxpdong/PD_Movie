@@ -78,6 +78,7 @@ Route::middleware(['pdmv_API_checkToken', 'pdmv_API_checkAdminRole'])->group(fun
     Route::get('/admin/movies/chapters/{mvid}/as/{accid}', [MovieController::class, 'getChapterOfMovieAdmin']);
     Route::put('/admin/chapters/{ctid}/as/{accid}', [MovieChapterController::class, 'update']);
     Route::delete('/admin/chapters/{ctid}/as/{accid}', [MovieChapterController::class, 'drop']);
+    Route::post('/admin/chapters/as/{accid}', [MovieChapterController::class, 'insert']);
 });
 
 Route::middleware(['pdmv_API_checkToken', 'pdmv_API_checkSPAdminRole'])->group(function () {

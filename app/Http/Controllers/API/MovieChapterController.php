@@ -56,4 +56,40 @@ class MovieChapterController extends Controller
             ]);
         }
     }
+
+    public function insert(Request $request){
+        try{
+            $request->validate([
+                'mvid' => ['required',],
+                'chaptername' => ['required',],
+                'chapterurl' => ['required',]
+            ], [
+                'mvid.required' => 'Id phim là bắt buộc.',
+                'chaptername.required' => 'Tên tập phim là bắt buộc.',
+                'chapterurl.required' => 'Đường dẫn là bắt buộc.',
+            ]);
+
+            $mvid = $request->mvid;
+            $chaptername = $request->chaptername;
+            $chapterurl = $request->chapterurl;
+            $newChap = DB::select("CALL mvchapter_add(?,?,?);", array($mvid, $chaptername, $chapterurl));
+            if($newChap){
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Thêm tập phim thành công',
+                    'chapter' => $newChap
+                ]);
+            } else {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Phim này không tồn tại trong cơ sở dữ liệu'
+                ]);
+            }
+        } catch (\Exception $e) {
+            return response()->json([
+                "success" => false,
+                "error:" => $e->getMessage(),
+            ]);
+        }
+    }
 }
