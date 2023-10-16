@@ -1753,7 +1753,7 @@ function getGenreForUptMovie(mvid) {
             var mvgenres = response.data.genres;
             document.getElementById("totalGenre").value = response.data.total;
             mvgenres.forEach(function (mvg) {
-                if(mvg.mvgenre_id != "1"){
+                if (mvg.mvgenre_id != "1") {
                     var listItem = document.createElement("li");
                     var div = document.createElement("div");
                     div.className = "ItemSearchGenre flex items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-600";
@@ -1763,27 +1763,27 @@ function getGenreForUptMovie(mvid) {
                     checkbox.value = mvg.mvgenre_id;
                     checkbox.name = "uptgenre-" + mvg.mvgenre_id;
                     checkbox.className = "w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500";
-    
+
                     var label = document.createElement("label");
                     label.setAttribute("for", "checkbox-item-12");
                     label.className = "w-full ml-2 text-sm font-medium text-gray-900 rounded dark:text-gray-300";
                     label.textContent = mvg.mvgenre_vi_name + "/" + mvg.mvgenre_en_name;
-    
-                    if(mvg.movgen_id){
+
+                    if (mvg.movgen_id) {
                         checkbox.checked = true;
                     }
                     div.appendChild(checkbox);
                     div.appendChild(label);
-    
+
                     listItem.appendChild(div);
-    
+
                     list.appendChild(listItem);
                 }
             });
         });
 }
 
-function inputSearchGenreOfMovie(){
+function inputSearchGenreOfMovie() {
     var list = document.getElementById("DivItemsSearchGenre");
     const searchInput = document.getElementById('input-group-search-genre');
     const mvgItems = list.getElementsByClassName('ItemSearchGenre');
@@ -1804,7 +1804,7 @@ function inputSearchGenreOfMovie(){
 }
 
 function AddDataToChapterArray(mvid) {
-    if(chaptertable){
+    if (chaptertable) {
         chapterArray.splice(0, chapterArray.length);
         axios.get('/api/admin/movies/chapters/' + mvid + "/as/" + accId, {
             headers: headers
@@ -1860,6 +1860,103 @@ function getChapterOfMovieList() {
         uptIcon.textContent = "edit";
         uptButton.style.color = "#1355c9";
         uptButton.appendChild(uptIcon);
+        uptButton.onclick = function () {
+            var newname;
+            var newurl;
+            Swal.fire({
+                title: "Cập nhật thông tin tập phim - Mã: " + ct[0],
+                html: `
+                    <form id="updateChapterForm">
+                    <label for="uptchaptername">Tên tập phim</label>
+                    <input type="text" id="uptchaptername" name="uptchaptername" class="swal2-input" required value="${ct[2]}">
+                    <label for="uptURL">Đường dẫn</label>
+                    <input type="text" id="uptURL" name="uptURL" class="swal2-input" required value="${ct[3]}">
+                    <button type="button" onclick="uptCheckURL()" class="bg-[#66ccff] text-white p-2 rounded-lg";">Kiểm tra phim</button>
+                    </form>
+                    <iframe class="w-auto" id="iframeuptURL"
+                    src="" frameborder="0" allowfullscreen></iframe>
+                `,
+                showCancelButton: true,
+                confirmButtonText: "Cập nhật",
+                cancelButtonText: "Hủy bỏ",
+                showLoaderOnConfirm: true,
+                preConfirm: () => {
+                    const uptchaptername = document.getElementById("uptchaptername")
+                        .value;
+                    const uptURL = document.getElementById("uptURL")
+                        .value;
+                    newname = uptchaptername;
+                    newurl = uptURL;
+                    return fetch("/api/admin/chapters/" + ct[0] + "/as/" + accId, {
+                        method: "PUT",
+                        headers: {
+                            Authorization: apiToken,
+                            "Content-Type": "application/x-www-form-urlencoded",
+                        },
+                        body: new URLSearchParams({
+                            uptchaptername,
+                            uptURL
+                        }).toString(),
+                    })
+                        .then((response) => {
+                            if (!response.ok) {
+                                throw new Error(response
+                                    .statusText);
+                            }
+                            return response.json();
+                        })
+                        .catch((error) => {
+                            Swal.showValidationMessage(
+                                `Request failed: ${error}`);
+                        });
+                },
+                allowOutsideClick: () => !Swal.isLoading(),
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    const response = result.value;
+                    if (response.success) {
+                        Swal.fire({
+                            icon: "success",
+                            title: response.message,
+                            confirmButtonText: "OK",
+                        }).then((result) => {
+                            var uptItem = response.chapter;
+                            uptItem = uptItem[0];
+
+                            var ctItem = [
+                                uptItem.chapter_id,
+                                uptItem.movie_id,
+                                uptItem.chapter_name,
+                                uptItem.chapterURL
+                            ];
+
+                            for (var i = 0; i < chapterArray.length; i++) {
+                                if (chapterArray[i][0] === ctItem[0]) {
+                                    chapterArray[i][1] = ctItem[1];
+                                    chapterArray[i][2] = ctItem[2];
+                                    chapterArray[i][3] = ctItem[3];
+                                    break;
+                                }
+                            }
+                            if ($.fn.DataTable.isDataTable('#chaptertable')) {
+                                $('#chaptertable').DataTable().destroy();
+                            }
+                            getChapterOfMovieList();
+                            
+                            if (result.isConfirmed) {
+
+                            }
+                        });
+                    } else {
+                        Swal.fire({
+                            icon: "error",
+                            title: "Lỗi!",
+                            text: "Lỗi: " + response.message
+                        });
+                    }
+                }
+            });
+        }
         actionCell.appendChild(uptButton);
         var removeButton = document.createElement("button");
         removeButton.classList.add("border-2", "p-2", "rounded-lg", "bg-white", "m-1");
@@ -1870,8 +1967,8 @@ function getChapterOfMovieList() {
         removeIcon.textContent = "delete";
         removeIcon.style.color = "#EF4444";
         removeButton.appendChild(removeIcon);
-        removeButton.onclick = function (){
-
+        removeButton.onclick = function () {
+            alert("DEL");
         }
         actionCell.appendChild(removeButton);
     });
@@ -1887,16 +1984,22 @@ function getChapterOfMovieList() {
         .columns.adjust();
 }
 
-function changeInfoDivState(){
+function changeInfoDivState() {
     const infodiv = document.getElementById("infoDiv");
     infodiv.hidden = !infodiv.hidden;
     const loadinfo = document.getElementById("loadInfo");
     loadinfo.hidden = !infodiv.hidden;
 }
 
-function changeChapterDivState(){
+function changeChapterDivState() {
     const chapterdiv = document.getElementById("chapterDiv");
     chapterdiv.hidden = !chapterdiv.hidden;
     const loadchapter = document.getElementById("loadChapter");
     loadchapter.hidden = !chapterdiv.hidden;
+}
+
+function uptCheckURL() {
+    var iframe = document.getElementById("iframeuptURL");
+    var valueURL = document.getElementById("uptURL").value;
+    iframe.src = valueURL;
 }

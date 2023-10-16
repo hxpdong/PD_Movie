@@ -10,6 +10,7 @@ use App\Http\Controllers\API\UserController;
 use App\Http\Controllers\API\MovieTagController;
 use App\Http\Controllers\API\AccountController;
 use App\Http\Controllers\API\SystemController;
+use App\Http\Controllers\API\MovieChapterController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -75,6 +76,7 @@ Route::middleware(['pdmv_API_checkToken', 'pdmv_API_checkAdminRole'])->group(fun
     Route::get('/admin/movie-of-genres/{mvgid}/as/{accid}', [MovieGenreController::class, 'AdminlistMovieOf']);
     Route::delete('/admin/genre-movie/{movgenid}/as/{accid}', [MovieGenreController::class, 'dropGenreOfMovie']);
     Route::get('/admin/movies/chapters/{mvid}/as/{accid}', [MovieController::class, 'getChapterOfMovieAdmin']);
+    Route::put('/admin/chapters/{ctid}/as/{accid}', [MovieChapterController::class, 'update']);
 });
 
 Route::middleware(['pdmv_API_checkToken', 'pdmv_API_checkSPAdminRole'])->group(function () {

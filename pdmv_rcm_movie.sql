@@ -7720,6 +7720,25 @@ BEGIN
 END //
 DELIMITER ;
 CALL TEST_ADD_CHAPTER_TO_MOVIES_FROM_1_300();
+
+DELIMITER //
+CREATE PROCEDURE mvchapter_update(
+	IN p_chapterid INT,
+    IN p_chaptername VARCHAR(255),
+    IN p_chapterurl TEXT
+    )
+BEGIN
+	IF EXISTS(SELECT chapter_id FROM pdmv_mvchapters WHERE chapter_id = p_chapterid) THEN
+		UPDATE pdmv_mvchapters
+        SET
+        chapter_name = p_chaptername,
+        chapterURL = p_chapterurl
+        WHERE chapter_id = p_chapterid;
+        SELECT * FROM pdmv_mvchapters
+        WHERE chapter_id = p_chapterid; 
+	END IF;
+END; //
+DELIMITER ;
 -- -----------------------------------------------------RECOMMENNDER---------------------------------------------------------------------------------------------------------------------------------------
 -- -----------------------------------------------------RECOMMENNDER---------------------------------------------------------------------------------------------------------------------------------------
 -- -----------------------------------------------------RECOMMENNDER---------------------------------------------------------------------------------------------------------------------------------------
