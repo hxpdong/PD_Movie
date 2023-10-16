@@ -560,14 +560,18 @@ function getComments(mid, page) {
                     var divContentReport = document.createElement("div");
                     divContentReport.className = 'flex justify-end';
                     var btnReportCmt = document.createElement("button");
-                    btnReportCmt.textContent = "Báo cáo";
                     btnReportCmt.style.backgroundColor = "#ff6666";
-                    btnReportCmt.style.color = "#fff";
-                    btnReportCmt.style.fontSize = '10px';
+                    var reportIcon = document.createElement("span");
+                    reportIcon.className = "material-icons";
+                    reportIcon.textContent = "flag";
+                    reportIcon.style.color = "#fff";
+                    btnReportCmt.appendChild(reportIcon);
+                    btnReportCmt.title = "Báo cáo bình luận";
                     btnReportCmt.style.padding = '4px';
                     btnReportCmt.onclick = function () {
                         Swal.fire({
                             title: 'Bạn muốn báo cáo bình luận?',
+                            html: 'Vào lúc ' + cmt.commentTime + ", tài khoản " + cmt.usname + " đã đăng: </br>" + "<b>" +cmt.comment + "</b>",
                             showCancelButton: true,
                             confirmButtonText: 'Báo cáo',
                             cancelButtonText: 'Hủy bỏ'
@@ -581,7 +585,7 @@ function getComments(mid, page) {
                             }
                         });
                     }
-                    divContentReport.appendChild(btnReportCmt);
+                    footer.appendChild(btnReportCmt);
                 }
                 // Gắn các phần tử con vào article
                 commentItem.appendChild(footer);
