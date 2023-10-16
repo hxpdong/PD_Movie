@@ -74,6 +74,7 @@ Route::middleware(['pdmv_API_checkToken', 'pdmv_API_checkAdminRole'])->group(fun
     Route::delete('/admin/genres/{gid}/as/{accid}', [MovieGenreController::class, 'dropGenre']);
     Route::get('/admin/movie-of-genres/{mvgid}/as/{accid}', [MovieGenreController::class, 'AdminlistMovieOf']);
     Route::delete('/admin/genre-movie/{movgenid}/as/{accid}', [MovieGenreController::class, 'dropGenreOfMovie']);
+    Route::get('/admin/movies/chapters/{mvid}/as/{accid}', [MovieController::class, 'getChapterOfMovieAdmin']);
 });
 
 Route::middleware(['pdmv_API_checkToken', 'pdmv_API_checkSPAdminRole'])->group(function () {

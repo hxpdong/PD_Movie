@@ -14,6 +14,9 @@ var genreArray = [];
 var moviegenretable = document.getElementById("tbd-movie-genre-table");
 var moviegenreArray = [];
 
+var chaptertable = document.getElementById("tbd-chaptertable");
+var chapterArray = [];
+
 document.addEventListener("DOMContentLoaded", function () {
     function hoanThanhCongViec() {
         Swal.close();
@@ -829,6 +832,10 @@ function getMovieList() {
         infoIcon.style.color = "#1355c9";
         infoButton.appendChild(infoIcon);
         infoButton.onclick = function () {
+            document.getElementById("infoDiv").removeAttribute("hidden");
+            document.getElementById("chapterDiv").removeAttribute("hidden");
+            document.getElementById("loadInfo").setAttribute("hidden", "true");
+            document.getElementById("loadChapter").setAttribute("hidden", "true");
             getGenreForUptMovie(mv[0]);
             document.getElementById('input-group-search-genre').value = "";
             var mvidElement = document.getElementById("dtmvid");
@@ -908,6 +915,7 @@ function getMovieList() {
                 }
             }
             else errIMG.textContent = "Phim chưa có Poster hoặc bị lỗi";
+            AddDataToChapterArray(mv[0]);
         };
         mvActionCell.appendChild(infoButton);
 
@@ -1793,4 +1801,102 @@ function inputSearchGenreOfMovie(){
             }
         }
     });
+}
+
+function AddDataToChapterArray(mvid) {
+    if(chaptertable){
+        axios.get('/api/admin/movies/chapters/' + mvid + "/as/" + accId, {
+            headers: headers
+        })
+            .then(function (response) {
+                if (response.status === 200) {
+                    if (response.data.success === true) {
+                        var chapterlist = response.data.chapters;
+                        chapterArray.splice(0, chapterArray.length);
+                        chapterlist.forEach(function (ct) {
+                            var ctItem = [
+                                ct.chapter_id,
+                                ct.movie_id,
+                                ct.chapter_name,
+                                ct.chapterURL
+                            ];
+                            chapterArray.push(ctItem);
+                        });
+                    }
+                    if ($.fn.DataTable.isDataTable('#chaptertable')) {
+                        $('#chaptertable').DataTable().destroy();
+                    }
+                    getChapterOfMovieList();
+                    document.getElementById("numChapterOfMovie").textContent = response.data.totals;
+                }
+            });
+    }
+    else console.log('not found');
+}
+
+function getChapterOfMovieList() {
+    while (chaptertable.firstChild) {
+        chaptertable.removeChild(chaptertable.firstChild);
+    }
+    chapterArray.forEach(function (ct) {
+        var newRow = chaptertable.insertRow();
+        var idCell = newRow.insertCell(0);
+        idCell.classList.add("text-center");
+        idCell.textContent = ct[0];
+        var nameCell = newRow.insertCell(1);
+        nameCell.classList.add("text-center");
+        nameCell.textContent = ct[2];
+        var urlCell = newRow.insertCell(2);
+        urlCell.classList.add("text-center");
+        urlCell.textContent = ct[3];
+        var actionCell = newRow.insertCell(3);
+        actionCell.classList.add("text-center");
+        var uptButton = document.createElement("button");
+        uptButton.classList.add("border-2", "p-2", "rounded-lg", "bg-white", "m-1");
+        uptButton.title = "Cập nhật tập phim " + ct[0];
+        uptButton.type = "button";
+        var uptIcon = document.createElement("span");
+        uptIcon.className = "material-icons";
+        uptIcon.textContent = "edit";
+        uptButton.style.color = "#1355c9";
+        uptButton.appendChild(uptIcon);
+        actionCell.appendChild(uptButton);
+        var removeButton = document.createElement("button");
+        removeButton.classList.add("border-2", "p-2", "rounded-lg", "bg-white", "m-1");
+        removeButton.title = "Xóa tập phim " + ct[0];
+        removeButton.type = "button";
+        var removeIcon = document.createElement("span");
+        removeIcon.className = "material-icons";
+        removeIcon.textContent = "delete";
+        removeIcon.style.color = "#EF4444";
+        removeButton.appendChild(removeIcon);
+        removeButton.onclick = function (){
+
+        }
+        actionCell.appendChild(removeButton);
+    });
+
+    $('#chaptertable').DataTable({
+        responsive: false,
+        language: {
+            "url": "//cdn.datatables.net/plug-ins/1.10.19/i18n/Vietnamese.json"
+        },
+        "order": [[0, 'desc']],
+        lengthMenu: [5, 10, 15, 20],
+    })
+        .columns.adjust();
+}
+
+function changeInfoDivState(){
+    const infodiv = document.getElementById("infoDiv");
+    infodiv.hidden = !infodiv.hidden;
+    const loadinfo = document.getElementById("loadInfo");
+    loadinfo.hidden = !infodiv.hidden;
+}
+
+function changeChapterDivState(){
+    const chapterdiv = document.getElementById("chapterDiv");
+    chapterdiv.hidden = !chapterdiv.hidden;
+    const loadchapter = document.getElementById("loadChapter");
+    loadchapter.hidden = !chapterdiv.hidden;
 }

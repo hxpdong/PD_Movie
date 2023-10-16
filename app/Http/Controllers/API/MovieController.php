@@ -508,4 +508,29 @@ class MovieController extends Controller
             ]);
         }
     }
+
+    public function getChapterOfMovieAdmin($mvid){
+        try{
+            $results =DB::select("CALL movie_listChaptersOfMovie(?);", array($mvid));
+            if($results){
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Lấy danh sách phim thành công',
+                    'chapters' => $results,
+                    'totals' => count($results)
+                ]);
+            }else {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Không thể lấy danh sách phim',
+                    'totals' => count($results)
+                ]);
+            }
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'error' => $e->getMessage()
+            ]);
+        }
+    }
 }
