@@ -1602,6 +1602,7 @@ function postNewGenre() {
 
 function AddDataToMovieGenreArray(mvgid) {
     if (moviegenretable) {
+        moviegenreArray.splice(0, moviegenreArray.length);
         axios.get('/api/admin/movie-of-genres/' + mvgid + "/as/" + accId, {
             headers: headers
         })
@@ -1609,7 +1610,6 @@ function AddDataToMovieGenreArray(mvgid) {
                 if (response.status === 200) {
                     if (response.data.success === true) {
                         var mvl = response.data.results.movies;
-                        moviegenreArray.splice(0, moviegenreArray.length);
                         mvl.forEach(function (mv) {
                             var mvItem = [
                                 mv.movie_id,
@@ -1805,6 +1805,7 @@ function inputSearchGenreOfMovie(){
 
 function AddDataToChapterArray(mvid) {
     if(chaptertable){
+        chapterArray.splice(0, chapterArray.length);
         axios.get('/api/admin/movies/chapters/' + mvid + "/as/" + accId, {
             headers: headers
         })
@@ -1812,7 +1813,6 @@ function AddDataToChapterArray(mvid) {
                 if (response.status === 200) {
                     if (response.data.success === true) {
                         var chapterlist = response.data.chapters;
-                        chapterArray.splice(0, chapterArray.length);
                         chapterlist.forEach(function (ct) {
                             var ctItem = [
                                 ct.chapter_id,
