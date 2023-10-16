@@ -1942,7 +1942,7 @@ function getChapterOfMovieList() {
                                 $('#chaptertable').DataTable().destroy();
                             }
                             getChapterOfMovieList();
-                            
+
                             if (result.isConfirmed) {
 
                             }
@@ -1968,7 +1968,66 @@ function getChapterOfMovieList() {
         removeIcon.style.color = "#EF4444";
         removeButton.appendChild(removeIcon);
         removeButton.onclick = function () {
-            alert("DEL");
+            Swal.fire({
+                icon: 'warning',
+                title: 'Bạn có chắc chắn muốn xóa tập phim ' + ct[0] + "?",
+                html: 'Khi đồng ý <span class="text-red-500 font-bold">XÓA</span>, tập phim sẽ bị xóa và <span class="text-red-500 font-bold">không thể</span> khôi phục lại',
+                showCancelButton: true,
+                confirmButtonText: 'Xóa',
+                confirmButtonColor: 'red',
+                cancelButtonText: 'Suy nghĩ lại'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    var apiUrl = `/api/admin/chapters/${ct[0]}/as/${accId}`;
+
+                    fetch(apiUrl, {
+                        method: "DELETE",
+                        headers: headers
+                    })
+                        .then(function (response) {
+                            return response.json();
+                        })
+                        .then(function (data) {
+                            if (data.success === true) {
+                                Swal.fire(
+                                    'Đã xóa!',
+                                    'Xóa tập phim thành công!',
+                                    'success'
+                                );
+                                for (var i = 0; i < chapterArray.length; i++) {
+                                    if (chapterArray[i][0] === ct[0]) {
+                                        chapterArray.splice(i, 1);
+                                        break;
+                                    }
+                                }
+                                if ($.fn.DataTable.isDataTable('#chaptertable')) {
+                                    $('#chaptertable').DataTable().destroy();
+                                }
+                                getChapterOfMovieList();
+                                document.getElementById("numChapterOfMovie").textContent = parseInt(document.getElementById("numChapterOfMovie").textContent) - 1;
+                            } else {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Không thể thực hiện thao tác',
+                                    html: 'Do bạn không có quyền hoặc tài khoản đang được đăng nhập ở nơi khác.<br/> Vui lòng đăng nhập lại!',
+                                    confirmButtonText: 'Đăng nhập lại',
+                                    allowOutsideClick: false,
+                                }).then((result) => {
+                                    if (result.isConfirmed) {
+                                        window.location.href = '/logoutHeader';
+                                    }
+                                });
+                            }
+                        })
+                        .catch(function (error) {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'An error occurred: ' + error,
+                                html: 'Please try again later',
+                            });
+                        });
+                }
+            });
         }
         actionCell.appendChild(removeButton);
     });

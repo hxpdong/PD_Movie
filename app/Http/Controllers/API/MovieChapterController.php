@@ -33,4 +33,27 @@ class MovieChapterController extends Controller
             ]);
         } 
     }
+
+    public function drop($ctid){
+        try{
+            $rs = DB::select("CALL mvchapter_drop(?);", array($ctid));
+            if($rs){
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Xóa thành công',
+                    'deletedId' => $ctid[0] 
+                ]);
+            } else {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Không tìm thấy tập phim'
+                ]);
+            }
+        } catch (\Exception $e) {
+            return response()->json([
+                "success" => false,
+                "error:" => $e->getMessage(),
+            ]);
+        }
+    }
 }
