@@ -350,63 +350,63 @@
                                 <img src="" id="dtReviewIMG" class="w-48">
                             </div>
                         </div>
+                        <div class="grid grid-cols-2 gap-4" id="btnDiv">
+                            <div class="flex w-full justify-end">
+                                <button type="submit"
+                                    class="w-1/2 text-white bg-[#66ccff] hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                                    Cập nhật
+                                </button>
+                            </div>
+                            <div class="flex w-full justify-start">
+                                <button type="button" data-modal-hide="detailMovie-modal" onclick="closeDetailModal()"
+                                    class="w-1/2 text-white bg-gray-500 hover:bg-gray-900 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                                    Đóng
+                                </button>
+                            </div>
+                        </div>
                     </div>
                     <div id="loadInfo" hidden><span class="material-icons">
                             expand_more
                         </span></div>
-                    <div>
-                        <button class='font-bold' type="button" onclick="changeChapterDivState()">Danh sách tập
-                            phim</button>
-                    </div>
-                    <div id="chapterDiv">
-                        <div class="px-6 pb-6 lg:px-8">
-                            <h3 class="mb-4 text-xl font-medium text-gray-900 dark:text-white">Số lượng: <span
-                                    id="numChapterOfMovie">...</span> tập</h3>
-                            <button id="btnAddNewChapter" type="button" onclick="addNewChapter();"
-                                class="bg-blue-500 text-white p-3 rounded-md mb-4 font-bold flex items-center">
-                                <span class="material-icons">add</span>
-                                Thêm tập phim mới
-                            </button>
-                            <!--MoveOfGenre table-->
-                            <div class="bg-white p-4 my-5" id="chaptertb">
-                                <div class="font-bold text-xl mb-4"></div>
-                                <div class="datatable-container">
-                                    <table id="chaptertable" class="stripe hover"
-                                        style="width:100%; padding-top: 1em;  padding-bottom: 1em;">
-                                        <thead>
-                                            <tr>
-                                                <th data-priority="1">Mã tập phim</th>
-                                                <th data-priority="2">Tên tập phim</th>
-                                                <th data-priority="3">Đường dẫn</th>
-                                                <th data-priority="4">Thao tác</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody id="tbd-chaptertable">
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                            <!--end MoveOfGenre table-->
-                        </div>
-                    </div>
-                    <div id="loadChapter" hidden><span class="material-icons">
-                            expand_more
-                        </span></div>
-                    <div class="grid grid-cols-2 gap-4" id="btnDiv">
-                        <div class="flex w-full justify-end">
-                            <button type="submit"
-                                class="w-1/2 text-white bg-[#66ccff] hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                                Cập nhật
-                            </button>
-                        </div>
-                        <div class="flex w-full justify-start">
-                            <button type="button" data-modal-hide="detailMovie-modal" onclick="closeDetailModal()"
-                                class="w-1/2 text-white bg-gray-500 hover:bg-gray-900 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                                Đóng
-                            </button>
-                        </div>
-                    </div>
                 </form>
+                <div>
+                    <button class='font-bold' type="button" onclick="changeChapterDivState()">Danh sách tập
+                        phim</button>
+                </div>
+                <div id="chapterDiv">
+                    <div class="px-6 pb-6 lg:px-8">
+                        <h3 class="mb-4 text-xl font-medium text-gray-900 dark:text-white">Số lượng: <span
+                                id="numChapterOfMovie">...</span> tập</h3>
+                        <button id="btnAddNewChapter" type="button" onclick="addNewChapter();"
+                            class="bg-blue-500 text-white p-3 rounded-md mb-4 font-bold flex items-center">
+                            <span class="material-icons">add</span>
+                            Thêm tập phim mới
+                        </button>
+                        <!--MoveOfGenre table-->
+                        <div class="bg-white p-4 my-5" id="chaptertb">
+                            <div class="font-bold text-xl mb-4"></div>
+                            <div class="datatable-container">
+                                <table id="chaptertable" class="stripe hover"
+                                    style="width:100%; padding-top: 1em;  padding-bottom: 1em;">
+                                    <thead>
+                                        <tr>
+                                            <th data-priority="1">Mã tập phim</th>
+                                            <th data-priority="2">Tên tập phim</th>
+                                            <th data-priority="3">Đường dẫn</th>
+                                            <th data-priority="4">Thao tác</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="tbd-chaptertable">
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <!--end MoveOfGenre table-->
+                    </div>
+                </div>
+                <div id="loadChapter" hidden><span class="material-icons">
+                        expand_more
+                    </span></div>
             </div>
         </div>
     </div>
