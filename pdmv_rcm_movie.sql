@@ -131,7 +131,7 @@ CREATE TABLE pdmv_api (
 
 INSERT INTO pdmv_api (api_id, api_name)
 VALUES
-    (0, 'Image YRL'),
+    (0, 'Image URL'),
     (1, 'TheMovieDB (movie)'),
     (2, 'TheMovieDB (tv)');
 

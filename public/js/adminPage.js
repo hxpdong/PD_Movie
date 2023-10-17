@@ -833,9 +833,9 @@ function getMovieList() {
         infoButton.appendChild(infoIcon);
         infoButton.onclick = function () {
             document.getElementById("infoDiv").removeAttribute("hidden");
-            document.getElementById("chapterDiv").removeAttribute("hidden");
+            document.getElementById("loadChapter").removeAttribute("hidden");
             document.getElementById("loadInfo").setAttribute("hidden", "true");
-            document.getElementById("loadChapter").setAttribute("hidden", "true");
+            document.getElementById("chapterDiv").setAttribute("hidden", "true");
             getGenreForUptMovie(mv[0]);
             document.getElementById('input-group-search-genre').value = "";
             var mvidElement = document.getElementById("dtmvid");
