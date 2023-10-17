@@ -533,4 +533,19 @@ class MovieController extends Controller
             ]);
         }
     }
+
+    public function postReport(Request $request){
+        try {
+            $cmtid = $request->commentId;
+            $results = DB::select("CALL report_post(?);", array($cmtid));
+            return response()->json([
+                'success' => true
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'error' => $e->getMessage()
+            ]);
+        }
+    }
 }

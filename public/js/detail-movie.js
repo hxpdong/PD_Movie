@@ -76,7 +76,7 @@ function loadMovieDetail(movieId) {
             console.log("đã load");
             if (moviedt) {
                 updateMovieDetail(moviedt);
-            }else {
+            } else {
                 window.location.href = "/";
             };
             if (mvgenres) {
@@ -571,17 +571,41 @@ function getComments(mid, page) {
                     btnReportCmt.onclick = function () {
                         Swal.fire({
                             title: 'Bạn muốn báo cáo bình luận?',
-                            html: 'Vào lúc ' + cmt.commentTime + ", tài khoản " + cmt.usname + " đã đăng: </br>" + "<b>" +cmt.comment + "</b>",
+                            html: 'Vào lúc ' + cmt.commentTime + ", tài khoản " + cmt.usname + " đã đăng: </br>" + "<b>" + cmt.comment + "</b>",
                             showCancelButton: true,
                             confirmButtonText: 'Báo cáo',
                             cancelButtonText: 'Hủy bỏ'
                         }).then((result) => {
                             if (result.isConfirmed) {
-                                Swal.fire({
-                                    icon: 'success',
-                                    title: 'Báo cáo bình luận thành công!',
-                                    text: 'Cảm ơn bạn đã báo cáo'
-                                });
+                                var postReportUrl = '/api/comment/report?commentId=' + cmt.comment_id;
+                                fetch(postReportUrl, {
+                                    method: "POST"
+                                })
+                                    .then(function (response) {
+                                        return response.json();
+                                    })
+                                    .then(function (data) {
+                                        if (data.success === true) {
+                                            Swal.fire({
+                                                icon: 'success',
+                                                title: 'Báo cáo bình luận thành công!',
+                                                text: 'Cảm ơn bạn đã báo cáo, chúng tôi sẽ xem xét bình luận này'
+                                            });
+                                        } else {
+                                            Swal.fire({
+                                                icon: 'error',
+                                                title: 'Lỗi máy chủ!',
+                                                text: 'Vui lòng thực hiện lại sau'
+                                            });
+                                        }
+                                    })
+                                    .catch(function (error) {
+                                        Swal.fire({
+                                            icon: 'error',
+                                            title: 'Lỗi hệ thống!' + error,
+                                            text: 'Vui lòng thực hiện lại sau'
+                                        });
+                                    });
                             }
                         });
                     }
@@ -806,7 +830,7 @@ function loadPrevComment() {
 function getMovieInfoToWatch() {
     var movieId = getMovieIdFromURL();
     var chapterBtn = document.getElementById("list-chapter-btns");
-    while (chapterBtn.firstChild){
+    while (chapterBtn.firstChild) {
         chapterBtn.removeChild(chapterBtn.firstChild);
     }
     var chapterSrc = "";

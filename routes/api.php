@@ -58,6 +58,7 @@ Route::get('/users/get-commentlist/{uid}', [UserController::class, 'getListOfCom
 Route::get('/users/get-ratinglist/{uid}', [UserController::class, 'getListOfRating']);
 
 Route::post('/postreport' , [MovieController::class, 'postError']);
+Route::post('/comment/report' , [MovieController::class, 'postReport']);
 
 Route::get('/tags/{tagkw}', [MovieTagController::class, 'listMovieOf']);
 
