@@ -17,6 +17,8 @@ CREATE TABLE pdmv_accounts (
     usname VARCHAR(50) NOT NULL UNIQUE,
     password VARCHAR(100) NOT NULL,
     acctype_id INT NOT NULL,
+    createAt DATETIME NOT NULL DEFAULT NOW(),
+    updateAt DATETIME NOT NULL DEFAULT NOW(),
     FOREIGN KEY (acctype_id) REFERENCES pdmv_acctypes(acctype_id)
 );
 
@@ -129,7 +131,7 @@ CREATE TABLE pdmv_api (
 
 INSERT INTO pdmv_api (api_id, api_name)
 VALUES
-    (0, 'Google Drive'),
+    (0, 'Image YRL'),
     (1, 'TheMovieDB (movie)'),
     (2, 'TheMovieDB (tv)');
 
@@ -144,7 +146,8 @@ CREATE TABLE pdmv_movies (
 	videoLength NVARCHAR(100),
     typeOfPosterURL INT DEFAULT 0,
 	posterURL TEXT,
-	updateAt DATETIME NOT NULL DEFAULT NOW(),
+	createAt DATETIME NOT NULL DEFAULT NOW(),
+    updateAt DATETIME NOT NULL DEFAULT NOW(),
     FOREIGN KEY (typeOfPosterURL) REFERENCES pdmv_api(api_id)
 );
 
@@ -306,6 +309,8 @@ CREATE TABLE pdmv_mvchapters (
 	movie_id INT NOT NULL,
 	chapter_name NVARCHAR(255) NOT NULL,
 	chapterURL TEXT,
+    createAt DATETIME NOT NULL DEFAULT NOW(),
+    updateAt DATETIME NOT NULL DEFAULT NOW(),
 	FOREIGN KEY (movie_id) REFERENCES pdmv_movies(movie_id)
 );
 
@@ -465,6 +470,7 @@ CREATE TABLE pdmv_ratings (
     movie_id INT,
     rating DECIMAL(3,1) NOT NULL,
 	ratingTime DATETIME NOT NULL DEFAULT NOW(),
+    updateAt DATETIME NOT NULL DEFAULT NOW(),
     FOREIGN KEY (user_id) REFERENCES pdmv_users(user_id),
     FOREIGN KEY (movie_id) REFERENCES pdmv_movies(movie_id),
 	UNIQUE(user_id, movie_id)
@@ -609,6 +615,7 @@ CREATE TABLE pdmv_comments (
     movie_id INT,
     comment TEXT,
 	commentTime DATETIME NOT NULL DEFAULT NOW(),
+    updateAt DATETIME NOT NULL DEFAULT NOW(),
     FOREIGN KEY (user_id) REFERENCES pdmv_users(user_id),
     FOREIGN KEY (movie_id) REFERENCES pdmv_movies(movie_id)
 );
@@ -623,6 +630,8 @@ CREATE TABLE pdmv_errors (
     movie_id INT,
 	errContent TEXT,
     isSolved TINYINT DEFAULT 0,
+    createAt DATETIME NOT NULL DEFAULT NOW(),
+    updateAt DATETIME NOT NULL DEFAULT NOW(),
     FOREIGN KEY (movie_id) REFERENCES pdmv_movies(movie_id)
 );
 
@@ -7767,6 +7776,25 @@ BEGIN
         SET newId = (SELECT LAST_INSERT_ID());
 		SELECT * FROM pdmv_mvchapters WHERE chapter_id = newId;
     END IF;
+END; //
+DELIMITER ;
+
+CREATE TABLE pdmv_reports (
+	report_id INT PRIMARY KEY AUTO_INCREMENT,
+    comment_id INT,
+    isSolved TINYINT DEFAULT 0,
+    createAt DATETIME NOT NULL DEFAULT NOW(),
+    updateAt DATETIME NOT NULL DEFAULT NOW(),
+    FOREIGN KEY (comment_id) REFERENCES pdmv_comments(comment_id)
+    ON DELETE CASCADE
+);
+
+DELIMITER //
+CREATE PROCEDURE report_post(
+	IN p_cmtid INT
+	)
+BEGIN
+	INSERT INTO pdmv_reports (comment_id) VALUES (p_cmtid);
 END; //
 DELIMITER ;
 -- -----------------------------------------------------RECOMMENNDER---------------------------------------------------------------------------------------------------------------------------------------

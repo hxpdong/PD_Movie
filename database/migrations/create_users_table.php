@@ -29,8 +29,8 @@ return new class extends Migration
         });
 
         DB::table('users')
-        ->insertUsing(['id', 'name', 'password', 'acctype_id', 'isLocked'], function ($query) {
-            $query->select(['acc_id', 'usname', 'password', 'acctype_id', 'isLocked'])
+        ->insertUsing(['id', 'name', 'password', 'acctype_id', 'isLocked', 'created_At', 'updated_At'], function ($query) {
+            $query->select(['acc_id', 'usname', 'password', 'acctype_id', 'isLocked', 'createAt', 'updateAt'])
                 ->from('pdmv_accounts');
         });
 
