@@ -17,11 +17,13 @@ var moviegenreArray = [];
 var chaptertable = document.getElementById("tbd-chaptertable");
 var chapterArray = [];
 
+var movieErrorTable = document.getElementById("tbd-movieErrTable");
+var movieErrorArray = [];
 document.addEventListener("DOMContentLoaded", function () {
     function hoanThanhCongViec() {
         Swal.close();
     }
-
+    getAllMovieError();
     Swal.fire({
         title: 'Đang lấy dữ liệu...',
         allowOutsideClick: false,
@@ -2070,7 +2072,7 @@ function addCheckURL() {
     iframe.src = valueURL;
 }
 
-function addNewChapter(){
+function addNewChapter() {
     var mvid = document.getElementById("dtmvid").value;
     Swal.fire({
         title: "Thêm tập phim mới",
@@ -2166,4 +2168,168 @@ function addNewChapter(){
             }
         }
     });
+}
+
+function getAllMovieError() {
+    movieErrorArray.splice(0, movieErrorArray.length);
+    axios.get("/api/admin/report/movie/as/" + accId, {
+        headers: headers
+    })
+        .then(function (response) {
+            if (response.status === 200) {
+                if (response.data.success === true) {
+                    var errlist = response.data.errorList;
+                    errlist.forEach(function (err) {
+                        var errItem = [
+                            err.err_id,
+                            err.movie_id,
+                            err.errContent,
+                            err.isSolved,
+                            err.createAt,
+                            err.updateAt
+                        ];
+                        movieErrorArray.push(errItem);
+                    });
+                }
+                if ($.fn.DataTable.isDataTable('#movieErrTable')) {
+                    $('#movieErrTable').DataTable().destroy();
+                }
+                getMovieErrorList();
+                var errNum = response.data.unsolvedCount;
+                if (errNum > 0) {
+                    document.getElementById("sidebar-reportNotify").hidden = false;
+                    if (document.getElementById("rp-movieErrNoti"))
+                        document.getElementById("rp-movieErrNoti").hidden = false;
+                }
+                else {
+                    document.getElementById("sidebar-reportNotify").hidden = true;
+                    if (document.getElementById("rp-movieErrNoti"))
+                        document.getElementById("rp-movieErrNoti").hidden = true;
+                }
+            }
+        });
+}
+
+function getMovieErrorList() {
+    if (movieErrorTable) {
+        while (movieErrorTable.firstChild) {
+            movieErrorTable.removeChild(movieErrorTable.firstChild);
+        }
+        movieErrorArray.forEach(function (mverr) {
+            var newRow = movieErrorTable.insertRow();
+            var idCell = newRow.insertCell(0);
+            idCell.classList.add("text-center");
+            idCell.textContent = mverr[0];
+            var mvCell = newRow.insertCell(1);
+            mvCell.classList.add("text-center");
+            mvCell.textContent = mverr[1];
+            var contentCell = newRow.insertCell(2);
+            contentCell.classList.add("text-center");
+            contentCell.textContent = mverr[2];
+            var stateCell = newRow.insertCell(3);
+            stateCell.classList.add("text-center", "font-bold");
+            var createCell = newRow.insertCell(4);
+            createCell.classList.add("text-center");
+            createCell.textContent = mverr[4];
+            var updateCell = newRow.insertCell(5);
+            updateCell.classList.add("text-center");
+            updateCell.textContent = mverr[5];
+            var actionCell = newRow.insertCell(6);
+            actionCell.classList.add("text-center");
+            var checkbox = document.createElement("input");
+            checkbox.type = "checkbox";
+            checkbox.title = "Đã giải quyết";
+            checkbox.onclick = function () {
+                Swal.fire({
+                    icon: 'question',
+                    title: "Xác nhận đã giải quyết lỗi - mã " + mverr[0],
+                    html: 'Đã giải quyết lỗi này? Sau khi xác nhận sẽ không thể khôi phục lại',
+                    confirmButtonText: 'Xác nhận',
+                    confirmButtonColor: 'green',
+                    showDenyButton: true,
+                    denyButtonText: 'Suy nghĩ lại',
+                    denyButtonColor: 'grey'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        var apiUrl = `/api/admin/report/movie/${mverr[0]}/as/${accId}`;
+
+                        fetch(apiUrl, {
+                            method: "PUT",
+                            headers: headers
+                        })
+                            .then(function (response) {
+                                return response.json();
+                            })
+                            .then(function (data) {
+                                if (data.success === true) {
+                                    var uptItem = data.updatedItem;
+                                    uptItem = uptItem[0];
+                                    var errItem = [
+                                        uptItem.err_id,
+                                        uptItem.movie_id,
+                                        uptItem.errContent,
+                                        uptItem.isSolved,
+                                        uptItem.createAt,
+                                        uptItem.updateAt
+                                    ];
+                                    for (var i = 0; i < movieErrorArray.length; i++) {
+                                        if (movieErrorArray[i][0] === errItem[0]) {
+                                            movieErrorArray[i][3] = errItem[3];
+                                            movieErrorArray[i][5] = errItem[5];
+                                            break; // Sau khi xóa, bạn có thể thoát khỏi vòng lặp
+                                        }
+                                    }
+                                    if ($.fn.DataTable.isDataTable('#movieErrTable')) {
+                                        $('#movieErrTable').DataTable().destroy();
+                                    }
+                                    getMovieErrorList();
+
+                                    document.getElementById("sidebar-reportNotify").hidden = true;
+                                    if (document.getElementById("rp-movieErrNoti"))
+                                        document.getElementById("rp-movieErrNoti").hidden = true;
+                                    for (var i = 0; i < movieErrorArray.length; i++) {
+                                        if (movieErrorArray[i][3] === 0) {
+                                            document.getElementById("sidebar-reportNotify").hidden = false;
+                                            if (document.getElementById("rp-movieErrNoti"))
+                                                document.getElementById("rp-movieErrNoti").hidden = false;
+                                            break;
+                                        }
+                                    };
+                                }
+                            })
+                            .catch(function (error) {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'An error occurred: ' + error,
+                                    html: 'Please try again later',
+                                });
+                            });
+                    }
+                    if (result.isDenied) {
+                        checkbox.checked = false;
+                    }
+                });
+            }
+            if (mverr[3] == 1) {
+                checkbox.checked = true;
+                checkbox.disabled = true;
+                stateCell.textContent = 'Đã giải quyết';
+                stateCell.classList.add("text-green-500");
+            } else {
+                stateCell.textContent = 'Chưa giải quyết';
+                stateCell.classList.add("text-red-500");
+            }
+            actionCell.appendChild(checkbox);
+        });
+
+        $('#movieErrTable').DataTable({
+            responsive: false,
+            language: {
+                "url": "//cdn.datatables.net/plug-ins/1.10.19/i18n/Vietnamese.json"
+            },
+            "order": [[3, 'asc']],
+            lengthMenu: [5, 10, 15, 20],
+        })
+            .columns.adjust();
+    }
 }

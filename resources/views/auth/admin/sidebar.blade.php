@@ -35,7 +35,7 @@
                 href="/admin/reports" id="btn-reports">
                 <i class="fa-solid fa-video fa-xl"></i>
                 <span class="mx-3">Báo cáo</span>
-                <span class="bg-red-500 p-1 rounded-full" id="sidebar-reportNotify"></span>
+                <span class="bg-red-500 p-1 rounded-full" id="sidebar-reportNotify" hidden></span>
             </a>
         </nav>
     </div>

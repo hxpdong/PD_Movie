@@ -7797,6 +7797,36 @@ BEGIN
 	INSERT INTO pdmv_reports (comment_id) VALUES (p_cmtid);
 END; //
 DELIMITER ;
+
+DELIMITER //
+CREATE PROCEDURE error_getAll()
+BEGIN
+	SELECT * FROM pdmv_errors;
+END; //
+DELIMITER ;
+
+DELIMITER //
+CREATE TRIGGER before_update_error
+BEFORE UPDATE ON pdmv_errors
+FOR EACH ROW
+BEGIN
+    SET NEW.updateAt = NOW();
+END; //
+DELIMITER ;
+
+DELIMITER //
+CREATE PROCEDURE error_solve(
+	IN p_err_id INT
+    )
+BEGIN
+	IF EXISTS (SELECT err_id FROM pdmv_errors WHERE err_id = p_err_id) THEN
+		UPDATE pdmv_errors
+        SET isSolved = 1
+        WHERE err_id = p_err_id;
+		SELECT * FROM pdmv_errors WHERE err_id = p_err_id;
+    END IF;
+END; //
+DELIMITER ;
 -- -----------------------------------------------------RECOMMENNDER---------------------------------------------------------------------------------------------------------------------------------------
 -- -----------------------------------------------------RECOMMENNDER---------------------------------------------------------------------------------------------------------------------------------------
 -- -----------------------------------------------------RECOMMENNDER---------------------------------------------------------------------------------------------------------------------------------------

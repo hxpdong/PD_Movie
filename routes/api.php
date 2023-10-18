@@ -11,6 +11,9 @@ use App\Http\Controllers\API\MovieTagController;
 use App\Http\Controllers\API\AccountController;
 use App\Http\Controllers\API\SystemController;
 use App\Http\Controllers\API\MovieChapterController;
+use App\Http\Controllers\API\ReportController;
+use Dotenv\Repository\Adapter\ReplacingWriter;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -80,6 +83,8 @@ Route::middleware(['pdmv_API_checkToken', 'pdmv_API_checkAdminRole'])->group(fun
     Route::put('/admin/chapters/{ctid}/as/{accid}', [MovieChapterController::class, 'update']);
     Route::delete('/admin/chapters/{ctid}/as/{accid}', [MovieChapterController::class, 'drop']);
     Route::post('/admin/chapters/as/{accid}', [MovieChapterController::class, 'insert']);
+    Route::get('/admin/report/movie/as/{accid}', [ReportController::class, 'errorGetAll']);
+    Route::put('/admin/report/movie/{errid}/as/{accid}', [ReportController::class, 'errorSolve']);
 });
 
 Route::middleware(['pdmv_API_checkToken', 'pdmv_API_checkSPAdminRole'])->group(function () {
