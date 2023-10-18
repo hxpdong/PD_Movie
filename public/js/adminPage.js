@@ -2256,9 +2256,9 @@ function getMovieErrorList() {
                     html: 'Đã giải quyết lỗi này? Sau khi xác nhận sẽ không thể khôi phục lại',
                     confirmButtonText: 'Xác nhận',
                     confirmButtonColor: 'green',
-                    showDenyButton: true,
-                    denyButtonText: 'Suy nghĩ lại',
-                    denyButtonColor: 'grey'
+                    showCancelButton: true,
+                    cancelButtonText: 'Suy nghĩ lại',
+                    cancelButtonColor: 'grey'
                 }).then((result) => {
                     if (result.isConfirmed) {
                         var apiUrl = `/api/admin/report/movie/${mverr[0]}/as/${accId}`;
@@ -2317,7 +2317,7 @@ function getMovieErrorList() {
                                 });
                             });
                     }
-                    if (result.isDenied) {
+                    else if (result.dismiss === Swal.DismissReason.cancel) {
                         checkbox.checked = false;
                     }
                 });
@@ -2422,9 +2422,9 @@ function getCommentReportList() {
                     html: 'Đã giải quyết báo cáo này? Sau khi xác nhận sẽ không thể khôi phục lại',
                     confirmButtonText: 'Xác nhận',
                     confirmButtonColor: 'green',
-                    showDenyButton: true,
-                    denyButtonText: 'Suy nghĩ lại',
-                    denyButtonColor: 'grey'
+                    showCancelButton: true,
+                    cancelButtonText: 'Suy nghĩ lại',
+                    cancelButtonColor: 'grey'
                 }).then((result) => {
                     if (result.isConfirmed) {
                         var apiUrl = `/api/admin/report/comment/${cmtrp[0]}/as/${accId}`;
@@ -2484,7 +2484,7 @@ function getCommentReportList() {
                                 });
                             });
                     }
-                    if (result.isDenied) {
+                    else if (result.dismiss === Swal.DismissReason.cancel) {
                         checkbox.checked = false;
                     }
                 });
