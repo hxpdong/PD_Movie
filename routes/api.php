@@ -85,6 +85,8 @@ Route::middleware(['pdmv_API_checkToken', 'pdmv_API_checkAdminRole'])->group(fun
     Route::post('/admin/chapters/as/{accid}', [MovieChapterController::class, 'insert']);
     Route::get('/admin/report/movie/as/{accid}', [ReportController::class, 'errorGetAll']);
     Route::put('/admin/report/movie/{errid}/as/{accid}', [ReportController::class, 'errorSolve']);
+    Route::get('/admin/report/comment/as/{accid}', [ReportController::class, 'reportGetAll']);
+    Route::put('/admin/report/comment/{rpid}/as/{accid}', [ReportController::class, 'reportSolve']);
 });
 
 Route::middleware(['pdmv_API_checkToken', 'pdmv_API_checkSPAdminRole'])->group(function () {

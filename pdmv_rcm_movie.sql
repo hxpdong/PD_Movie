@@ -7827,6 +7827,39 @@ BEGIN
     END IF;
 END; //
 DELIMITER ;
+
+DELIMITER //
+CREATE PROCEDURE report_getAll()
+BEGIN
+	SELECT rp.*, cmt.comment FROM pdmv_reports rp
+    JOIN pdmv_comments cmt ON rp.comment_id = cmt.comment_id;
+END; //
+DELIMITER ;
+
+DELIMITER //
+CREATE TRIGGER before_update_report
+BEFORE UPDATE ON pdmv_reports
+FOR EACH ROW
+BEGIN
+    SET NEW.updateAt = NOW();
+END; //
+DELIMITER ;
+
+DELIMITER //
+CREATE PROCEDURE report_solve(
+	IN p_rp_id INT
+    )
+BEGIN
+	IF EXISTS (SELECT report_id FROM pdmv_reports WHERE report_id = p_rp_id) THEN
+		UPDATE pdmv_reports
+        SET isSolved = 1
+        WHERE report_id = p_rp_id;
+		SELECT rp.*, cmt.comment FROM pdmv_reports rp
+		JOIN pdmv_comments cmt ON rp.comment_id = cmt.comment_id
+		WHERE rp.report_id = p_rp_id;
+    END IF;
+END; //
+DELIMITER ;
 -- -----------------------------------------------------RECOMMENNDER---------------------------------------------------------------------------------------------------------------------------------------
 -- -----------------------------------------------------RECOMMENNDER---------------------------------------------------------------------------------------------------------------------------------------
 -- -----------------------------------------------------RECOMMENNDER---------------------------------------------------------------------------------------------------------------------------------------

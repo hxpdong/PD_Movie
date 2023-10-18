@@ -15,7 +15,7 @@
     }
 
     #movieErrTable th:first-child,
-    #admintable th:first-child {
+    #ReportCommentTable th:first-child {
         position: sticky;
         left: 0;
         z-index: 0;
@@ -25,7 +25,7 @@
     }
 
     #movieErrTable td:first-child,
-    #admintable td:first-child {
+    #ReportCommentTable td:first-child {
         position: sticky;
         left: 0;
         background-color: #C0C0C0;
@@ -35,7 +35,7 @@
     }
 
     #movieErrTable th:last-child,
-    #admintable th:last-child {
+    #ReportCommentTable th:last-child {
         position: sticky;
         right: 0;
         z-index: 0;
@@ -45,7 +45,7 @@
     }
 
     #movieErrTable td:last-child,
-    #admintable td:last-child {
+    #ReportCommentTable td:last-child {
         position: sticky;
         right: 0;
         background-color: #C0C0C0;
@@ -102,7 +102,7 @@
                 </div>
                 <div id="reporttable" class="flex flex-col mx-5">
                     <!--movieerr table-->
-                    <div class="bg-white p-4 my-5" id="mverrtb">
+                    <div class="bg-white p-4 my-5" id="mverrtb" hidden>
                         <div class="font-bold text-xl mb-4">Lỗi phim</div>
                         <div class="datatable-container">
                             <table id="movieErrTable" class="stripe hover"
@@ -124,6 +124,29 @@
                         </div>
                     </div>
                     <!--end movieerr table-->
+                    <!--reportcmt table-->
+                    <div class="bg-white p-4 my-5" id="rpcmttb" hidden>
+                        <div class="font-bold text-xl mb-4">Bình luận vi phạm</div>
+                        <div class="datatable-container">
+                            <table id="ReportCommentTable" class="stripe hover"
+                                style="width:100%; padding-top: 1em;  padding-bottom: 1em;">
+                                <thead>
+                                    <tr>
+                                        <th data-priority="1">Mã vi phạm</th>
+                                        <th data-priority="2">Mã bình luận</th>
+                                        <th data-priority="3">Nội dung bình luận</th>
+                                        <th data-priority="4">Trạng thái</th>
+                                        <th data-priority="5">Thời gian tạo</th>
+                                        <th data-priority="6">Thời gian cập nhật</th>
+                                        <th data-priority="7">Thao tác</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tbd-ReportCommentTable">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <!--end reportcmt table-->
                 </div>
             </div>
         </div>

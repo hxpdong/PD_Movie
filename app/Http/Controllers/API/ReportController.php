@@ -65,4 +65,60 @@ class ReportController extends Controller
             ]);
         } 
     }
+
+    public function reportGetAll(){
+        try{
+            $results = DB::select("CALL report_getAll();");
+            if ($results) {
+                $reportList = $results;
+                $totals = count($reportList);
+
+                $unsolvedCount = 0;
+                foreach ($reportList as $report) {
+                    $report->createAt = Carbon::parse($report->createAt)->format('H:i:s d/m/Y');
+                    $report->updateAt = Carbon::parse($report->updateAt)->format('H:i:s d/m/Y');
+                    if ($report->isSolved === 0) {
+                        $unsolvedCount++;
+                    }
+                }
+    
+                return response()->json([
+                    'success' => true,
+                    'reportList' => $results,
+                    'unsolvedCount' => $unsolvedCount,
+                ]);
+            } else {
+                return response()->json([
+                    'success' => false,
+                    'unsolvedCount' => 0
+                ]);
+            }
+        } catch (\Exception $e) {
+            return response()->json([
+                "success" => false,
+                "error:" => $e->getMessage(),
+            ]);
+        } 
+    }
+
+    public function reportSolve($rpid){
+        try {
+            $results = DB::select("CALL report_solve(?);", array($rpid));
+            if($results){
+                return response()->json([
+                    'success' => true,
+                    'updatedItem' => $results
+                ]);
+            } else {
+                return response()->json([
+                    'success' => false,
+                ]);
+            }
+        } catch (\Exception $e) {
+            return response()->json([
+                "success" => false,
+                "error:" => $e->getMessage(),
+            ]);
+        } 
+    }
 }

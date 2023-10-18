@@ -19,11 +19,21 @@ var chapterArray = [];
 
 var movieErrorTable = document.getElementById("tbd-movieErrTable");
 var movieErrorArray = [];
+
+var commentReportTable = document.getElementById("tbd-ReportCommentTable");
+var commentReportArray = [];
+var cntNumClickError = 0;
+var cntNumClickReport = 0;
+var totalOfReport = 0;
+var reportOfErr = 0;
+var reportOfComment = 0;
 document.addEventListener("DOMContentLoaded", function () {
     function hoanThanhCongViec() {
         Swal.close();
     }
     getAllMovieError();
+    getAllReport();
+
     Swal.fire({
         title: 'Đang lấy dữ liệu...',
         allowOutsideClick: false,
@@ -2195,14 +2205,14 @@ function getAllMovieError() {
                     $('#movieErrTable').DataTable().destroy();
                 }
                 getMovieErrorList();
-                var errNum = response.data.unsolvedCount;
-                if (errNum > 0) {
-                    document.getElementById("sidebar-reportNotify").hidden = false;
+                reportOfErr = response.data.unsolvedCount;
+                totalOfReport = totalOfReport + reportOfErr;
+                checkErrorTotalInSidebar(totalOfReport);
+                if (reportOfErr > 0) {
                     if (document.getElementById("rp-movieErrNoti"))
                         document.getElementById("rp-movieErrNoti").hidden = false;
                 }
                 else {
-                    document.getElementById("sidebar-reportNotify").hidden = true;
                     if (document.getElementById("rp-movieErrNoti"))
                         document.getElementById("rp-movieErrNoti").hidden = true;
                 }
@@ -2284,17 +2294,19 @@ function getMovieErrorList() {
                                     }
                                     getMovieErrorList();
 
-                                    document.getElementById("sidebar-reportNotify").hidden = true;
                                     if (document.getElementById("rp-movieErrNoti"))
                                         document.getElementById("rp-movieErrNoti").hidden = true;
+                                    reportOfErr = 0;
                                     for (var i = 0; i < movieErrorArray.length; i++) {
                                         if (movieErrorArray[i][3] === 0) {
-                                            document.getElementById("sidebar-reportNotify").hidden = false;
+                                            reportOfErr++;
                                             if (document.getElementById("rp-movieErrNoti"))
                                                 document.getElementById("rp-movieErrNoti").hidden = false;
                                             break;
                                         }
                                     };
+                                    totalOfReport = reportOfErr + reportOfComment;
+                                    checkErrorTotalInSidebar(totalOfReport);
                                 }
                             })
                             .catch(function (error) {
@@ -2331,5 +2343,213 @@ function getMovieErrorList() {
             lengthMenu: [5, 10, 15, 20],
         })
             .columns.adjust();
+    }
+}
+
+function getAllReport() {
+    commentReportArray.splice(0, commentReportArray.length);
+    axios.get("/api/admin/report/comment/as/" + accId, {
+        headers: headers
+    })
+        .then(function (response) {
+            if (response.status === 200) {
+                if (response.data.success === true) {
+                    var rplist = response.data.reportList;
+                    rplist.forEach(function (rp) {
+                        var rpItem = [
+                            rp.report_id,
+                            rp.comment_id,
+                            rp.comment,
+                            rp.isSolved,
+                            rp.createAt,
+                            rp.updateAt
+                        ];
+                        commentReportArray.push(rpItem);
+                    });
+                }
+                if ($.fn.DataTable.isDataTable('#ReportCommentTable')) {
+                    $('#ReportCommentTable').DataTable().destroy();
+                }
+                getCommentReportList();
+                reportOfComment = response.data.unsolvedCount;
+                totalOfReport = totalOfReport + reportOfComment;
+                checkErrorTotalInSidebar(totalOfReport);
+                if (reportOfComment > 0) {
+                    if (document.getElementById("rp-commentNoti"))
+                        document.getElementById("rp-commentNoti").hidden = false;
+                }
+                else {
+                    if (document.getElementById("rp-commentNoti"))
+                        document.getElementById("rp-commentNoti").hidden = true;
+                }
+            }
+        });
+}
+
+function getCommentReportList() {
+    if (commentReportTable) {
+        while (commentReportTable.firstChild) {
+            commentReportTable.removeChild(commentReportTable.firstChild);
+        }
+        commentReportArray.forEach(function (cmtrp) {
+            var newRow = commentReportTable.insertRow();
+            var idCell = newRow.insertCell(0);
+            idCell.classList.add("text-center");
+            idCell.textContent = cmtrp[0];
+            var cmtidCell = newRow.insertCell(1);
+            cmtidCell.classList.add("text-center");
+            cmtidCell.textContent = cmtrp[1];
+            var cmtCell = newRow.insertCell(2);
+            cmtCell.classList.add("text-center");
+            cmtCell.textContent = cmtrp[2];
+            var stateCell = newRow.insertCell(3);
+            stateCell.classList.add("text-center", "font-bold");
+            var createCell = newRow.insertCell(4);
+            createCell.classList.add("text-center");
+            createCell.textContent = cmtrp[4];
+            var updateCell = newRow.insertCell(5);
+            updateCell.classList.add("text-center");
+            updateCell.textContent = cmtrp[5];
+            var actionCell = newRow.insertCell(6);
+            actionCell.classList.add("text-center");
+            var checkbox = document.createElement("input");
+            checkbox.type = "checkbox";
+            checkbox.title = "Đã giải quyết";
+            checkbox.onclick = function () {
+                Swal.fire({
+                    icon: 'question',
+                    title: "Xác nhận đã giải quyết báo cáo - mã " + cmtrp[0],
+                    html: 'Đã giải quyết báo cáo này? Sau khi xác nhận sẽ không thể khôi phục lại',
+                    confirmButtonText: 'Xác nhận',
+                    confirmButtonColor: 'green',
+                    showDenyButton: true,
+                    denyButtonText: 'Suy nghĩ lại',
+                    denyButtonColor: 'grey'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        var apiUrl = `/api/admin/report/comment/${cmtrp[0]}/as/${accId}`;
+
+                        fetch(apiUrl, {
+                            method: "PUT",
+                            headers: headers
+                        })
+                            .then(function (response) {
+                                return response.json();
+                            })
+                            .then(function (data) {
+                                if (data.success === true) {
+                                    var uptItem = data.updatedItem;
+                                    uptItem = uptItem[0];
+                                    var errItem = [
+                                        uptItem.report_id,
+                                        uptItem.comment_id,
+                                        uptItem.comment,
+                                        uptItem.isSolved,
+                                        uptItem.createAt,
+                                        uptItem.updateAt
+                                    ];
+                                    for (var i = 0; i < commentReportArray.length; i++) {
+                                        if (commentReportArray[i][0] === errItem[0]) {
+                                            commentReportArray[i][3] = errItem[3];
+                                            commentReportArray[i][5] = errItem[5];
+                                            break; // Sau khi xóa, bạn có thể thoát khỏi vòng lặp
+                                        }
+                                    }
+                                    if ($.fn.DataTable.isDataTable('#ReportCommentTable')) {
+                                        $('#ReportCommentTable').DataTable().destroy();
+                                    }
+                                    getCommentReportList();
+
+                                    
+                                    if (document.getElementById("rp-commentNoti"))
+                                        document.getElementById("rp-commentNoti").hidden = true;
+                                    reportOfComment = 0;
+                                    for (var i = 0; i < commentReportArray.length; i++) {
+                                        if (commentReportArray[i][3] === 0) {
+                                            reportOfComment++;
+                                            if (document.getElementById("rp-commentNoti"))
+                                                document.getElementById("rp-commentNoti").hidden = false;
+                                            break;
+                                        }
+                                    };
+                                    totalOfReport = reportOfErr + reportOfComment;
+                                    checkErrorTotalInSidebar(totalOfReport);
+                                }
+                            })
+                            .catch(function (error) {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'An error occurred: ' + error,
+                                    html: 'Please try again later',
+                                });
+                            });
+                    }
+                    if (result.isDenied) {
+                        checkbox.checked = false;
+                    }
+                });
+            }
+            if (cmtrp[3] == 1) {
+                checkbox.checked = true;
+                checkbox.disabled = true;
+                stateCell.textContent = 'Đã giải quyết';
+                stateCell.classList.add("text-green-500");
+            } else {
+                stateCell.textContent = 'Chưa giải quyết';
+                stateCell.classList.add("text-red-500");
+            }
+            actionCell.appendChild(checkbox);
+        });
+
+        $('#ReportCommentTable').DataTable({
+            responsive: false,
+            language: {
+                "url": "//cdn.datatables.net/plug-ins/1.10.19/i18n/Vietnamese.json"
+            },
+            "order": [[3, 'asc']],
+            lengthMenu: [5, 10, 15, 20],
+        })
+            .columns.adjust();
+    }
+}
+
+function showReportTable(num){
+    switch (num) {
+        case 1:
+            if (cntNumClickError == 0) {
+                getAllMovieError();
+            }
+            if (document.getElementById("rpcmttb")) {
+                document.getElementById("rpcmttb").hidden = true;
+            }
+            if (document.getElementById("mverrtb")) {
+                document.getElementById("mverrtb").hidden = !document.getElementById("mverrtb").hidden;
+            }
+            cntNumClickError++;
+            break;
+
+        case 2:
+            if (cntNumClickReport == 0) {
+                getAllReport();
+            }
+            if (document.getElementById("mverrtb")) {
+                document.getElementById("mverrtb").hidden = true;
+            }
+            if (document.getElementById("rpcmttb")) {
+                document.getElementById("rpcmttb").hidden = !document.getElementById("rpcmttb").hidden;
+            }
+            cntNumClickReport++;
+            break;
+
+        default:
+            break;
+    }
+}
+
+function checkErrorTotalInSidebar(cnt){
+    if (cnt > 0){
+        document.getElementById("sidebar-reportNotify").hidden = false;
+    } else {
+        document.getElementById("sidebar-reportNotify").hidden = true;
     }
 }
