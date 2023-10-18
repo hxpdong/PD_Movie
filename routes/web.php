@@ -32,8 +32,8 @@ Route::middleware('pdmv_checkIsAdmin')->group(function () {
     Route::get('/admin/movies', function () {
         return view('auth.admin.movie');
     });
-    Route::get('/admin/chapters', function () {
-        return view('auth.admin.chapter');
+    Route::get('/admin/reports', function () {
+        return view('auth.admin.report');
     });
 });
 Route::middleware('pdmv_checkIsUserOrGuest')->group(function (){

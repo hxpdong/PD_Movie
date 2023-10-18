@@ -1,17 +1,12 @@
 const isPageDashboard = document.getElementById("isAd-DashboardPage");
-const isPageChapter = document.getElementById("isAd-ChapterPage");
 const isPageGenre = document.getElementById("isAd-GenrePage");
 const isPageMovie = document.getElementById("isAd-MoviePage");
+const isPageReport = document.getElementById("isAd-ReportPage");
 
 document.addEventListener("DOMContentLoaded", function() {
     if (isPageDashboard) {
         changeClickedTag("btn-dashboard");
         document.title = "Admin | Dashboard";
-    }
-
-    if (isPageChapter) {
-        changeClickedTag("btn-chapters");
-        document.title = "Admin | Chapters";
     }
 
     if (isPageGenre) {
@@ -22,6 +17,11 @@ document.addEventListener("DOMContentLoaded", function() {
     if (isPageMovie) {
         changeClickedTag("btn-movies");
         document.title = "Admin | Movies";
+    }
+
+    if (isPageReport) {
+        changeClickedTag("btn-reports");
+        document.title = "Admin | Reports";
     }
 });
 

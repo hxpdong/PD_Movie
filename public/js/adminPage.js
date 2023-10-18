@@ -47,17 +47,6 @@ document.addEventListener("DOMContentLoaded", function () {
         console.log("dashboardpage");
     }
 
-    else if (isPageChapter) {
-        function simulateCongViecTieuHaoThoiGian(callback) {
-            setTimeout(() => {
-
-                callback();
-            }, timeout);
-        }
-        simulateCongViecTieuHaoThoiGian(hoanThanhCongViec);
-        console.log("chapterpage");
-    }
-
     else if (isPageGenre) {
         const overlay = document.querySelector('#overlay');
         overlay.style.display = 'none';
@@ -89,6 +78,18 @@ document.addEventListener("DOMContentLoaded", function () {
         updateMovie();
         inputSearchGenreOfMovie();
     }
+
+    else if (isPageReport) {
+        function simulateCongViecTieuHaoThoiGian(callback) {
+            setTimeout(() => {
+
+                callback();
+            }, timeout);
+        }
+        simulateCongViecTieuHaoThoiGian(hoanThanhCongViec);
+        console.log("reportpage");
+    }
+
 });
 
 function addDataToUserArray() {
