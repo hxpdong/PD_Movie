@@ -33,7 +33,7 @@
             </a>
             <a class="flex items-center px-6 py-2 mt-4 text-gray-500 hover:bg-gray-700 hover:bg-opacity-25 hover:text-gray-100"
                 href="/admin/reports" id="btn-reports">
-                <i class="fa-solid fa-video fa-xl"></i>
+                <i class="fa-solid fa-flag fa-xl"></i>
                 <span class="mx-3">Báo cáo</span>
                 <span class="bg-red-500 p-1 rounded-full" id="sidebar-reportNotify" hidden></span>
             </a>

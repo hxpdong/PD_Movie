@@ -2517,7 +2517,7 @@ function showReportTable(num){
     switch (num) {
         case 1:
             if (cntNumClickError == 0) {
-                getAllMovieError();
+                //getAllMovieError();
             }
             if (document.getElementById("rpcmttb")) {
                 document.getElementById("rpcmttb").hidden = true;
@@ -2530,7 +2530,7 @@ function showReportTable(num){
 
         case 2:
             if (cntNumClickReport == 0) {
-                getAllReport();
+                //getAllReport();
             }
             if (document.getElementById("mverrtb")) {
                 document.getElementById("mverrtb").hidden = true;
