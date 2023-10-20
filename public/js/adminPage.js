@@ -2249,6 +2249,10 @@ function getMovieErrorList() {
             var checkbox = document.createElement("input");
             checkbox.type = "checkbox";
             checkbox.title = "Đã giải quyết";
+            var checkButton = document.createElement("button");
+            checkButton.classList.add("border-2", "p-2", "rounded-lg", "bg-white", "m-1");
+            checkButton.title = "Đã giải quyết";
+            checkButton.appendChild(checkbox);
             checkbox.onclick = function () {
                 Swal.fire({
                     icon: 'question',
@@ -2331,7 +2335,7 @@ function getMovieErrorList() {
                 stateCell.textContent = 'Chưa giải quyết';
                 stateCell.classList.add("text-red-500");
             }
-            actionCell.appendChild(checkbox);
+            actionCell.appendChild(checkButton);
         });
 
         $('#movieErrTable').DataTable({
@@ -2411,7 +2415,7 @@ function getCommentReportList() {
             updateCell.classList.add("text-center");
             updateCell.textContent = cmtrp[5];
             var actionCell = newRow.insertCell(6);
-            actionCell.classList.add("text-center");
+            actionCell.classList.add("text-center", "flex", "justify-center");
             var checkbox = document.createElement("input");
             checkbox.type = "checkbox";
             checkbox.title = "Đã giải quyết";
@@ -2460,7 +2464,7 @@ function getCommentReportList() {
                                     }
                                     getCommentReportList();
 
-                                    
+
                                     if (document.getElementById("rp-commentNoti"))
                                         document.getElementById("rp-commentNoti").hidden = true;
                                     reportOfComment = 0;
@@ -2474,6 +2478,16 @@ function getCommentReportList() {
                                     };
                                     totalOfReport = reportOfErr + reportOfComment;
                                     checkErrorTotalInSidebar(totalOfReport);
+                                } else {
+                                    Swal.fire({
+                                        icon: 'error',
+                                        title: 'Không thể xóa',
+                                        html: 'Do bình luận này không tồn tại hoặc đã bị xóa',
+                                    });
+                                    checkbox.checked = true;
+                                    checkbox.disabled = true;
+                                    removeButton.disabled = true;
+                                    removeIcon.style.color = "#DDDDDD";
                                 }
                             })
                             .catch(function (error) {
@@ -2489,16 +2503,87 @@ function getCommentReportList() {
                     }
                 });
             }
+            
+            var checkButton = document.createElement("button");
+            checkButton.classList.add("border-2", "p-2", "rounded-lg", "bg-white", "m-1");
+            checkButton.title = "Đã xem xét";
+            checkButton.appendChild(checkbox);
+           
+            var removeButton = document.createElement("button");
+            removeButton.classList.add("border-2", "p-2", "rounded-lg", "bg-white", "m-1");
+            removeButton.title = "Xóa bình luận";
+            var removeIcon = document.createElement("span");
+            removeIcon.className = "material-icons";
+            removeIcon.textContent = "delete";
+            removeIcon.style.color = "#EF4444";
+            removeButton.appendChild(removeIcon);
+            removeButton.onclick = function () {
+                Swal.fire({
+                    icon: 'question',
+                    title: "Xác nhận xóa bình luận " + cmtrp[1],
+                    html: 'Xóa bình luận vì bình luận này vi phạm?',
+                    confirmButtonText: 'Xác nhận',
+                    confirmButtonColor: 'green',
+                    showCancelButton: true,
+                    cancelButtonText: 'Suy nghĩ lại',
+                    cancelButtonColor: 'grey'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        var apiUrl = `/api/admin/comment/${cmtrp[1]}/as/${accId}`;
+
+                        fetch(apiUrl, {
+                            method: "DELETE",
+                            headers: headers
+                        })
+                            .then(function (response) {
+                                return response.json();
+                            })
+                            .then(function (data) {
+                                if (data.success === true) {
+                                    Swal.fire({
+                                        icon: 'success',
+                                        title: 'Xóa thành công',
+                                    });
+                                    removeButton.disabled = true;
+                                    removeIcon.style.color = "#DDDDDD";
+                                } else {
+                                    Swal.fire({
+                                        icon: 'error',
+                                        title: 'Không thể xóa',
+                                        html: 'Do bình luận này không tồn tại hoặc đã bị xóa',
+                                    });
+                                    checkbox.checked = true;
+                                    checkbox.disabled = true;
+                                    removeButton.disabled = true;
+                                    removeIcon.style.color = "#DDDDDD";
+                                }
+                            })
+                            .catch(function (error) {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'An error occurred: ' + error,
+                                    html: 'Please try again later',
+                                });
+                            });
+                    }
+                });
+            }
+            
             if (cmtrp[3] == 1) {
                 checkbox.checked = true;
                 checkbox.disabled = true;
+                checkButton.disabled = true;
+                removeButton.disabled = true;
+                removeIcon.style.color = "#DDDDDD";
                 stateCell.textContent = 'Đã giải quyết';
                 stateCell.classList.add("text-green-500");
             } else {
                 stateCell.textContent = 'Chưa giải quyết';
                 stateCell.classList.add("text-red-500");
             }
-            actionCell.appendChild(checkbox);
+
+            actionCell.appendChild(removeButton);
+            actionCell.appendChild(checkButton);
         });
 
         $('#ReportCommentTable').DataTable({
@@ -2513,7 +2598,7 @@ function getCommentReportList() {
     }
 }
 
-function showReportTable(num){
+function showReportTable(num) {
     switch (num) {
         case 1:
             if (cntNumClickError == 0) {
@@ -2546,8 +2631,8 @@ function showReportTable(num){
     }
 }
 
-function checkErrorTotalInSidebar(cnt){
-    if (cnt > 0){
+function checkErrorTotalInSidebar(cnt) {
+    if (cnt > 0) {
         document.getElementById("sidebar-reportNotify").hidden = false;
     } else {
         document.getElementById("sidebar-reportNotify").hidden = true;

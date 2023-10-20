@@ -87,6 +87,7 @@ Route::middleware(['pdmv_API_checkToken', 'pdmv_API_checkAdminRole'])->group(fun
     Route::put('/admin/report/movie/{errid}/as/{accid}', [ReportController::class, 'errorSolve']);
     Route::get('/admin/report/comment/as/{accid}', [ReportController::class, 'reportGetAll']);
     Route::put('/admin/report/comment/{rpid}/as/{accid}', [ReportController::class, 'reportSolve']);
+    Route::delete('/admin/comment/{cmtid}/as/{accid}', [ReportController::class, 'commentDrop']);
 });
 
 Route::middleware(['pdmv_API_checkToken', 'pdmv_API_checkSPAdminRole'])->group(function () {

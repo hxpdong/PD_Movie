@@ -121,4 +121,25 @@ class ReportController extends Controller
             ]);
         } 
     }
+
+    public function commentDrop($cmtid){
+        try {
+            $cmt = DB::select("CALL comment_get(?)", array($cmtid));
+            if($cmt){
+                DB::statement('CALL comment_drop(?)', [$cmtid]);
+                return response()->json([
+                    'success' => true
+                ]);
+            } else {
+                return response()->json([
+                    'success' => false
+                ]);
+            }
+        } catch (\Exception $e) {
+            return response()->json([
+                "success" => false,
+                "error:" => $e->getMessage(),
+            ]);
+        }
+    }
 }
