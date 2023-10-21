@@ -53,7 +53,7 @@
                                         <button data-modal-toggle="profile-modal" onclick="openProfileModal()"
                                             class="font-normal w-full text-left block px-4 py-2 mt-2 text-sm bg-white md:mt-0 focus:text-gray-900 hover:bg-indigo-100 focus:bg-gray-200 focus:outline-none focus:shadow-outline">
                                             Chỉnh sửa thông tin</button>
-                                        <buton data-modal-toggle="password-modal"
+                                        <button data-modal-toggle="password-modal"
                                             class="font-normal w-full text-left block px-4 py-2 mt-2 text-sm bg-white md:mt-0 focus:text-gray-900 hover:bg-indigo-100 focus:bg-gray-200 focus:outline-none focus:shadow-outline">
                                             Đổi mật khẩu
                                         </button>
@@ -447,7 +447,7 @@
 
                 <button type="submit"
                     class="w-full text-white bg-[#66CCFF] hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                    Đăng ký</button>
+                    Đổi mật khẩu</button>
             </form>
         </div>
     </div>
