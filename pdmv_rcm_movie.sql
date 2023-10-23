@@ -7860,6 +7860,28 @@ BEGIN
     END IF;
 END; //
 DELIMITER ;
+
+DELIMITER //
+CREATE PROCEDURE error_drop(
+	IN p_beforeDate DATE
+    )
+BEGIN
+	DELETE FROM pdmv_errors 
+    WHERE isSolved = 1 AND updateAt < p_beforeDate;
+    SELECT "Thành công" AS results;
+END; //
+DELIMITER ;
+
+DELIMITER //
+CREATE PROCEDURE report_drop(
+	IN p_beforeDate DATE
+    )
+BEGIN
+	DELETE FROM pdmv_reports 
+    WHERE isSolved = 1 AND updateAt < p_beforeDate;
+    SELECT "Thành công" AS results;
+END; //
+DELIMITER ;
 -- -----------------------------------------------------RECOMMENNDER---------------------------------------------------------------------------------------------------------------------------------------
 -- -----------------------------------------------------RECOMMENNDER---------------------------------------------------------------------------------------------------------------------------------------
 -- -----------------------------------------------------RECOMMENNDER---------------------------------------------------------------------------------------------------------------------------------------

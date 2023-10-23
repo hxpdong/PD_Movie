@@ -96,6 +96,8 @@ Route::middleware(['pdmv_API_checkToken', 'pdmv_API_checkSPAdminRole'])->group(f
     Route::put('/admin/changeInfo-admin/{uid}/as/{accid}', [AccountController::class, 'changeAdminInfo']);
     Route::put('/admin/changePassword-admin/{uid}/as/{accid}', [AccountController::class, 'changeAdminPassword']);
     Route::post('/admin/create-admin/as/{accid}', [AccountController::class, 'addNewAdminAccount']);
+    Route::delete('/admin/report/movie/as/{accid}', [ReportController::class, 'errorDropBefore']);
+    Route::delete('/admin/report/comment/as/{accid}', [ReportController::class, 'reportDropBefore']);
 });
 
 Route::put('/users/update', [AuthController::class, 'modalUpdateUserInfo']);

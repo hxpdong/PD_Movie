@@ -100,6 +100,8 @@ document.addEventListener("DOMContentLoaded", function () {
         }
         simulateCongViecTieuHaoThoiGian(hoanThanhCongViec);
         console.log("reportpage");
+        deleteReportError();
+        deleteReportComment();
     }
 
 });
@@ -2503,12 +2505,12 @@ function getCommentReportList() {
                     }
                 });
             }
-            
+
             var checkButton = document.createElement("button");
             checkButton.classList.add("border-2", "p-2", "rounded-lg", "bg-white", "m-1");
             checkButton.title = "Đã xem xét";
             checkButton.appendChild(checkbox);
-           
+
             var removeButton = document.createElement("button");
             removeButton.classList.add("border-2", "p-2", "rounded-lg", "bg-white", "m-1");
             removeButton.title = "Xóa bình luận";
@@ -2568,7 +2570,7 @@ function getCommentReportList() {
                     }
                 });
             }
-            
+
             if (cmtrp[3] == 1) {
                 checkbox.checked = true;
                 checkbox.disabled = true;
@@ -2638,3 +2640,95 @@ function checkErrorTotalInSidebar(cnt) {
         document.getElementById("sidebar-reportNotify").hidden = true;
     }
 }
+
+function deleteReportError() {
+    $('#deleteReportErrorForm').submit(function (e) {
+        e.preventDefault();
+        var dateFrom = document.getElementById("beforeDateErr").value;
+        if (!dateFrom) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Thông tin cung cấp không đủ!',
+                text: 'Vui lòng chọn thời gian và thử lại.'
+            });
+        }
+        else {
+            var apiUrl = `/api/admin/report/movie/as/${accId}`;
+            fetch(apiUrl, {
+                method: "DELETE",
+                headers: headers,
+                body: JSON.stringify({ beforeDate: dateFrom })
+            })
+                .then(function (response) {
+                    return response.json();
+                })
+                .then(function (data) {
+                    if (data.success === true) {
+                        getAllMovieError();
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Xóa thành công',
+                        });
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Không thể xóa',
+                        });
+                    }
+                })
+                .catch(function (error) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'An error occurred: ' + error,
+                        html: 'Please try again later',
+                    });
+                });
+        }
+    });
+};
+
+function deleteReportComment() {
+    $('#deleteReportCommentForm').submit(function (e) {
+        e.preventDefault();
+        var dateFrom = document.getElementById("beforeDateCmt").value;
+        if (!dateFrom) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Thông tin cung cấp không đủ!',
+                text: 'Vui lòng chọn thời gian và thử lại.'
+            });
+        }
+        else {
+            var apiUrl = `/api/admin/report/comment/as/${accId}`;
+            fetch(apiUrl, {
+                method: "DELETE",
+                headers: headers,
+                body: JSON.stringify({ beforeDate: dateFrom })
+            })
+                .then(function (response) {
+                    return response.json();
+                })
+                .then(function (data) {
+                    if (data.success === true) {
+                        getAllReport();
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Xóa thành công',
+                        });
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Không thể xóa',
+                        });
+                    }
+                })
+                .catch(function (error) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'An error occurred: ' + error,
+                        html: 'Please try again later',
+                    });
+                });
+        }
+    });
+};

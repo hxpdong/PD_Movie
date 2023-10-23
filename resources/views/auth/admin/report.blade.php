@@ -103,7 +103,16 @@
                 <div id="reporttable" class="flex flex-col mx-5">
                     <!--movieerr table-->
                     <div class="bg-white p-4 my-5" id="mverrtb" hidden>
-                        <div class="font-bold text-xl mb-4">Lỗi phim</div>
+                        <div class="font-bold text-xl mb-2">Lỗi phim</div>
+                        @if(auth()->user()->acctype_id == 1)
+                        <form id="deleteReportErrorForm" method="POST">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="bg-blue-500 text-white p-2 font-bold mb-2 rounded-lg">Xóa báo cáo trước ngày
+                            </button>
+                            <input type="date" name="beforeDate" id="beforeDateErr" class="font-bold text-black rounded-lg p-2">
+                        </form>
+                        @endif
                         <div class="datatable-container">
                             <table id="movieErrTable" class="stripe hover"
                                 style="width:100%; padding-top: 1em;  padding-bottom: 1em;">
@@ -126,7 +135,16 @@
                     <!--end movieerr table-->
                     <!--reportcmt table-->
                     <div class="bg-white p-4 my-5" id="rpcmttb" hidden>
-                        <div class="font-bold text-xl mb-4">Bình luận vi phạm</div>
+                        <div class="font-bold text-xl mb-2">Bình luận vi phạm</div>
+                        @if(auth()->user()->acctype_id == 1)
+                        <form id="deleteReportCommentForm" method="POST">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="bg-blue-500 text-white p-2 font-bold mb-2 rounded-lg">Xóa báo cáo trước ngày
+                            </button>
+                            <input type="date" name="beforeDate" id="beforeDateCmt" class="font-bold text-black rounded-lg p-2">
+                        </form>
+                        @endif
                         <div class="datatable-container">
                             <table id="ReportCommentTable" class="stripe hover"
                                 style="width:100%; padding-top: 1em;  padding-bottom: 1em;">

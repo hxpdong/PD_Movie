@@ -142,4 +142,50 @@ class ReportController extends Controller
             ]);
         }
     }
+
+    public function errorDropBefore(Request $request){
+        try {
+            $beforeDate = $request->input('beforeDate');
+            $date = Carbon::createFromFormat('Y-m-d', $beforeDate);
+            $results = DB::select("CALL error_drop(?);", array($date));
+            if($results){
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Thành công'
+                ]);
+            } else {
+                return response()->json([
+                    'success' => false,
+                ]);
+            }
+        } catch (\Exception $e) {
+            return response()->json([
+                "success" => false,
+                "error:" => $e->getMessage(),
+            ]);
+        }
+    }
+
+    public function reportDropBefore(Request $request){
+        try {
+            $beforeDate = $request->input('beforeDate');
+            $date = Carbon::createFromFormat('Y-m-d', $beforeDate);
+            $results = DB::select("CALL report_drop(?);", array($date));
+            if($results){
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Thành công'
+                ]);
+            } else {
+                return response()->json([
+                    'success' => false,
+                ]);
+            }
+        } catch (\Exception $e) {
+            return response()->json([
+                "success" => false,
+                "error:" => $e->getMessage(),
+            ]);
+        }
+    }
 }
