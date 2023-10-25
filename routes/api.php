@@ -12,7 +12,7 @@ use App\Http\Controllers\API\AccountController;
 use App\Http\Controllers\API\SystemController;
 use App\Http\Controllers\API\MovieChapterController;
 use App\Http\Controllers\API\ReportController;
-use Dotenv\Repository\Adapter\ReplacingWriter;
+use App\Http\Controllers\API\StatisticController;
 
 /*
 |--------------------------------------------------------------------------
@@ -88,6 +88,7 @@ Route::middleware(['pdmv_API_checkToken', 'pdmv_API_checkAdminRole'])->group(fun
     Route::get('/admin/report/comment/as/{accid}', [ReportController::class, 'reportGetAll']);
     Route::put('/admin/report/comment/{rpid}/as/{accid}', [ReportController::class, 'reportSolve']);
     Route::delete('/admin/comment/{cmtid}/as/{accid}', [ReportController::class, 'commentDrop']);
+    Route::get('/admin/statistic/movie/as/{accid}', [StatisticController::class, 'getMovie']);
 });
 
 Route::middleware(['pdmv_API_checkToken', 'pdmv_API_checkSPAdminRole'])->group(function () {

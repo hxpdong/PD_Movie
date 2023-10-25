@@ -27,6 +27,10 @@ var cntNumClickReport = 0;
 var totalOfReport = 0;
 var reportOfErr = 0;
 var reportOfComment = 0;
+
+var statisticmovietable = document.getElementById("tbd-statisticmovietable");
+var statisticMovieArray = [];
+var cntNumClickStatisticMovie = 0;
 document.addEventListener("DOMContentLoaded", function () {
     function hoanThanhCongViec() {
         Swal.close();
@@ -50,8 +54,8 @@ document.addEventListener("DOMContentLoaded", function () {
     if (isPageDashboard) {
         function simulateCongViecTieuHaoThoiGian(callback) {
             setTimeout(() => {
-                addDataToUserArray();
-                addDataToAdminArray();
+
+
                 callback();
             }, timeout);
         }
@@ -121,6 +125,7 @@ function addDataToUserArray() {
                             userArray.push(usItem);
                         });
                         document.getElementById("numOfUser").textContent = response.data.totaluser;
+                        getUserList();
                     }
                 } else if (response.status === 404 || response.status === 500) {
                     Swal.fire({
@@ -151,6 +156,7 @@ function addDataToAdminArray() {
                             adminArray.push(amItem);
                         });
                         document.getElementById("numOfAdmin").textContent = response.data.totaladmin;
+                        getAdminList();
                     }
                 } else if (response.status === 404 || response.status === 500) {
                     Swal.fire({
@@ -167,31 +173,43 @@ function addDataToAdminArray() {
 }
 
 function showAccTable(num) {
+    divHiddenElements = document.getElementsByClassName("divHidden");
+    Array.from(divHiddenElements).forEach(function (element) {
+        element.hidden = true;
+    });
+    document.getElementById("btnDivHidden").hidden = true;
     switch (num) {
         case 1:
             if (cntNumClickAdmin == 0) {
-                getAdminList();
-            }
-            if (document.getElementById("ustb")) {
-                document.getElementById("ustb").hidden = true;
+                addDataToAdminArray();
             }
             if (document.getElementById("amtb")) {
-                document.getElementById("amtb").hidden = !document.getElementById("amtb").hidden;
+                document.getElementById("amtb").hidden = false;
+                document.getElementById("btnDivHidden").hidden = false;
             }
             cntNumClickAdmin++;
             break;
 
         case 2:
             if (cntNumClickUser == 0) {
-                getUserList();
-            }
-            if (document.getElementById("amtb")) {
-                document.getElementById("amtb").hidden = true;
+                addDataToUserArray();
             }
             if (document.getElementById("ustb")) {
-                document.getElementById("ustb").hidden = !document.getElementById("ustb").hidden;
+                document.getElementById("ustb").hidden = false;
+                document.getElementById("btnDivHidden").hidden = false;
             }
             cntNumClickUser++;
+            break;
+
+        case 3:
+            if (cntNumClickStatisticMovie == 0) {
+                addDataToStatisticMovieArray();
+            }
+            if (document.getElementById("statistic-movie")) {
+                document.getElementById("statistic-movie").hidden = false;
+            }
+            document.getElementById("btnDivHidden").hidden = false;
+            cntNumClickStatisticMovie++;
             break;
 
         default:
@@ -2732,3 +2750,82 @@ function deleteReportComment() {
         }
     });
 };
+
+function addDataToStatisticMovieArray() {
+
+    axios.get('/api/admin/statistic/movie/as/' + accId, {
+        headers: headers
+    })
+        .then(function (response) {
+            if (response.status === 200) {
+                if (response.data.success === true) {
+                    document.getElementById("total-movie").textContent = response.data.totalMovies;
+                    document.getElementById("total-view").textContent = response.data.totalViews;
+                    document.getElementById("total-rating").textContent = response.data.totalRatings;
+
+                    var movieList = response.data.movieList;
+                    movieList.forEach(function (mv) {
+                        var mvItem = [
+                            mv.movie_id,
+                            mv.title_vi,
+                            mv.title_en,
+                            mv.view,
+                            mv.rating,
+                            mv.ratePoint
+                        ];
+                        statisticMovieArray.push(mvItem);
+                    });
+                    getStatisticMovieList();
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Thất bại!',
+                        text: 'Không tìm thấy dữ liệu'
+                    });
+                }
+            } else if (response.status === 404 || response.status === 500) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Lỗi!',
+                    text: response.data.message
+                });
+            }
+        })
+        .catch(function (error) {
+            console.error('Lỗi trong quá trình gửi yêu cầu:', error);
+        });
+
+}
+
+function getStatisticMovieList() {
+    statisticMovieArray.forEach(function (mv) {
+        var newRow = statisticmovietable.insertRow();
+        var mvidCell = newRow.insertCell(0);
+        mvidCell.classList.add("text-center");
+        mvidCell.textContent = mv[0];
+        var mvViCell = newRow.insertCell(1);
+        mvViCell.classList.add("text-center");
+        mvViCell.textContent = mv[1];
+        var mvEnCell = newRow.insertCell(2);
+        mvEnCell.classList.add("text-center");
+        mvEnCell.textContent = mv[2];
+        var viewCell = newRow.insertCell(3);
+        viewCell.classList.add("text-center");
+        viewCell.textContent = mv[3];
+        var ratingCell = newRow.insertCell(4);
+        ratingCell.classList.add("text-center");
+        ratingCell.textContent = mv[4];
+        var pointCell = newRow.insertCell(5);
+        pointCell.classList.add("text-center");
+        pointCell.textContent = mv[5];
+    });
+    $('#statisticmovietable').DataTable({
+        responsive: false,
+        language: {
+            "url": "//cdn.datatables.net/plug-ins/1.10.19/i18n/Vietnamese.json"
+        },
+        lengthMenu: [5, 10, 15, 20],
+        order: [0, 'desc'],
+    })
+        .columns.adjust();
+}

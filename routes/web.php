@@ -99,5 +99,5 @@ Route::get('/test/navbar', function(){
     return view('auth.admin.navbar');
 });
 Route::get('/admin', function(){
-    return view('auth.admin.index');
+    return view('auth.admin.dashboardtest');
 });

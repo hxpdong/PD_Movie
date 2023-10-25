@@ -1,3 +1,4 @@
+<!--
 <html>
 
 <head>
@@ -318,4 +319,43 @@
     </div>
 </body>
 
+</html>
+-->
+<!DOCTYPE HTML>
+<html>
+<head>
+<script>
+window.onload = function () {
+
+var options = {
+	title: {
+		text: "Desktop OS Market Share in 2017"
+	},
+	subtitles: [{
+		text: "As of November, 2017"
+	}],
+	animationEnabled: true,
+	data: [{
+		type: "pie",
+		startAngle: 40,
+		toolTipContent: "<b>{label}</b>: {y}%",
+		showInLegend: "true",
+		legendText: "{label}",
+		indexLabelFontSize: 16,
+		indexLabel: "{label} - {y}%",
+		dataPoints: [
+			{ y: 48.36, label: "Windows 7" },
+		]
+	}]
+};
+$("#chartContainer").CanvasJSChart(options);
+
+}
+</script>
+</head>
+<body>
+<div id="chartContainer" style="height: 300px; width: 100%;"></div>
+<script src="https://canvasjs.com/assets/script/jquery-1.11.1.min.js"></script>
+<script src="https://cdn.canvasjs.com/jquery.canvasjs.min.js"></script>
+</body>
 </html>

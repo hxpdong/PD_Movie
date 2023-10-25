@@ -6799,6 +6799,7 @@ INSERT INTO pdmv_ratings (user_id, movie_id, rating)
 INSERT INTO pdmv_ratings (user_id, movie_id, rating)
  VALUES (224, 260, 2);
 
+UPDATE pdmv_ratings SET rating = 1 WHERE rating = 0;
 
 UPDATE pdmv_movies
 SET posterURL = NULL
@@ -8225,6 +8226,16 @@ UPDATE pdmv_movies SET view = 369 WHERE movie_id = 338;
 UPDATE pdmv_movies SET view = 188 WHERE movie_id = 339;
 UPDATE pdmv_movies SET view = 120 WHERE movie_id = 340;
 UPDATE pdmv_movies SET view = 0 WHERE view % 12 = 0;
+
+DELIMITER //
+CREATE PROCEDURE statistic_movie()
+BEGIN
+	SELECT mv.*, COUNT(rt.rating) as rating, ROUND(COALESCE(AVG(rt.rating), 0), 1) as ratePoint
+    FROM pdmv_movies mv
+	LEFT JOIN pdmv_ratings rt ON mv.movie_id = rt.movie_id
+	GROUP BY mv.movie_id;
+END; //
+DELIMITER ;
 -- -----------------------------------------------------RECOMMENNDER---------------------------------------------------------------------------------------------------------------------------------------
 -- -----------------------------------------------------RECOMMENNDER---------------------------------------------------------------------------------------------------------------------------------------
 -- -----------------------------------------------------RECOMMENNDER---------------------------------------------------------------------------------------------------------------------------------------
