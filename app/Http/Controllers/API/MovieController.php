@@ -548,4 +548,18 @@ class MovieController extends Controller
             ]);
         }
     }
+
+    public function postView($mvid){
+        try {
+            $results = DB::select("CALL mvview_post(?);", array($mvid));
+            return response()->json([
+                'success' => true
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'error' => $e->getMessage()
+            ]);
+        }
+    }
 }

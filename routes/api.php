@@ -108,3 +108,5 @@ Route::get('/system/get-api/movie', [SystemController::class, 'getSystemVarMovie
 Route::get('/system/get-api/tv', [SystemController::class, 'getSystemVarTV']);
 Route::get('/system/get-poster-list', [SystemController::class, 'getPosterAPI']);
 Route::get('/get-genres-of-movie/{mvid}', [MovieGenreController::class, 'getGenresOfMovie']);
+
+Route::put('/postview/{mvid}', [MovieController::class, 'postView']);

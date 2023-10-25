@@ -1,3 +1,4 @@
+let timer;
 const defaultImageUrl = '/img/banner.png';
 const constMvid = getMovieIdFromURL();
 if (!constMvid) {
@@ -870,6 +871,7 @@ function getMovieInfoToWatch() {
                         cnt++;
                         console.log('cnt: ' + cnt);
                     });
+                    startTimer();
                 }
             }
         });
@@ -883,6 +885,7 @@ function closeModalWatchMovie() {
     while (chapterBtn.firstChild) {
         chapterBtn.removeChild(chapterBtn.firstChild);
     }
+    stopTimer();
 }
 
 function getLatestMovies() {
@@ -1318,3 +1321,23 @@ function getRecommendedMoviesFrom() {
     });
     addTooltip();
 }
+
+function startTimer() {
+    //3 phut dem nguoc
+    timer = setTimeout(function() {
+        var movieId = getMovieIdFromURL();
+        fetch(`/api/postview/${movieId}`, {
+            method: 'PUT',
+        })
+        .then(response => {
+
+        })
+        .catch(error => {
+            console.error('Lỗi khi gọi API PUT:', error);
+        });
+    }, 3 * 60 * 1000); // 3 phút
+}
+function stopTimer() {
+    clearTimeout(timer);
+}
+
