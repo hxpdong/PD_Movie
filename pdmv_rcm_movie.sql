@@ -8247,6 +8247,25 @@ BEGIN
     WHERE movie_id = p_mvid;
 END; //
 DELIMITER ;
+
+DELIMITER //
+CREATE PROCEDURE statistic_movie_show(
+	IN p_mvid INT
+)
+BEGIN
+	SELECT mv.*, 
+       COUNT(rt.rating) AS total,
+       SUM(CASE WHEN rt.rating = 1 THEN 1 ELSE 0 END) AS numRating1,
+       SUM(CASE WHEN rt.rating = 2 THEN 1 ELSE 0 END) AS numRating2,
+       SUM(CASE WHEN rt.rating = 3 THEN 1 ELSE 0 END) AS numRating3,
+       SUM(CASE WHEN rt.rating = 4 THEN 1 ELSE 0 END) AS numRating4,
+       SUM(CASE WHEN rt.rating = 5 THEN 1 ELSE 0 END) AS numRating5
+	FROM pdmv_movies mv
+	LEFT JOIN pdmv_ratings rt ON mv.movie_id = rt.movie_id
+	WHERE mv.movie_id = p_mvid
+	GROUP BY mv.movie_id;
+END; //
+DELIMITER ;
 -- -----------------------------------------------------RECOMMENNDER---------------------------------------------------------------------------------------------------------------------------------------
 -- -----------------------------------------------------RECOMMENNDER---------------------------------------------------------------------------------------------------------------------------------------
 -- -----------------------------------------------------RECOMMENNDER---------------------------------------------------------------------------------------------------------------------------------------

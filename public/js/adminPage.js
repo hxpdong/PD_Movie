@@ -52,6 +52,8 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
     if (isPageDashboard) {
+        const overlay = document.querySelector('#overlay');
+        overlay.style.display = 'none';
         function simulateCongViecTieuHaoThoiGian(callback) {
             setTimeout(() => {
 
@@ -2221,8 +2223,10 @@ function getAllMovieError() {
                         movieErrorArray.push(errItem);
                     });
                 }
-                if ($.fn.DataTable.isDataTable('#movieErrTable')) {
-                    $('#movieErrTable').DataTable().destroy();
+                if (document.getElementById("#movieErrTable")) {
+                    if ($.fn.DataTable.isDataTable('#movieErrTable')) {
+                        $('#movieErrTable').DataTable().destroy();
+                    }
                 }
                 getMovieErrorList();
                 reportOfErr = response.data.unsolvedCount;
@@ -2391,8 +2395,10 @@ function getAllReport() {
                         commentReportArray.push(rpItem);
                     });
                 }
-                if ($.fn.DataTable.isDataTable('#ReportCommentTable')) {
-                    $('#ReportCommentTable').DataTable().destroy();
+                if (document.getElementById("#ReportCommentTable")) {
+                    if ($.fn.DataTable.isDataTable('#ReportCommentTable')) {
+                        $('#ReportCommentTable').DataTable().destroy();
+                    }
                 }
                 getCommentReportList();
                 reportOfComment = response.data.unsolvedCount;
@@ -2682,6 +2688,9 @@ function deleteReportError() {
                 })
                 .then(function (data) {
                     if (data.success === true) {
+                        if ($.fn.DataTable.isDataTable('#movieErrTable')) {
+                            $('#movieErrTable').DataTable().destroy();
+                        }
                         getAllMovieError();
                         Swal.fire({
                             icon: 'success',
@@ -2728,6 +2737,9 @@ function deleteReportComment() {
                 })
                 .then(function (data) {
                     if (data.success === true) {
+                        if ($.fn.DataTable.isDataTable('#ReportCommentTable')) {
+                            $('#ReportCommentTable').DataTable().destroy();
+                        }
                         getAllReport();
                         Swal.fire({
                             icon: 'success',
@@ -2815,6 +2827,65 @@ function getStatisticMovieList() {
         var ratingCell = newRow.insertCell(4);
         ratingCell.classList.add("text-center");
         ratingCell.textContent = mv[4];
+        var detailIcon = document.createElement("span");
+        detailIcon.className = "material-icons";
+        detailIcon.textContent = "info";
+        detailIcon.style.color = "#1355c9";
+        detailIcon.onclick = function () {
+            document.getElementById("chartMovie-modal").classList.remove("hidden");
+            document.getElementById("dt-chart-name").textContent =mv[0] + "-" + mv[2];
+            const overlay = document.querySelector('#overlay');
+            overlay.style.display = 'block';
+            var options;
+
+            axios.get('/api/admin/statistic/movie/' + mv[0] + '/as/' + accId, {
+                headers: headers
+            })
+                .then(function (response) {
+                    if (response.status === 200) {
+                        if (response.data.success === true) {
+                            var detail = response.data.detail;
+                            var r1, r2, r3, r4, r5;
+                            r1 = response.data.rate1;
+                            r2 = response.data.rate2;
+                            r3 = response.data.rate3;
+                            r4 = response.data.rate4;
+                            r5 = response.data.rate5;
+                            detail.forEach(function (dt) {
+                                options = {
+                                    title: {
+                                        fontFamily: "tahoma",
+                                        text: "Số lượt đánh giá: " + dt.total
+                                    },
+                                    subtitles: [{
+                                        fontFamily: "arial",
+                                        text: "Điểm trung bình: " + mv[5]
+                                    }],
+                                    animationEnabled: true,
+                                    data: [{
+                                        type: "pie",
+                                        startAngle: 40,
+                                        toolTipContent: null,
+                                        showInLegend: "true",
+                                        legendText: "{label}",
+                                        indexLabelFontSize: 16,
+                                        indexLabel: "{label}: {x} lượt ({y}%)",
+                                        dataPoints: [
+                                            {x: dt.numRating1, y: r1, label: "1 sao"},
+                                            {x: dt.numRating2, y: r2, label: "2 sao"},
+                                            {x: dt.numRating3, y: r3, label: "3 sao"},
+                                            {x: dt.numRating4, y: r4, label: "4 sao"},
+                                            {x: dt.numRating5, y: r5, label: "5 sao"},
+                                        ]
+                                    }]
+                                };
+                                $("#chartContainer").CanvasJSChart(options);
+                            })
+                        }
+                    }
+                });
+        }
+        ratingCell.appendChild(detailIcon);
         var pointCell = newRow.insertCell(5);
         pointCell.classList.add("text-center");
         pointCell.textContent = mv[5];
@@ -2828,4 +2899,12 @@ function getStatisticMovieList() {
         order: [0, 'desc'],
     })
         .columns.adjust();
+}
+
+function closeChartModal() {
+    if (document.getElementById("chartMovie-modal")) {
+        document.getElementById("chartMovie-modal").classList.add("hidden");
+        const overlay = document.querySelector('#overlay');
+        overlay.style.display = 'none';
+    }
 }
