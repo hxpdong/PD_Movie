@@ -2,10 +2,10 @@
 <!-- component -->
 <header id="headerLoginInfo">
     @if(auth()->check())
-        <input type="hidden" id="authUserId" value="{{ auth()->user()->id }}">
+    <input type="hidden" id="authUserId" value="{{ auth()->user()->id }}">
     @else
-                           
-        <input type="hidden" id="authUserId" value="">
+
+    <input type="hidden" id="authUserId" value="">
     @endif
     <nav class="bg-gray-500 border-gray-200 px-4 lg:px-6 py-2.5 dark:bg-gray-800">
         <div class="block lg:hidden">
@@ -18,64 +18,64 @@
         </div>
         <div class="flex flex-wrap justify-center items-center mx-auto max-w-screen-xl">
             <div class="flex items-center justify-center lg:order-2 w-full mt-3 lg:hidden">
-                    @if(auth()->check())
-                    <div>
-                        <nav>
-                            <div @click.away="open = false" class="relative" x-data="{ open: false }">
-                                <button @click="open = !open"
-                                    class="flex flex-row items-center space-x-2 w-full px-4 py-2 text-sm font-semibold text-left bg-transparent md:w-auto md:inline md:mt-0 md:ml-4 hover:bg-gray-200 focus:bg-[#66CCFF] focus:outline-none focus:shadow-outline">
-                                    <span>
-                                        @if(auth()->user()->fullname)
-                                        {{ auth()->user()->fullname }}
-                                        @else
-                                        {{ auth()->user()->name }}
-                                        @endif
-                                    </span>
-                                    <svg fill="currentColor" viewBox="0 0 20 20"
-                                        :class="{'rotate-180': open, 'rotate-0': !open}"
-                                        class="inline w-4 h-4 transition-transform duration-200 transform">
-                                        <path fill-rule="evenodd"
-                                            d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                                            clip-rule="evenodd"></path>
-                                    </svg>
-                                </button>
-                                <div x-show="open" x-transition:enter="transition ease-out duration-100"
-                                    x-transition:enter-start="transform opacity-0 scale-95"
-                                    x-transition:enter-end="transform opacity-100 scale-100"
-                                    x-transition:leave="transition ease-in duration-75"
-                                    x-transition:leave-start="transform opacity-100 scale-100"
-                                    x-transition:leave-end="transform opacity-0 scale-95"
-                                    class="absolute right-0 w-full mt-2 origin-top-right rounded-md shadow-lg md:w-48">
-                                    <div
-                                        class="py-2 bg-white text-blue-800 text-sm rounded-sm border border-main-color shadow-sm">
-                                        <a class="block px-4 py-2 mt-2 text-sm bg-white md:mt-0 focus:text-gray-900 hover:bg-indigo-100 focus:bg-gray-200 focus:outline-none focus:shadow-outline"
-                                            href="/users/{{ auth()->user()->name }}">Trang cá nhân</a>
-                                        <button data-modal-toggle="profile-modal" onclick="openProfileModal()"
-                                            class="font-normal w-full text-left block px-4 py-2 mt-2 text-sm bg-white md:mt-0 focus:text-gray-900 hover:bg-indigo-100 focus:bg-gray-200 focus:outline-none focus:shadow-outline">
-                                            Chỉnh sửa thông tin</button>
-                                        <button data-modal-toggle="password-modal"
-                                            class="font-normal w-full text-left block px-4 py-2 mt-2 text-sm bg-white md:mt-0 focus:text-gray-900 hover:bg-indigo-100 focus:bg-gray-200 focus:outline-none focus:shadow-outline">
-                                            Đổi mật khẩu
-                                        </button>
-                                    </div>
+                @if(auth()->check())
+                <div>
+                    <nav>
+                        <div @click.away="open = false" class="relative" x-data="{ open: false }">
+                            <button @click="open = !open"
+                                class="flex flex-row items-center space-x-2 w-full px-4 py-2 text-sm font-semibold text-left bg-transparent md:w-auto md:inline md:mt-0 md:ml-4 hover:bg-gray-200 focus:bg-[#66CCFF] focus:outline-none focus:shadow-outline">
+                                <span>
+                                    @if(auth()->user()->fullname)
+                                    {{ auth()->user()->fullname }}
+                                    @else
+                                    {{ auth()->user()->name }}
+                                    @endif
+                                </span>
+                                <svg fill="currentColor" viewBox="0 0 20 20"
+                                    :class="{'rotate-180': open, 'rotate-0': !open}"
+                                    class="inline w-4 h-4 transition-transform duration-200 transform">
+                                    <path fill-rule="evenodd"
+                                        d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                                        clip-rule="evenodd"></path>
+                                </svg>
+                            </button>
+                            <div x-show="open" x-transition:enter="transition ease-out duration-100"
+                                x-transition:enter-start="transform opacity-0 scale-95"
+                                x-transition:enter-end="transform opacity-100 scale-100"
+                                x-transition:leave="transition ease-in duration-75"
+                                x-transition:leave-start="transform opacity-100 scale-100"
+                                x-transition:leave-end="transform opacity-0 scale-95"
+                                class="absolute right-0 w-full mt-2 origin-top-right rounded-md shadow-lg md:w-48">
+                                <div
+                                    class="py-2 bg-white text-blue-800 text-sm rounded-sm border border-main-color shadow-sm">
+                                    <a class="block px-4 py-2 mt-2 text-sm bg-white md:mt-0 focus:text-gray-900 hover:bg-indigo-100 focus:bg-gray-200 focus:outline-none focus:shadow-outline"
+                                        href="/users/{{ auth()->user()->name }}">Trang cá nhân</a>
+                                    <button data-modal-toggle="profile-modal" onclick="openProfileModal()"
+                                        class="font-normal w-full text-left block px-4 py-2 mt-2 text-sm bg-white md:mt-0 focus:text-gray-900 hover:bg-indigo-100 focus:bg-gray-200 focus:outline-none focus:shadow-outline">
+                                        Chỉnh sửa thông tin</button>
+                                    <button data-modal-toggle="password-modal"
+                                        class="font-normal w-full text-left block px-4 py-2 mt-2 text-sm bg-white md:mt-0 focus:text-gray-900 hover:bg-indigo-100 focus:bg-gray-200 focus:outline-none focus:shadow-outline">
+                                        Đổi mật khẩu
+                                    </button>
                                 </div>
                             </div>
-                        </nav>
-                    </div>
-                    <button onclick="window.location.href = '/logoutHeader'; localStorage.clear();"
-                        class="text-gray-800 bg-white mx-1 dark:text-white hover:bg-gray-50 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-gray-800">Đăng
-                        xuất
-                    </button>
+                        </div>
+                    </nav>
+                </div>
+                <button onclick="window.location.href = '/logoutHeader'; localStorage.clear();"
+                    class="text-gray-800 bg-white mx-1 dark:text-white hover:bg-gray-50 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-gray-800">Đăng
+                    xuất
+                </button>
 
-                    @else
-                    Khách!
-                    <button data-modal-toggle="authentication-modal"
-                        class="text-gray-800 bg-white mx-1 dark:text-white hover:bg-gray-50 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-gray-800">Đăng
-                        nhập</button>
-                    <button data-modal-toggle="register-modal"
-                        class="text-white bg-[#66CCFF] hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Đăng
-                        ký</button>
-                    @endif
+                @else
+                Khách!
+                <button data-modal-toggle="authentication-modal"
+                    class="text-gray-800 bg-white mx-1 dark:text-white hover:bg-gray-50 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-gray-800">Đăng
+                    nhập</button>
+                <button data-modal-toggle="register-modal"
+                    class="text-white bg-[#66CCFF] hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Đăng
+                    ký</button>
+                @endif
 
 
                 <button data-collapse-toggle="mobile-menu-2" type="button"
@@ -123,10 +123,10 @@
                         </form>
                     </li>
                     <li>
-                        <div class="flex justify-center rounded text-white lg:text-black hover:text-black hover:bg-gray-200 bg-gray-700 lg:bg-transparent  focus:ring-4 focus:outline-none focus:bg-[#66CCFF] font-medium px-2 py-2.5 text-center items-center w-full lg:w-auto">
-                        <span class="mr-2">Thể loại</span>    
-                        <select class="w-48"
-                                id="genresList" onchange="redirectToGenre()">
+                        <div
+                            class="flex justify-center rounded text-white lg:text-black hover:text-black hover:bg-gray-200 bg-gray-700 lg:bg-transparent  focus:ring-4 focus:outline-none focus:bg-[#66CCFF] font-medium px-2 py-2.5 text-center items-center w-full lg:w-auto">
+                            <span class="mr-2">Thể loại</span>
+                            <select class="w-48" id="genresList" onchange="redirectToGenre()">
                             </select>
                         </div>
                     </li>
@@ -248,7 +248,12 @@
 
             <div class="space-y-4 px-6 lg:px-8 pb-4">
                 <div class="flex justify-between">
-                    <a href="#" class="text-sm text-blue-700 hover:underline dark:text-blue-500">Quên mật khẩu?</a>
+                    <p class="mt-2 text-sm text-black">
+                        Quên mật khẩu?
+                        <a class="text-blue-600 decoration-2 hover:underline font-medium" href="/forgot-password">
+                            Lấy lại mật khẩu
+                        </a>
+                    </p>
                 </div>
                 <div class="text-sm font-medium text-gray-500 dark:text-gray-300">
                     Chưa có tài khoản? <button data-modal-toggle="register-modal"
@@ -424,25 +429,21 @@
                         Mật khẩu cũ
                     </label>
                     <input type="password" name="uptoldpassword" id="uptoldpassword"
-                        class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
-                        >
+                        class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white">
                 </div>
                 <div>
-                    <label for="mdcp2"
-                        class="text-sm font-medium text-gray-900 block mb-2 dark:text-gray-300">
-                    Mật khẩu mới
+                    <label for="mdcp2" class="text-sm font-medium text-gray-900 block mb-2 dark:text-gray-300">
+                        Mật khẩu mới
                     </label>
                     <input type="password" name="uptnewpassword" id="uptnewpassword"
-                        class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
-                        >
+                        class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white">
                 </div>
                 <div>
                     <label for="mdcp3" class="text-sm font-medium text-gray-900 block mb-2 dark:text-gray-300">
                         Xác nhận mật khẩu mới
                     </label>
                     <input type="password" name="uptconfirmpassword" id="uptconfirmpassword"
-                        class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
-                        >
+                        class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white">
                 </div>
 
                 <button type="submit"
@@ -462,9 +463,9 @@ const headers = {
     'Content-Type': 'application/json'
 };
 var oldFullname = document.getElementById("uptfullname");
-if(oldFullname) oldFullname = oldFullname.value;
+if (oldFullname) oldFullname = oldFullname.value;
 var oldEmail = document.getElementById("uptemail");
-if(oldEmail) oldEmail = oldEmail.value;
+if (oldEmail) oldEmail = oldEmail.value;
 $(document).ready(function() {
     getGenreList2();
     $('#modalLoginForm').submit(function(e) {
@@ -513,8 +514,7 @@ $(document).ready(function() {
                 title: 'Thông tin cung cấp không đủ!',
                 text: 'Vui lòng điền đầy đủ thông tin và thử lại.'
             });
-        }
-        else if (password !== confirmPassword) {
+        } else if (password !== confirmPassword) {
             Swal.fire({
                 icon: 'error',
                 title: 'Mật khẩu không trùng khớp!',
@@ -598,10 +598,10 @@ $(document).ready(function() {
                     });
                 } else {
                     Swal.fire({
-                            icon: 'error',
-                            title: 'Không thể thực hiện thao tác',
-                            html: response.message,
-                        });
+                        icon: 'error',
+                        title: 'Không thể thực hiện thao tác',
+                        html: response.message,
+                    });
                 }
             },
             error: function(error) {
@@ -629,8 +629,7 @@ $(document).ready(function() {
                 title: 'Thông tin cung cấp không đủ!',
                 text: 'Vui lòng điền đầy đủ thông tin và thử lại.'
             });
-        }
-        else if (password !== confirmPassword) {
+        } else if (password !== confirmPassword) {
             Swal.fire({
                 icon: 'error',
                 title: 'Mật khẩu không trùng khớp!',
@@ -658,23 +657,23 @@ $(document).ready(function() {
                 },
                 success: function(response) {
                     Swal.close();
-                        if (response.success) {
-                            Swal.fire({
-                                icon: 'success',
-                                title: response.message,
-                                confirmButtonText: 'OK',
-                            }).then((result) => {
-                                if (result.isConfirmed) {
-                                    location.reload();
-                                };
-                            });
-                        } else {
-                            Swal.fire({
-                                icon: 'error',
-                                title: 'Không thể thực hiện thao tác',
-                                html: response.message, 
-                            });
-                        }
+                    if (response.success) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: response.message,
+                            confirmButtonText: 'OK',
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                location.reload();
+                            };
+                        });
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Không thể thực hiện thao tác',
+                            html: response.message,
+                        });
+                    }
                 }
             })
         }
@@ -771,10 +770,10 @@ function closeModalPassword() {
 };
 
 function openProfileModal() {
-        // Fill in the input fields with user data from Laravel
-        
+    // Fill in the input fields with user data from Laravel
 
-        // Show the modal
-        document.getElementById('profile-modal').classList.remove('hidden');
-    }
+
+    // Show the modal
+    document.getElementById('profile-modal').classList.remove('hidden');
+}
 </script>

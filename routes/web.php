@@ -21,6 +21,9 @@ Route::middleware('pdmv_checkLogin')->group(function () {
     Route::get('/register', function () {
         return view('auth.register');
     });
+    Route::get('/forgot-password', function () {
+        return view('auth.password');
+    });
 });
 Route::middleware('pdmv_checkIsAdmin')->group(function () {
     Route::get('/admin/dashboard', function () {

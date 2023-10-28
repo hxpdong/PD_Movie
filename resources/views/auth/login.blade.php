@@ -29,6 +29,12 @@
                             class="rounded-3xl border-none bg-white bg-opacity-50 px-6 py-2 text-black text-start text-inherit placeholder-black shadow-lg outline-none backdrop-blur-md"
                             type="Password" name="mduspassword" placeholder="mật khẩu" />
                     </div>
+                    <p class="mt-2 text-sm text-white">
+                        Quên mật khẩu?
+                        <a class="text-blue-600 decoration-2 hover:underline font-medium" href="/forgot-password">
+                            Lấy lại mật khẩu
+                        </a>
+                    </p>
                     <div class="mt-8 flex justify-center text-lg text-black">
                         <button type="submit"
                             class="rounded-3xl bg-[#66ccff] bg-opacity-50 px-10 py-2 text-white shadow-xl backdrop-blur-md transition-colors duration-300 hover:bg-blue-800">Đăng
