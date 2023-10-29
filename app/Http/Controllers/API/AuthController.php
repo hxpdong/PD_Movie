@@ -11,6 +11,8 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
 use App\Http\Controllers\Token;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\ForgotPasswordMail;
 
 class AuthController extends Controller
 {
@@ -461,7 +463,9 @@ class AuthController extends Controller
     
                 $user->password_otp = $otp;
                 $user->save();
-    
+                $user_after = User::where('email','=', $request->registed_email)->first();
+                Mail::to($request->registed_email)->send(new ForgotPasswordMail($user_after));
+
                 return response()->json([
                     'success' => true,
                     'message' => 'Mã OTP đang được gửi đến email.',

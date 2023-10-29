@@ -1,5 +1,5 @@
 <h1 style="color:blue;">PDMovie</h1>
-<p>Xin chào <b>{{ $user_after -> ma_nd }}</b>,</p>
+<p>Xin chào <b>{{ $user_after -> name }}</b>,</p>
 <br>
-Mật khẩu mới để đăng nhập vào hệ thống của bạn là <b>{{ $user_after -> matkhau }}</b>
+Mã OTP của bạn là <b>{{ $user_after -> password_otp }}</b>
 <br>
