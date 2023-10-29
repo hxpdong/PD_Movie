@@ -358,8 +358,8 @@ function getAdminList() {
                 title: "Cập nhật mật khẩu quản trị viên",
                 html: `
                                         <form id="updatePasswordForm">
-                                        <label for="uptnewpassword">Mật khẩu mới</label>
-                                        <input type="text" id="uptnewpassword" name="uptnewpassword" class="swal2-input" required>
+                                        <label for="uptnewpassword-am">Mật khẩu mới</label>
+                                        <input type="text" id="uptnewpassword-am" name="uptnewpassword-am" class="swal2-input" required>
                                         </form>
                                     `,
                 showCancelButton: true,
@@ -367,7 +367,8 @@ function getAdminList() {
                 cancelButtonText: "Hủy bỏ",
                 showLoaderOnConfirm: true,
                 preConfirm: () => {
-                    const newpass = document.getElementById("uptnewpassword").value;
+                    const newpass = document.getElementById("uptnewpassword-am")
+                        .value;
                     uptnewpassword = newpass;
                     return fetch("/api/admin/changePassword-admin/" + us[0] + "/as/" + accId, {
                         method: "PUT",
@@ -589,8 +590,8 @@ function getUserList() {
                 title: "Cập nhật mật khẩu người dùng",
                 html: `
                                         <form id="updatePasswordForm">
-                                        <label for="uptnewpassword">Mật khẩu mới</label>
-                                        <input type="text" id="uptnewpassword" name="uptnewpassword" class="swal2-input" required>
+                                        <label for="uptnewpassword-us">Mật khẩu mới</label>
+                                        <input type="text" id="uptnewpassword-us" name="uptnewpassword-us" class="swal2-input" required>
                                         </form>
                                     `,
                 showCancelButton: true,
@@ -598,7 +599,7 @@ function getUserList() {
                 cancelButtonText: "Hủy bỏ",
                 showLoaderOnConfirm: true,
                 preConfirm: () => {
-                    const newpass = document.getElementById("uptnewpassword").value;
+                    const newpass = document.getElementById("uptnewpassword-us").value;
                     uptnewpassword = newpass;
                     return fetch("/api/admin/changePassword-user/" + us[0] + "/as/" + accId, {
                         method: "PUT",
