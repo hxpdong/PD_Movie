@@ -72,6 +72,7 @@ class AuthController extends Controller
                 $user = Auth::guard('web')->user();
                 if ($user->isLocked == 0) {
                     $user->api_token = Str::random(60);
+                    $user->password_otp = null;
                     $user->save();
 
                     return $user;
@@ -104,6 +105,8 @@ class AuthController extends Controller
             ]);
         }
     }
+
+    /*
     //Web
     public function register(Request $request)
     {
@@ -184,6 +187,8 @@ class AuthController extends Controller
             ]);
         }
     }
+    */
+
     //Web-modal
     public function modalPostAuthRegister(Request $request)
     {
@@ -235,6 +240,7 @@ class AuthController extends Controller
             if (Auth::guard('web')->attempt($credentials)) {
                 $user = Auth::guard('web')->user();
                 $user->api_token = Str::random(60);
+                $user->password_otp = null;
                 $user->save();
                 return response()->json([
                     'success' => true,
@@ -267,6 +273,7 @@ class AuthController extends Controller
                 $user = Auth::guard('web')->user();
                 if ($user->isLocked == 0) {
                     $user->api_token = Str::random(60);
+                    $user->password_otp = null;
                     $user->save();
                     return response()->json([
                         'success' => true,
@@ -431,6 +438,85 @@ class AuthController extends Controller
             return response()->json([
                 'success' => false,
                 'message' => 'Lỗi: '.$e->getMessage(),
+            ]);
+        }
+    }
+
+    public function createPasswordOTP(Request $request) {
+        try {
+            $request->validate([
+                'registed_email' => 'required'
+            
+            ], [
+                'registed_email.required' => 'Vui lòng nhập email.'
+            ]);
+
+            $user = User::where('email', $request->input('registed_email'))->first();
+    
+            if ($user) {
+                $otp = "";
+                for ($i = 1; $i <= 6; $i++) {
+                    $otp .= random_int(0, 9);
+                }
+    
+                $user->password_otp = $otp;
+                $user->save();
+    
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Mã OTP đang được gửi đến email.',
+                ]);
+            } else {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Không tìm thấy người dùng với email đã đăng ký.',
+                ]);
+            }
+    
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Lỗi: ' . $e->getMessage(),
+            ]);
+        }
+    }
+
+    public function resetPassword(Request $request){
+        try {
+            $request->validate([
+                'email' => 'required',
+                'otp' => 'required|valid_otp_for_email:' . $request->input('email'),
+                'password' => 'required|min:5',
+                'confirm-password' => 'required|min:5'
+            
+            ], [
+                'email.required' => 'Vui lòng nhập email.',
+                'otp.required' => 'Vui lòng nhập mã OTP.',
+                'otp.valid_otp_for_email' => 'Mã OTP không hợp lệ, vui lòng nhập lại.',
+                'password.required' => 'Vui lòng nhập mật khẩu.',
+                'confirm-password.required' => 'Vui lòng nhập mật khẩu xác nhận.',
+            ]);
+            $user = User::where('email', $request->input('email'))->first();
+            if($user){
+                $newpass = bcrypt($request->password);
+                $result = DB::select('CALL user_changePassword(?, ?)', [$user->id, $newpass]);
+                if($result){
+                    $user->password = $newpass;
+                    $user->save();
+                }
+                return response()->json([
+                    'success' => true,
+                ]);
+            }
+            else {
+                return response()->json([
+                    'success' => false,
+                ]);
+            }
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Lỗi: ' . $e->getMessage(),
             ]);
         }
     }

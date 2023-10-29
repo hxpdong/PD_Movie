@@ -2831,7 +2831,7 @@ function getStatisticMovieList() {
         detailIcon.className = "material-icons";
         detailIcon.textContent = "info";
         detailIcon.style.color = "#1355c9";
-        detailIcon.onclick = function () {
+        newRow.onclick = function () {
             document.getElementById("chartMovie-modal").classList.remove("hidden");
             document.getElementById("dt-chart-name").textContent =mv[0] + "-" + mv[2];
             const overlay = document.querySelector('#overlay');
@@ -2885,7 +2885,7 @@ function getStatisticMovieList() {
                     }
                 });
         }
-        ratingCell.appendChild(detailIcon);
+        //ratingCell.appendChild(detailIcon);
         var pointCell = newRow.insertCell(5);
         pointCell.classList.add("text-center");
         pointCell.textContent = mv[5];

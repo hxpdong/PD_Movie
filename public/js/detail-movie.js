@@ -1335,7 +1335,7 @@ function startTimer() {
         .catch(error => {
             console.error('Lỗi khi gọi API PUT:', error);
         });
-    }, 3 * 60 * 1000); // 3 phút
+    }, 1 * 60 * 1000); // 1 phút
 }
 function stopTimer() {
     clearTimeout(timer);

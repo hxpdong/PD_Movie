@@ -111,3 +111,5 @@ Route::get('/system/get-poster-list', [SystemController::class, 'getPosterAPI'])
 Route::get('/get-genres-of-movie/{mvid}', [MovieGenreController::class, 'getGenresOfMovie']);
 
 Route::put('/postview/{mvid}', [MovieController::class, 'postView']);
+Route::put('/users/forgot-password/send-email', [AuthController::class, 'createPasswordOTP']);
+Route::put('/users/forgot-password/reset-password', [AuthController::class, 'resetPassword']);
