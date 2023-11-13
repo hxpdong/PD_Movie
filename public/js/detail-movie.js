@@ -9,7 +9,7 @@ document.addEventListener("DOMContentLoaded", function () {
     loadMovieDetail(movieId);
     getLatestMovies();
     if (accId) {
-        getRecommendedMoviesFrom();
+        getRecommendedMovies();
     }
     getRelatedMovies();
 

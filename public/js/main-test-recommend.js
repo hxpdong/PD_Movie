@@ -2,7 +2,7 @@ var currentPage = 1;
 var defaultImageUrl = '/img/banner.png';
 
 document.addEventListener("DOMContentLoaded", function () {
-    getMoviesFrom();
+    getMovies();
 });
 
 function getMovies() {
