@@ -99,4 +99,20 @@ class RecommenderController extends Controller
             ], 500);
         }
     }
+
+    public function UserBased_CollaborativeFiltering_From_Python(){
+        $ids = request()->get('id_list', 1);
+        $movies = DB::select('CALL Collab_getRecommendedMoviesFromIds(?)', array($ids));
+        $resultArray = [
+            'recommendedmovies' => $movies
+        ];
+        if (!empty($resultArray)) {
+            return response()->json([
+                'success' => true,
+                'results' => $resultArray]);
+        } else {
+            return response()->json([
+                'success' => false]);
+        }
+    }
 }

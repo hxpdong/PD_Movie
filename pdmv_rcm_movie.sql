@@ -8266,6 +8266,53 @@ BEGIN
 	GROUP BY mv.movie_id;
 END; //
 DELIMITER ;
+
+DELIMITER //
+
+
+DELIMITER //
+CREATE PROCEDURE rating_export_csv(IN p_path VARCHAR(255))
+BEGIN
+    -- Tạo bảng tạm thời để lưu trữ tên cột và dữ liệu
+    CREATE TEMPORARY TABLE temp_pdmv_ratings AS
+    SELECT 'userId' as userId, 'movieId' as movieId, 'rating' as rating
+    UNION ALL
+    SELECT user_id as userId, movie_id as movieId, rating
+    FROM pdmv_ratings;
+
+    -- Tạo câu lệnh SQL động
+    SET @sql = CONCAT(
+        'SELECT * INTO OUTFILE ''', p_path, ''' ',
+        'FIELDS TERMINATED BY '','' ',
+        'LINES TERMINATED BY ''\\n'' ',
+        'FROM temp_pdmv_ratings'
+    );
+
+    -- Thực thi câu lệnh SQL động
+    PREPARE stmt FROM @sql;
+    EXECUTE stmt;
+    DEALLOCATE PREPARE stmt;
+
+    -- Xóa bảng tạm thời
+    DROP TEMPORARY TABLE IF EXISTS temp_pdmv_ratings;
+END //
+DELIMITER ;
+
+DELIMITER //
+CREATE PROCEDURE Collab_getRecommendedMoviesFromIds(IN p_ids TEXT)
+BEGIN
+    DECLARE query VARCHAR(1000);
+
+    SET @query = CONCAT(
+        'SELECT * FROM pdmv_movies WHERE movie_id IN (', p_ids, ') ORDER BY FIELD(movie_id, ', p_ids, ');'
+    );
+
+    PREPARE stmt FROM @query;
+    EXECUTE stmt;
+    DEALLOCATE PREPARE stmt;
+END //
+DELIMITER ;
+
 -- -----------------------------------------------------RECOMMENNDER---------------------------------------------------------------------------------------------------------------------------------------
 -- -----------------------------------------------------RECOMMENNDER---------------------------------------------------------------------------------------------------------------------------------------
 -- -----------------------------------------------------RECOMMENNDER---------------------------------------------------------------------------------------------------------------------------------------

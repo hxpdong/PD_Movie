@@ -42,6 +42,7 @@ Route::get('/movies', [MovieController::class, 'index']);
 Route::get('/movies/{mid}', [MovieController::class, 'show']);
 Route::get('comments/{mid}', [MovieController::class, 'getCommentListOf']);
 Route::get('/movies/recommended/{uid}', [RecommenderController::class, 'UserBased_CollaborativeFiltering']);
+Route::get('/recommended-python', [RecommenderController::class, 'UserBased_CollaborativeFiltering_From_Python']);
 Route::get('/ratings/{uid}/{mid}' , [MovieController::class, 'getRatingOf']);
 Route::get('/movies/recommended-by-movie/{mvid}', [RecommenderController::class, 'ContentBased_recommendMovies']);
 
