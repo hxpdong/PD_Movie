@@ -2,7 +2,7 @@ const isPageDashboard = document.getElementById("isAd-DashboardPage");
 const isPageGenre = document.getElementById("isAd-GenrePage");
 const isPageMovie = document.getElementById("isAd-MoviePage");
 const isPageReport = document.getElementById("isAd-ReportPage");
-
+const isPageSystem = document.getElementById("isSystemPage");
 document.addEventListener("DOMContentLoaded", function() {
     if (isPageDashboard) {
         changeClickedTag("btn-dashboard");
@@ -22,6 +22,10 @@ document.addEventListener("DOMContentLoaded", function() {
     if (isPageReport) {
         changeClickedTag("btn-reports");
         document.title = "Admin | Reports";
+    }
+    if (isPageSystem) {
+        changeClickedTag("btn-system");
+        document.title = "Admin | System";
     }
 });
 

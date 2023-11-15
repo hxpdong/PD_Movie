@@ -13,7 +13,7 @@ use App\Http\Controllers\API\SystemController;
 use App\Http\Controllers\API\MovieChapterController;
 use App\Http\Controllers\API\ReportController;
 use App\Http\Controllers\API\StatisticController;
-
+use App\Http\Controllers\API\RatingController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -114,3 +114,6 @@ Route::get('/get-genres-of-movie/{mvid}', [MovieGenreController::class, 'getGenr
 Route::put('/postview/{mvid}', [MovieController::class, 'postView']);
 Route::put('/users/forgot-password/send-email', [AuthController::class, 'createPasswordOTP']);
 Route::put('/users/forgot-password/reset-password', [AuthController::class, 'resetPassword']);
+
+Route::get('/exports/rating/csv', [RatingController::class, 'exportCSV']);
+Route::post('/imports/rating/csv', [RatingController::class, 'importCSV']);

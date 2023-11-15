@@ -58,7 +58,8 @@ class RecommendationResource(Resource):
             user_id = args['user_id']
             num_recommendations = args['num_recommendations']
 
-            file_path = 'python/datasql/ratings.csv'
+            #file_path = '../public/storage/ratings.csv'
+            file_path = 'public/storage/ratings.csv'
             df = load_data(file_path)
             user_item_matrix = df.pivot(index='userId', columns='movieId', values='rating').fillna(0)
             item_similarity = get_item_similarity(user_item_matrix)

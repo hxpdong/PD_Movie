@@ -37,6 +37,11 @@
                 <span class="mx-3">Báo cáo</span>
                 <span class="bg-red-500 p-1 rounded-full" id="sidebar-reportNotify" hidden></span>
             </a>
+            <a class="flex items-center px-6 py-2 mt-4 text-gray-500 hover:bg-gray-700 hover:bg-opacity-25 hover:text-gray-100"
+                href="/admin/system" id="btn-system">
+                <i class="fa-solid fa-gear fa-xl"></i>
+                <span class="mx-3">Hệ thống</span>
+            </a>
         </nav>
     </div>
 </aside>
