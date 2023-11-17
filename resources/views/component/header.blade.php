@@ -732,8 +732,8 @@ function getGenreList2() {
                 optgroupEn.appendChild(optEn);
             });
 
-            genList.appendChild(optgroupVi);
             genList.appendChild(optgroupEn);
+            genList.appendChild(optgroupVi);
 
             // Thiết lập select2
             $('#genresList').select2();

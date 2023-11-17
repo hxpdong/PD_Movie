@@ -39,7 +39,7 @@ document.addEventListener("DOMContentLoaded", function () {
     getAllReport();
 
     Swal.fire({
-        title: 'Đang lấy dữ liệu...',
+        title: 'Retrieving data...',
         allowOutsideClick: false,
         allowEscapeKey: false,
         allowEnterKey: false,
@@ -132,13 +132,13 @@ function addDataToUserArray() {
                 } else if (response.status === 404 || response.status === 500) {
                     Swal.fire({
                         icon: 'error',
-                        title: 'Lỗi!',
+                        title: 'Error!',
                         text: response.data.message
                     });
                 }
             })
             .catch(function (error) {
-                console.error('Lỗi trong quá trình gửi yêu cầu:', error);
+                console.error('Error while sending request:', error);
             });
     }
 }
@@ -163,13 +163,13 @@ function addDataToAdminArray() {
                 } else if (response.status === 404 || response.status === 500) {
                     Swal.fire({
                         icon: 'error',
-                        title: 'Lỗi!',
+                        title: 'Error!',
                         text: response.data.message
                     });
                 }
             })
             .catch(function (error) {
-                console.error('Lỗi trong quá trình gửi yêu cầu:', error);
+                console.error('Error while sending request:', error);
             });
     }
 }
@@ -240,10 +240,10 @@ function getAdminList() {
         phoneCell.classList.add("text-center");
         var stateCell = newRow.insertCell(4);
         if (us[2] == 1) {
-            stateCell.textContent = 'Bị khóa';
+            stateCell.textContent = 'Locked';
             stateCell.classList.add('text-red-500');
         } else {
-            stateCell.textContent = 'Hoạt động';
+            stateCell.textContent = 'Active';
             stateCell.classList.add('text-green-500');
         }
         stateCell.classList.add("text-center");
@@ -251,7 +251,7 @@ function getAdminList() {
         actionCell.classList.add("text-center");
         var updateButton = document.createElement("button");
         updateButton.classList.add("border-2", "p-2", "rounded-lg", "bg-white", "m-1");
-        updateButton.title = "Cập nhật người dùng";
+        updateButton.title = "Update admin";
         var updateIcon = document.createElement("span");
         updateIcon.className = "material-icons";
         updateIcon.textContent = "manage_accounts";
@@ -263,20 +263,20 @@ function getAdminList() {
             var newphone;
             var oldFullname = us[4] ? us[4] : "";
             Swal.fire({
-                title: "Cập nhật thông tin quản trị viên",
+                title: "Update administrator information",
                 html: `
                                         <form id="updateForm">
-                                        <label for="fullName">Họ và Tên</label>
+                                        <label for="fullName">Full name</label>
                                         <input type="text" id="fullname" name="fullname" class="swal2-input" required value="${oldFullname}">
                                         <label for="email">Email</label>
                                         <input type="email" id="email" name="email" class="swal2-input" required value="${us[5]}">
-                                        <label for="phone">Số điện thoại</label>
+                                        <label for="phone">Phone</label>
                                         <input type="text" id="phone" name="phone" class="swal2-input" required value="${us[6]}">
                                         </form>
                                     `,
                 showCancelButton: true,
-                confirmButtonText: "Cập nhật",
-                cancelButtonText: "Hủy bỏ",
+                confirmButtonText: "Update",
+                cancelButtonText: "Cancel",
                 showLoaderOnConfirm: true,
                 preConfirm: () => {
                     const fullname = document.getElementById("fullname")
@@ -319,7 +319,7 @@ function getAdminList() {
                     if (response.success) {
                         Swal.fire({
                             icon: "success",
-                            title: "Cập nhật thông tin thành công",
+                            title: "Successfully updated!",
                             confirmButtonText: "OK",
                         }).then((result) => {
                             if (result.isConfirmed) {
@@ -335,8 +335,8 @@ function getAdminList() {
                     } else {
                         Swal.fire({
                             icon: "error",
-                            title: "Lỗi!",
-                            text: "Lỗi: " + response.message
+                            title: "Error!",
+                            text: "Error: " + response.message
                         });
                     }
                 }
@@ -346,7 +346,7 @@ function getAdminList() {
 
         var changePasswordButton = document.createElement("button");
         changePasswordButton.classList.add("border-2", "p-2", "rounded-lg", "bg-white", "m-1");
-        changePasswordButton.title = "Cập nhật mật khẩu";
+        changePasswordButton.title = "Change password";
         var changePasswordIcon = document.createElement("span");
         changePasswordIcon.className = "material-icons";
         changePasswordIcon.textContent = "password";
@@ -355,16 +355,16 @@ function getAdminList() {
         changePasswordButton.onclick = function () {
             var uptnewpassword;
             Swal.fire({
-                title: "Cập nhật mật khẩu quản trị viên",
+                title: "Update administrator password",
                 html: `
                                         <form id="updatePasswordForm">
-                                        <label for="uptnewpassword-am">Mật khẩu mới</label>
+                                        <label for="uptnewpassword-am">New password</label>
                                         <input type="text" id="uptnewpassword-am" name="uptnewpassword-am" class="swal2-input" required>
                                         </form>
                                     `,
                 showCancelButton: true,
-                confirmButtonText: "Cập nhật",
-                cancelButtonText: "Hủy bỏ",
+                confirmButtonText: "Update",
+                cancelButtonText: "Cancel",
                 showLoaderOnConfirm: true,
                 preConfirm: () => {
                     const newpass = document.getElementById("uptnewpassword-am")
@@ -399,7 +399,7 @@ function getAdminList() {
                     if (response.success) {
                         Swal.fire({
                             icon: "success",
-                            title: "Cập nhật mật khẩu thành công",
+                            title: "Updated password successfully!",
                             confirmButtonText: "OK",
                         }).then((result) => {
                             if (result.isConfirmed) {
@@ -409,8 +409,8 @@ function getAdminList() {
                     } else {
                         Swal.fire({
                             icon: "error",
-                            title: "Lỗi!",
-                            text: "Lỗi: " + response.message
+                            title: "Error!",
+                            text: "Error: " + response.message
                         });
                     }
                 }
@@ -423,11 +423,11 @@ function getAdminList() {
         var deleteIcon = document.createElement("span");
         deleteIcon.className = "material-icons";
         if (us[2] == 1) {
-            deleteButton.title = "Mở khóa người dùng";
+            deleteButton.title = "Unlock account";
             deleteIcon.textContent = "lock_open";
             deleteIcon.classList.add('text-green-500');
         } else {
-            deleteButton.title = "Khóa người dùng";
+            deleteButton.title = "Lock account";
             deleteIcon.textContent = "lock";
             deleteIcon.classList.add('text-red-500');
         }
@@ -480,10 +480,10 @@ function getUserList() {
         emailCell.classList.add("text-center");
         var stateCell = newRow.insertCell(3);
         if (us[2] == 1) {
-            stateCell.textContent = 'Bị khóa';
+            stateCell.textContent = 'Locked';
             stateCell.classList.add('text-red-500');
         } else {
-            stateCell.textContent = 'Hoạt động';
+            stateCell.textContent = 'Active';
             stateCell.classList.add('text-green-500');
         }
         stateCell.classList.add("text-center");
@@ -491,7 +491,7 @@ function getUserList() {
         actionCell.classList.add("text-center");
         var updateButton = document.createElement("button");
         updateButton.classList.add("border-2", "p-2", "rounded-lg", "bg-white", "m-1");
-        updateButton.title = "Cập nhật người dùng";
+        updateButton.title = "Update user";
         var updateIcon = document.createElement("span");
         updateIcon.className = "material-icons";
         updateIcon.textContent = "manage_accounts";
@@ -502,18 +502,18 @@ function getUserList() {
             var newemail;
             var oldFullname = us[4] ? us[4] : "";
             Swal.fire({
-                title: "Cập nhật thông tin người dùng",
+                title: "Update user information",
                 html: `
                                         <form id="updateUserForm">
-                                        <label for="fullName">Họ và Tên</label>
+                                        <label for="fullName">Full name</label>
                                         <input type="text" id="fullname" name="fullname" class="swal2-input" required value="${oldFullname}">
                                         <label for="email">Email</label>
                                         <input type="email" id="email" name="email" class="swal2-input" required value="${us[5]}">
                                         </form>
                                     `,
                 showCancelButton: true,
-                confirmButtonText: "Cập nhật",
-                cancelButtonText: "Hủy bỏ",
+                confirmButtonText: "Update",
+                cancelButtonText: "Cancel",
                 showLoaderOnConfirm: true,
                 preConfirm: () => {
                     const fullname = document.getElementById("fullname")
@@ -552,7 +552,7 @@ function getUserList() {
                     if (response.success) {
                         Swal.fire({
                             icon: "success",
-                            title: "Cập nhật thông tin người dùng thành công",
+                            title: "User information updated successfully!",
                             confirmButtonText: "OK",
                         }).then((result) => {
                             if (result.isConfirmed) {
@@ -567,8 +567,8 @@ function getUserList() {
                     } else {
                         Swal.fire({
                             icon: "error",
-                            title: "Lỗi!",
-                            text: "Lỗi: " + response.message
+                            title: "Error!",
+                            text: "Error: " + response.message
                         });
                     }
                 }
@@ -578,7 +578,7 @@ function getUserList() {
 
         var changePasswordButton = document.createElement("button");
         changePasswordButton.classList.add("border-2", "p-2", "rounded-lg", "bg-white", "m-1");
-        changePasswordButton.title = "Cập nhật mật khẩu";
+        changePasswordButton.title = "Change password";
         var changePasswordIcon = document.createElement("span");
         changePasswordIcon.className = "material-icons";
         changePasswordIcon.textContent = "password";
@@ -587,16 +587,16 @@ function getUserList() {
         changePasswordButton.onclick = function () {
             var uptnewpassword;
             Swal.fire({
-                title: "Cập nhật mật khẩu người dùng",
+                title: "Update user password",
                 html: `
                                         <form id="updatePasswordForm">
-                                        <label for="uptnewpassword-us">Mật khẩu mới</label>
+                                        <label for="uptnewpassword-us">New password</label>
                                         <input type="text" id="uptnewpassword-us" name="uptnewpassword-us" class="swal2-input" required>
                                         </form>
                                     `,
                 showCancelButton: true,
-                confirmButtonText: "Cập nhật",
-                cancelButtonText: "Hủy bỏ",
+                confirmButtonText: "Update",
+                cancelButtonText: "Cancel",
                 showLoaderOnConfirm: true,
                 preConfirm: () => {
                     const newpass = document.getElementById("uptnewpassword-us").value;
@@ -630,7 +630,7 @@ function getUserList() {
                     if (response.success) {
                         Swal.fire({
                             icon: "success",
-                            title: "Cập nhật mật khẩu thành công",
+                            title: "Updated password successfully!",
                             confirmButtonText: "OK",
                         }).then((result) => {
                             if (result.isConfirmed) {
@@ -640,8 +640,8 @@ function getUserList() {
                     } else {
                         Swal.fire({
                             icon: "error",
-                            title: "Lỗi!",
-                            text: "Lỗi: " + response.message
+                            title: "Error!",
+                            text: "Error: " + response.message
                         });
                     }
                 }
@@ -654,11 +654,11 @@ function getUserList() {
         var deleteIcon = document.createElement("span");
         deleteIcon.className = "material-icons";
         if (us[2] == 1) {
-            deleteButton.title = "Mở khóa người dùng";
+            deleteButton.title = "Unlock account";
             deleteIcon.textContent = "lock_open";
             deleteIcon.classList.add('text-green-500');
         } else {
-            deleteButton.title = "Khóa người dùng";
+            deleteButton.title = "Lock account";
             deleteIcon.textContent = "lock";
             deleteIcon.classList.add('text-red-500');
         }
@@ -701,24 +701,24 @@ if (document.getElementById('btnAddNewAdmin')) {
         var newusname;
 
         Swal.fire({
-            title: "Thêm người dùng quản trị",
+            title: "Add admin account",
             html: `
                 <form id="addNewAdminForm">
-                    <label for="fullName">Họ và Tên</label>
+                    <label for="fullName">Full name</label>
                     <input type="text" id="fullname" name="fullname" class="swal2-input">
                     <label for="email">Email</label>
                     <input type="email" id="email" name="email" class="swal2-input">
-                    <label for="phone">Số điện thoại</label>
+                    <label for="phone">Phone</label>
                     <input type="text" id="phone" name="phone" class="swal2-input">
-                    <label for="usname">Tên tài khoản</label>
+                    <label for="usname">Username</label>
                     <input type="text" id="usname" name="usname" class="swal2-input">
-                    <label for="password">Mật khẩu</label>
+                    <label for="password">Password</label>
                     <input type="text" id="password" name="password" class="swal2-input">
                 </form>
                                 `,
             showCancelButton: true,
-            confirmButtonText: "Thêm mới",
-            cancelButtonText: "Hủy bỏ",
+            confirmButtonText: "Add",
+            cancelButtonText: "Cancel",
             showLoaderOnConfirm: true,
             preConfirm: () => {
                 const fullname = document.getElementById("fullname").value;
@@ -798,8 +798,8 @@ if (document.getElementById('btnAddNewAdmin')) {
                 } else {
                     Swal.fire({
                         icon: "error",
-                        title: "Lỗi!",
-                        text: "Lỗi: " + response.message
+                        title: "Error!",
+                        text: "Error: " + response.message
                     });
                 }
             }
@@ -861,7 +861,7 @@ function getMovieList() {
 
         var infoButton = document.createElement("button");
         infoButton.classList.add("border-2", "p-2", "rounded-lg", "bg-white", "m-1");
-        infoButton.title = "Chi tiết phim";
+        infoButton.title = "Movie detail";
         var infoIcon = document.createElement("span");
         infoIcon.className = "material-icons";
         infoIcon.textContent = "info";
@@ -950,14 +950,14 @@ function getMovieList() {
                     xhrmv.send();
                 }
             }
-            else errIMG.textContent = "Phim chưa có Poster hoặc bị lỗi";
+            else errIMG.textContent = "The movie doesn't have a poster or it's defective";
             AddDataToChapterArray(mv[0]);
         };
         mvActionCell.appendChild(infoButton);
 
         var removeButton = document.createElement("button");
         removeButton.classList.add("border-2", "p-2", "rounded-lg", "bg-white", "m-1");
-        removeButton.title = "Xóa phim";
+        removeButton.title = "Delete movie";
         var removeIcon = document.createElement("span");
         removeIcon.className = "material-icons";
         removeIcon.textContent = "delete";
@@ -966,12 +966,12 @@ function getMovieList() {
         removeButton.onclick = function () {
             Swal.fire({
                 icon: 'warning',
-                title: 'Bạn có chắc chắn muốn xóa phim ' + mv[0] + " - " + mv[2] + "?",
-                html: 'Khi đồng ý <span class="text-red-500 font-bold">XÓA</span>, toàn bộ thông tin liên quan đến phim (bình luận, đánh giá,...) đều sẽ bị xóa và <span class="text-red-500 font-bold">không thể</span> khôi phục lại',
+                title: 'Are you sure you want to delete the movie ' + mv[0] + " - " + mv[2] + "?",
+                html: 'When you agree <span class="text-red-500 font-bold">DELETE</span>, all information related to the movie (comments, ratings,...) will be deleted and <span class="text-red-500 font-bold">cannot</span> restore',
                 showCancelButton: true,
-                confirmButtonText: 'Xóa',
+                confirmButtonText: 'DELETE',
                 confirmButtonColor: 'red',
-                cancelButtonText: 'Suy nghĩ lại'
+                cancelButtonText: 'Rethink'
             }).then((result) => {
                 if (result.isConfirmed) {
                     var apiUrl = `/api/admin/movies-drop/${mv[0]}/as/${accId}`;
@@ -986,8 +986,8 @@ function getMovieList() {
                         .then(function (data) {
                             if (data.success === true) {
                                 Swal.fire(
-                                    'Đã xóa!',
-                                    'Xóa phim thành công!',
+                                    'Deleted!',
+                                    'Movie deletion successful!',
                                     'success'
                                 );
                                 for (var i = 0; i < movieArray.length; i++) {
@@ -1004,9 +1004,9 @@ function getMovieList() {
                             } else {
                                 Swal.fire({
                                     icon: 'error',
-                                    title: 'Không thể thực hiện thao tác',
-                                    html: 'Do bạn không có quyền hoặc tài khoản đang được đăng nhập ở nơi khác.<br/> Vui lòng đăng nhập lại!',
-                                    confirmButtonText: 'Đăng nhập lại',
+                                    title: 'Unable to perform operation',
+                                    html: 'Because you do not have permission or the account is being logged in somewhere else.<br/> Please log in again!',
+                                    confirmButtonText: 'Re-Login',
                                     allowOutsideClick: false,
                                 }).then((result) => {
                                     if (result.isConfirmed) {
@@ -1122,7 +1122,7 @@ function postNewMovie() {
 
         } else {
             Swal.fire({
-                title: 'Đang xử lý...',
+                title: 'Executing...',
                 allowOutsideClick: false,
                 allowEscapeKey: false,
                 allowEnterKey: false,
@@ -1145,7 +1145,7 @@ function postNewMovie() {
                     if (response.data.success) {
                         Swal.fire({
                             icon: 'success',
-                            title: 'Thêm phim mới thành công',
+                            title: 'Add movie successfully',
                             confirmButtonText: 'OK',
                         }).then((result) => {
                             if (result.isConfirmed) {
@@ -1178,7 +1178,7 @@ function postNewMovie() {
                     } else if (response.data.error) {
                         Swal.fire({
                             icon: 'error',
-                            title: 'Không thể thêm phim',
+                            title: 'Cannot add movie',
                             text: response.data.error
                         });
                     }
@@ -1211,7 +1211,7 @@ function checkNewPoster() {
                     var response = JSON.parse(xhrmv.responseText);
                     imgtag.src = 'https://www.themoviedb.org/t/p/w300_and_h450_bestv2' + response.poster_path;
                 } else {
-                    imgnotfound.textContent = 'Với themoviedb, cần nhập vào id của phim ở themoviedb.';
+                    imgnotfound.textContent = 'For themoviedb, enter the movie id in themoviedb.';
                 }
             };
             xhrmv.send();
@@ -1223,7 +1223,7 @@ function checkNewPoster() {
                     var response = JSON.parse(xhrmv.responseText);
                     imgtag.src = 'https://www.themoviedb.org/t/p/w300_and_h450_bestv2' + response.poster_path;
                 } else {
-                    imgnotfound.textContent = 'Với themoviedb, cần nhập vào id của phim ở themoviedb.';
+                    imgnotfound.textContent = 'For themoviedb, enter the movie id in themoviedb.';
                 }
             };
             xhrmv.send();
@@ -1243,7 +1243,7 @@ function checkNewPoster() {
                     var response = JSON.parse(xhrmv.responseText);
                     imgtagDt.src = 'https://www.themoviedb.org/t/p/w300_and_h450_bestv2' + response.poster_path;
                 } else {
-                    imgnotfoundDt.textContent = 'Với themoviedb, cần nhập vào id của phim ở themoviedb.';
+                    imgnotfoundDt.textContent = 'For themoviedb, enter the movie id in themoviedb.';
                 }
             };
             xhrmv.send();
@@ -1255,7 +1255,7 @@ function checkNewPoster() {
                     var response = JSON.parse(xhrmv.responseText);
                     imgtagDt.src = 'https://www.themoviedb.org/t/p/w300_and_h450_bestv2' + response.poster_path;
                 } else {
-                    imgnotfoundDt.textContent = 'Với themoviedb, cần nhập vào id của phim ở themoviedb.';
+                    imgnotfoundDt.textContent = 'For themoviedb, enter the movie id in themoviedb.';
                 }
             };
             xhrmv.send();
@@ -1271,7 +1271,7 @@ function updateMovie() {
         } else {
             mvid = document.getElementById("dtmvid").value;
             Swal.fire({
-                title: 'Đang xử lý...',
+                title: 'Executing...',
                 allowOutsideClick: false,
                 allowEscapeKey: false,
                 allowEnterKey: false,
@@ -1330,7 +1330,7 @@ function updateMovie() {
                         getMovieList();
                         Swal.fire({
                             icon: 'success',
-                            title: 'Cập nhật thành công',
+                            title: 'Update successful',
                             confirmButtonText: 'OK',
                         }).then((result) => {
                             if (result.isConfirmed) {
@@ -1340,7 +1340,7 @@ function updateMovie() {
                     } else if (response.data.error) {
                         Swal.fire({
                             icon: 'error',
-                            title: 'Không thể cập nhật phim',
+                            title: 'Unable to update movie',
                             text: response.data.error
                         });
                     }
@@ -1408,7 +1408,7 @@ function getMVGenreList() {
         const divButton = document.createElement("div");
         divButton.className = "w-32 grid grid-cols-2";
         const editBtn = document.createElement("button");
-        editBtn.title = "Sửa";
+        editBtn.title = "Edit";
         editBtn.style.backgroundColor = "#66ccff";
         editBtn.style.color = "#fff";
         editBtn.className = "rounded-t-lg py-1";
@@ -1420,20 +1420,20 @@ function getMVGenreList() {
             var newEnName;
             var newViName;
             Swal.fire({
-                title: "Cập nhật thông tin thể loại",
+                title: "Update genre information",
                 html: `
                                         <form id="modalUpdateGenreForm">
-                                        <label for="uptGenreId"><b>Thể loại:</b></label>
+                                        <label for="uptGenreId"><b>Genre:</b></label>
                                         <input type="text" id="uptGenreId" name="uptGenreId" value='${mvg[0]}' class="swal2-input" required disabled>
-                                        <label for="uptGenreEn">Tên tiếng Anh mới</label>
+                                        <label for="uptGenreEn">English</label>
                                         <input type="text" id="uptGenreEn" name="uptGenreEn" value='${mvg[2]}' class="swal2-input" required>
-                                        <label for="uptGenreVi">Tên tiếng Việt mới</label>
+                                        <label for="uptGenreVi">Vietnamese</label>
                                         <input type="text" id="uptGenreVi" name="uptGenreVi" value='${mvg[1]}' class="swal2-input" required>
                                         </form>
                                     `,
                 showCancelButton: true,
-                confirmButtonText: "Cập nhật",
-                cancelButtonText: "Thoát",
+                confirmButtonText: "Update",
+                cancelButtonText: "Cancel",
                 showLoaderOnConfirm: true,
                 preConfirm: () => {
                     const uptGenreEn = document.getElementById("uptGenreEn").value;
@@ -1489,7 +1489,7 @@ function getMVGenreList() {
 
                         Swal.fire({
                             icon: "success",
-                            title: "Cập nhật thể loại thành công",
+                            title: "Category update successful",
                             confirmButtonText: "OK",
                         }).then((result) => {
                             if (result.isConfirmed) {
@@ -1499,15 +1499,15 @@ function getMVGenreList() {
                     } else {
                         Swal.fire({
                             icon: "error",
-                            title: "Lỗi!",
-                            text: "Lỗi: " + response.message
+                            title: "Error!",
+                            text: "Error: " + response.message
                         });
                     }
                 }
             });
         }
         const rmvBtn = document.createElement("button");
-        rmvBtn.title = "Xóa";
+        rmvBtn.title = "Delete";
         rmvBtn.style.backgroundColor = "#EF4444";
         rmvBtn.style.color = "#fff";
         rmvBtn.className = "rounded-t-lg py-1";
@@ -1518,12 +1518,12 @@ function getMVGenreList() {
         rmvBtn.onclick = function () {
             Swal.fire({
                 icon: 'warning',
-                title: 'Bạn có chắc chắn muốn xóa thể loại ' + mvg[0] + " - " + mvg[2] + "/" + mvg[1] + "?",
-                html: 'Khi đồng ý <span class="text-red-500 font-bold">XÓA</span>, thể loại này của phim cũng sẽ bị xóa và <span class="text-red-500 font-bold">không thể</span> khôi phục lại',
+                title: 'Are you sure you want to delete genre' + mvg[0] + " - " + mvg[2] + "/" + mvg[1] + "?",
+                html: 'When you agree <span class="text-red-500 font-bold">DELETE</span>, This genre of film will also be deleted and <span class="text-red-500 font-bold">cannot</span> restore',
                 showCancelButton: true,
-                confirmButtonText: 'Xóa',
+                confirmButtonText: 'Delete',
                 confirmButtonColor: 'red',
-                cancelButtonText: 'Suy nghĩ lại'
+                cancelButtonText: 'Rethink'
             }).then((result) => {
                 if (result.isConfirmed) {
                     var apiUrl = `/api/admin/genres/${mvg[0]}/as/${accId}`;
@@ -1545,13 +1545,13 @@ function getMVGenreList() {
                                 }
                                 getMVGenreList();
                                 Swal.fire(
-                                    'Đã xóa!',
-                                    'Xóa thể loại thành công!',
+                                    'Deleted!',
+                                    'Category deletion successful!',
                                     'success'
                                 );
                             }
                             else Swal.fire(
-                                'Không thể xóa!',
+                                'Can not delete!',
                                 data.message,
                                 'error'
                             );
@@ -1584,7 +1584,7 @@ function postNewGenre() {
 
         } else {
             Swal.fire({
-                title: 'Đang xử lý...',
+                title: 'Executing...',
                 allowOutsideClick: false,
                 allowEscapeKey: false,
                 allowEnterKey: false,
@@ -1617,7 +1617,7 @@ function postNewGenre() {
                         getMVGenreList();
                         Swal.fire({
                             icon: 'success',
-                            title: 'Thêm thể loại thành công',
+                            title: 'Add genre successfully',
                             confirmButtonText: 'OK',
                         }).then((result) => {
                             if (result.isConfirmed) {
@@ -1627,7 +1627,7 @@ function postNewGenre() {
                     } else if (response.data.error) {
                         Swal.fire({
                             icon: 'error',
-                            title: 'Không thể thêm thể loại',
+                            title: 'Unable to add genre',
                             text: response.data.error
                         });
                     }
@@ -1666,13 +1666,13 @@ function AddDataToMovieGenreArray(mvgid) {
                 } else if (response.status === 404 || response.status === 500) {
                     Swal.fire({
                         icon: 'error',
-                        title: 'Lỗi!',
+                        title: 'Error!',
                         text: response.data.message
                     });
                 }
             })
             .catch(function (error) {
-                console.error('Lỗi trong quá trình gửi yêu cầu:', error);
+                console.error('Error while sending request:', error);
             });
     }
 }
@@ -1726,13 +1726,13 @@ function getMovieOfGenreList() {
                         }
                         getMovieOfGenreList();
                         Swal.fire(
-                            'Đã xóa!',
-                            'Xóa thành công!',
+                            'Deleted!',
+                            'Delete successfully!',
                             'success'
                         );
                     }
                     else Swal.fire(
-                        'Không thể xóa!',
+                        'Can not delete!',
                         data.message,
                         'error'
                     );
@@ -1889,7 +1889,7 @@ function getChapterOfMovieList() {
         actionCell.classList.add("text-center");
         var uptButton = document.createElement("button");
         uptButton.classList.add("border-2", "p-2", "rounded-lg", "bg-white", "m-1");
-        uptButton.title = "Cập nhật tập phim " + ct[0];
+        uptButton.title = "Update episode " + ct[0];
         uptButton.type = "button";
         var uptIcon = document.createElement("span");
         uptIcon.className = "material-icons";
@@ -1900,21 +1900,21 @@ function getChapterOfMovieList() {
             var newname;
             var newurl;
             Swal.fire({
-                title: "Cập nhật thông tin tập phim - Mã: " + ct[0],
+                title: "Update chapter information - ID: " + ct[0],
                 html: `
                     <form id="updateChapterForm">
-                    <label for="uptchaptername">Tên tập phim</label>
+                    <label for="uptchaptername">Name</label>
                     <input type="text" id="uptchaptername" name="uptchaptername" class="swal2-input" required value="${ct[2]}">
-                    <label for="uptURL">Đường dẫn</label>
+                    <label for="uptURL">Source</label>
                     <input type="text" id="uptURL" name="uptURL" class="swal2-input" required value="${ct[3]}">
-                    <button type="button" onclick="uptCheckURL()" class="bg-[#66ccff] text-white p-2 rounded-lg";">Kiểm tra phim</button>
+                    <button type="button" onclick="uptCheckURL()" class="bg-[#66ccff] text-white p-2 rounded-lg";">Check chapter</button>
                     </form>
                     <iframe class="w-auto" id="iframeuptURL"
                     src="" frameborder="0" allowfullscreen></iframe>
                 `,
                 showCancelButton: true,
-                confirmButtonText: "Cập nhật",
-                cancelButtonText: "Hủy bỏ",
+                confirmButtonText: "Update",
+                cancelButtonText: "Cancel",
                 showLoaderOnConfirm: true,
                 preConfirm: () => {
                     const uptchaptername = document.getElementById("uptchaptername")
@@ -1986,8 +1986,8 @@ function getChapterOfMovieList() {
                     } else {
                         Swal.fire({
                             icon: "error",
-                            title: "Lỗi!",
-                            text: "Lỗi: " + response.message
+                            title: "Error!",
+                            text: "Error: " + response.message
                         });
                     }
                 }
@@ -1996,7 +1996,7 @@ function getChapterOfMovieList() {
         actionCell.appendChild(uptButton);
         var removeButton = document.createElement("button");
         removeButton.classList.add("border-2", "p-2", "rounded-lg", "bg-white", "m-1");
-        removeButton.title = "Xóa tập phim " + ct[0];
+        removeButton.title = "Delete episode" + ct[0];
         removeButton.type = "button";
         var removeIcon = document.createElement("span");
         removeIcon.className = "material-icons";
@@ -2006,12 +2006,12 @@ function getChapterOfMovieList() {
         removeButton.onclick = function () {
             Swal.fire({
                 icon: 'warning',
-                title: 'Bạn có chắc chắn muốn xóa tập phim ' + ct[0] + "?",
-                html: 'Khi đồng ý <span class="text-red-500 font-bold">XÓA</span>, tập phim sẽ bị xóa và <span class="text-red-500 font-bold">không thể</span> khôi phục lại',
+                title: 'Are you sure you want to delete the chapter' + ct[0] + "?",
+                html: 'When agree <span class="text-red-500 font-bold">DELETE</span>, the chapter will be deleted and <span class="text-red-500 font-bold">cannot</span> restore',
                 showCancelButton: true,
-                confirmButtonText: 'Xóa',
+                confirmButtonText: 'Delete',
                 confirmButtonColor: 'red',
-                cancelButtonText: 'Suy nghĩ lại'
+                cancelButtonText: 'Rethink'
             }).then((result) => {
                 if (result.isConfirmed) {
                     var apiUrl = `/api/admin/chapters/${ct[0]}/as/${accId}`;
@@ -2026,8 +2026,8 @@ function getChapterOfMovieList() {
                         .then(function (data) {
                             if (data.success === true) {
                                 Swal.fire(
-                                    'Đã xóa!',
-                                    'Xóa tập phim thành công!',
+                                    'Deleted!',
+                                    'Chapter deleted successfully!',
                                     'success'
                                 );
                                 for (var i = 0; i < chapterArray.length; i++) {
@@ -2044,9 +2044,9 @@ function getChapterOfMovieList() {
                             } else {
                                 Swal.fire({
                                     icon: 'error',
-                                    title: 'Không thể thực hiện thao tác',
-                                    html: 'Do bạn không có quyền hoặc tài khoản đang được đăng nhập ở nơi khác.<br/> Vui lòng đăng nhập lại!',
-                                    confirmButtonText: 'Đăng nhập lại',
+                                    title: 'Unable to perform operation',
+                                    html: 'Because you do not have permission or the account is being logged in somewhere else.<br/> Please log in again!',
+                                    confirmButtonText: 'Re-Login',
                                     allowOutsideClick: false,
                                 }).then((result) => {
                                     if (result.isConfirmed) {
@@ -2108,23 +2108,23 @@ function addCheckURL() {
 function addNewChapter() {
     var mvid = document.getElementById("dtmvid").value;
     Swal.fire({
-        title: "Thêm tập phim mới",
+        title: "Add new chapter",
         html: `
             <form id="addNewChapterForm">
-                <label for="mvid">Phim</label>
+                <label for="mvid">Movie</label>
                 <input type="text" id="mvid" name="mvid" class="swal2-input" value="${mvid}" required disabled>
-                <label for="chaptername">Tên tập phim</label>
+                <label for="chaptername">Name</label>
                 <input type="text" id="chaptername" name="chaptername" class="swal2-input" required>
-                <label for="chapterurl">Đường dẫn</label>
+                <label for="chapterurl">Source</label>
                 <input type="text" id="chapterurl" name="chapterurl" class="swal2-input" required>
-                <button type="button" onclick="addCheckURL()" class="bg-[#66ccff] text-white p-2 rounded-lg";">Kiểm tra phim</button>
+                <button type="button" onclick="addCheckURL()" class="bg-[#66ccff] text-white p-2 rounded-lg";">Check chapter</button>
             </form>
             <iframe class="w-auto" id="iframeaddURL"
             src="" frameborder="0" allowfullscreen></iframe>
                             `,
         showCancelButton: true,
-        confirmButtonText: "Thêm mới",
-        cancelButtonText: "Hủy bỏ",
+        confirmButtonText: "Add",
+        cancelButtonText: "Cancel",
         showLoaderOnConfirm: true,
         preConfirm: () => {
             const mvid = document.getElementById("mvid").value;
@@ -2195,8 +2195,8 @@ function addNewChapter() {
             } else {
                 Swal.fire({
                     icon: "error",
-                    title: "Lỗi!",
-                    text: "Lỗi: " + response.message
+                    title: "Error!",
+                    text: "Error: " + response.message
                 });
             }
         }
@@ -2273,20 +2273,20 @@ function getMovieErrorList() {
             actionCell.classList.add("text-center");
             var checkbox = document.createElement("input");
             checkbox.type = "checkbox";
-            checkbox.title = "Đã giải quyết";
+            checkbox.title = "Solved";
             var checkButton = document.createElement("button");
             checkButton.classList.add("border-2", "p-2", "rounded-lg", "bg-white", "m-1");
-            checkButton.title = "Đã giải quyết";
+            checkButton.title = "Solved";
             checkButton.appendChild(checkbox);
             checkbox.onclick = function () {
                 Swal.fire({
                     icon: 'question',
-                    title: "Xác nhận đã giải quyết lỗi - mã " + mverr[0],
-                    html: 'Đã giải quyết lỗi này? Sau khi xác nhận sẽ không thể khôi phục lại',
-                    confirmButtonText: 'Xác nhận',
+                    title: "Error resolved confirmation - code " + mverr[0],
+                    html: 'Resolved this error? After confirmation it will not be possible restore',
+                    confirmButtonText: 'Confirm',
                     confirmButtonColor: 'green',
                     showCancelButton: true,
-                    cancelButtonText: 'Suy nghĩ lại',
+                    cancelButtonText: 'Rethink',
                     cancelButtonColor: 'grey'
                 }).then((result) => {
                     if (result.isConfirmed) {
@@ -2354,10 +2354,10 @@ function getMovieErrorList() {
             if (mverr[3] == 1) {
                 checkbox.checked = true;
                 checkbox.disabled = true;
-                stateCell.textContent = 'Đã giải quyết';
+                stateCell.textContent = 'Solved';
                 stateCell.classList.add("text-green-500");
             } else {
-                stateCell.textContent = 'Chưa giải quyết';
+                stateCell.textContent = 'Not resolved';
                 stateCell.classList.add("text-red-500");
             }
             actionCell.appendChild(checkButton);
@@ -2445,16 +2445,16 @@ function getCommentReportList() {
             actionCell.classList.add("text-center", "flex", "justify-center");
             var checkbox = document.createElement("input");
             checkbox.type = "checkbox";
-            checkbox.title = "Đã giải quyết";
+            checkbox.title = "Solved";
             checkbox.onclick = function () {
                 Swal.fire({
                     icon: 'question',
-                    title: "Xác nhận đã giải quyết báo cáo - mã " + cmtrp[0],
-                    html: 'Đã giải quyết báo cáo này? Sau khi xác nhận sẽ không thể khôi phục lại',
-                    confirmButtonText: 'Xác nhận',
+                    title: "Report resolved confirmation - code" + cmtrp[0],
+                    html: 'Resolved this report? After confirmation it will not be possible restore',
+                    confirmButtonText: 'Confirm',
                     confirmButtonColor: 'green',
                     showCancelButton: true,
-                    cancelButtonText: 'Suy nghĩ lại',
+                    cancelButtonText: 'Rethink',
                     cancelButtonColor: 'grey'
                 }).then((result) => {
                     if (result.isConfirmed) {
@@ -2508,8 +2508,8 @@ function getCommentReportList() {
                                 } else {
                                     Swal.fire({
                                         icon: 'error',
-                                        title: 'Không thể xóa',
-                                        html: 'Do bình luận này không tồn tại hoặc đã bị xóa',
+                                        title: 'Cannot delete',
+                                        html: 'Because this comment does not exist or has been deleted',
                                     });
                                     checkbox.checked = true;
                                     checkbox.disabled = true;
@@ -2533,12 +2533,12 @@ function getCommentReportList() {
 
             var checkButton = document.createElement("button");
             checkButton.classList.add("border-2", "p-2", "rounded-lg", "bg-white", "m-1");
-            checkButton.title = "Đã xem xét";
+            checkButton.title = "Has reviewed";
             checkButton.appendChild(checkbox);
 
             var removeButton = document.createElement("button");
             removeButton.classList.add("border-2", "p-2", "rounded-lg", "bg-white", "m-1");
-            removeButton.title = "Xóa bình luận";
+            removeButton.title = "Delete comment";
             var removeIcon = document.createElement("span");
             removeIcon.className = "material-icons";
             removeIcon.textContent = "delete";
@@ -2547,12 +2547,12 @@ function getCommentReportList() {
             removeButton.onclick = function () {
                 Swal.fire({
                     icon: 'question',
-                    title: "Xác nhận xóa bình luận " + cmtrp[1],
-                    html: 'Xóa bình luận vì bình luận này vi phạm?',
-                    confirmButtonText: 'Xác nhận',
+                    title: "Confirm deletion of comment" + cmtrp[1],
+                    html: 'Delete comment because it violates?',
+                    confirmButtonText: 'Confirm',
                     confirmButtonColor: 'green',
                     showCancelButton: true,
-                    cancelButtonText: 'Suy nghĩ lại',
+                    cancelButtonText: 'Rethink',
                     cancelButtonColor: 'grey'
                 }).then((result) => {
                     if (result.isConfirmed) {
@@ -2569,15 +2569,15 @@ function getCommentReportList() {
                                 if (data.success === true) {
                                     Swal.fire({
                                         icon: 'success',
-                                        title: 'Xóa thành công',
+                                        title: 'Deleted successfully',
                                     });
                                     removeButton.disabled = true;
                                     removeIcon.style.color = "#DDDDDD";
                                 } else {
                                     Swal.fire({
                                         icon: 'error',
-                                        title: 'Không thể xóa',
-                                        html: 'Do bình luận này không tồn tại hoặc đã bị xóa',
+                                        title: 'Cannot delete',
+                                        html: 'Because this comment does not exist or has been deleted',
                                     });
                                     checkbox.checked = true;
                                     checkbox.disabled = true;
@@ -2602,10 +2602,10 @@ function getCommentReportList() {
                 checkButton.disabled = true;
                 removeButton.disabled = true;
                 removeIcon.style.color = "#DDDDDD";
-                stateCell.textContent = 'Đã giải quyết';
+                stateCell.textContent = 'Solved';
                 stateCell.classList.add("text-green-500");
             } else {
-                stateCell.textContent = 'Chưa giải quyết';
+                stateCell.textContent = 'Not resolved';
                 stateCell.classList.add("text-red-500");
             }
 
@@ -2673,8 +2673,8 @@ function deleteReportError() {
         if (!dateFrom) {
             Swal.fire({
                 icon: 'error',
-                title: 'Thông tin cung cấp không đủ!',
-                text: 'Vui lòng chọn thời gian và thử lại.'
+                title: 'The information provided is not enough!',
+                text: 'Please select a time and try again.'
             });
         }
         else {
@@ -2695,12 +2695,12 @@ function deleteReportError() {
                         getAllMovieError();
                         Swal.fire({
                             icon: 'success',
-                            title: 'Xóa thành công',
+                            title: 'Deleted successfully',
                         });
                     } else {
                         Swal.fire({
                             icon: 'error',
-                            title: 'Không thể xóa',
+                            title: 'Cannot delete',
                         });
                     }
                 })
@@ -2722,8 +2722,8 @@ function deleteReportComment() {
         if (!dateFrom) {
             Swal.fire({
                 icon: 'error',
-                title: 'Thông tin cung cấp không đủ!',
-                text: 'Vui lòng chọn thời gian và thử lại.'
+                title: 'The information provided is not enough!',
+                text: 'Please select a time and try again.'
             });
         }
         else {
@@ -2744,12 +2744,12 @@ function deleteReportComment() {
                         getAllReport();
                         Swal.fire({
                             icon: 'success',
-                            title: 'Xóa thành công',
+                            title: 'Deleted successfully',
                         });
                     } else {
                         Swal.fire({
                             icon: 'error',
-                            title: 'Không thể xóa',
+                            title: 'Cannot delete',
                         });
                     }
                 })
@@ -2792,20 +2792,20 @@ function addDataToStatisticMovieArray() {
                 } else {
                     Swal.fire({
                         icon: 'error',
-                        title: 'Thất bại!',
-                        text: 'Không tìm thấy dữ liệu'
+                        title: 'Failure!',
+                        text: 'No data found'
                     });
                 }
             } else if (response.status === 404 || response.status === 500) {
                 Swal.fire({
                     icon: 'error',
-                    title: 'Lỗi!',
+                    title: 'Error!',
                     text: response.data.message
                 });
             }
         })
         .catch(function (error) {
-            console.error('Lỗi trong quá trình gửi yêu cầu:', error);
+            console.error('Error while sending request:', error);
         });
 
 }
@@ -2856,11 +2856,11 @@ function getStatisticMovieList() {
                                 options = {
                                     title: {
                                         fontFamily: "tahoma",
-                                        text: "Số lượt đánh giá: " + dt.total
+                                        text: "Number of ratings: " + dt.total
                                     },
                                     subtitles: [{
                                         fontFamily: "arial",
-                                        text: "Điểm trung bình: " + mv[5]
+                                        text: "Average point: " + mv[5]
                                     }],
                                     animationEnabled: true,
                                     data: [{
@@ -2870,13 +2870,13 @@ function getStatisticMovieList() {
                                         showInLegend: "true",
                                         legendText: "{label}",
                                         indexLabelFontSize: 16,
-                                        indexLabel: "{label}: {x} lượt ({y}%)",
+                                        indexLabel: "{label}: {x} votes ({y}%)",
                                         dataPoints: [
-                                            {x: dt.numRating1, y: r1, label: "1 sao"},
-                                            {x: dt.numRating2, y: r2, label: "2 sao"},
-                                            {x: dt.numRating3, y: r3, label: "3 sao"},
-                                            {x: dt.numRating4, y: r4, label: "4 sao"},
-                                            {x: dt.numRating5, y: r5, label: "5 sao"},
+                                            {x: dt.numRating1, y: r1, label: "1 star"},
+                                            {x: dt.numRating2, y: r2, label: "2 stars"},
+                                            {x: dt.numRating3, y: r3, label: "3 stars"},
+                                            {x: dt.numRating4, y: r4, label: "4 stars"},
+                                            {x: dt.numRating5, y: r5, label: "5 stars"},
                                         ]
                                     }]
                                 };

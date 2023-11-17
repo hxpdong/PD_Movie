@@ -55,8 +55,8 @@ document.addEventListener("DOMContentLoaded", function () {
             if (!errorContentValue || errorContentValue.trim() === "") {
                 Swal.fire({
                     icon: 'error',
-                    title: 'Nội dung báo cáo bị trống!',
-                    text: 'Vui lòng điền thông tin cần báo cáo'
+                    title: 'Report content is empty!',
+                    text: 'Please fill in information to report'
                 });
             }
             else {
@@ -72,23 +72,23 @@ document.addEventListener("DOMContentLoaded", function () {
                         if (data.success === true) {
                             Swal.fire({
                                 icon: 'success',
-                                title: 'Báo cáo thành công!',
-                                text: 'Cảm ơn bạn đã báo cáo'
+                                title: 'Successful report!',
+                                text: 'Thank you for reporting'
                             });
                             errorContentValue.value = '';
                         } else {
                             Swal.fire({
                                 icon: 'error',
-                                title: 'Lỗi máy chủ!',
-                                text: 'Vui lòng thực hiện lại sau'
+                                title: 'Server error!',
+                                text: 'Please try again later'
                             });
                         }
                     })
                     .catch(function (error) {
                         Swal.fire({
                             icon: 'error',
-                            title: 'Lỗi hệ thống!',
-                            text: 'Vui lòng thực hiện lại sau'
+                            title: 'System error!',
+                            text: 'Please try again later'
                         });
                     });
             }
@@ -101,7 +101,7 @@ function loadMovieDetail(movieId) {
         .then(function (response) {
             var moviedt = response.data.movie_detail;
             var mvgenres = response.data.genres;
-            console.log("đã load");
+            console.log("loaded");
             if (moviedt) {
                 updateMovieDetail(moviedt);
             } else {
@@ -112,7 +112,7 @@ function loadMovieDetail(movieId) {
                 mvgenres.forEach(function (mvg) {
                     var spanElement = document.createElement('a');
                     spanElement.classList.add('bg-[#66CCFF]', 'text-blue-700', 'font-medium', 'rounded', 'dark:bg-blue-900', 'dark:text-blue-300', 'mr-2', 'mb-2', 'p-1', 'flex', 'justify-center', 'item-center');
-                    spanElement.textContent = mvg.mvgenre_vi_name;
+                    spanElement.textContent = mvg.mvgenre_en_name;
                     spanElement.href = `/genres/mvg` + mvg.mvgenre_id + "-" + mvg.mvgenre_en_name;
                     genresGroupElement.appendChild(spanElement);
                 });
@@ -137,8 +137,8 @@ function updateMovieDetail(movieDetail) {
 
     if (movieDetail) {
         movieDetail.forEach(function (movie) {
-            titleElement.innerHTML = movie.title_vi;
-            titleEnElement.innerHTML = movie.title_en;
+            titleElement.innerHTML = movie.title_en;
+            titleEnElement.innerHTML = movie.title_vi;
             directorElement.innerHTML = movie.director;
             actorsElement.innerHTML = movie.actors;
             contentElement.innerHTML = movie.content;
@@ -198,10 +198,10 @@ function updateMovieDetail(movieDetail) {
                     else posterElement.src = defaultImageUrl;
                 } else posterElement.src = defaultImageUrl;
             };
-            document.title = movie.title_vi;
+            document.title = movie.title_en;
             window.history.pushState({}, '', "mv" + movie.movie_id + "-" + movie.movie_url);
         });
-        console.log("đã update");
+        console.log("updated");
     }
     //link to director name
     const directorNames = directorElement.textContent.split(',').map(name => name.trim());
@@ -371,7 +371,7 @@ function getComments(mid, page) {
                     var ul = document.createElement("ul");
                     ul.classList.add("py-1", "text-sm", "text-gray-700", "text-gray-200");
                     ul.setAttribute("aria-labelledby", "dropdownMenuIconHorizontalButton");
-                    var menuItems = ["Sửa", "Xóa"];
+                    var menuItems = ["Edit", "Delete"];
                     var cnt = 0;
                     menuItems.forEach((itemText) => {
                         const li = document.createElement("li");
@@ -388,7 +388,7 @@ function getComments(mid, page) {
                         a.type = "button";
                         if (cnt == 0) {
                             a.onclick = function () {
-                                console.log("Sửa button clicked!");
+                                console.log("Edit button clicked!");
                                 a.disabled = true;
                                 articleContent.style.display = "none";
                                 var form = document.createElement("form");
@@ -430,7 +430,7 @@ function getComments(mid, page) {
                                     "dark:placeholder-gray-400",
                                     "dark:bg-gray-800"
                                 );
-                                textarea.placeholder = "Viết bình luận...";
+                                textarea.placeholder = "Write a comment...";
                                 textarea.textContent = cmt.comment;
                                 textarea.required = true;
 
@@ -461,7 +461,7 @@ function getComments(mid, page) {
                                     "dark:focus:ring-primary-900",
                                     "hover:bg-primary-800"
                                 );
-                                submitButton.textContent = "Sửa bình luận";
+                                submitButton.textContent = "Edit comment";
                                 submitButton.onclick = function () {
 
                                 }
@@ -492,9 +492,9 @@ function getComments(mid, page) {
                                                 // Xử lý trường hợp không thành công (VD: hiển thị thông báo lỗi)
                                                 Swal.fire({
                                                     icon: 'error',
-                                                    title: 'Không thể thực hiện thao tác',
-                                                    html: 'Do bạn không có quyền hoặc tài khoản đang được đăng nhập ở nơi khác.<br/> Vui lòng đăng nhập lại!',
-                                                    confirmButtonText: 'Đăng nhập lại',
+                                                    title: 'Unable to perform operation',
+                                                    html: 'Because you do not have permission or the account is being logged in somewhere else.<br/> Please log in again!',
+                                                    confirmButtonText: 'Re-Login',
                                                     allowOutsideClick: false,
                                                 }).then((result) => {
                                                     if (result.isConfirmed) {
@@ -517,12 +517,12 @@ function getComments(mid, page) {
                         }
                         if (cnt == 1) {
                             a.onclick = function () {
-                                console.log("Xóa button clicked!");
+                                console.log("Delete button clicked!");
                                 Swal.fire({
-                                    title: 'Bạn muốn xóa bình luận?',
+                                    title: 'Do you want to delete your comment?',
                                     showCancelButton: true,
-                                    confirmButtonText: 'Xóa',
-                                    cancelButtonText: 'Suy nghĩ lại'
+                                    confirmButtonText: 'Delete',
+                                    cancelButtonText: 'Rethink',
                                 }).then((result) => {
                                     if (result.isConfirmed) {
                                         var commentId = cmt.comment_id;
@@ -539,8 +539,8 @@ function getComments(mid, page) {
                                                 if (data.success === true) {
 
                                                     Swal.fire(
-                                                        'Đã xóa!',
-                                                        'Xóa bình luận thành công!',
+                                                        'Deleted!',
+                                                        'Comment deleted successfully!',
                                                         'success'
                                                     );
                                                     currentCmtPage = 1;
@@ -549,9 +549,9 @@ function getComments(mid, page) {
                                                     // Xử lý trường hợp không thành công (VD: hiển thị thông báo lỗi)
                                                     Swal.fire({
                                                         icon: 'error',
-                                                        title: 'Không thể thực hiện thao tác',
-                                                        html: 'Do bạn không có quyền hoặc tài khoản đang được đăng nhập ở nơi khác.<br/> Vui lòng đăng nhập lại!',
-                                                        confirmButtonText: 'Đăng nhập lại',
+                                                        title: 'Unable to perform operation',
+                                                        html: 'Because you do not have permission or the account is being logged in somewhere else.<br/> Please log in again!',
+                                                        confirmButtonText: 'Re-Login',
                                                         allowOutsideClick: false,
                                                     }).then((result) => {
                                                         if (result.isConfirmed) {
@@ -594,15 +594,15 @@ function getComments(mid, page) {
                     reportIcon.textContent = "flag";
                     reportIcon.style.color = "#fff";
                     btnReportCmt.appendChild(reportIcon);
-                    btnReportCmt.title = "Báo cáo bình luận";
+                    btnReportCmt.title = "Report comments";
                     btnReportCmt.style.padding = '4px';
                     btnReportCmt.onclick = function () {
                         Swal.fire({
-                            title: 'Bạn muốn báo cáo bình luận?',
-                            html: 'Vào lúc ' + cmt.commentTime + ", tài khoản " + cmt.usname + " đã đăng: </br>" + "<b>" + cmt.comment + "</b>",
+                            title: 'Do you want to report a comment?',
+                            html: 'At ' + cmt.commentTime + ", account " + cmt.usname + " posted: </br>" + "<b>" + cmt.comment + "</b>",
                             showCancelButton: true,
-                            confirmButtonText: 'Báo cáo',
-                            cancelButtonText: 'Hủy bỏ'
+                            confirmButtonText: 'Report',
+                            cancelButtonText: 'Cancel'
                         }).then((result) => {
                             if (result.isConfirmed) {
                                 var postReportUrl = '/api/comment/report?commentId=' + cmt.comment_id;
@@ -616,22 +616,22 @@ function getComments(mid, page) {
                                         if (data.success === true) {
                                             Swal.fire({
                                                 icon: 'success',
-                                                title: 'Báo cáo bình luận thành công!',
-                                                text: 'Cảm ơn bạn đã báo cáo, chúng tôi sẽ xem xét bình luận này'
+                                                title: 'Comment report successful!',
+                                                text: 'Thank you for reporting, we will look into this comment'
                                             });
                                         } else {
                                             Swal.fire({
                                                 icon: 'error',
-                                                title: 'Lỗi máy chủ!',
-                                                text: 'Vui lòng thực hiện lại sau'
+                                                title: 'Server error!',
+                                                text: 'Please try again later'
                                             });
                                         }
                                     })
                                     .catch(function (error) {
                                         Swal.fire({
                                             icon: 'error',
-                                            title: 'Lỗi hệ thống!' + error,
-                                            text: 'Vui lòng thực hiện lại sau'
+                                            title: 'System error!' + error,
+                                            text: 'Please try again later'
                                         });
                                     });
                             }
@@ -718,7 +718,7 @@ document.addEventListener("DOMContentLoaded", function () {
             var selectedRating = event.target.value;
             var acclogged = accId;
             var currentmov = getMovieIdFromURL();
-            ratingOutput.innerText = `Đánh giá: ${selectedRating} sao`;
+            ratingOutput.innerText = `Rate: ${selectedRating} stars`;
             console.log('danhgia: ' + selectedRating);
             sendRatingToAPI(selectedRating, acclogged, currentmov);
         }));
@@ -746,9 +746,9 @@ document.addEventListener("DOMContentLoaded", function () {
                     if (data.success === false) {
                         Swal.fire({
                             icon: 'error',
-                            title: 'Không thể thực hiện thao tác',
-                            html: 'Do bạn không có quyền hoặc tài khoản đang được đăng nhập ở nơi khác.<br/> Vui lòng đăng nhập lại!',
-                            confirmButtonText: 'Đăng nhập lại',
+                            title: 'Unable to perform operation',
+                            html: 'Because you do not have permission or the account is being logged in somewhere else.<br/> Please log in again!',
+                            confirmButtonText: 'Re-Login',
                             allowOutsideClick: false,
                         }).then((result) => {
                             if (result.isConfirmed) {
@@ -816,9 +816,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
                         Swal.fire({
                             icon: 'error',
-                            title: 'Không thể thực hiện thao tác',
-                            html: 'Do bạn không có quyền hoặc tài khoản đang được đăng nhập ở nơi khác.<br/> Vui lòng đăng nhập lại!',
-                            confirmButtonText: 'Đăng nhập lại',
+                            title: 'Unable to perform operation',
+                            html: 'Because you do not have permission or the account is being logged in somewhere else.<br/> Please log in again!',
+                            confirmButtonText: 'Re-Login',
                             allowOutsideClick: false,
                         }).then((result) => {
                             if (result.isConfirmed) {
@@ -867,7 +867,7 @@ function getMovieInfoToWatch() {
             var moviedt = response.data.movie_detail;
             if (moviedt) {
                 moviedt.forEach(function (movie) {
-                    var mvtitleText = movie.title_vi + " (" + movie.title_en + ")";
+                    var mvtitleText = movie.title_en + " (" + movie.title_vi + ")";
                     $('#watchmvtitle').text(mvtitleText);
                 });
                 var chapters = response.data.chapters;
@@ -930,7 +930,7 @@ function getLatestMovies() {
 
                 // Tạo thẻ <img> để hiển thị hình ảnh phim
                 var image = document.createElement("img");
-                image.alt = movie.title_vi;
+                image.alt = movie.title_en;
                 image.style.width = '100%';
                 image.style.objectFit = "cover";
                 image.className = "rounded-t-lg";
@@ -1001,19 +1001,19 @@ function getLatestMovies() {
 
                 // Tạo thẻ <h3> để hiển thị tiêu đề phim
                 var title = document.createElement("h3");
-                title.textContent = movie.title_vi;
+                title.textContent = movie.title_en;
                 title.className = "text-ellipsis mb-2 text-lg font-semibold";
                 movieItem.appendChild(title);
 
                 // Tạo thẻ <p> để hiển thị đạo diễn
                 var director = document.createElement("p");
-                director.textContent = "Năm: " + movie.manufactureYear;
+                director.textContent = "Year: " + movie.manufactureYear;
                 director.className = "text-ellipsis";
                 movieItem.appendChild(director);
 
                 // Tạo thẻ <p> để hiển thị danh sách diễn viên
                 var actors = document.createElement("p");
-                actors.textContent = "Thời lượng: " + movie.videoLength;
+                actors.textContent = "Length: " + movie.videoLength;
                 actors.className = "text-ellipsis";
                 movieItem.appendChild(actors);
 
@@ -1043,7 +1043,7 @@ function getRecommendedMovies() {
 
                 // Tạo thẻ <img> để hiển thị hình ảnh phim
                 var image = document.createElement("img");
-                image.alt = movie.title_vi;
+                image.alt = movie.title_en;
                 image.style.width = '100%';
                 image.style.objectFit = "cover";
                 image.className = "rounded-t-lg";
@@ -1114,19 +1114,19 @@ function getRecommendedMovies() {
 
                 // Tạo thẻ <h3> để hiển thị tiêu đề phim
                 var title = document.createElement("h3");
-                title.textContent = movie.title_vi;
+                title.textContent = movie.title_en;
                 title.className = "text-ellipsis mb-2 text-lg font-semibold";
                 movieItem.appendChild(title);
 
                 // Tạo thẻ <p> để hiển thị đạo diễn
                 var director = document.createElement("p");
-                director.textContent = "Năm: " + movie.manufactureYear;
+                director.textContent = "Year: " + movie.manufactureYear;
                 director.className = "text-ellipsis";
                 movieItem.appendChild(director);
 
                 // Tạo thẻ <p> để hiển thị danh sách diễn viên
                 var actors = document.createElement("p");
-                actors.textContent = "Thời lượng: " + movie.videoLength;
+                actors.textContent = "Length: " + movie.videoLength;
                 actors.className = "text-ellipsis";
                 movieItem.appendChild(actors);
 
@@ -1156,7 +1156,7 @@ function getRelatedMovies() {
 
                 // Tạo thẻ <img> để hiển thị hình ảnh phim
                 var image = document.createElement("img");
-                image.alt = movie.title_vi;
+                image.alt = movie.title_en;
                 image.style.width = '100%';
                 image.style.objectFit = "cover";
                 image.className = "rounded-t-lg";
@@ -1227,19 +1227,19 @@ function getRelatedMovies() {
 
                 // Tạo thẻ <h3> để hiển thị tiêu đề phim
                 var title = document.createElement("h3");
-                title.textContent = movie.title_vi;
+                title.textContent = movie.title_en;
                 title.className = "text-ellipsis mb-2 text-lg font-semibold";
                 movieItem.appendChild(title);
 
                 // Tạo thẻ <p> để hiển thị đạo diễn
                 var director = document.createElement("p");
-                director.textContent = "Năm: " + movie.manufactureYear;
+                director.textContent = "Year: " + movie.manufactureYear;
                 director.className = "text-ellipsis";
                 movieItem.appendChild(director);
 
                 // Tạo thẻ <p> để hiển thị danh sách diễn viên
                 var actors = document.createElement("p");
-                actors.textContent = "Thời lượng: " + movie.videoLength;
+                actors.textContent = "Length: " + movie.videoLength;
                 actors.className = "text-ellipsis";
                 movieItem.appendChild(actors);
 
@@ -1333,12 +1333,12 @@ function getRecommendedMoviesFrom() {
         movieItem.appendChild(title);
 
         var director = document.createElement("p");
-        director.textContent = "Năm: " + movie[6];
+        director.textContent = "Year: " + movie[6];
         director.className = "text-ellipsis";
         movieItem.appendChild(director);
 
         var actors = document.createElement("p");
-        actors.textContent = "Thời lượng: " + movie[7];
+        actors.textContent = "Length: " + movie[7];
         actors.className = "text-ellipsis";
         movieItem.appendChild(actors);
 
@@ -1364,7 +1364,7 @@ function getRecommendedMoviesFromPython(ids) {
 
                 // Tạo thẻ <img> để hiển thị hình ảnh phim
                 var image = document.createElement("img");
-                image.alt = movie.title_vi;
+                image.alt = movie.title_en;
                 image.style.width = '100%';
                 image.style.objectFit = "cover";
                 image.className = "rounded-t-lg";
@@ -1435,19 +1435,19 @@ function getRecommendedMoviesFromPython(ids) {
 
                 // Tạo thẻ <h3> để hiển thị tiêu đề phim
                 var title = document.createElement("h3");
-                title.textContent = movie.title_vi;
+                title.textContent = movie.title_en;
                 title.className = "text-ellipsis mb-2 text-lg font-semibold";
                 movieItem.appendChild(title);
 
                 // Tạo thẻ <p> để hiển thị đạo diễn
                 var director = document.createElement("p");
-                director.textContent = "Năm: " + movie.manufactureYear;
+                director.textContent = "Year: " + movie.manufactureYear;
                 director.className = "text-ellipsis";
                 movieItem.appendChild(director);
 
                 // Tạo thẻ <p> để hiển thị danh sách diễn viên
                 var actors = document.createElement("p");
-                actors.textContent = "Thời lượng: " + movie.videoLength;
+                actors.textContent = "Length: " + movie.videoLength;
                 actors.className = "text-ellipsis";
                 movieItem.appendChild(actors);
 

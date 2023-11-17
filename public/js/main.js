@@ -107,19 +107,19 @@ function getMovies(page, kwSearch) {
 
                 // Tạo thẻ <h3> để hiển thị tiêu đề phim
                 var title = document.createElement("h3");
-                title.textContent = movie.title_vi;
+                title.textContent = movie.title_en;
                 title.className = "text-ellipsis mb-2 text-lg font-semibold";
                 movieItem.appendChild(title);
 
                 // Tạo thẻ <p> để hiển thị đạo diễn
                 var director = document.createElement("p");
-                director.textContent = "Năm: " + movie.manufactureYear;
+                director.textContent = "Year: "  + movie.manufactureYear;
                 director.className = "text-ellipsis";
                 movieItem.appendChild(director);
 
                 // Tạo thẻ <p> để hiển thị danh sách diễn viên
                 var actors = document.createElement("p");
-                actors.textContent = "Thời lượng: " + movie.videoLength;
+                actors.textContent = "Length: "  + movie.videoLength;
                 actors.className = "text-ellipsis";
                 movieItem.appendChild(actors);
 
@@ -142,7 +142,7 @@ function getMovies(page, kwSearch) {
             var kwdiv = document.getElementById("keyw");
             if(getKeywordSearchFromCurrentURL()){
                 kwdiv.hidden = false;
-                document.title = "Tìm kiếm | " + getKeywordSearchFromCurrentURL().replaceAll("+", " ");
+                document.title = "Search | " + getKeywordSearchFromCurrentURL().replaceAll("+", " ");
                 document.getElementById("keywk").innerHTML = getKeywordSearchFromCurrentURL().replaceAll("+", " ");
             } else {
                 kwdiv.hidden = true;
@@ -179,8 +179,8 @@ function generatePageButtons(currentPage, lastPage) {
 
     // Hiển thị nút trang đầu tiên
     if(currentPage == 1){
-        pageButtons += '<button disabled style="margin:2px">Trang đầu</button>';
-    } else pageButtons += '<button onclick="gotoPage(1)" style="margin:2px">Trang đầu</button>';
+        pageButtons += '<button disabled style="margin:2px">First page</button>';
+    } else pageButtons += '<button onclick="gotoPage(1)" style="margin:2px">First page</button>';
     
     // Hiển thị nút "..." nếu currentPage > maxButtonsToShow + 2
     if (currentPage > maxButtonsToShow + 2) {
@@ -207,8 +207,8 @@ function generatePageButtons(currentPage, lastPage) {
 
     // Hiển thị nút trang cuối cùng
     if(currentPage == lastPage){
-        pageButtons += '<button disabled style="margin:2px">' + "Trang cuối" + '</button>';
-    } else pageButtons += '<button onclick="gotoPage(' + lastPage + ')" style="margin:2px">' + "Trang cuối" + '</button>';
+        pageButtons += '<button disabled style="margin:2px">' + "Last page" + '</button>';
+    } else pageButtons += '<button onclick="gotoPage(' + lastPage + ')" style="margin:2px">' + "Last page" + '</button>';
 
     return pageButtons;
 }
@@ -371,19 +371,19 @@ function getMovieListOfGenre(mvgid, page) {
 
                 // Tạo thẻ <h3> để hiển thị tiêu đề phim
                 var title = document.createElement("h3");
-                title.textContent = movie.title_vi;
+                title.textContent = movie.title_en;
                 title.className = "text-ellipsis mb-2 text-lg font-semibold";
                 movieItem.appendChild(title);
 
                 // Tạo thẻ <p> để hiển thị đạo diễn
                 var director = document.createElement("p");
-                director.textContent = "Năm: " + movie.manufactureYear;
+                director.textContent = "Year: "  + movie.manufactureYear;
                 director.className = "text-ellipsis";
                 movieItem.appendChild(director);
 
                 // Tạo thẻ <p> để hiển thị danh sách diễn viên
                 var actors = document.createElement("p");
-                actors.textContent = "Thời lượng: " + movie.videoLength;
+                actors.textContent = "Length: "  + movie.videoLength;
                 actors.className = "text-ellipsis";
                 movieItem.appendChild(actors);
 
@@ -402,8 +402,8 @@ function getMovieListOfGenre(mvgid, page) {
             // Lưu trạng thái trang hiện tại
             currentPage = response.data.results.current_page;
             document.getElementById("numofgenrefounded").innerHTML = response.data.results.total;
-            document.getElementById("genrename").innerHTML = response.data.infogenre.mvgenre_vi_name;
-            document.title = "Thể loại | " + response.data.infogenre.mvgenre_vi_name;
+            document.getElementById("genrename").innerHTML = response.data.infogenre.mvgenre_en_name;
+            document.title = "Genre | " + response.data.infogenre.mvgenre_en_name;
         })
         .catch(function (error) {
             console.log(error);
@@ -496,19 +496,19 @@ function getMovieListOfTag(tagkw, page) {
 
                 // Tạo thẻ <h3> để hiển thị tiêu đề phim
                 var title = document.createElement("h3");
-                title.textContent = movie.title_vi;
+                title.textContent = movie.title_en;
                 title.className = "text-ellipsis mb-2 text-lg font-semibold";
                 movieItem.appendChild(title);
 
                 // Tạo thẻ <p> để hiển thị đạo diễn
                 var director = document.createElement("p");
-                director.textContent = "Năm: " + movie.manufactureYear;
+                director.textContent = "Year: "  + movie.manufactureYear;
                 director.className = "text-ellipsis";
                 movieItem.appendChild(director);
 
                 // Tạo thẻ <p> để hiển thị danh sách diễn viên
                 var actors = document.createElement("p");
-                actors.textContent = "Thời lượng: " + movie.videoLength;
+                actors.textContent = "Length: "  + movie.videoLength;
                 actors.className = "text-ellipsis";
                 movieItem.appendChild(actors);
 

@@ -126,13 +126,13 @@ function getMovies() {
 
                 // Tạo thẻ <p> để hiển thị đạo diễn
                 var director = document.createElement("p");
-                director.textContent = "Năm: " + movie.manufactureYear;
+                director.textContent = "Year: " + movie.manufactureYear;
                 director.className = "text-ellipsis";
                 movieItem.appendChild(director);
 
                 // Tạo thẻ <p> để hiển thị danh sách diễn viên
                 var actors = document.createElement("p");
-                actors.textContent = "Thời lượng: " + movie.videoLength;
+                actors.textContent = "Length: " + movie.videoLength;
                 actors.className = "text-ellipsis";
                 movieItem.appendChild(actors);
 
@@ -240,13 +240,13 @@ function getMoviesFrom() {
 
         // Tạo thẻ <p> để hiển thị đạo diễn
         var director = document.createElement("p");
-        director.textContent = "Năm: " + movie[6];
+        director.textContent = "Year: " + movie[6];
         director.className = "text-ellipsis";
         movieItem.appendChild(director);
 
         // Tạo thẻ <p> để hiển thị danh sách diễn viên
         var actors = document.createElement("p");
-        actors.textContent = "Thời lượng: " + movie[7];
+        actors.textContent = "Length: " + movie[7];
         actors.className = "text-ellipsis";
         movieItem.appendChild(actors);
 
@@ -349,13 +349,13 @@ function getMoviesFromPython(ids) {
 
                 // Tạo thẻ <p> để hiển thị đạo diễn
                 var director = document.createElement("p");
-                director.textContent = "Năm: " + movie.manufactureYear;
+                director.textContent = "Year: " + movie.manufactureYear;
                 director.className = "text-ellipsis";
                 movieItem.appendChild(director);
 
                 // Tạo thẻ <p> để hiển thị danh sách diễn viên
                 var actors = document.createElement("p");
-                actors.textContent = "Thời lượng: " + movie.videoLength;
+                actors.textContent = "Length: " + movie.videoLength;
                 actors.className = "text-ellipsis";
                 movieItem.appendChild(actors);
 

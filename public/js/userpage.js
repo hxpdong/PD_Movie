@@ -264,14 +264,14 @@ function getCommentList(page, user_id) {
                         var btnDel = document.createElement("button");
                         btnDel.type = "button";
                         btnDel.className = "text-red-500 px-3 rounded-xl mb-3 mx-1 font-medium border-2 border-red-500";
-                        btnDel.textContent = "Xóa";
+                        btnDel.textContent = "Delete";
                         btnDel.onclick = function () {
                             console.log("Xóa button clicked!");
                             Swal.fire({
-                                title: 'Bạn muốn xóa bình luận?',
+                                title: 'Do you want to delete your comment?',
                                 showCancelButton: true,
-                                confirmButtonText: 'Xóa',
-                                cancelButtonText: 'Suy nghĩ lại'
+                                confirmButtonText: 'Delete',
+                                cancelButtonText: 'Rethink'
                             }).then((result) => {
                                 if (result.isConfirmed) {
                                     var commentId = cmt.comment_id;
@@ -287,8 +287,8 @@ function getCommentList(page, user_id) {
                                         .then(function (data) {
                                             if (data.success === true) {
                                                 Swal.fire(
-                                                    'Đã xóa!',
-                                                    'Xóa bình luận thành công!',
+                                                    'Deleted!',
+                                                    'Comment deleted successfully!',
                                                     'success'
                                                 );
                                                 if (li && li.parentNode) {
@@ -297,9 +297,9 @@ function getCommentList(page, user_id) {
                                             } else {
                                                 Swal.fire({
                                                     icon: 'error',
-                                                    title: 'Không thể thực hiện thao tác',
-                                                    html: 'Do bạn không có quyền hoặc tài khoản đang được đăng nhập ở nơi khác.<br/> Vui lòng đăng nhập lại!',
-                                                    confirmButtonText: 'Đăng nhập lại',
+                                                    title: 'Unable to perform operation',
+                                                    html: 'Because you do not have permission or the account is being logged in somewhere else.<br/> Please log in again!',
+                                                    confirmButtonText: 'Re-Login',
                                                     allowOutsideClick: false,
                                                 }).then((result) => {
                                                     if (result.isConfirmed) {
@@ -321,7 +321,7 @@ function getCommentList(page, user_id) {
                         var btnUpt = document.createElement("button");
                         btnUpt.type = "button";
                         btnUpt.className = "text-[#66ccff] px-3 rounded-xl mb-3 mx-1 font-medium border-2 border-red-500";
-                        btnUpt.textContent = "Sửa";
+                        btnUpt.textContent = "Edit";
                         btnUpt.onclick = function () {
                             console.log("Sửa button clicked!");
                             btnUpt.disabled = true;
@@ -365,7 +365,7 @@ function getCommentList(page, user_id) {
                                 "dark:placeholder-gray-400",
                                 "dark:bg-gray-800"
                             );
-                            textarea.placeholder = "Viết bình luận...";
+                            textarea.placeholder = "Enter comment...";
                             textarea.textContent = contentcmt.textContent;
                             textarea.required = true;
 
@@ -396,7 +396,7 @@ function getCommentList(page, user_id) {
                                 "dark:focus:ring-primary-900",
                                 "hover:bg-primary-800"
                             );
-                            submitButton.textContent = "Sửa bình luận";
+                            submitButton.textContent = "Edit comment";
                             submitButton.onclick = function () {
 
                             }
@@ -429,9 +429,9 @@ function getCommentList(page, user_id) {
                                         } else {
                                             Swal.fire({
                                                 icon: 'error',
-                                                title: 'Không thể thực hiện thao tác',
-                                                html: 'Do bạn không có quyền hoặc tài khoản đang được đăng nhập ở nơi khác.<br/> Vui lòng đăng nhập lại!',
-                                                confirmButtonText: 'Đăng nhập lại',
+                                                title: 'Unable to perform operation',
+                                                html: 'Because you do not have permission or the account is being logged in somewhere else.<br/> Please log in again!',
+                                                confirmButtonText: 'Re-Login',
                                                 allowOutsideClick: false,
                                             }).then((result) => {
                                                 if (result.isConfirmed) {
@@ -465,7 +465,7 @@ function getCommentList(page, user_id) {
             } else {
                 var element = document.getElementById("us-notfoundcomment");
                 if (element !== null) {
-                    element.innerHTML = "Không tìm thấy bình luận";
+                    element.innerHTML = "No comments found";
                 }
             }
             if(document.getElementById("load-more-cmt-button")){
@@ -474,7 +474,7 @@ function getCommentList(page, user_id) {
             if(response.data.listcomment.current_page ===
                 response.data.listcomment.last_page)
                 {
-                    document.getElementById("endOfCommentList").innerHTML = "Đã đến cuối danh sách";
+                    document.getElementById("endOfCommentList").innerHTML = "Reached the end of the list";
                     document.getElementById("load-more-cmt-button").style.display = "none";
                 }
             }
@@ -518,14 +518,14 @@ function getRatingList(page, user_id) {
                         var btnDel = document.createElement("button");
                         btnDel.type = "button";
                         btnDel.className = "text-red-500 px-3 rounded-xl mb-3 mx-1 font-medium border-2 border-red-500";
-                        btnDel.textContent = "Xóa";
+                        btnDel.textContent = "Delete";
                         btnDel.onclick = function () {
                             console.log("Xóa button clicked!");
                             Swal.fire({
-                                title: 'Bạn muốn xóa đánh giá?',
+                                title: 'Do you want to delete the rating?',
                                 showCancelButton: true,
-                                confirmButtonText: 'Xóa',
-                                cancelButtonText: 'Suy nghĩ lại'
+                                confirmButtonText: 'Delete',
+                                cancelButtonText: 'Rethink'
                             }).then((result) => {
                                 if (result.isConfirmed) {
                                     var ratingId = rt.rating_id;
@@ -541,8 +541,8 @@ function getRatingList(page, user_id) {
                                         .then(function (data) {
                                             if (data.success === true) {
                                                 Swal.fire(
-                                                    'Đã xóa!',
-                                                    'Xóa đánh giá thành công!',
+                                                    'Deleted!',
+                                                    'Rating removed successfully!',
                                                     'success'
                                                 );
                                                 
@@ -555,9 +555,9 @@ function getRatingList(page, user_id) {
                                             } else {
                                                 Swal.fire({
                                                     icon: 'error',
-                                                    title: 'Không thể thực hiện thao tác',
-                                                    html: 'Do bạn không có quyền hoặc tài khoản đang được đăng nhập ở nơi khác.<br/> Vui lòng đăng nhập lại!',
-                                                    confirmButtonText: 'Đăng nhập lại',
+                                                    title: 'Unable to perform operation',
+                                                    html: 'Because you do not have permission or the account is being logged in somewhere else.<br/> Please log in again!',
+                                                    confirmButtonText: 'Re-Login',
                                                     allowOutsideClick: false,
                                                 }).then((result) => {
                                                     if (result.isConfirmed) {
@@ -579,7 +579,7 @@ function getRatingList(page, user_id) {
                         var btnUpt = document.createElement("button");
                         btnUpt.type = "button";
                         btnUpt.className = "text-[#66ccff] px-3 rounded-xl mb-3 mx-1 font-medium border-2 border-red-500";
-                        btnUpt.textContent = "Sửa";
+                        btnUpt.textContent = "Edit";
                         btnUpt.onclick = function () {
                             console.log("Sửa button clicked!");
                             btnUpt.disabled = true;
@@ -647,7 +647,7 @@ function getRatingList(page, user_id) {
                             btnUpt.disabled = false;
                             divEditRat.style.display = "none";
                         }
-                        submitButton.textContent = "Đóng";
+                        submitButton.textContent = "Close";
                         // Thêm nút submit vào div thứ hai
                         //div2.appendChild(submitButton);
                         //thuc hien danh gia
@@ -692,10 +692,10 @@ function getRatingList(page, user_id) {
                         li.appendChild(hrtag);
                         ratingListElement.appendChild(li);
 
-                        console.log("Đã thêm rating thứ: " + rt.rating_id);
+                        //console.log("Đã thêm rating thứ: " + rt.rating_id);
                         //xử lý sự kiện khi đánh giá thay đổi
                         var rtName = 'rating' + rt.rating_id;
-                        console.log(rtName);
+                        //console.log(rtName);
                         const stars = document.getElementsByName(rtName);
                         if (stars.length == 0) console.log("Mảng stars rỗng: " + rtName);
                         const ratingOutput = document.getElementById(
@@ -705,7 +705,7 @@ function getRatingList(page, user_id) {
                             var selectedRating = event.target.value;
                             var acclogged = accId;
                             var currentmov = rt.movie_id;
-                            ratingOutput.textContent = `Đánh giá: ${selectedRating} sao`;
+                            ratingOutput.textContent = `Rate: ${selectedRating} stars`;
                             console.log('danhgia: ' + selectedRating);
                             sendRatingToAPI(selectedRating, acclogged, currentmov);
                         }));
@@ -732,9 +732,9 @@ function getRatingList(page, user_id) {
                                 if (data.success === false) {
                                     Swal.fire({
                                         icon: 'error',
-                                        title: 'Không thể thực hiện thao tác',
-                                        html: 'Do bạn không có quyền hoặc tài khoản đang được đăng nhập ở nơi khác.<br/> Vui lòng đăng nhập lại!',
-                                        confirmButtonText: 'Đăng nhập lại',
+                                        title: 'Unable to perform operation',
+                                        html: 'Because you do not have permission or the account is being logged in somewhere else.<br/> Please log in again!',
+                                        confirmButtonText: 'Re-Login',
                                         allowOutsideClick: false,
                                     }).then((result) => {
                                         if (result.isConfirmed) {
@@ -756,7 +756,7 @@ function getRatingList(page, user_id) {
             } else {
                 var element = document.getElementById("us-notfoundrating");
                 if (element !== null) {
-                    element.innerHTML = "Không tìm thấy đánh giá";
+                    element.innerHTML = "No rating found";
                 }
             }
             if(document.getElementById("load-more-rt-button")){
@@ -765,7 +765,7 @@ function getRatingList(page, user_id) {
             if(response.data.listrating.current_page ===
                 response.data.listrating.last_page)
                 {
-                    document.getElementById("endOfRatingList").innerHTML = "Đã đến cuối danh sách";
+                    document.getElementById("endOfRatingList").innerHTML = "Reached the end of the list";
                     document.getElementById("load-more-rt-button").style.display = "none";
                 }
             }

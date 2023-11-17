@@ -52,7 +52,7 @@
     "content": "Content",
     "directors": "Directors",
     "actors": "Actors",
-    "notecomma": "(separated by commas)",
+    "notecomma": "(separated by commas ',')",
     "manuyear": "Manufacture year",
     "videolength": "Length",
     "typeof": "Type of ",
@@ -110,5 +110,6 @@
     "sendrating": "Send rating",
     "relatemv": "Related movies",
     "latestmv": "Latest movies",
-    "mvbytag": "Movies by tag"
+    "mvbytag": "Movies by tag",
+    "getdata": "Retrieving data..."
 }

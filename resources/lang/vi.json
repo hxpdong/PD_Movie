@@ -52,7 +52,7 @@
     "content": "Nội dung",
     "directors": "Đạo diễn",
     "actors": "Diễn viên",
-    "notecomma": "(cách nhau bởi dấu phẩy)",
+    "notecomma": "(cách nhau bởi dấu phẩy ',')",
     "manuyear": "Năm phát hành",
     "videolength": "Thời lượng",
     "type": "Kiểu ",
@@ -110,5 +110,6 @@
     "sendrating": "Gửi đánh giá",
     "relatemv": "Phim liên quan",
     "latestmv": "Phim mới nhất",
-    "mvbytag": "Phim theo tag"
+    "mvbytag": "Phim theo tag",
+    "getdata": "Đang lấy dữ liệu..."
 }
