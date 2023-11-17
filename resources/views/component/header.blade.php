@@ -49,13 +49,13 @@
                                 <div
                                     class="py-2 bg-white text-blue-800 text-sm rounded-sm border border-main-color shadow-sm">
                                     <a class="block px-4 py-2 mt-2 text-sm bg-white md:mt-0 focus:text-gray-900 hover:bg-indigo-100 focus:bg-gray-200 focus:outline-none focus:shadow-outline"
-                                        href="/users/{{ auth()->user()->name }}">Trang cá nhân</a>
+                                        href="/users/{{ auth()->user()->name }}">{{ __('userpage') }}</a>
                                     <button data-modal-toggle="profile-modal" onclick="openProfileModal()"
                                         class="font-normal w-full text-left block px-4 py-2 mt-2 text-sm bg-white md:mt-0 focus:text-gray-900 hover:bg-indigo-100 focus:bg-gray-200 focus:outline-none focus:shadow-outline">
-                                        Chỉnh sửa thông tin</button>
+                                        {{ __('editprofile') }}</button>
                                     <button data-modal-toggle="password-modal"
                                         class="font-normal w-full text-left block px-4 py-2 mt-2 text-sm bg-white md:mt-0 focus:text-gray-900 hover:bg-indigo-100 focus:bg-gray-200 focus:outline-none focus:shadow-outline">
-                                        Đổi mật khẩu
+                                        {{ __('changepassword') }}
                                     </button>
                                 </div>
                             </div>
@@ -63,18 +63,15 @@
                     </nav>
                 </div>
                 <button onclick="window.location.href = '/logoutHeader'; localStorage.clear();"
-                    class="text-gray-800 bg-white mx-1 dark:text-white hover:bg-gray-50 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-gray-800">Đăng
-                    xuất
+                    class="text-gray-800 bg-white mx-1 dark:text-white hover:bg-gray-50 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-gray-800">{{ __('logout') }}
                 </button>
 
                 @else
-                Khách!
+                {{ __('guest') }}!
                 <button data-modal-toggle="authentication-modal"
-                    class="text-gray-800 bg-white mx-1 dark:text-white hover:bg-gray-50 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-gray-800">Đăng
-                    nhập</button>
+                    class="text-gray-800 bg-white mx-1 dark:text-white hover:bg-gray-50 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-gray-800">{{ __('login') }}</button>
                 <button data-modal-toggle="register-modal"
-                    class="text-white bg-[#66CCFF] hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Đăng
-                    ký</button>
+                    class="text-white bg-[#66CCFF] hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">{{ __('register') }}</button>
                 @endif
 
 
@@ -110,7 +107,7 @@
                             <div class="relative">
                                 <input type="search" id="default-search"
                                     class="lg:w-72 w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                    placeholder="tìm kiếm..." required name="kwsearch">
+                                    placeholder="{{ __('search') }}..." required name="kwsearch">
                                 <button type="submit"
                                     class="text-white absolute right-2.5 bottom-2.5 bg-[#66CCFF] hover:bg-[#00aaff] focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                                     <svg class="w-4 h-4 text-white dark:text-white" aria-hidden="true"
@@ -125,7 +122,7 @@
                     <li>
                         <div
                             class="flex justify-center rounded text-white lg:text-black hover:text-black hover:bg-gray-200 bg-gray-700 lg:bg-transparent  focus:ring-4 focus:outline-none focus:bg-[#66CCFF] font-medium px-2 py-2.5 text-center items-center w-full lg:w-auto">
-                            <span class="mr-2">Thể loại</span>
+                            <span class="mr-2">{{ __('genres') }}</span>
                             <select class="w-48" id="genresList" onchange="redirectToGenre()">
                             </select>
                         </div>
@@ -134,7 +131,7 @@
                     <li>
                         <a href="/recommend"
                             class="rounded text-white lg:text-black hover:text-black hover:bg-gray-200 bg-gray-700 lg:bg-transparent  focus:ring-4 focus:outline-none focus:bg-[#66CCFF] font-medium px-5 py-2.5 text-center inline-flex items-center w-full lg:w-auto"
-                            aria-current="page">Đề xuất cho bạn</a>
+                            aria-current="page">{{ __('recommended') }}</a>
                     </li>
                     @endif
                     <li>
@@ -170,13 +167,13 @@
                                             <div
                                                 class="py-2 bg-white text-blue-800 text-sm rounded-sm border border-main-color shadow-sm">
                                                 <a class="block px-4 py-2 mt-2 text-sm bg-white md:mt-0 focus:text-gray-900 hover:bg-indigo-100 focus:bg-gray-200 focus:outline-none focus:shadow-outline"
-                                                    href="/users/{{ auth()->user()->name }}">Trang cá nhân</a>
+                                                    href="/users/{{ auth()->user()->name }}">{{ __('userpage') }}</a>
                                                 <button data-modal-toggle="profile-modal" onclick="openProfileModal()"
                                                     class="font-normal w-full text-left block px-4 py-2 mt-2 text-sm bg-white md:mt-0 focus:text-gray-900 hover:bg-indigo-100 focus:bg-gray-200 focus:outline-none focus:shadow-outline">
-                                                    Chỉnh sửa thông tin</button>
+                                                    {{ __('editprofile') }}</button>
                                                 <button data-modal-toggle="password-modal"
                                                     class="font-normal w-full text-left block px-4 py-2 mt-2 text-sm bg-white md:mt-0 focus:text-gray-900 hover:bg-indigo-100 focus:bg-gray-200 focus:outline-none focus:shadow-outline">
-                                                    Đổi mật khẩu
+                                                    {{ __('changepassword') }}
                                                 </button>
                                             </div>
                                         </div>
@@ -184,17 +181,14 @@
                                 </nav>
                             </div>
                             <button onclick="window.location.href = '/logoutHeader'; localStorage.clear();"
-                                class="text-gray-800 bg-white mx-1 dark:text-white hover:bg-gray-50 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-gray-800">Đăng
-                                xuất
+                                class="text-gray-800 bg-white mx-1 dark:text-white hover:bg-gray-50 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-gray-800">{{ __('logout') }}
                             </button>
                             @else
-                            Khách!
+                            {{ __('guest') }}!
                             <button data-modal-toggle="authentication-modal"
-                                class="text-gray-800 bg-white mx-1 dark:text-white hover:bg-gray-50 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-gray-800">Đăng
-                                nhập</button>
+                                class="text-gray-800 bg-white mx-1 dark:text-white hover:bg-gray-50 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-gray-800">{{ __('login') }}</button>
                             <button data-modal-toggle="register-modal"
-                                class="text-white bg-[#66CCFF] hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Đăng
-                                ký</button>
+                                class="text-white bg-[#66CCFF] hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">{{ __('register') }}</button>
                             @endif
                         </div>
                     </li>
@@ -213,7 +207,7 @@
         <div class="bg-white rounded-lg shadow relative dark:bg-gray-700">
             <div class="flex justify-end p-2 bg-[#66CCFF]">
                 <div class="px-6">
-                    <h3 class="text-xl font-medium text-white dark:text-white">Đăng nhập</h3>
+                    <h3 class="text-xl font-medium text-white dark:text-white">{{ __('login') }}</h3>
                 </div>
                 <button type="button" onclick="closeModalLogin()"
                     class="text-white bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-800 dark:hover:text-white"
@@ -228,36 +222,33 @@
             <form id="modalLoginForm" class="space-y-6 px-6 lg:px-8">
                 @csrf
                 <div>
-                    <label for="email" class="text-sm font-medium text-gray-900 block mb-2 dark:text-gray-300">Tên
-                        đăng
-                        nhập</label>
+                    <label for="email" class="text-sm font-medium text-gray-900 block mb-2 dark:text-gray-300">{{ __('username') }}</label>
                     <input type="text" name="mdusname" id="mdusname"
                         class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
-                        placeholder="tên đăng nhập">
+                        placeholder="{{ __('username') }}">
                 </div>
                 <div>
-                    <label for="password" class="text-sm font-medium text-gray-900 block mb-2 dark:text-gray-300">Mật
-                        khẩu</label>
+                    <label for="password" class="text-sm font-medium text-gray-900 block mb-2 dark:text-gray-300">{{ __('password') }}</label>
                     <input type="password" name="mduspassword" id="mduspassword" placeholder="••••••••"
                         class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white">
                 </div>
                 <button type="submit"
                     class="w-full text-white bg-[#66CCFF] hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                    Đăng nhập</button>
+                    {{ __('login') }}</button>
             </form>
 
             <div class="space-y-4 px-6 lg:px-8 pb-4">
                 <div class="flex justify-between">
                     <p class="mt-2 text-sm text-black">
-                        Quên mật khẩu?
+                        {{ __('forgotpassword') }}
                         <a class="text-blue-600 decoration-2 hover:underline font-medium" href="/forgot-password">
-                            Lấy lại mật khẩu
+                            {{ __('resetpassword') }}
                         </a>
                     </p>
                 </div>
                 <div class="text-sm font-medium text-gray-500 dark:text-gray-300">
-                    Chưa có tài khoản? <button data-modal-toggle="register-modal"
-                        class="text-blue-700 hover:underline dark:text-blue-500">Đăng ký</button>
+                    {{ __('donthaveaccount') }} <button data-modal-toggle="register-modal"
+                        class="text-blue-700 hover:underline dark:text-blue-500">{{ __('register') }}</button>
                 </div>
             </div>
         </div>
@@ -274,7 +265,7 @@
         <div class="bg-white rounded-lg shadow relative dark:bg-gray-700">
             <div class="flex justify-end p-2 bg-[#66CCFF]">
                 <div class="px-6">
-                    <h3 class="text-xl font-medium text-white dark:text-white">Đăng ký</h3>
+                    <h3 class="text-xl font-medium text-white dark:text-white">{{ __('register') }}</h3>
                 </div>
                 <button type="button" onclick="closeModalRegister()"
                     class="text-white bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-800 dark:hover:text-white"
@@ -290,10 +281,10 @@
                 @csrf
                 <div>
                     <label for="mdregfullname"
-                        class="text-sm font-medium text-gray-900 block mb-2 dark:text-gray-300">Họ tên</label>
+                        class="text-sm font-medium text-gray-900 block mb-2 dark:text-gray-300">{{ __('fullname') }}</label>
                     <input type="text" name="mdregfullname" id="mdregfullname"
                         class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
-                        placeholder="họ tên">
+                        placeholder="{{ __('fullname') }}">
                 </div>
                 <div>
                     <label for="mdregemail"
@@ -303,24 +294,21 @@
                         placeholder="email@gmail.com">
                 </div>
                 <div>
-                    <label for="mdregusname" class="text-sm font-medium text-gray-900 block mb-2 dark:text-gray-300">Tên
-                        đăng
-                        nhập</label>
+                    <label for="mdregusname" class="text-sm font-medium text-gray-900 block mb-2 dark:text-gray-300">{{ __('username') }}</label>
                     <input type="text" name="mdregusname" id="mdregusname"
                         class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
-                        placeholder="tên đăng nhập">
+                        placeholder="{{ __('username') }}">
                 </div>
                 <div>
                     <label for="mdreguspassword"
-                        class="text-sm font-medium text-gray-900 block mb-2 dark:text-gray-300">Mật
-                        khẩu</label>
+                        class="text-sm font-medium text-gray-900 block mb-2 dark:text-gray-300">{{ __('password') }}</label>
                     <input type="password" name="mdreguspassword" id="mdreguspassword" placeholder="••••••••"
                         class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white">
                 </div>
                 <div>
                     <label for="mdreguspassword-check"
                         class="text-sm font-medium text-gray-900 block mb-2 dark:text-gray-300">
-                        Xác nhận mật khẩu
+                        {{ __('confirmpassword') }}
                     </label>
                     <input type="password" name="mdreguspassword-check" id="mdreguspassword-check"
                         placeholder="••••••••"
@@ -328,7 +316,7 @@
                 </div>
                 <button type="submit"
                     class="w-full text-white bg-[#66CCFF] hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                    Đăng ký</button>
+                    {{ __('register') }}</button>
             </form>
         </div>
     </div>
@@ -344,7 +332,7 @@
         <div class="bg-white rounded-lg shadow relative dark:bg-gray-700">
             <div class="flex justify-end p-2 bg-[#66CCFF]">
                 <div class="px-6">
-                    <h3 class="text-xl font-medium text-white dark:text-white">Thông tin cá nhân</h3>
+                    <h3 class="text-xl font-medium text-white dark:text-white">{{ __('editprofile') }}</h3>
                 </div>
                 <button type="button" onclick="closeModalEditProfile()"
                     class="text-white bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-800 dark:hover:text-white"
@@ -365,8 +353,7 @@
                         value="{{ auth()->user()->id }}">
                 </div>
                 <div>
-                    <label for="mdpf1" class="text-sm font-medium text-gray-900 block mb-2 dark:text-gray-300">Họ
-                        tên</label>
+                    <label for="mdpf1" class="text-sm font-medium text-gray-900 block mb-2 dark:text-gray-300">{{ __('fullname') }}</label>
                     <input type="text" name="uptfullname" id="uptfullname"
                         class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
                         value="{{ auth()->user()->fullname }}">
@@ -381,7 +368,7 @@
 
                 <button type="submit"
                     class="w-full text-white bg-[#66CCFF] hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                    Xác nhận</button>
+                    {{ __('confirm') }}</button>
                 @endif
             </form>
         </div>
@@ -398,7 +385,7 @@
         <div class="bg-white rounded-lg shadow relative dark:bg-gray-700">
             <div class="flex justify-end p-2 bg-[#66CCFF]">
                 <div class="px-6">
-                    <h3 class="text-xl font-medium text-white dark:text-white">Đổi mật khẩu</h3>
+                    <h3 class="text-xl font-medium text-white dark:text-white">{{ __('changepassword') }}</h3>
                 </div>
                 <button type="button" onclick="closeModalPassword()"
                     class="text-white bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-800 dark:hover:text-white"
@@ -421,21 +408,21 @@
                 @endif
                 <div>
                     <label for="mdcp1" class="text-sm font-medium text-gray-900 block mb-2 dark:text-gray-300">
-                        Mật khẩu cũ
+                    {{ __('oldpassword') }}
                     </label>
                     <input type="password" name="uptoldpassword" id="uptoldpassword"
                         class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white">
                 </div>
                 <div>
                     <label for="mdcp2" class="text-sm font-medium text-gray-900 block mb-2 dark:text-gray-300">
-                        Mật khẩu mới
+                    {{ __('newpassword') }}
                     </label>
                     <input type="password" name="uptnewpassword" id="uptnewpassword"
                         class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white">
                 </div>
                 <div>
                     <label for="mdcp3" class="text-sm font-medium text-gray-900 block mb-2 dark:text-gray-300">
-                        Xác nhận mật khẩu mới
+                    {{ __('confirmpassword') }}
                     </label>
                     <input type="password" name="uptconfirmpassword" id="uptconfirmpassword"
                         class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white">
@@ -443,11 +430,12 @@
 
                 <button type="submit"
                     class="w-full text-white bg-[#66CCFF] hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                    Đổi mật khẩu</button>
+                    {{ __('changepassword') }}</button>
             </form>
         </div>
     </div>
 </div>
+@include ('component.head-changeLang')
 <!-- end of change password modal -->
 <script src="/js/storeRecommend.js"></script>
 <script>
@@ -483,7 +471,7 @@ $(document).ready(function() {
                 } else {
                     Swal.fire({
                         icon: 'error',
-                        title: 'Không thể đăng nhập',
+                        title: 'Cannot login',
                         text: response.data.message
                     });
                 }
@@ -491,8 +479,8 @@ $(document).ready(function() {
             .catch(error => {
                 Swal.fire({
                     icon: 'error',
-                    title: 'Lỗi',
-                    text: 'Đã xảy ra lỗi trong quá trình xử lý yêu cầu.'
+                    title: 'Error!',
+                    text: 'An error occurred while processing the request.'
                 });
             });
     });
@@ -506,14 +494,14 @@ $(document).ready(function() {
         if (password === "" || confirmPassword === "") {
             Swal.fire({
                 icon: 'error',
-                title: 'Thông tin cung cấp không đủ!',
-                text: 'Vui lòng điền đầy đủ thông tin và thử lại.'
+                title: 'Required information is not enough!',
+                text: 'Please fill in all information and try again.'
             });
         } else if (password !== confirmPassword) {
             Swal.fire({
                 icon: 'error',
-                title: 'Mật khẩu không trùng khớp!',
-                text: 'Vui lòng kiểm tra lại mật khẩu và nhập lại mật khẩu'
+                title: 'Password and confirmation password do not match!',
+                text: 'Please check your password and re-enter it.'
             });
         } else {
             // Serialize the form data
@@ -531,7 +519,7 @@ $(document).ready(function() {
                         getRCMMoviesToLocalStorage();
                         Swal.fire({
                             icon: 'success',
-                            title: 'Đăng ký thành công',
+                            title: 'Register Success',
                             confirmButtonText: 'OK',
                         }).then((result) => {
                             if (result.isConfirmed) {
@@ -541,7 +529,7 @@ $(document).ready(function() {
                     } else if (response.data.error) {
                         Swal.fire({
                             icon: 'error',
-                            title: 'Không thể đăng ký',
+                            title: 'Register Fail',
                             text: response.data.message
                         });
                     }
@@ -549,8 +537,8 @@ $(document).ready(function() {
                 .catch(error => {
                     Swal.fire({
                         icon: 'error',
-                        title: 'Lỗi',
-                        text: 'Đã xảy ra lỗi trong quá trình xử lý yêu cầu.'
+                        title: 'Error!',
+                        text: 'An error occurred while processing the request.'
                     });
                 });
         }
@@ -567,7 +555,7 @@ $(document).ready(function() {
                 xhr.setRequestHeader('Authorization', apiToken);
 
                 Swal.fire({
-                    title: 'Đang xử lý...',
+                    title: `{{ __('executing') }}`,
                     allowOutsideClick: false,
                     allowEscapeKey: false,
                     allowEnterKey: false,
@@ -584,7 +572,7 @@ $(document).ready(function() {
                 if (response.success) {
                     Swal.fire({
                         icon: 'success',
-                        title: 'Cập nhật thông tin thành công',
+                        title: 'Successfully updated!',
                         confirmButtonText: 'OK',
                     }).then((result) => {
                         if (result.isConfirmed) {
@@ -594,7 +582,7 @@ $(document).ready(function() {
                 } else {
                     Swal.fire({
                         icon: 'error',
-                        title: 'Không thể thực hiện thao tác',
+                        title: 'The operation cannot be performed!',
                         html: response.message,
                     });
                 }
@@ -603,8 +591,8 @@ $(document).ready(function() {
                 Swal.close();
                 Swal.fire({
                     icon: 'error',
-                    title: 'Lỗi',
-                    text: 'Đã xảy ra lỗi trong quá trình gửi yêu cầu.'
+                    title: 'Error!',
+                    text: 'An error occurred while sending the request.'
                 });
             }
         });
@@ -621,14 +609,14 @@ $(document).ready(function() {
         if (password === "" || confirmPassword === "" || oldPassword === "") {
             Swal.fire({
                 icon: 'error',
-                title: 'Thông tin cung cấp không đủ!',
-                text: 'Vui lòng điền đầy đủ thông tin và thử lại.'
+                title: 'The information provided is not enough!',
+                text: 'Please fill in all information and try again.'
             });
         } else if (password !== confirmPassword) {
             Swal.fire({
                 icon: 'error',
-                title: 'Mật khẩu không trùng khớp!',
-                text: 'Vui lòng kiểm tra lại mật khẩu và nhập lại mật khẩu'
+                title: 'Password and confirmation password do not match!',
+                text: 'Please check your password and re-enter it.'
             });
         } else {
             $.ajax({
@@ -665,7 +653,7 @@ $(document).ready(function() {
                     } else {
                         Swal.fire({
                             icon: 'error',
-                            title: 'Không thể thực hiện thao tác',
+                            title: 'The operation cannot be performed!',
                             html: response.message,
                         });
                     }

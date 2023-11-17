@@ -456,7 +456,7 @@ function getAdminList() {
     $('#admintable').DataTable({
         responsive: false,
         language: {
-            "url": "//cdn.datatables.net/plug-ins/1.10.19/i18n/Vietnamese.json"
+            /*"url": "//cdn.datatables.net/plug-ins/1.10.19/i18n/Vietnamese.json"*/"url": "//cdn.datatables.net/plug-ins/1.10.19/i18n/English.json"
         },
         lengthMenu: [5, 10, 15, 20],
     })
@@ -687,7 +687,7 @@ function getUserList() {
     $('#usertable').DataTable({
         responsive: false,
         language: {
-            "url": "//cdn.datatables.net/plug-ins/1.10.19/i18n/Vietnamese.json"
+            /*"url": "//cdn.datatables.net/plug-ins/1.10.19/i18n/Vietnamese.json"*/"url": "//cdn.datatables.net/plug-ins/1.10.19/i18n/English.json"
         },
         lengthMenu: [5, 10, 15, 20],
     })
@@ -1032,7 +1032,7 @@ function getMovieList() {
     $('#movietable').DataTable({
         responsive: false,
         language: {
-            "url": "//cdn.datatables.net/plug-ins/1.10.19/i18n/Vietnamese.json"
+            /*"url": "//cdn.datatables.net/plug-ins/1.10.19/i18n/Vietnamese.json"*/"url": "//cdn.datatables.net/plug-ins/1.10.19/i18n/English.json"
         },
         "order": [[0, 'desc']],
         lengthMenu: [5, 10, 15, 20],
@@ -1751,7 +1751,7 @@ function getMovieOfGenreList() {
     $('#movie-genre-table').DataTable({
         responsive: false,
         language: {
-            "url": "//cdn.datatables.net/plug-ins/1.10.19/i18n/Vietnamese.json"
+            /*"url": "//cdn.datatables.net/plug-ins/1.10.19/i18n/Vietnamese.json"*/"url": "//cdn.datatables.net/plug-ins/1.10.19/i18n/English.json"
         },
         "order": [[0, 'desc']],
         lengthMenu: [5, 10, 15, 20],
@@ -2071,7 +2071,7 @@ function getChapterOfMovieList() {
     $('#chaptertable').DataTable({
         responsive: false,
         language: {
-            "url": "//cdn.datatables.net/plug-ins/1.10.19/i18n/Vietnamese.json"
+            /*"url": "//cdn.datatables.net/plug-ins/1.10.19/i18n/Vietnamese.json"*/"url": "//cdn.datatables.net/plug-ins/1.10.19/i18n/English.json"
         },
         "order": [[0, 'desc']],
         lengthMenu: [5, 10, 15, 20],
@@ -2366,7 +2366,7 @@ function getMovieErrorList() {
         $('#movieErrTable').DataTable({
             responsive: false,
             language: {
-                "url": "//cdn.datatables.net/plug-ins/1.10.19/i18n/Vietnamese.json"
+                /*"url": "//cdn.datatables.net/plug-ins/1.10.19/i18n/Vietnamese.json"*/"url": "//cdn.datatables.net/plug-ins/1.10.19/i18n/English.json"
             },
             "order": [[3, 'asc']],
             lengthMenu: [5, 10, 15, 20],
@@ -2616,7 +2616,7 @@ function getCommentReportList() {
         $('#ReportCommentTable').DataTable({
             responsive: false,
             language: {
-                "url": "//cdn.datatables.net/plug-ins/1.10.19/i18n/Vietnamese.json"
+                /*"url": "//cdn.datatables.net/plug-ins/1.10.19/i18n/Vietnamese.json"*/"url": "//cdn.datatables.net/plug-ins/1.10.19/i18n/English.json"
             },
             "order": [[3, 'asc']],
             lengthMenu: [5, 10, 15, 20],
@@ -2894,7 +2894,7 @@ function getStatisticMovieList() {
     $('#statisticmovietable').DataTable({
         responsive: false,
         language: {
-            "url": "//cdn.datatables.net/plug-ins/1.10.19/i18n/Vietnamese.json"
+            /*"url": "//cdn.datatables.net/plug-ins/1.10.19/i18n/Vietnamese.json"*/"url": "//cdn.datatables.net/plug-ins/1.10.19/i18n/English.json"
         },
         lengthMenu: [5, 10, 15, 20],
         order: [0, 'desc'],

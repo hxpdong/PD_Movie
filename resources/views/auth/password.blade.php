@@ -2,7 +2,7 @@
 @include ('component.head-script')
 
 <head></head>
-<title>Quên mật khẩu</title>
+<title>{{ __('resetpassword') }}</title>
 
 <body>
     <main id="content" role="main" class="w-full  max-w-md mx-auto p-6">
@@ -10,11 +10,11 @@
             class="mt-7 bg-white  rounded-xl shadow-lg dark:bg-gray-800 dark:border-gray-700 border-2 border-indigo-300">
             <div class="p-4 sm:p-7">
                 <div class="text-center">
-                    <h1 class="block text-2xl font-bold text-gray-800 dark:text-white">Quên mật khẩu?</h1>
+                    <h1 class="block text-2xl font-bold text-gray-800 dark:text-white">{{ __('forgotpassword') }}</h1>
                     <p class="mt-2 text-sm text-gray-600 dark:text-gray-400">
-                        Đã nhớ mật khẩu?
+                        {{ __('rememberpassword') }}
                         <a class="text-blue-600 decoration-2 hover:underline font-medium" href="/login">
-                            Đăng nhập
+                            {{ __('login') }}
                         </a>
                     </p>
                 </div>
@@ -24,20 +24,17 @@
                         @method('PUT')
                         <div class="grid gap-y-4">
                             <div>
-                                <label for="email" class="block text-sm font-bold ml-1 mb-2 dark:text-white">Email đã
-                                    đăng ký tài khoản</label>
+                                <label for="email" class="block text-sm font-bold ml-1 mb-2 dark:text-white">{{ __('registedemail') }}</label>
                                 <div class="relative">
                                     <input type="email" id="registed_email" name="registed_email"
                                         class="py-3 px-4 block w-full border-2 border-gray-200 rounded-md text-sm focus:border-blue-500 focus:ring-blue-500 shadow-sm"
                                         required aria-describedby="email-error">
                                 </div>
-                                <p hidden class="text-xs text-red-600 mt-2" id="email-error">Hãy nhập đúng email mà bạn
-                                    đã đăng ký khi tạo tài khoản, để chúng tôi có thể gửi xác nhận đến bạn thông qua
-                                    email!</p>
+                                <p hidden class="text-xs text-red-600 mt-2" id="email-error">{{ __('wrongemail') }}</p>
                             </div>
                             <button type="submit"
                                 class="py-3 px-4 inline-flex justify-center items-center gap-2 rounded-md border border-transparent font-semibold bg-blue-500 text-white hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all text-sm dark:focus:ring-offset-gray-800">
-                                Gửi email
+                                {{ __('send') }} email
                             </button>
                         </div>
                     </form>
@@ -58,28 +55,23 @@
                                         class="py-3 px-4 block w-full border-2 border-gray-200 rounded-md text-sm focus:border-blue-500 focus:ring-blue-500 shadow-sm"
                                         aria-describedby="otp-error">
                                 </div>
-                                <label for="password" class="block text-sm font-bold ml-1 mb-2 dark:text-white">Mật khẩu
-                                    mới</label>
+                                <label for="password" class="block text-sm font-bold ml-1 mb-2 dark:text-white">{{ __('newpassword') }}</label>
                                 <div class="relative">
                                     <input type="password" id="password" name="password"
                                         class="py-3 px-4 block w-full border-2 border-gray-200 rounded-md text-sm focus:border-blue-500 focus:ring-blue-500 shadow-sm"
                                         aria-describedby="password-error">
                                 </div>
                                 <label for="confirm-password"
-                                    class="block text-sm font-bold ml-1 mb-2 dark:text-white">Xác nhận mật khẩu</label>
+                                    class="block text-sm font-bold ml-1 mb-2 dark:text-white">{{ __('confirmpassword') }}</label>
                                 <div class="relative">
                                     <input type="password" id="confirm-password" name="confirm-password"
                                         class="py-3 px-4 block w-full border-2 border-gray-200 rounded-md text-sm focus:border-blue-500 focus:ring-blue-500 shadow-sm"
                                         aria-describedby="confirm-password-error">
                                 </div>
-                                <p hidden class="text-xs text-red-600 mt-2" id="email-error-2">Hãy nhập đúng email mà
-                                    bạn
-                                    đã đăng ký khi tạo tài khoản, để chúng tôi có thể gửi xác nhận đến bạn thông qua
-                                    email!</p>
+                                <p hidden class="text-xs text-red-600 mt-2" id="email-error-2">{{ __('wrongemail') }}</p>
                             </div>
                             <button type="submit"
-                                class="py-3 px-4 inline-flex justify-center items-center gap-2 rounded-md border border-transparent font-semibold bg-blue-500 text-white hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all text-sm dark:focus:ring-offset-gray-800">Xác
-                                nhận</button>
+                                class="py-3 px-4 inline-flex justify-center items-center gap-2 rounded-md border border-transparent font-semibold bg-blue-500 text-white hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all text-sm dark:focus:ring-offset-gray-800">{{ __('confirm') }}</button>
                         </div>
                     </form>
                 </div>
@@ -88,12 +80,11 @@
         <p class="mt-3 flex justify-center items-center text-center divide-x divide-gray-300 dark:divide-gray-700">
             <a class="pr-3.5 inline-flex items-center gap-x-2 text-sm text-gray-600 decoration-2 hover:underline hover:text-blue-600 dark:text-gray-500 dark:hover:text-gray-200"
                 href="/">
-                Trang chủ
+                {{ __('homepage') }}
             </a>
             <a class="pl-3 inline-flex items-center gap-x-2 text-sm text-gray-600 decoration-2 hover:underline hover:text-blue-600 dark:text-gray-500 dark:hover:text-gray-200"
                 href="/">
-
-                Liên hệ chúng tôi!
+               {{ __('contactus') }}
             </a>
         </p>
     </main>
@@ -106,7 +97,7 @@
             data: $(this).serialize(),
             beforeSend: function(xhr) {
                 Swal.fire({
-                    title: 'Đang xử lý...',
+                    title: `{{ __('executing') }}`,
                     allowOutsideClick: false,
                     allowEscapeKey: false,
                     allowEnterKey: false,
@@ -137,7 +128,7 @@
                     document.getElementById("email-error").hidden = false;
                     Swal.fire({
                         icon: 'error',
-                        title: 'Không thể thực hiện thao tác',
+                        title: 'The operation cannot be performed!',
                         html: response.message,
                     });
                 }
@@ -146,8 +137,8 @@
                 Swal.close();
                 Swal.fire({
                     icon: 'error',
-                    title: 'Lỗi',
-                    text: 'Đã xảy ra lỗi trong quá trình gửi yêu cầu.'
+                    title: 'Error!',
+                    text: 'An error occurred while sending the request.'
                 });
             }
         });
@@ -161,14 +152,14 @@
         if (password === "" || confirmPassword === "") {
             Swal.fire({
                 icon: 'error',
-                title: 'Thông tin cung cấp không đủ!',
-                text: 'Vui lòng điền đầy đủ thông tin và thử lại.'
+                title: 'The information provided is not enough!',
+                text: 'Please fill in all information and try again.'
             });
         } else if (password !== confirmPassword) {
             Swal.fire({
                 icon: 'error',
-                title: 'Mật khẩu không trùng khớp!',
-                text: 'Vui lòng kiểm tra lại mật khẩu và nhập lại mật khẩu'
+                title: 'Password and confirmation password do not match!',
+                text: 'Please check your password and re-enter it'
             });
         } else {
             $.ajax({
@@ -177,7 +168,7 @@
                 data: $(this).serialize(),
                 beforeSend: function(xhr) {
                     Swal.fire({
-                        title: 'Đang xử lý...',
+                        title: `{{ __('executing') }}`,
                         allowOutsideClick: false,
                         allowEscapeKey: false,
                         allowEnterKey: false,
@@ -194,10 +185,10 @@
                     if (response.success) {
                         Swal.fire({
                             icon: 'success',
-                            title: 'Mật khẩu mới được cập nhật',
+                            title: 'New password updated!',
                             background: '#ffffff',
                             backdrop: false,
-                            confirmButtonText: 'Đăng nhập lại',
+                            confirmButtonText: 'Re-login',
                         }).then((result) => {
                             if (result.isConfirmed) {
                                 window.location.href = '/login';
@@ -207,7 +198,7 @@
                         document.getElementById("email-error").hidden = false;
                         Swal.fire({
                             icon: 'error',
-                            title: 'Không thể thực hiện thao tác',
+                            title: 'The operation cannot be performed!',
                             html: response.message,
                         });
                     }
@@ -216,8 +207,8 @@
                     Swal.close();
                     Swal.fire({
                         icon: 'error',
-                        title: 'Lỗi',
-                        text: 'Đã xảy ra lỗi trong quá trình gửi yêu cầu.'
+                        title: 'Error!',
+                        text: 'An error occurred while sending the request.'
                     });
                 }
             });

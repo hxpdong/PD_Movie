@@ -105,7 +105,7 @@
         <!-- Nội dung trang chính của bạn -->
         <div class="p-5 w-full flex-1 overflow-x-hidden overflow-y-auto" id="isAd-DashboardPage">
             <div class="container mx-auto w-full">
-                <h3 class="text-4xl font-bold">Bảng điều khiển</h3>
+                <h3 class="text-4xl font-bold">{{ __('dashboard') }}</h3>
                 <div class="flex flex-wrap justify-start items-center">
                     @if(auth()->user()->acctype_id == 1)
                     <!--Admin tag-->
@@ -116,7 +116,7 @@
                             </div>
 
                             <div class="mx-5">
-                                <h4 class="text-2xl font-semibold text-gray-700">Quản trị viên</h4>
+                                <h4 class="text-2xl font-semibold text-gray-700">{{ __('admin') }}</h4>
                                 <div class="text-gray-500" id="numOfAdmin">&ensp;</div>
                             </div>
                         </div>
@@ -131,7 +131,7 @@
                             </div>
 
                             <div class="mx-5">
-                                <h4 class="text-2xl font-semibold text-gray-700">Người dùng</h4>
+                                <h4 class="text-2xl font-semibold text-gray-700">{{ __('user') }}</h4>
                                 <div class="text-gray-500" id="numOfUser">&ensp;</div>
                             </div>
                         </div>
@@ -145,8 +145,8 @@
                             </div>
 
                             <div class="mx-5">
-                                <h4 class="text-2xl font-semibold text-gray-700" id="">Phim</h4>
-                                <div class="text-gray-500">Thống kê</div>
+                                <h4 class="text-2xl font-semibold text-gray-700" id="">{{ __('movie') }}</h4>
+                                <div class="text-gray-500">{{ __('statistic') }}</div>
                             </div>
                         </div>
                     </div>
@@ -154,29 +154,29 @@
                 </div>
                 <div class='w-full flex justify-end px-5'>
                     <button hidden id="btnDivHidden" class="bg-blue-500 text-white font-bold p-2 m-1 rounded-md"
-                        onclick="showAccTable(0)">Đóng</button>
+                        onclick="showAccTable(0)">{{ __('close') }}</button>
                 </div>
                 <div id="acctable" class="flex flex-col mx-5">
                     @if(auth()->user()->acctype_id == 1)
                     <!--admin table-->
                     <div class="bg-white p-4 my-5 divHidden" id="amtb" hidden>
-                        <div class="font-bold text-xl mb-4">Quản trị viên</div>
+                        <div class="font-bold text-xl mb-4">{{ __('admin') }}</div>
                         <button id="btnAddNewAdmin"
                             class="bg-blue-500 text-white p-3 rounded-md mb-4 font-bold flex items-center">
                             <span class="material-icons">add</span>
-                            Thêm quản trị viên
+                            {{ __('add') }} {{ __('admin') }}
                         </button>
                         <div class="datatable-container">
                             <table id="admintable" class="stripe hover"
                                 style="width:100%; padding-top: 1em;  padding-bottom: 1em;">
                                 <thead>
                                     <tr>
-                                        <th data-priority="1">Họ tên</th>
-                                        <th data-priority="2">Tên tài khoản</th>
+                                        <th data-priority="1">{{ __('fullname') }}</th>
+                                        <th data-priority="2">{{ __('username') }}</th>
                                         <th data-priority="3">Email</th>
-                                        <th data-priority="4">Số điện thoại</th>
-                                        <th data-priority="5">Trạng thái</th>
-                                        <th data-priority="6">Thao tác</th>
+                                        <th data-priority="4">{{ __('phone') }}</th>
+                                        <th data-priority="5">{{ __('state') }}</th>
+                                        <th data-priority="6">{{ __('actions') }}</th>
                                     </tr>
                                 </thead>
                                 <tbody id="tbd-admintable">
@@ -188,17 +188,17 @@
                     @endif
                     <!--User table-->
                     <div class="bg-white p-4 my-5 divHidden" id="ustb" hidden>
-                        <div class="font-bold text-xl mb-4">Người dùng</div>
+                        <div class="font-bold text-xl mb-4">{{ __('user') }}</div>
                         <div class="datatable-container">
                             <table id="usertable" class="stripe hover"
                                 style="width:100%; padding-top: 1em;  padding-bottom: 1em;">
                                 <thead>
                                     <tr>
-                                        <th data-priority="1">Họ tên</th>
-                                        <th data-priority="2">Tên tài khoản</th>
+                                        <th data-priority="1">{{ __('fullname') }}</th>
+                                        <th data-priority="2">{{ __('username') }}</th>
                                         <th data-priority="3">Email</th>
-                                        <th data-priority="4">Trạng thái</th>
-                                        <th data-priority="5">Thao tác</th>
+                                        <th data-priority="4">{{ __('state') }}</th>
+                                        <th data-priority="5">{{ __('actions') }}</th>
                                     </tr>
                                 </thead>
                                 <tbody id="tbd-usertable">
@@ -215,10 +215,10 @@
                                 class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                                 <tr>
                                     <th scope="col" class="px-6 py-3">
-                                        Thống kê
+                                    {{ __('statistic') }}
                                     </th>
                                     <th scope="col" class="px-6 py-3">
-                                        Số lượng
+                                    {{ __('amount') }}
                                     </th>
                                 </tr>
                             </thead>
@@ -226,7 +226,7 @@
                                 <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                                     <th scope="row"
                                         class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                        Tổng số phim
+                                        {{ __('totalmovie') }}
                                     </th>
                                     <td class="px-6 py-4 text-lg" id="total-movie">
                                         0
@@ -235,7 +235,7 @@
                                 <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                                     <th scope="row"
                                         class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                        Tổng lượt xem
+                                        {{ __('totalview') }}
                                     </th>
                                     <td class="px-6 py-4 text-lg" id="total-view">
                                         0
@@ -244,7 +244,7 @@
                                 <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                                     <th scope="row"
                                         class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                        Tổng đánh giá
+                                        {{ __('totalrating') }}
                                     </th>
                                     <td class="px-6 py-4 text-lg" id="total-rating">
                                         0
@@ -253,18 +253,18 @@
                             </tbody>
                         </table>
                     </div>
-                    <div class="font-bold text-xl mb-4">Danh sách phim</div>
+                    <div class="font-bold text-xl mb-4">{{ __('movielist') }}</div>
                     <div class="datatable-container">
                         <table id="statisticmovietable" class="stripe hover"
                             style="width:100%; padding-top: 1em;  padding-bottom: 1em;">
                             <thead>
                                 <tr>
-                                    <th data-priority="1">Mã phim</th>
-                                    <th data-priority="2">Tựa (tiếng Việt)</th>
-                                    <th data-priority="3">Tựa (tiếng Anh)</th>
-                                    <th data-priority="4">Số lượt xem</th>
-                                    <th data-priority="5">Số lượt đánh giá</th>
-                                    <th data-priority="6">Điểm (/5.0)</th>
+                                    <th data-priority="1">{{ __('mvid') }}</th>
+                                    <th data-priority="2">{{ __('mvtitlevi') }}</th>
+                                    <th data-priority="3">{{ __('mvtitleen') }}</th>
+                                    <th data-priority="4">{{ __('numview') }}</th>
+                                    <th data-priority="5">{{ __('numrating') }}</th>
+                                    <th data-priority="6">{{ __('point') }} (/5.0)</th>
                                 </tr>
                             </thead>
                             <tbody id="tbd-statisticmovietable">

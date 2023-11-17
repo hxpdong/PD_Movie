@@ -7,13 +7,13 @@
 </head>
 <body>
     <div class="main-container">
-        <div class="text-white mb-2">Phim theo danh mục: 
+        <div class="text-white mb-2">{{ __('listbygen') }}: 
             <span id="genrename">...</span>
         </div>
         <div class="text-lg text-white">
-            (Tìm thấy 
+            ({{ __('find') }} 
                 <span id="numofgenrefounded">...</span>
-            Kết quả)
+            {{ __('result') }})
         </div>
         <div class="hidden" id="isGenrePage"></div>
         <div id="movie-list" class="grid-container">

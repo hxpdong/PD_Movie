@@ -15,14 +15,14 @@
         <!-- Nội dung trang chính của bạn -->
         <div class="p-5 w-full flex-1 overflow-x-hidden overflow-y-auto" id="isSystemPage">
             <div class="container mx-auto w-full">
-                <h3 class="text-4xl font-bold mb-4">Hệ thống</h3>
+                <h3 class="text-4xl font-bold mb-4">{{ __('system') }}</h3>
                 <button id="btnDivHidden" class="bg-blue-500 text-white font-bold p-2 m-1 rounded-md"
-                    onclick="exportRatingCSV()">Xuất Thông tin Đánh giá</button>
+                    onclick="exportRatingCSV()">{{ __('exportrating') }}</button>
 
                 <form id="uploadForm" enctype="multipart/form-data" class="bg-white p-2">
                     <input type="file" name="file" accept=".csv" required>
                     <button type="button" onclick="uploadFile()"
-                        class="bg-blue-500 text-white p-2 rounded-lg font-bold">Nhập dữ liệu Đánh giá</button>
+                        class="bg-blue-500 text-white p-2 rounded-lg font-bold">{{ __('importrating') }}</button>
                 </form>
                 <!-- Hiển thị thông báo -->
                 <div id="message"></div>

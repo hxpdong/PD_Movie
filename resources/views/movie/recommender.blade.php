@@ -7,9 +7,9 @@
 </head>
 <body>
     <div class="main-container">
-        <button onclick="location.reload();">Reload</button>
+        <button onclick="location.reload();" hidden>Reload</button>
         <div class="text-white">
-            Có thể bạn sẽ thích:
+        {{ __('recommendedforyou') }}:
         </div>
         <div id="movie-list" class="grid-container">
         </div>

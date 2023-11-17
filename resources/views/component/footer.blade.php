@@ -5,7 +5,7 @@
 </button>
 <footer id="footerdiv" class="bg-[#2e8ebe] flex justify-center items-center flex-col w-full p-2 bottom-0 fixed">
     <div class="text-white">PDMovie</div>
-    <div class="text-white">Xem những gì bạn thích</div>
+    <div class="text-white">{{ __('banner') }}</div>
 </footer>
 <script>
 var toTopButton = document.getElementById("to-top-button");

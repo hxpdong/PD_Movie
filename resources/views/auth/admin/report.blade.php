@@ -68,7 +68,7 @@
         <!-- Nội dung trang chính của bạn -->
         <div class="p-5 w-full flex-1 overflow-x-hidden overflow-y-auto" id="isAd-ReportPage">
             <div class="container mx-auto w-full">
-                <h3 class="text-4xl font-bold">Báo cáo</h3>
+                <h3 class="text-4xl font-bold">{{ __('report') }}</h3>
                 <div class="flex flex-wrap justify-center items-center">
                     <!--Movie tag-->
                     <div class="w-full px-6 sm:w-1/2 xl:w-1/3 my-2" onclick="showReportTable(1)">
@@ -78,7 +78,7 @@
                             </div>
 
                             <div class="mx-5">
-                                <h4 class="text-2xl font-semibold text-gray-700">Lỗi phim</h4>
+                                <h4 class="text-2xl font-semibold text-gray-700">{{ __('mverr') }}</h4>
                             </div>
                             <span class="bg-red-500 p-2 rounded-full" id="rp-movieErrNoti" hidden></span>
                         </div>
@@ -93,7 +93,7 @@
                             </div>
 
                             <div class="mx-5">
-                                <h4 class="text-2xl font-semibold text-gray-700">Bình luận</h4>
+                                <h4 class="text-2xl font-semibold text-gray-700">{{ __('rpcmt') }}</h4>
                             </div>
                             <span class="bg-red-500 p-2 rounded-full" id="rp-commentNoti" hidden></span>
                         </div>
@@ -103,12 +103,12 @@
                 <div id="reporttable" class="flex flex-col mx-5">
                     <!--movieerr table-->
                     <div class="bg-white p-4 my-5" id="mverrtb" hidden>
-                        <div class="font-bold text-xl mb-2">Lỗi phim</div>
+                        <div class="font-bold text-xl mb-2">{{ __('mverr') }}</div>
                         @if(auth()->user()->acctype_id == 1)
                         <form id="deleteReportErrorForm" method="POST">
                             @csrf
                             @method('DELETE')
-                            <button type="submit" class="bg-blue-500 text-white p-2 font-bold mb-2 rounded-lg">Xóa báo cáo trước ngày
+                            <button type="submit" class="bg-blue-500 text-white p-2 font-bold mb-2 rounded-lg">{{ __('delrp') }}
                             </button>
                             <input type="date" name="beforeDate" id="beforeDateErr" class="font-bold text-black rounded-lg p-2">
                         </form>
@@ -118,13 +118,13 @@
                                 style="width:100%; padding-top: 1em;  padding-bottom: 1em;">
                                 <thead>
                                     <tr>
-                                        <th data-priority="1">Mã lỗi</th>
-                                        <th data-priority="2">Thuộc phim</th>
-                                        <th data-priority="3">Ghi nhận</th>
-                                        <th data-priority="4">Trạng thái</th>
-                                        <th data-priority="5">Thời gian tạo</th>
-                                        <th data-priority="6">Thời gian cập nhật</th>
-                                        <th data-priority="7">Thao tác</th>
+                                        <th data-priority="1">{{ __('errid') }}</th>
+                                        <th data-priority="2">{{ __('dependmovie') }}</th>
+                                        <th data-priority="3">{{ __('content') }}</th>
+                                        <th data-priority="4">{{ __('state') }}</th>
+                                        <th data-priority="5">{{ __('timecreate') }}</th>
+                                        <th data-priority="6">{{ __('timesolve') }}</th>
+                                        <th data-priority="7">{{ __('actions') }}</th>
                                     </tr>
                                 </thead>
                                 <tbody id="tbd-movieErrTable">
@@ -135,12 +135,12 @@
                     <!--end movieerr table-->
                     <!--reportcmt table-->
                     <div class="bg-white p-4 my-5" id="rpcmttb" hidden>
-                        <div class="font-bold text-xl mb-2">Bình luận vi phạm</div>
+                        <div class="font-bold text-xl mb-2">{{ __('rpcmt') }}</div>
                         @if(auth()->user()->acctype_id == 1)
                         <form id="deleteReportCommentForm" method="POST">
                             @csrf
                             @method('DELETE')
-                            <button type="submit" class="bg-blue-500 text-white p-2 font-bold mb-2 rounded-lg">Xóa báo cáo trước ngày
+                            <button type="submit" class="bg-blue-500 text-white p-2 font-bold mb-2 rounded-lg">{{ __('delrp') }}
                             </button>
                             <input type="date" name="beforeDate" id="beforeDateCmt" class="font-bold text-black rounded-lg p-2">
                         </form>
@@ -150,13 +150,13 @@
                                 style="width:100%; padding-top: 1em;  padding-bottom: 1em;">
                                 <thead>
                                     <tr>
-                                        <th data-priority="1">Mã vi phạm</th>
-                                        <th data-priority="2">Mã bình luận</th>
-                                        <th data-priority="3">Nội dung bình luận</th>
-                                        <th data-priority="4">Trạng thái</th>
-                                        <th data-priority="5">Thời gian tạo</th>
-                                        <th data-priority="6">Thời gian cập nhật</th>
-                                        <th data-priority="7">Thao tác</th>
+                                        <th data-priority="1">{{ __('rpid') }}</th>
+                                        <th data-priority="2">{{ __('cmtid') }}</th>
+                                        <th data-priority="3">{{ __('content') }}</th>
+                                        <th data-priority="4">{{ __('state') }}</th>
+                                        <th data-priority="5">{{ __('timecreate') }}</th>
+                                        <th data-priority="6">{{ __('timesolve') }}</th>
+                                        <th data-priority="7">{{ __('actions') }}</th>
                                     </tr>
                                 </thead>
                                 <tbody id="tbd-ReportCommentTable">

@@ -126,7 +126,7 @@
         <div class="bg-white rounded-lg shadow relative dark:bg-gray-700">
             <div class="flex justify-end p-2 bg-[#66CCFF]">
                 <div class="px-6">
-                    <h3 class="text-xl font-medium text-white dark:text-white">Đổi mật khẩu</h3>
+                    <h3 class="text-xl font-medium text-white dark:text-white">{{ __('changepassword') }}</h3>
                 </div>
                 <button type="button" onclick="closeModalPassword()"
                     class="text-white bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-800 dark:hover:text-white"
@@ -149,21 +149,21 @@
                 @endif
                 <div>
                     <label for="mdcp1" class="text-sm font-medium text-gray-900 block mb-2 dark:text-gray-300">
-                        Mật khẩu cũ
+                        {{ __('oldpassword') }}
                     </label>
                     <input type="password" name="uptoldpassword" id="uptoldpassword"
                         class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white">
                 </div>
                 <div>
                     <label for="mdcp2" class="text-sm font-medium text-gray-900 block mb-2 dark:text-gray-300">
-                        Mật khẩu mới
+                    {{ __('newpassword') }}
                     </label>
                     <input type="password" name="uptnewpassword" id="uptnewpassword"
                         class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white">
                 </div>
                 <div>
                     <label for="mdcp3" class="text-sm font-medium text-gray-900 block mb-2 dark:text-gray-300">
-                        Xác nhận mật khẩu mới
+                    {{ __('confirmpassword') }}
                     </label>
                     <input type="password" name="uptconfirmpassword" id="uptconfirmpassword"
                         class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white">
@@ -171,7 +171,7 @@
 
                 <button type="submit"
                     class="w-full text-white bg-[#66CCFF] hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                    Đổi mật khẩu</button>
+                    {{ __('changepassword') }}</button>
             </form>
         </div>
     </div>
@@ -231,11 +231,10 @@
                     </div>
                     <button data-modal-toggle="password-modal"
                         class="text-gray-800 bg-white mx-1 dark:text-white hover:bg-gray-50 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-gray-800">
-                        Đổi mật khẩu
+                        {{ __('changepassword') }}
                     </button>
                     <button onclick="window.location.href = '/logoutHeader'; localStorage.clear();"
-                        class="text-gray-800 bg-white mx-1 dark:text-white hover:bg-gray-50 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-gray-800">Đăng
-                        xuất
+                        class="text-gray-800 bg-white mx-1 dark:text-white hover:bg-gray-50 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-gray-800">{{ __('logout') }}
                     </button>
                     @endif
                 </div>
@@ -293,11 +292,10 @@
                             </div>
                             <button data-modal-toggle="password-modal"
                                 class="text-gray-800 bg-white mx-1 dark:text-white hover:bg-gray-50 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-gray-800">
-                                Đổi mật khẩu
+                                {{ __('changepassword') }}
                             </button>
                             <button onclick="window.location.href = '/logoutHeader'; localStorage.clear();"
-                                class="text-gray-800 bg-white mx-1 dark:text-white hover:bg-gray-50 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-gray-800">Đăng
-                                xuất
+                                class="text-gray-800 bg-white mx-1 dark:text-white hover:bg-gray-50 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-gray-800">{{ __('logout') }}
                             </button>
                             @endif
                         </div>
@@ -307,6 +305,7 @@
         </div>
     </nav>
 </header>
+@include ('component.head-changeLang')
 <script>
 const accId = document.getElementById("authUserId").value;
 const apiToken = localStorage.getItem('log_token');
@@ -325,14 +324,14 @@ $('#modalPasswordForm').submit(function(e) {
     if (password === "" || confirmPassword === "" || oldPassword === "") {
         Swal.fire({
             icon: 'error',
-            title: 'Thông tin cung cấp không đủ!',
-            text: 'Vui lòng điền đầy đủ thông tin và thử lại.'
+            title: 'The information provided is not enough!',
+            text: 'Please fill in all information and try again.'
         });
     } else if (password !== confirmPassword) {
         Swal.fire({
             icon: 'error',
-            title: 'Mật khẩu không trùng khớp!',
-            text: 'Vui lòng kiểm tra lại mật khẩu và nhập lại mật khẩu'
+            title: 'Password and confirmation password do not match!',
+            text: 'Please check your password and re-enter it'
         });
     } else {
         $.ajax({
@@ -342,7 +341,7 @@ $('#modalPasswordForm').submit(function(e) {
             beforeSend: function(xhr) {
                 xhr.setRequestHeader('Authorization', apiToken);
                 Swal.fire({
-                    title: 'Đang xử lý...',
+                    title: `{{ __('executing') }}`,
                     allowOutsideClick: false,
                     allowEscapeKey: false,
                     allowEnterKey: false,
@@ -371,7 +370,7 @@ $('#modalPasswordForm').submit(function(e) {
                 } else {
                     Swal.fire({
                         icon: 'error',
-                        title: 'Không thể thực hiện thao tác',
+                        title: 'The operation cannot be performed!',
                         html: response.message,
                     });
                 }

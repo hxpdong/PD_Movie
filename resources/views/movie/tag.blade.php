@@ -7,13 +7,13 @@
 </head>
 <body>
     <div class="main-container">
-        <div class="text-white mb-2">Phim theo tag: 
+        <div class="text-white mb-2">{{ __('mvbytag') }}: 
             <span id="tagname">...</span>
         </div>
         <div class="text-lg text-white">
-            (Tìm thấy 
+            ({{ __('find') }} 
                 <span id="numoftagfounded">...</span>
-            Kết quả)
+            {{ __('result') }})
         </div>
         <div class="hidden" id="isTagPage"></div>
         <div id="movie-list" class="grid-container">

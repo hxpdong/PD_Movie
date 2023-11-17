@@ -23,24 +23,24 @@
                 href="/admin/movies" id="btn-movies">
                 <i class="fa-solid fa-film fa-xl"></i>
 
-                <span class="mx-3">Phim</span>
+                <span class="mx-3">{{ __('movie')}}</span>
             </a>
             <a class="flex items-center px-6 py-2 mt-4 text-gray-500 hover:bg-gray-700 hover:bg-opacity-25 hover:text-gray-100"
                 href="/admin/genres" id="btn-genres">
                 <i class="fa-solid fa-tags fa-xl"></i>
 
-                <span class="mx-3">Thể Loại</span>
+                <span class="mx-3">{{ __('genre')}}</span>
             </a>
             <a class="flex items-center px-6 py-2 mt-4 text-gray-500 hover:bg-gray-700 hover:bg-opacity-25 hover:text-gray-100"
                 href="/admin/reports" id="btn-reports">
                 <i class="fa-solid fa-flag fa-xl"></i>
-                <span class="mx-3">Báo cáo</span>
+                <span class="mx-3">{{ __('report')}}</span>
                 <span class="bg-red-500 p-1 rounded-full" id="sidebar-reportNotify" hidden></span>
             </a>
             <a class="flex items-center px-6 py-2 mt-4 text-gray-500 hover:bg-gray-700 hover:bg-opacity-25 hover:text-gray-100"
                 href="/admin/system" id="btn-system">
                 <i class="fa-solid fa-gear fa-xl"></i>
-                <span class="mx-3">Hệ thống</span>
+                <span class="mx-3">{{ __('system')}}</span>
             </a>
         </nav>
     </div>

@@ -77,7 +77,7 @@
                         <span class="text-[#66CCFF]">
                         <i class="fa-solid fa-people-group"></i>
                         </span>
-                        <span>Người dùng tương đồng</span>
+                        <span>{{ __('similarusers') }}</span>
                     </div>
                     <div class="grid grid-cols-3" id="similarUser-list">
                     </div>
@@ -94,7 +94,7 @@
                         <span clas="text-green-500">
                         <i class="fa-solid fa-thumbs-up fa-lg" style="color: #66ccff;"></i>
                         </span>
-                        <span class="tracking-wide">Phim yêu thích</span>
+                        <span class="tracking-wide">{{ __('favoritemovies') }}</span>
                         <span id="expand-container-favoritemovies" style="display: none;">
                         <i class="fa-solid fa-caret-down fa-2xl"></i>
                         </span>
@@ -142,7 +142,7 @@
                             <span clas="text-green-500">
                             <i class="fa-solid fa-clock-rotate-left fa-lg" style="color: #66ccff"></i>
                             </span>
-                            <span class="tracking-wide">Các tương tác</span>
+                            <span class="tracking-wide">{{ __('actions') }}</span>
                         </div>
                         <div class="grid grid-cols-1 lg:grid-cols-2">
                             <div class="border-2 p-2 m-2">
@@ -151,7 +151,7 @@
                                     <span clas="text-green-500">
                                     <i class="fa-regular fa-message fa-lg"></i>
                                     </span>
-                                    <span class="tracking-wide">Bình luận</span>
+                                    <span class="tracking-wide">{{ __('cmt') }}</span>
                                     <span id="expand-us-commentList" style="display: none;">
                                     <i class="fa-solid fa-caret-down fa-2xl"></i>
                                     </span>
@@ -165,7 +165,7 @@
                                 <div class="flex justify-center flex-col">
                                     <div id="endOfCommentList" class="flex justify-center"></div>
                                     <button onclick="loadMoreComment()" id="load-more-cmt-button" class="font-bold text-blue-500 border-2 px-2 rounded-lg mt-3">
-                                        Tải thêm
+                                        {{ __('loadmore') }}
                                     </button>
                                 </div>
                             </div>
@@ -175,7 +175,7 @@
                                     <span clas="text-green-500">
                                     <i class="fa-regular fa-star fa-lg"></i>
                                     </span>
-                                    <span class="tracking-wide">Đánh giá</span>
+                                    <span class="tracking-wide">{{ __('rt') }}</span>
                                     <span id="expand-us-ratingList" style="display: none;">
                                     <i class="fa-solid fa-caret-down fa-2xl"></i>
                                     </span>
@@ -189,7 +189,7 @@
                                 <div class="flex justify-center flex-col">
                                     <div id="endOfRatingList" class="flex justify-center"></div>
                                     <button onclick="loadMoreRating()" id="load-more-rt-button" class="font-bold text-blue-500 border-2 px-2 rounded-lg mt-3">
-                                        Tải thêm
+                                        {{ __('loadmore') }}
                                     </button>
                                 </div>
                             </div>

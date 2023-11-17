@@ -20,7 +20,7 @@
                 <div class="bg-white rounded-lg shadow relative dark:bg-gray-700">
                     <div class="flex justify-end p-2 bg-[#66CCFF]">
                         <div class="px-6 ">
-                            <h3 class="text-xl font-medium text-white dark:text-white" id="watchmvtitle">Xem phim</h3>
+                            <h3 class="text-xl font-medium text-white dark:text-white" id="watchmvtitle">{{ __('watchmovie') }}</h3>
                         </div>
                         <button type="button" onclick="closeModalWatchMovie()"
                             class="text-white bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-800 dark:hover:text-white"
@@ -56,7 +56,7 @@
                                 <button data-modal-target="watchMovieModal" data-modal-toggle="watchMovieModal"
                                     class="mt-2 bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow"
                                     onclick="getMovieInfoToWatch()">
-                                    Xem phim
+                                    {{ __('watchmovie') }}
                                 </button>
                                 <form class="my-6" id="reporterror">
                                     <div
@@ -64,12 +64,12 @@
                                         <label for="errorContent" class="sr-only">Your report</label>
                                         <textarea id="errorContent" rows="5" cols="100" name="errorContent"
                                             class="resize-none h-auto px-0 w-full text-sm text-gray-900 border-0 focus:ring-0 focus:outline-none dark:text-white dark:placeholder-gray-400 dark:bg-gray-800"
-                                            placeholder="Báo cáo lỗi của phim..."></textarea>
+                                            placeholder="{{ __('rpmverr') }}..."></textarea>
                                     </div>
                                     <div class="flex justify-center">
                                         <button type="submit"
                                             class="inline-flex items-center py-2.5 px-4 text-xs font-medium text-center text-white bg-[#ff6666] rounded-lg focus:ring-4 focus:ring-primary-200 dark:focus:ring-primary-900 hover:bg-primary-800">
-                                            Báo lỗi
+                                            {{ __('sendrp') }}
                                         </button>
                                     </div>
                                 </form>
@@ -77,7 +77,7 @@
                         </div>
                         <div class="flex flex-col space-y-4">
                             <div>
-                                <span class="text-sm text-gray-400">Số lượt đánh giá: </span><span
+                                <span class="text-sm text-gray-400">{{ __('numrt') }}: </span><span
                                     class="text-sm text-gray-400" id="mvdetail-numrating"></span>
                             </div>
                             <div class="flex justify-between items-start">
@@ -91,29 +91,29 @@
                             </div>
                             <div class="grid grid-cols-2">
                                 <div>
-                                    <div class="text-sm text-gray-400">Năm sản xuất:</div>
+                                    <div class="text-sm text-gray-400">{{ __('manuyear') }}:</div>
                                     <div class="text-lg text-gray-800" id="mvdetail-manufactureYear"></div>
                                 </div>
                                 <div>
-                                    <div class="text-sm text-gray-400">Thời lượng:</div>
+                                    <div class="text-sm text-gray-400">{{ __('videolength') }}:</div>
                                     <div class="text-lg text-gray-800" id="mvdetail-videoLength"></div>
                                 </div>
                             </div>
                             <div>
-                                <div class="text-sm text-gray-400">Thể loại:</div>
+                                <div class="text-sm text-gray-400">{{ __('genres') }}:</div>
                                 <div class="grid grid-cols-2" id="mvdetail-genres-group">
                                 </div>
                             </div>
                             <div>
-                                <div class="text-sm text-gray-400">Đạo diễn:</div>
+                                <div class="text-sm text-gray-400">{{ __('directors') }}:</div>
                                 <div class="text-lg text-gray-800" id="mvdetail-directors"></div>
                             </div>
                             <div>
-                                <div class="text-sm text-gray-400">Diễn viên:</div>
+                                <div class="text-sm text-gray-400">{{ __('actors') }}:</div>
                                 <div class="text-lg text-gray-800" id="mvdetail-actors"></div>
                             </div>
                             <div>
-                                <div class="text-sm text-gray-400">Nội dung:</div>
+                                <div class="text-sm text-gray-400">{{ __('content') }}:</div>
                                 <div class=" text-gray-800 text-justify" id="mvdetail-content"></div>
 
                                 <div class="flex text-2xl font-bold text-a"></div>
@@ -126,7 +126,7 @@
                     <section class="bg-white shadow-lg border-gray-100 border rounded-3xl p-8 flex space-x-8">
                         <div class="max-w-2xl mx-auto px-4  w-full">
                             <div class="flex justify-between items-center mb-6">
-                                <h2 class="text-lg lg:text-2xl font-bold text-gray-900 dark:text-white">Bình luận
+                                <h2 class="text-lg lg:text-2xl font-bold text-gray-900 dark:text-white">{{ __('cmt') }}
                                     (<span id="numofcmt">0</span>)
                                 </h2>
                             </div>
@@ -150,12 +150,12 @@
                                     <label for="comment" class="sr-only">Your comment</label>
                                     <textarea id="comment" rows="6" cols="100" name="comment"
                                         class="px-0 w-full text-sm text-gray-900 border-0 focus:ring-0 focus:outline-none dark:text-white dark:placeholder-gray-400 dark:bg-gray-800"
-                                        placeholder="Viết bình luận..." required></textarea>
+                                        placeholder="{{ __('entercmt') }}..." required></textarea>
                                 </div>
                                 <div class="flex justify-center">
                                     <button type="submit"
                                         class="inline-flex items-center py-2.5 px-4 text-xs font-medium text-center text-white bg-[#66CCFF] rounded-lg focus:ring-4 focus:ring-primary-200 dark:focus:ring-primary-900 hover:bg-primary-800">
-                                        Gửi bình luận
+                                        {{ __('sendcmt') }}
                                     </button>
                                 </div>
                             </form>
@@ -164,7 +164,7 @@
                                 <button
                                     class="block text-white bg-[#66CCFF] hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                                     type="button" data-modal-toggle="authentication-modal">
-                                    Đăng nhập để gửi đánh giá/bình luận
+                                    {{ __('login') }} {{ __('to') }} {{ __('sendrating') }}/{{ __('sendcmt') }}
                                 </button>
                             </form>
                             @endif
@@ -233,19 +233,19 @@
 
             <div class="w-full pt-3 md:pt-1">
                 <div class="bg-white shadow-lg border-gray-100 border rounded-3xl p-4">
-                    <div class="text-lg lg:text-2xl font-bold text-gray-900 dark:text-white">Phim liên quan</div>
+                    <div class="text-lg lg:text-2xl font-bold text-gray-900 dark:text-white">{{ __('relatemv') }}</div>
                     <div class="bg-[#3a3a3a] p-4 border rounded-3xl mb-2">
                         <div id="related-list">
                         </div>
                     </div>
                     @if(auth()->check())
-                        <div class="text-lg lg:text-2xl font-bold text-gray-900 dark:text-white">Đề xuất cho bạn</div>
+                        <div class="text-lg lg:text-2xl font-bold text-gray-900 dark:text-white">{{ __('recommendedforyou') }}</div>
                         <div class="bg-[#3a3a3a] p-4 border rounded-3xl mb-2">
                             <div id="recommended-list">
                             </div>
                         </div>
                     @endif
-                    <div class="text-lg lg:text-2xl font-bold text-gray-900 dark:text-white">Phim mới nhất</div>
+                    <div class="text-lg lg:text-2xl font-bold text-gray-900 dark:text-white">{{ __('latestmv') }}</div>
                     <div class="bg-[#3a3a3a] p-4 border rounded-3xl mb-2">
                         <div id="new-list">
                         </div>
