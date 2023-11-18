@@ -113,3 +113,6 @@ Route::get('/test/navbar', function(){
 Route::get('/admin', function(){
     return view('auth.admin.dashboardtest');
 });
+Route::get('/not-found', function(){
+    return view('page.notfound');
+});

@@ -116,5 +116,8 @@
     "getdata": "Retrieving data...",
     "updatecsvscc": "Updating success",
     "updatecsvfaile": "Updating failed",
-    "updatecsvmss": "Please select the exported Assessment file"
+    "updatecsvmss": "Please select the exported Assessment file",
+    "notfound": "Not Found",
+    "notfoundmss": "Oops! The page you are looking for could not be found.",
+    "gotohome": "Go back to Home"
 }

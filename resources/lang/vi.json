@@ -116,5 +116,8 @@
     "getdata": "Đang lấy dữ liệu...",
     "updatecsvscc": "Cập nhật đánh giá thành công!",
     "updatecsvfaile": "Cập nhật thất bại.",
-    "updatecsvmss": "Vui lòng chọn tệp Đánh giá đã được xuất."
+    "updatecsvmss": "Vui lòng chọn tệp Đánh giá đã được xuất.",
+    "notfound": "Không tìm thấy",
+    "notfoundmss": "Ôi! Trang bạn đang tìm kiếm không thể được tìm thấy.",
+    "gotohome": "Trở về trang chủ"
 }
