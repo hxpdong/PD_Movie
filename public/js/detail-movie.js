@@ -13,7 +13,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const numRecommendations = 6; // Thay đổi số lượng đề xuất theo nhu cầu của bạn
 
         fetch(`http://127.0.0.1:8300/recommend?user_id=${userId}&num_recommendations=${numRecommendations}`, {
-            method: 'GET',    
+            method: 'GET',
         })
             .then(response => {
                 if (!response.ok) {
@@ -718,12 +718,13 @@ document.addEventListener("DOMContentLoaded", function () {
 
         function sendRatingToAPI(rating, acclogged, currentmov) {
             const apiUrl = '/api/postrating';
+            const nums = 6;
+            const pythonUrl = `http://127.0.0.1:8300/recommend?user_id=${acclogged}&movie_id=${currentmov}&ratingpoint=${rating}&num_recommendations=${nums}`;
             const data = {
                 accId: acclogged,
                 mId: currentmov,
                 ratingpoint: rating
             };
-
             fetch(apiUrl, {
                 method: 'POST',
                 headers: headers,
@@ -755,6 +756,19 @@ document.addEventListener("DOMContentLoaded", function () {
                     }
                 })
                 .catch(error => {
+                    console.error('Error:', error);
+                });
+
+            fetch(pythonUrl, {
+                method: 'POST',
+            })
+                .then(response => response.json())
+                .then(data => {
+                    // Handle the response data here
+                    console.log(data);
+                })
+                .catch(error => {
+                    // Handle errors here
                     console.error('Error:', error);
                 });
         }

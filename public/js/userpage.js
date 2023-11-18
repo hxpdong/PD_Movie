@@ -97,7 +97,7 @@ function getUserInfo(username) {
                                     if (xhrmv.status === 200) {
                                         // Chuyển đổi dữ liệu JSON từ phản hồi API
                                         var response = JSON.parse(xhrmv.responseText);
-        
+
                                         // Lấy URL của ảnh bộ phim từ phản hồi API và gán cho defaultImageUrl
                                         image.src = 'https://www.themoviedb.org/t/p/w300_and_h450_bestv2' + response.poster_path;
                                     } else {
@@ -114,7 +114,7 @@ function getUserInfo(username) {
                                     if (xhrmv.status === 200) {
                                         // Chuyển đổi dữ liệu JSON từ phản hồi API
                                         var response = JSON.parse(xhrmv.responseText);
-        
+
                                         // Lấy URL của ảnh bộ phim từ phản hồi API và gán cho defaultImageUrl
                                         image.src = 'https://www.themoviedb.org/t/p/w300_and_h450_bestv2' + response.poster_path;
                                     } else {
@@ -124,14 +124,14 @@ function getUserInfo(username) {
                                 };
                                 xhrmv.send();
                             } else {
-                                image.src =defaultImageUrl;
+                                image.src = defaultImageUrl;
                             }
                         }
                         else image.src = defaultImageUrl;
                         image.onerror = function () {
                             // Sử dụng hình ảnh mặc định nếu xảy ra lỗi
                             if (movie.posterURL != null) {
-                                if(movie.typeOfPosterURL == 0)
+                                if (movie.typeOfPosterURL == 0)
                                     image.src = movie.posterURL;
                                 else image.src = defaultImageUrl;
                             } else image.src = defaultImageUrl;
@@ -236,7 +236,7 @@ function getSimilarityUsers(user_id) {
 }
 
 function getCommentList(page, user_id) {
-    axios.get('/api/users/get-commentlist/' + user_id +"?page=" + page)
+    axios.get('/api/users/get-commentlist/' + user_id + "?page=" + page)
         .then(function (response) {
             var commentList = response.data.listcomment.comments;
             if (commentList && commentList.length > 0) {
@@ -411,7 +411,7 @@ function getCommentList(page, user_id) {
                                 event.preventDefault(); // Ngăn form submit theo cách thông thường
                                 var editCommentUrl = '/api/editcomment/' + cmt.comment_id + "?editComment=" + document.getElementById("editComment" + cmt.comment_id).value;
                                 // Gửi request POST bằng AJAX hoặc Fetch API
- 
+
                                 fetch(editCommentUrl, {
                                     method: "PUT",
                                     body: new FormData(form),
@@ -468,12 +468,11 @@ function getCommentList(page, user_id) {
                     element.innerHTML = "No comments found";
                 }
             }
-            if(document.getElementById("load-more-cmt-button")){
+            if (document.getElementById("load-more-cmt-button")) {
                 document.getElementById("load-more-cmt-button").disabled = response.data.listcomment.current_page ===
-                response.data.listcomment.last_page;
-            if(response.data.listcomment.current_page ===
-                response.data.listcomment.last_page)
-                {
+                    response.data.listcomment.last_page;
+                if (response.data.listcomment.current_page ===
+                    response.data.listcomment.last_page) {
                     document.getElementById("endOfCommentList").innerHTML = "Reached the end of the list";
                     document.getElementById("load-more-cmt-button").style.display = "none";
                 }
@@ -486,7 +485,7 @@ function getCommentList(page, user_id) {
 }
 
 function getRatingList(page, user_id) {
-    axios.get('/api/users/get-ratinglist/' + user_id +"?page=" + page)
+    axios.get('/api/users/get-ratinglist/' + user_id + "?page=" + page)
         .then(function (response) {
             var ratingList = response.data.listrating.ratings;
             if (ratingList && ratingList.length > 0) {
@@ -545,10 +544,10 @@ function getRatingList(page, user_id) {
                                                     'Rating removed successfully!',
                                                     'success'
                                                 );
-                                                
+
                                                 localStorage.removeItem("recommendedMoviesForLoggedUser");
                                                 getRCMMoviesToLocalStorage();
-                                                
+
                                                 if (li && li.parentNode) {
                                                     li.parentNode.removeChild(li);
                                                 }
@@ -572,6 +571,23 @@ function getRatingList(page, user_id) {
                                                 title: 'An error occurred: ' + error,
                                                 html: 'Please try again later',
                                             });
+                                        });
+
+                                    var acclogged = accId;
+                                    var nums = 6;
+                                    var currentmov = rt.movie_id;
+                                    const pythonUrl = `http://127.0.0.1:8300/recommend?user_id=${acclogged}&movie_id=${currentmov}&ratingpoint=0&num_recommendations=${nums}`;
+                                    fetch(pythonUrl, {
+                                        method: 'POST',
+                                    })
+                                        .then(response => response.json())
+                                        .then(data => {
+                                            // Handle the response data here
+                                            console.log(data);
+                                        })
+                                        .catch(error => {
+                                            // Handle errors here
+                                            console.error('Error:', error);
                                         });
                                 }
                             });
@@ -711,6 +727,8 @@ function getRatingList(page, user_id) {
                         }));
                         function sendRatingToAPI(rating, acclogged, currentmov) {
                             const apiUrl = '/api/postrating';
+                            const nums = 6;
+                            const pythonUrl = `http://127.0.0.1:8300/recommend?user_id=${acclogged}&movie_id=${currentmov}&ratingpoint=${rating}&num_recommendations=${nums}`;
                             const data = {
                                 accId: acclogged,
                                 mId: currentmov,
@@ -722,35 +740,49 @@ function getRatingList(page, user_id) {
                                 headers: headers,
                                 body: JSON.stringify(data)
                             })
-                            .then(response => {
-                                if (!response.ok) {
-                                    throw new Error('Network response was not ok');
-                                }
-                                return response.json();
+                                .then(response => {
+                                    if (!response.ok) {
+                                        throw new Error('Network response was not ok');
+                                    }
+                                    return response.json();
+                                })
+                                .then(function (data) {
+                                    if (data.success === false) {
+                                        Swal.fire({
+                                            icon: 'error',
+                                            title: 'Unable to perform operation',
+                                            html: 'Because you do not have permission or the account is being logged in somewhere else.<br/> Please log in again!',
+                                            confirmButtonText: 'Re-Login',
+                                            allowOutsideClick: false,
+                                        }).then((result) => {
+                                            if (result.isConfirmed) {
+                                                window.location.href = '/logoutHeader';
+                                            }
+                                        });
+                                    }
+                                    else {
+                                        localStorage.removeItem("recommendedMoviesForLoggedUser");
+                                        getRCMMoviesToLocalStorage();
+                                    }
+                                })
+                                .catch(error => {
+                                    console.error('Error:', error);
+                                });
+
+
+                            fetch(pythonUrl, {
+                                method: 'POST',
                             })
-                            .then(function (data) {
-                                if (data.success === false) {
-                                    Swal.fire({
-                                        icon: 'error',
-                                        title: 'Unable to perform operation',
-                                        html: 'Because you do not have permission or the account is being logged in somewhere else.<br/> Please log in again!',
-                                        confirmButtonText: 'Re-Login',
-                                        allowOutsideClick: false,
-                                    }).then((result) => {
-                                        if (result.isConfirmed) {
-                                            window.location.href = '/logoutHeader';
-                                        }
-                                    });
-                                }
-                                else {
-                                    localStorage.removeItem("recommendedMoviesForLoggedUser");
-                                    getRCMMoviesToLocalStorage();
-                                }
-                            })
-                            .catch(error => {
-                                console.error('Error:', error);
-                            });
-                        }        
+                                .then(response => response.json())
+                                .then(data => {
+                                    // Handle the response data here
+                                    console.log(data);
+                                })
+                                .catch(error => {
+                                    // Handle errors here
+                                    console.error('Error:', error);
+                                });
+                        }
                     });
                 }
             } else {
@@ -759,12 +791,11 @@ function getRatingList(page, user_id) {
                     element.innerHTML = "No rating found";
                 }
             }
-            if(document.getElementById("load-more-rt-button")){
+            if (document.getElementById("load-more-rt-button")) {
                 document.getElementById("load-more-rt-button").disabled = response.data.listrating.current_page ===
-                response.data.listrating.last_page;
-            if(response.data.listrating.current_page ===
-                response.data.listrating.last_page)
-                {
+                    response.data.listrating.last_page;
+                if (response.data.listrating.current_page ===
+                    response.data.listrating.last_page) {
                     document.getElementById("endOfRatingList").innerHTML = "Reached the end of the list";
                     document.getElementById("load-more-rt-button").style.display = "none";
                 }
