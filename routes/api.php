@@ -117,3 +117,4 @@ Route::put('/users/forgot-password/reset-password', [AuthController::class, 'res
 
 Route::get('/exports/rating/csv', [RatingController::class, 'exportCSV']);
 Route::post('/imports/rating/csv', [RatingController::class, 'importCSV']);
+Route::get('/recommend-rating',[RatingController::class, 'getAllRating']);

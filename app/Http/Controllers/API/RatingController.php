@@ -71,4 +71,16 @@ class RatingController extends Controller
             'success' => false
         ]);
     }
+    public function getAllRating(){
+        $results = DB::select("select * from pdmv_ratings");
+        if($results) {
+            return response()->json([
+                'success' => true,
+                'items' => $results
+            ]);
+        }
+        return response()->json([
+            'success' => false
+        ]);
+    }
 }

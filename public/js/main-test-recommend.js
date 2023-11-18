@@ -5,15 +5,8 @@ document.addEventListener("DOMContentLoaded", function () {
     const userId = accId; // Thay đổi userId theo nhu cầu của bạn
     const numRecommendations = 99; // Thay đổi số lượng đề xuất theo nhu cầu của bạn
     
-    fetch(`http://127.0.0.1:8300/recommend`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-            user_id: userId,
-            num_recommendations: numRecommendations,
-        }),
+    fetch(`http://127.0.0.1:8300/recommend?user_id=${userId}&num_recommendations=${numRecommendations}`, {
+        method: 'GET',    
     })
         .then(response => {
             if (!response.ok) {
