@@ -13,7 +13,13 @@ use App\Http\Controllers\CacheImageController;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
-
+Route::get('lang/{locale}', function($locale){
+    if(! in_array($locale, ['en', 'vi'])){
+        abort(404);
+    }
+    session()->put('locale', $locale);
+    return redirect()->back();
+});
 Route::middleware('pdmv_checkLogin')->group(function () {
     Route::get('/login', function () {
         return view('auth.login');

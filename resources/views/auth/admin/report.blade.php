@@ -67,6 +67,7 @@
 
         <!-- Nội dung trang chính của bạn -->
         <div class="p-5 w-full flex-1 overflow-x-hidden overflow-y-auto" id="isAd-ReportPage">
+        @include ('component.head-changeLang')
             <div class="container mx-auto w-full">
                 <h3 class="text-4xl font-bold">{{ __('report') }}</h3>
                 <div class="flex flex-wrap justify-center items-center">

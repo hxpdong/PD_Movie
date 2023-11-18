@@ -1,4 +1,5 @@
 @include ('component.head-script')
+@include ('component.head-changeLang')
 <html>
 
 <head>

@@ -14,6 +14,7 @@
 
         <!-- Nội dung trang chính của bạn -->
         <div class="p-5 w-full flex-1 overflow-x-hidden overflow-y-auto" id="isSystemPage">
+        @include ('component.head-changeLang')
             <div class="container mx-auto w-full">
                 <h3 class="text-4xl font-bold mb-4">{{ __('system') }}</h3>
                 <button id="btnDivHidden" class="bg-blue-500 text-white font-bold p-2 m-1 rounded-md"
@@ -57,16 +58,16 @@
                     // Hiển thị thông báo
                     const messageDiv = document.getElementById('message');
                     if (data.success) {
-                        messageDiv.innerText = 'Cập nhật đánh giá thành công!';
+                        messageDiv.innerText = `{{ __('updatecsvscc') }}`;
                     } else {
-                        messageDiv.innerText = 'Cập nhật thất bại.';
+                        messageDiv.innerText = `{{ __('updatecsvfaile') }}`;
                     }
                 })
                 .catch(error => console.error('Error:', error));
         } else {
             // Hiển thị thông báo nếu không có file nào được chọn
             const messageDiv = document.getElementById('message');
-            messageDiv.innerText = 'Vui lòng chọn tệp Đánh giá đã được xuất.';
+            messageDiv.innerText = `{{ __('updatecsvmss') }}`;
         }
     }
     </script>

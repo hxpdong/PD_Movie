@@ -1,4 +1,6 @@
 {
+    "vietnamese": "Vietnamese",
+    "english": "English",
     "search": "Search",
     "genres": "Genres",
     "guest": "Guest",
@@ -111,5 +113,8 @@
     "relatemv": "Related movies",
     "latestmv": "Latest movies",
     "mvbytag": "Movies by tag",
-    "getdata": "Retrieving data..."
+    "getdata": "Retrieving data...",
+    "updatecsvscc": "Updating success",
+    "updatecsvfaile": "Updating failed",
+    "updatecsvmss": "Please select the exported Assessment file"
 }

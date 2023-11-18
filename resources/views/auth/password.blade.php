@@ -1,6 +1,6 @@
 <html>
 @include ('component.head-script')
-
+@include ('component.head-changeLang')
 <head></head>
 <title>{{ __('resetpassword') }}</title>
 

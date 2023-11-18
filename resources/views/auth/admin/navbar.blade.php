@@ -305,7 +305,6 @@
         </div>
     </nav>
 </header>
-@include ('component.head-changeLang')
 <script>
 const accId = document.getElementById("authUserId").value;
 const apiToken = localStorage.getItem('log_token');
