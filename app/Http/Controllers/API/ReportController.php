@@ -151,7 +151,7 @@ class ReportController extends Controller
             if($results){
                 return response()->json([
                     'success' => true,
-                    'message' => 'Thành công'
+                    'message' => 'Success'
                 ]);
             } else {
                 return response()->json([
@@ -174,7 +174,7 @@ class ReportController extends Controller
             if($results){
                 return response()->json([
                     'success' => true,
-                    'message' => 'Thành công'
+                    'message' => 'Success'
                 ]);
             } else {
                 return response()->json([

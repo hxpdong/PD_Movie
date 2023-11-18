@@ -94,7 +94,7 @@ class RecommenderController extends Controller
         } catch (\Exception $e) {
            // Log::error($e->getMessage());
             return response()->json([
-                'error' => 'Đã xảy ra lỗi trong quá trình xử lý yêu cầu. ' . $e,
+                'error' => 'An error occurred while processing the request.' . $e,
                 'success' => false,
             ], 500);
         }

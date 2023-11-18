@@ -19,13 +19,13 @@ class AccountController extends Controller
                     'success' => true,
                     'usersList' => $results,
                     'totaluser' => count($results),
-                    'message' => 'Dữ liệu được lấy thành công'
+                    'message' => 'Data retrieved successfully'
                 ], 200); // Sử dụng 200 OK khi lấy dữ liệu thành công
             }
             else {
                 return response()->json([
                     'success' => false,
-                    'message' => 'Không tìm thấy dữ liệu lưu trữ'
+                    'message' => 'No archived data found'
                 ], 404); // Sử dụng 404 Not Found khi không tìm thấy dữ liệu
             }
         }
@@ -45,13 +45,13 @@ class AccountController extends Controller
                     'success' => true,
                     'adminsList' => $results,
                     'totaladmin' => count($results),
-                    'message' => 'Dữ liệu được lấy thành công'
+                    'message' => 'Data retrieved successfully'
                 ], 200); // Sử dụng 200 OK khi lấy dữ liệu thành công
             }
             else {
                 return response()->json([
                     'success' => false,
-                    'message' => 'Không tìm thấy dữ liệu lưu trữ'
+                    'message' => 'No archived data found'
                 ], 404); // Sử dụng 404 Not Found khi không tìm thấy dữ liệu
             }
         }
@@ -108,7 +108,7 @@ class AccountController extends Controller
 
             else return response()->json([
                 'success' => false,
-                'message' => 'Bạn không có quyền với tài khoản này'
+                'message' => 'You do not have permissions to this account'
             ]);
         }
         catch (\Exception $e) {
@@ -137,7 +137,7 @@ class AccountController extends Controller
             
             else return response()->json([
                 'success' => false,
-                'message' => 'Bạn không có quyền với tài khoản này'
+                'message' => 'You do not have permissions to this account'
             ]);
         }
         catch (\Exception $e) {
@@ -162,9 +162,9 @@ class AccountController extends Controller
                 ],
                 'phone' => 'required'
             ], [
-                'email.required' => 'Trường email là bắt buộc.',
-                'email.unique' => 'Email này đã được sử dụng cho tài khoản khác, vui lòng sử dụng email khác!',
-                'phone.required' => 'Trường điện thoại là bắt buộc.'
+                'email.required' => 'Email field is required.',
+                'email.unique' => 'This email is already used for another account, please use another email!',
+                'phone.required' => 'Phone field is mandatory.'
             ]);
 
             // Gọi stored procedure user_update truyền tham số vào
@@ -180,13 +180,13 @@ class AccountController extends Controller
     
                 return response()->json([
                     'success' => true,
-                    'message' => 'Cập nhật thông tin người dùng thành công',
+                    'message' => 'User information updated successfully',
                 ]);
             } else {
                 return response()->json([
                     'success' => false,
                     'error' => true,
-                    'message' => 'Không cập nhật được',
+                    'message' => 'Unable to update',
                 ]);
             }
             
@@ -213,8 +213,8 @@ class AccountController extends Controller
                     Rule::unique('pdmv_admins', 'email')->ignore($uid, 'admin_id'),
                 ],
             ], [
-                'email.required' => 'Trường email là bắt buộc.',
-                'email.unique' => 'Email này đã được sử dụng cho tài khoản khác, vui lòng sử dụng email khác!',
+                'email.required' => 'Email field is required.',
+                'email.unique' => 'This email is already used for another account, please use another email!',
             ]);
 
             // Gọi stored procedure user_update truyền tham số vào
@@ -230,13 +230,13 @@ class AccountController extends Controller
     
                 return response()->json([
                     'success' => true,
-                    'message' => 'Cập nhật thông tin người dùng thành công',
+                    'message' => 'User information updated successfully',
                 ]);
             } else {
                 return response()->json([
                     'success' => false,
                     'error' => true,
-                    'message' => 'Không cập nhật được',
+                    'message' => 'Unable to update',
                 ]);
             }
             
@@ -256,7 +256,7 @@ class AccountController extends Controller
             $request->validate([
                 'uptnewpassword' => 'required|min:5'
             ], [
-                'uptnewpassword.required' => 'Mật khẩu là bắt buộc.',
+                'uptnewpassword.required' => 'Password is required.',
             ]);
     
             // Update the user's password with the new password
@@ -270,18 +270,18 @@ class AccountController extends Controller
 
                 return response()->json([
                     'success' => true,
-                    'message' => 'Mật khẩu tài khoản đã được thay đổi thành công.',
+                    'message' => 'Account password has been changed successfully.',
                 ]);
             } else return response()->json([
                 'success' => false,
-                'message' => 'Không cập nhật được',
+                'message' => 'Unable to update',
             ]);
         }
         catch (\Exception $e) {
             // Xử lý lỗi ở đây, ví dụ: in thông báo lỗi
             return response()->json([
                 'success' => false,
-                'message' => 'Lỗi: '.$e->getMessage(),
+                'message' => 'Error: '.$e->getMessage(),
             ]);
         }
     }
@@ -291,7 +291,7 @@ class AccountController extends Controller
             $request->validate([
                 'uptnewpassword' => 'required|min:5'
             ], [
-                'uptnewpassword.required' => 'Mật khẩu là bắt buộc.',
+                'uptnewpassword.required' => 'Password is required.',
             ]);
     
             // Update the user's password with the new password
@@ -305,18 +305,18 @@ class AccountController extends Controller
 
                 return response()->json([
                     'success' => true,
-                    'message' => 'Mật khẩu tài khoản đã được thay đổi thành công.',
+                    'message' => 'Account password has been changed successfully.',
                 ]);
             } else return response()->json([
                 'success' => false,
-                'message' => 'Không cập nhật được',
+                'message' => 'Unable to update',
             ]);
         }
         catch (\Exception $e) {
             // Xử lý lỗi ở đây, ví dụ: in thông báo lỗi
             return response()->json([
                 'success' => false,
-                'message' => 'Lỗi: '.$e->getMessage(),
+                'message' => 'Error: '.$e->getMessage(),
             ]);
         }
     }
@@ -337,13 +337,13 @@ class AccountController extends Controller
                 ],
                 'password' => 'required',
             ], [
-                'fullname.required' => 'Tên là bắt buộc.',
-                'email.required' => 'Trường email là bắt buộc.',
-                'email.unique' => 'Email đã được sử dụng, vui lòng dùng email khác.',
-                'phone.required' => 'Trường số điện thoại là bắt buộc.',
-                'username.required' => 'Trường username là bắt buộc.',
-                'username.unique' => 'Username đã được sử dụng, vui lòng dùng username khác.',
-                'password.required' => 'Trường mật khẩu là bắt buộc.',
+                'fullname.required' => 'Name is required.',
+                'email.required' => 'Email field is required.',
+                'email.unique' => 'Email is already in use, please use another email.',
+                'phone.required' => 'Phone number field is required.',
+                'username.required' => 'The username field is required.',
+                'username.unique' => 'Username is already taken, please use another username.',
+                'password.required' => 'Password field is required.',
             ]);
             $fn = $request->fullname;
             $em = $request->email;
@@ -364,14 +364,14 @@ class AccountController extends Controller
 
                 return response()->json([
                     'success' => true,
-                    'message' => 'Thêm quản trị viên thành công',
+                    'message' => 'Administrator added successfully',
                     'newadmin' => $reslt[0]->results
                 ]);
             }
             else {
                 return response()->json([
                     'success' => false,
-                    'message' => 'Thêm thất bại'
+                    'message' => 'Add failed'
                 ]);
             }
         }catch (\Exception $e) {

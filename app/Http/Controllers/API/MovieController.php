@@ -156,9 +156,9 @@ class MovieController extends Controller
                         'mId' => ['required',],
                         'comment' => ['required',]
                     ], [
-                        'accId.required' => 'accId là bắt buộc.',
-                        'mId.required' => 'mId là bắt buộc.',
-                        'comment.required' => 'comment là bắt buộc.',
+                        'accId.required' => 'accId is required.',
+                        'mId.required' => 'mId is required.',
+                        'comment.required' => 'comment is required.',
                     ]);
 
                     $usid = $request->accId;
@@ -174,12 +174,12 @@ class MovieController extends Controller
                 }
                 else return response()->json([
                     'success' => false,
-                    'message' => 'Bạn không có quyền này.',
+                    'message' => 'You donnot have this permission.',
                     'uid1' => $request->accId
                 ]);
             } else return response()->json([
                 'success' => false,
-                'message' => 'Bạn không có quyền này.',
+                'message' => 'You donnot have this permission.',
                 'uid2' => $request->accId
             ]);
         } catch (\Exception $e) {
@@ -211,9 +211,9 @@ class MovieController extends Controller
                 'mId' => ['required',],
                 'ratingpoint' => ['required',]
             ], [
-                'accId.required' => 'accId là bắt buộc.',
-                'mId.required' => 'mId là bắt buộc.',
-                'ratingpoint.required' => 'ratingpoint là bắt buộc.',
+                'accId.required' => 'accId is required.',
+                'mId.required' => 'mId is required.',
+                'ratingpoint.required' => 'Ratingpoint is required.',
             ]);
             if(Token::checkToken($request->accId)){
                 $uid = $request->accId;
@@ -225,7 +225,7 @@ class MovieController extends Controller
                     ]);
             } else return response()->json([
                 'success' => false,
-                'message' => 'Bạn không có quyền này.'
+                'message' => 'You donnot have this permission.'
             ]);
         } catch (\Exception $e) {
             // Xử lý lỗi ở đây, ví dụ: in thông báo lỗi
@@ -248,11 +248,11 @@ class MovieController extends Controller
                 }
                 return response()->json([
                     'success' => false,
-                    'message' => 'Không tồn tại rating'
+                    'message' => 'Rating does not exist'
                 ]);
             } else return response()->json([
                 'success' => false,
-                'message' => 'Bạn không có quyền này.'
+                'message' => 'You donnot have this permission.'
             ]);
         } catch (\Exception $e) {
             // Xử lý lỗi ở đây, ví dụ: in thông báo lỗi
@@ -281,7 +281,7 @@ class MovieController extends Controller
                 }
             } else return response()->json([
                 'success' => false,
-                'message' => 'Bạn không có quyền này.'
+                'message' => 'You donnot have this permission.'
             ]);
             
         }        
@@ -310,7 +310,7 @@ class MovieController extends Controller
                 ]);
             } else return response()->json([
                 'success' => false,
-                'message' => 'Bạn không có quyền này.'
+                'message' => 'You donnot have this permission.'
             ]);
             
         } catch (\Exception $e) {
@@ -367,8 +367,8 @@ class MovieController extends Controller
                 ],
 
             ], [
-                'newEnName.required' => 'Tên tiếng Anh là bắt buộc.',
-                'newEnName.unique' => "Tên phim đã tồn tại, vui lòng thêm chapter mới cho phim hoặc dùng tên khác."
+                'newEnName.required' => 'English name is required.',
+                'newEnName.unique' => "The movie name already exists, please add a new chapter to the movie or use another name."
             ]);
 
             $titlevi = request()->get('newViName', '');
@@ -396,14 +396,14 @@ class MovieController extends Controller
             if($results){
                 return response()->json([
                     'success' => true,
-                    'message' => 'Phim được thêm thành công',
+                    'message' => 'The movie was successfully added',
                     'newmv' => $results
                 ]);
             }
             else {
                 return response()->json([
                     'success' => false,
-                    'message' => 'Không thêm được phim mới'
+                    'message' => 'Cannot add new movies'
                 ]);
             }
         } catch (\Exception $e) {
@@ -420,12 +420,12 @@ class MovieController extends Controller
             if($results){
                 return response()->json([
                     'success' => true,
-                    'message' => 'Xóa thành công'
+                    'message' => 'Delete successfully'
                 ]);
             } else {
                 return response()->json([
                     'success' => false,
-                    'message' => 'Không thể xóa'
+                    'message' => 'Can not delete'
                 ]);
             }
         } catch (\Exception $e) {
@@ -450,8 +450,8 @@ class MovieController extends Controller
                 ],
 
             ], [
-                'dtEnName.required' => 'Tên tiếng Anh là bắt buộc.',
-                'dtEnName.unique' => "Tên phim đã tồn tại, vui lòng thêm chapter mới cho phim hoặc dùng tên khác."
+                'dtEnName.required' => 'English name is required.',
+                'dtEnName.unique' => "The movie name already exists, please add a new chapter to the movie or use another name."
             ]);
 
             $titlevi = request()->get('dtViName', '');
@@ -491,14 +491,14 @@ class MovieController extends Controller
                 }
                 return response()->json([
                     'success' => true,
-                    'message' => 'Phim được cập nhật thành công',
+                    'message' => 'Movie updated successfully',
                     'newmv' => $results
                 ]);
             }
             else {
                 return response()->json([
                     'success' => false,
-                    'message' => 'Không thể cập nhật phim'
+                    'message' => 'Unable to update movie'
                 ]);
             }
         } catch (\Exception $e) {
@@ -515,14 +515,14 @@ class MovieController extends Controller
             if($results){
                 return response()->json([
                     'success' => true,
-                    'message' => 'Lấy danh sách phim thành công',
+                    'message' => 'Get list of movie successfully',
                     'chapters' => $results,
                     'totals' => count($results)
                 ]);
             }else {
                 return response()->json([
                     'success' => false,
-                    'message' => 'Không thể lấy danh sách phim',
+                    'message' => 'Get list of movie failed',
                     'totals' => count($results)
                 ]);
             }

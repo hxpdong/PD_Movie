@@ -17,13 +17,13 @@ class MovieChapterController extends Controller
             if($uptdChapter){
                 return response()->json([
                     'success' => true,
-                    'message' => 'Cập nhật thành công',
+                    'message' => 'Update successful',
                     'chapter' => $uptdChapter
                 ]);
             }else {
                 return response()->json([
                     'success' => false,
-                    'message' => 'Không tìm thấy tập phim'
+                    'message' => 'Chapter not found'
                 ]);
             }
         } catch (\Exception $e) {
@@ -40,13 +40,13 @@ class MovieChapterController extends Controller
             if($rs){
                 return response()->json([
                     'success' => true,
-                    'message' => 'Xóa thành công',
+                    'message' => 'Delete successfully',
                     'deletedId' => $ctid[0] 
                 ]);
             } else {
                 return response()->json([
                     'success' => false,
-                    'message' => 'Không tìm thấy tập phim'
+                    'message' => 'Chapter not found'
                 ]);
             }
         } catch (\Exception $e) {
@@ -64,9 +64,9 @@ class MovieChapterController extends Controller
                 'chaptername' => ['required',],
                 'chapterurl' => ['required',]
             ], [
-                'mvid.required' => 'Id phim là bắt buộc.',
-                'chaptername.required' => 'Tên tập phim là bắt buộc.',
-                'chapterurl.required' => 'Đường dẫn là bắt buộc.',
+                'mvid.required' => 'Movie id is required.',
+                'chaptername.required' => 'Chapter name is required.',
+                'chapterurl.required' => 'Source is required.',
             ]);
 
             $mvid = $request->mvid;
@@ -76,13 +76,13 @@ class MovieChapterController extends Controller
             if($newChap){
                 return response()->json([
                     'success' => true,
-                    'message' => 'Thêm tập phim thành công',
+                    'message' => 'Add successful chapter',
                     'chapter' => $newChap
                 ]);
             } else {
                 return response()->json([
                     'success' => false,
-                    'message' => 'Phim này không tồn tại trong cơ sở dữ liệu'
+                    'message' => 'This movie does not exist in the database'
                 ]);
             }
         } catch (\Exception $e) {

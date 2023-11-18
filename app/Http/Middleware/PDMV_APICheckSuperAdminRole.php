@@ -26,7 +26,7 @@ class PDMV_APICheckSuperAdminRole
         }
         return response()->json([
             'success' => false,
-            'message' => 'Bạn không có quyền này'
+            'message' => 'You donnot have this permission'
         ], 401); 
     }
 }

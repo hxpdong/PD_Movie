@@ -35,7 +35,7 @@ class PDMV_APICheckTokenMiddleware
 
         return response()->json([
             'success' => false,
-            'message' => 'Bạn không có quyền này'
+            'message' => 'You donnot have this permission'
         ], 401); // Trả về lỗi 401 nếu token không hợp lệ
     }
 }

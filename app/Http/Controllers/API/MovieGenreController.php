@@ -76,8 +76,8 @@ class MovieGenreController extends Controller
                 ],
 
             ], [
-                'newEnGenre.required' => 'Tên tiếng Anh là bắt buộc.',
-                'newEnGenre.unique' => "Thể loại đã tồn tại trong hệ thống."
+                'newEnGenre.required' => 'English name is required.',
+                'newEnGenre.unique' => "The genre already exists in the system."
             ]);
 
             $titlevi = request()->get('newViGenre', '');
@@ -94,14 +94,14 @@ class MovieGenreController extends Controller
             if($results){
                 return response()->json([
                     'success' => true,
-                    'message' => 'Thể loại được thêm thành công',
+                    'message' => 'Genre added successfully',
                     'newgenre' => $results
                 ]);
             }
             else {
                 return response()->json([
                     'success' => false,
-                    'message' => 'Không thêm được thể loại'
+                    'message' => 'Cannot add genre'
                 ]);
             }
         } catch (\Exception $e) {
@@ -121,8 +121,8 @@ class MovieGenreController extends Controller
                 ],
 
             ], [
-                'uptGenreEn.required' => 'Tên tiếng Anh là bắt buộc.',
-                'uptGenreEn.unique' => "Thể loại đã tồn tại trong hệ thống."
+                'uptGenreEn.required' => 'English name is required.',
+                'uptGenreEn.unique' => "The genre already exists in the system."
             ]);
 
             $titlevi = request()->get('uptGenreVi', '');
@@ -140,14 +140,14 @@ class MovieGenreController extends Controller
             if($results){
                 return response()->json([
                     'success' => true,
-                    'message' => 'Đã cập nhật thể loại',
+                    'message' => 'Genre updated',
                     'newgenre' => $results
                 ]);
             }
             else {
                 return response()->json([
                     'success' => false,
-                    'message' => 'Không cập nhật được thể loại'
+                    'message' => 'Failed to update genre'
                 ]);
             }
         } catch (\Exception $e) {
@@ -166,18 +166,18 @@ class MovieGenreController extends Controller
                 if($results){
                     return response()->json([
                         'success' => true,
-                        'message' => 'Đã xóa thể loại',
+                        'message' => 'Genre removed',
                     ]);
                 } else {
                     return response()->json([
                         'success' => false,
-                        'message' => 'Thể loại tồn tại phim, không thể xóa thể loại'
+                        'message' => 'Genre exist for movies, genre cannot be deleted'
                     ]);
                 }
             } else {
                 return response()->json([
                     'success' => false,
-                    'message' => 'Không thể xóa thể loại này'
+                    'message' => 'Cannot delete this genre'
                 ]);
             }
             
@@ -221,13 +221,13 @@ class MovieGenreController extends Controller
                 $addToOther = DB::select("CALL movie_genre_if_not_exists(?);", array($mvid));
                 return response()->json([
                     'success' => true,
-                    'message' => 'Xóa thể loại này của phim thành công',
+                    'message' => 'Delete this genre of movie successfully',
                     'movgenid' => $results[0]->results,
                 ]);
             }else {
                 return response()->json([
                     'success' => false,
-                    'message' => 'Không thể xóa thể loại này của phim'
+                    'message' => 'This genre of movie cannot be deleted'
                 ]);
             }
         } catch (\Exception $e) {
@@ -244,14 +244,14 @@ class MovieGenreController extends Controller
             if($genres){
                 return response()->json([
                     'success' => true,
-                    'message' => 'Lấy thể loại thành công',
+                    'message' => 'Get list of genres successfully',
                     'genres' => $genres,
                     'total' => count($genres)
                 ]);
             }else {
                 return response()->json([
                     'success' => false,
-                    'message' => 'Phim không tồn tại'
+                    'message' => 'Movie does not exist'
                 ]);
             }
         } catch (\Exception $e) {

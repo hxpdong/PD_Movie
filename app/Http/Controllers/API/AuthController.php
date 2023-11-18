@@ -28,10 +28,10 @@ class AuthController extends Controller
                     Rule::unique('pdmv_admins', 'email'),
                 ],
             ], [
-                'name.required' => 'Trường username là bắt buộc.',
-                'name.unique' => 'Username đã tồn tại. Vui lòng nhập lại!',
-                'email.required' => 'Trường email là bắt buộc.',
-                'email.unique' => 'Email này đã được sử dụng cho tài khoản khác, vui lòng sử dụng email khác!',
+                'name.required' => 'The username field is required.',
+                'name.unique' => 'Username already exists. Please re-enter!',
+                'email.required' => 'The Email field is required.',
+                'email.unique' => 'This email is already used for another account, please use another email!',
             ]);
             
             $usname = $request->name;
@@ -80,7 +80,7 @@ class AuthController extends Controller
                     return $user;
                 } else {
                     Auth::guard('web')->logout();
-                    return response()->json(['message' => 'Bạn đã bị khóa'], 404);
+                    return response()->json(['message' => 'You are locked'], 404);
                 }
             }
 
@@ -121,10 +121,10 @@ class AuthController extends Controller
                     Rule::unique('pdmv_admins', 'email'),
                 ],
             ], [
-                'name.required' => 'Trường username là bắt buộc.',
-                'name.unique' => 'Username đã tồn tại. Vui lòng nhập lại!',
-                'email.required' => 'Trường email là bắt buộc.',
-                'email.unique' => 'Email này đã được sử dụng cho tài khoản khác, vui lòng sử dụng email khác!',
+                'name.required' => 'The username field is required.',
+                'name.unique' => 'Username already exists. Please re-enter!',
+                'email.required' => 'The Email field is required.',
+                'email.unique' => 'This email is already used for another account, please use another email!',
             ]);
 
             $usname = $request->name;
@@ -203,10 +203,10 @@ class AuthController extends Controller
                     Rule::unique('pdmv_admins', 'email'),
                 ],
             ], [
-                'mdregusname.required' => 'Trường username là bắt buộc.',
-                'mdregusname.unique' => 'Username đã tồn tại. Vui lòng nhập lại!',
-                'mdregemail.required' => 'Trường email là bắt buộc.',
-                'mdregemail.unique' => 'Email này đã được sử dụng cho tài khoản khác, vui lòng sử dụng email khác!',
+                'mdregusname.required' => 'The username field is required.',
+                'mdregusname.unique' => 'Username already exists. Please re-enter!',
+                'mdregemail.required' => 'The Email field is required.',
+                'mdregemail.unique' => 'This email is already used for another account, please use another email!',
             ]);
 
             $usname = $request->mdregusname;
@@ -216,7 +216,7 @@ class AuthController extends Controller
             if($usname == null || $passwd == null){
                 return response()->json([
                     "error" => true,
-                    "message" => "Tài khoản và mật khẩu không được bỏ trống",
+                    "message" => "Username and password cannot be left blank",
                 ]);
             }
             DB::insert('insert into pdmv_accounts (usname, password, acctype_id) values (?, ?, ?)', [$usname, $passwd, 3]);
@@ -287,13 +287,13 @@ class AuthController extends Controller
                     Auth::guard('web')->logout();
                     return response()->json([
                         'success' => false,
-                        'message' => "Bạn đã bị khóa",
+                        'message' => "You are locked",
                     ]);
                 }
             } else {
                 return response()->json([
                     'success' => false,
-                    'message' => "Tài khoản hoặc mật khẩu không đúng",
+                    'message' => "Incorrect username or password",
                 ]);
             }
         } catch (\Exception $e) {
@@ -334,8 +334,8 @@ class AuthController extends Controller
                             Rule::unique('pdmv_admins', 'email')->ignore($request->input('uptAccId'), 'admin_id'),
                         ],
                     ], [
-                        'uptemail.required' => 'Trường email là bắt buộc.',
-                        'uptemail.unique' => 'Email này đã được sử dụng cho tài khoản khác, vui lòng sử dụng email khác!',
+                        'uptemail.required' => 'The Email field is required.',
+                        'uptemail.unique' => 'This email is already used for another account, please use another email!',
                     ]);
         
                     $user_id = $request->input('uptAccId'); // Lấy ID của người dùng đã đăng nhập
@@ -356,25 +356,25 @@ class AuthController extends Controller
             
                         return response()->json([
                             'success' => true,
-                            'message' => 'Cập nhật thông tin người dùng thành công',
+                            'message' => 'User information updated successfully',
                         ]);
                     } else {
                         return response()->json([
                             'success' => false,
                             'error' => true,
-                            'message' => 'Không cập nhật được',
+                            'message' => 'Unable to update',
                         ]);
                     }
                 } else {
                     return response()->json([
                         'success' => false,
-                        'message' => 'Bạn không có quyền này',
+                        'message' => 'You donnot have this permission'
                     ]);
                 }
             } else {
                 return response()->json([
                     'success' => false,
-                    'message' => 'Bạn không có quyền này',
+                    'message' => 'You donnot have this permission'
                 ]);
             }
         } catch (\Exception $e) {
@@ -414,32 +414,32 @@ class AuthController extends Controller
 
                             return response()->json([
                                 'success' => true,
-                                'message' => 'Mật khẩu đã được thay đổi thành công.',
+                                'message' => 'Password was successfully changed.',
                             ]);
                         } else return response()->json([
                             'success' => false,
-                            'message' => 'Không cập nhật được',
+                            'message' => 'Unable to update',
                         ]);
                     } else {
                         return response()->json([
                             'success' => false,
-                            'message' => 'Mật khẩu cũ không đúng. Vui lòng kiểm tra lại.',
+                            'message' => 'The old password is incorrect. Please check again.',
                         ]);
                     }
                 }else return response()->json([
                     'success' => false,
-                    'message' => 'Bạn không có quyền này.',
+                    'message' => 'You donnot have this permission.',
                 ]);
             }
             else return response()->json([
                 'success' => false,
-                'message' => 'Bạn không có quyền này.',
+                'message' => 'You donnot have this permission.',
             ]);
         } catch (\Exception $e) {
             // Xử lý lỗi ở đây, ví dụ: in thông báo lỗi
             return response()->json([
                 'success' => false,
-                'message' => 'Lỗi: '.$e->getMessage(),
+                'message' => 'Error: '.$e->getMessage(),
             ]);
         }
     }
@@ -450,7 +450,7 @@ class AuthController extends Controller
                 'registed_email' => 'required'
             
             ], [
-                'registed_email.required' => 'Vui lòng nhập email.'
+                'registed_email.required' => 'Please enter email.'
             ]);
 
             $user = User::where('email', $request->input('registed_email'))->first();
@@ -468,19 +468,19 @@ class AuthController extends Controller
 
                 return response()->json([
                     'success' => true,
-                    'message' => 'Mã OTP đang được gửi đến email.',
+                    'message' => 'OTP code is being sent to email.',
                 ]);
             } else {
                 return response()->json([
                     'success' => false,
-                    'message' => 'Không tìm thấy người dùng với email đã đăng ký.',
+                    'message' => 'No user found with registered email.',
                 ]);
             }
     
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
-                'message' => 'Lỗi: ' . $e->getMessage(),
+                'message' => 'Error: ' . $e->getMessage(),
             ]);
         }
     }
@@ -494,11 +494,11 @@ class AuthController extends Controller
                 'confirm-password' => 'required|min:5'
             
             ], [
-                'email.required' => 'Vui lòng nhập email.',
-                'otp.required' => 'Vui lòng nhập mã OTP.',
-                'otp.valid_otp_for_email' => 'Mã OTP không hợp lệ, vui lòng nhập lại.',
-                'password.required' => 'Vui lòng nhập mật khẩu.',
-                'confirm-password.required' => 'Vui lòng nhập mật khẩu xác nhận.',
+                'email.required' => 'Please enter email.',
+                'otp.required' => 'Please enter OTP code.',
+                'otp.valid_otp_for_email' => 'Invalid OTP code, please re-enter.',
+                'password.required' => 'Please enter a password.',
+                'confirm-password.required' => 'Please enter confirmation password.',
             ]);
             $user = User::where('email', $request->input('email'))->first();
             if($user){
@@ -520,7 +520,7 @@ class AuthController extends Controller
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
-                'message' => 'Lỗi: ' . $e->getMessage(),
+                'message' => 'Error: ' . $e->getMessage(),
             ]);
         }
     }
