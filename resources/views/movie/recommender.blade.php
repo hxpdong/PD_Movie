@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Gợi ý cho bạn</title>
+    <title>{{ __('recommendedforyou') }}</title>
     <link rel="stylesheet" href="/css/main.css">
 </head>
 <body>
