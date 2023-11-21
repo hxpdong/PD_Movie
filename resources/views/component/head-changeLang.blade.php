@@ -1,4 +1,4 @@
-<div class="fixed top-28 right-4">
+<div class="fixed top-28 right-4 border-2">
     <div class="bg-gray-300 flex justify-between rounded-sm m-2">
         <div>
             <a href="{{url('lang/en')}}">

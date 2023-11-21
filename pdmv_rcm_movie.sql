@@ -8464,7 +8464,7 @@ BEGIN
     DECLARE isDone INT DEFAULT 0;
     DECLARE mvgId INT;
     DECLARE mvgHaveList VARCHAR(255) DEFAULT '';
-    DECLARE cur CURSOR FOR SELECT mvgenre_id FROM pdmv_movies_genres WHERE movie_id = p_mvid ORDER BY mvgenre_id ASC;
+    DECLARE cur CURSOR FOR SELECT mvgenre_id FROM pdmv_movies_genres WHERE movie_id = p_mvid AND mvgenre_id != 1 ORDER BY mvgenre_id ASC;
     DECLARE CONTINUE HANDLER FOR NOT FOUND SET isDone = 1;
     
     SET mvgTotal = (SELECT COUNT(*) AS genreTotal FROM pdmv_mvgenres);
@@ -8511,10 +8511,14 @@ BEGIN
     IF len1 <> len2 THEN
         RETURN -1; -- or any other value indicating the strings are of different lengths
     END IF;
+    
+	SET i = 1;
+	IF SUBSTRING(str1, i, len1) = 0 OR SUBSTRING(str2, i, len2) = 0 THEN
+		RETURN 0;
+	END IF;
 
-    SET i = 1;
     WHILE i <= len1 DO
-        IF SUBSTRING(str1, i, 1) = SUBSTRING(str2, i, 1) AND SUBSTRING(str1, i, 1) = '1' THEN
+        IF SUBSTRING(str1, i, 1) = SUBSTRING(str2, i, 1) AND SUBSTRING(str1, i, 1) THEN
             SET matchingCount = matchingCount + 1;
         END IF;
         SET i = i + 1;
