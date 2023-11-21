@@ -1,6 +1,7 @@
 DROP DATABASE IF EXISTS rcm_movie;
 CREATE DATABASE rcm_movie;
 USE rcm_movie;
+SET SQL_SAFE_UPDATES = 0;
 CREATE TABLE pdmv_acctypes (
   	acctype_id INT PRIMARY KEY AUTO_INCREMENT,
   	ustype_name NVARCHAR(50) NOT NULL
@@ -1102,7 +1103,7 @@ CREATE FUNCTION CalculateHammingDistance(
     input_string1 VARCHAR(255),
     input_string2 VARCHAR(255)
 )
-RETURNS INT
+RETURNS INT DETERMINISTIC
 BEGIN
     DECLARE len1 INT;
     DECLARE len2 INT;
@@ -7721,13 +7722,18 @@ END //
 DELIMITER ;
 
 DELIMITER //
+
 CREATE PROCEDURE TEST_ADD_CHAPTER_TO_MOVIES_FROM_1_300()
 BEGIN
-	 FOR i IN 1..300 DO
-		INSERT INTO pdmv_mvchapters(movie_id, chapter_name, chapterURL) VALUES 
-        (i, 'FULL', 'https://www.youtube.com/embed/K6PMnE3pMZ8?si=w-lbPo2Ktqwzbo9V');
-	END FOR;
+    DECLARE i INT DEFAULT 1;
+
+    WHILE i <= 300 DO
+        INSERT INTO pdmv_mvchapters(movie_id, chapter_name, chapterURL) VALUES 
+            (i, 'FULL', 'https://www.youtube.com/embed/K6PMnE3pMZ8?si=w-lbPo2Ktqwzbo9V');
+        SET i = i + 1;
+    END WHILE;
 END //
+
 DELIMITER ;
 CALL TEST_ADD_CHAPTER_TO_MOVIES_FROM_1_300();
 
@@ -8326,7 +8332,7 @@ DELIMITER ;
 RECOMMENDED MOVIE BASED USER (COLLAB FILTERING - SIMILAR USERS)
 */
 DELIMITER //
-CREATE FUNCTION Collab_SimilarityCosine(user1 INT, user2 INT) RETURNS DECIMAL(10, 5)
+CREATE FUNCTION Collab_SimilarityCosine(user1 INT, user2 INT) RETURNS DECIMAL(10, 5) DETERMINISTIC READS SQL DATA
 BEGIN
     DECLARE cosine_similarity DECIMAL(10, 5);
     
@@ -8448,7 +8454,7 @@ RECOMMENDED MOVIE BASED CONTENT (BASED genres of movies)
 -- get vector dac trung cua phim (id) -> chuoi dac trung
 DELIMITER //
 CREATE FUNCTION movie_getFeatureVector(p_mvid INT)
-	RETURNS varchar(255)
+	RETURNS varchar(255) DETERMINISTIC READS SQL DATA
 BEGIN
 	DECLARE varFeatureVector varchar(255) DEFAULT '';
     DECLARE mvgTotal INT DEFAULT 0;
@@ -8491,7 +8497,7 @@ DELIMITER ;
 -- tinh toan so ky  tu giong nhau (intersection) cua 2 chuoi (str1, str2) -> count ky tu giong nhau (phan giao)
 DELIMITER //
 CREATE FUNCTION CountMatchingCharacters(str1 VARCHAR(255), str2 VARCHAR(255))
-    RETURNS INT
+    RETURNS INT DETERMINISTIC READS SQL DATA
 BEGIN
     DECLARE len1 INT;
     DECLARE len2 INT;
@@ -8503,27 +8509,26 @@ BEGIN
     SET matchingCount = 0;
 
     IF len1 <> len2 THEN
-        RETURN -1; 
+        RETURN -1; -- or any other value indicating the strings are of different lengths
     END IF;
 
-    FOR i IN 1..len1 DO
-        IF SUBSTRING(str1, i, 1) = SUBSTRING(str2, i, 1) THEN
-            IF SUBSTRING(str1, i, 1) = '1' THEN
-                SET matchingCount = matchingCount + 1;
-            END IF;
-            
+    SET i = 1;
+    WHILE i <= len1 DO
+        IF SUBSTRING(str1, i, 1) = SUBSTRING(str2, i, 1) AND SUBSTRING(str1, i, 1) = '1' THEN
+            SET matchingCount = matchingCount + 1;
         END IF;
-    END FOR;
+        SET i = i + 1;
+    END WHILE;
 
     RETURN matchingCount;
-END //
+END; //
 DELIMITER ;
 
 
 -- Tinh toan jascard cua 2 bo phim (id1, id2) -> ty le % giong nhau (intersection/union)
 DELIMITER //
 CREATE FUNCTION JaccardIndex(p_mv1 INT, p_mv2 INT)
-    RETURNS DECIMAL(5, 4)
+    RETURNS DECIMAL(5, 4) DETERMINISTIC READS SQL DATA
 BEGIN
     DECLARE set1 VARCHAR(255);
     DECLARE set2 VARCHAR(255);
