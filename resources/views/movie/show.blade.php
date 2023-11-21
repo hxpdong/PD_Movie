@@ -234,20 +234,32 @@
             <div class="w-full pt-3 md:pt-1">
                 <div class="bg-white shadow-lg border-gray-100 border rounded-3xl p-4">
                     <div class="text-lg lg:text-2xl font-bold text-gray-900 dark:text-white">{{ __('relatemv') }}</div>
-                    <div class="bg-[#3a3a3a] p-4 border rounded-3xl mb-2">
+                    <div class="bg-[#3a3a3a] p-4 border rounded-3xl mb-2 flex justify-center flex-col">
                         <div id="related-list">
+                        </div>
+                        <div class="w-full flex justify-center">
+                            <a href="" id="linktorelatedpage"
+                                class="mt-3 px-5 py-2 bg-cyan-500 text-white duration-300 hover:bg-cyan-700">{{ __('showmore') }}</a>
                         </div>
                     </div>
                     @if(auth()->check())
                         <div class="text-lg lg:text-2xl font-bold text-gray-900 dark:text-white">{{ __('recommendedforyou') }}</div>
-                        <div class="bg-[#3a3a3a] p-4 border rounded-3xl mb-2">
+                        <div class="bg-[#3a3a3a] p-4 border rounded-3xl mb-2 flex justify-center flex-col">
                             <div id="recommended-list">
+                            </div>
+                            <div class="w-full flex justify-center">
+                                <a href="/recommend"
+                                    class="mt-3 px-5 py-2 bg-cyan-500 text-white duration-300 hover:bg-cyan-700">{{ __('showmore') }}</a>
                             </div>
                         </div>
                     @endif
                     <div class="text-lg lg:text-2xl font-bold text-gray-900 dark:text-white">{{ __('latestmv') }}</div>
-                    <div class="bg-[#3a3a3a] p-4 border rounded-3xl mb-2">
+                    <div class="bg-[#3a3a3a] p-4 border rounded-3xl mb-2 flex justify-center flex-col">
                         <div id="new-list">
+                        </div>
+                        <div class="w-full flex justify-center">
+                            <a href="/"
+                                class="mt-3 px-5 py-2 bg-cyan-500 text-white duration-300 hover:bg-cyan-700">{{ __('showmore') }}</a>
                         </div>
                     </div>
                 </div>

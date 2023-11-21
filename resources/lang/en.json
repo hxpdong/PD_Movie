@@ -119,5 +119,7 @@
     "updatecsvmss": "Please select the exported Assessment file",
     "notfound": "Not Found",
     "notfoundmss": "Oops! The page you are looking for could not be found.",
-    "gotohome": "Go back to Home"
+    "gotohome": "Go back to Home",
+    "showmore": "Show more",
+    "with": "with"
 }

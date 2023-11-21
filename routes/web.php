@@ -91,6 +91,9 @@ Route::middleware('pdmv_checkIsUserOrGuest','pdmv_checkHaveKWSearch')->group(fun
     Route::get('/users/{uid}', function(){
         return view('auth.userpage');
     });
+    Route::get('related/{mid}', function(){
+        return view('/movie.related');
+    });
 });
 /*
 Route::get('/users/{uid}', function(){
