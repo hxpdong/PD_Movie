@@ -1566,8 +1566,28 @@ function getMVGenreList() {
                 }
             });
         }
-        divButton.appendChild(editBtn);
-        divButton.appendChild(rmvBtn);
+        if(mvg[0] != 1){
+            divButton.appendChild(editBtn);
+            divButton.appendChild(rmvBtn);
+        } else {
+            const inforBtn = document.createElement("button");
+            inforBtn.title = "This genre cannot be deleted";
+            inforBtn.style.backgroundColor = "#f2f2f2";
+            inforBtn.style.color = "#fff";
+            inforBtn.className = "rounded-t-lg py-1";
+            const inforIcon = document.createElement("span");
+            inforIcon.className = "material-icons";
+            inforIcon.textContent = "info";
+            inforIcon.style.color = "#66ccff";
+            inforBtn.appendChild(inforIcon);
+            inforBtn.onclick = function() {
+                Swal.fire({
+                    title: 'This genre cannot be deleted',
+                    icon: 'warning'
+                });
+            }
+            divButton.appendChild(inforBtn);
+        }
 
         card.appendChild(iconContainer);
         card.appendChild(contentContainer);

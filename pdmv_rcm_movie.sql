@@ -7684,7 +7684,7 @@ BEGIN
 	IF EXISTS (SELECT * FROM pdmv_movies WHERE movie_id = p_mvid) THEN
 		SELECT g.*, movgen_id FROM pdmv_mvgenres g 
 		LEFT JOIN (SELECT * FROM pdmv_movies_genres WHERE movie_id = p_mvid) AS mvg ON g.mvgenre_id = mvg.mvgenre_id
-		ORDER BY g.mvgenre_id ASC;
+		ORDER BY movgen_id DESC, g.mvgenre_id ASC;
     END IF;
 END //
 DELIMITER ;
