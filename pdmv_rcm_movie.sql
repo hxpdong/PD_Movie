@@ -8500,45 +8500,49 @@ BEGIN
     DECLARE cursor_users CURSOR FOR SELECT user_id FROM pdmv_users WHERE user_id <> user1;
     DECLARE CONTINUE HANDLER FOR NOT FOUND SET is_done = 1;
     DROP TABLE IF EXISTS USER_LIST;
-    CREATE TABLE USER_LIST 
-      (
-		user_stt int default 0,
-        user_id INT,
-        cosine_similarity DECIMAL(10, 5)
-      )ENGINE=InnoDB DEFAULT CHARSET=utf8;
-    OPEN cursor_users;
-    get_list: LOOP
-    FETCH cursor_users INTO uid;
-    IF is_done = 1 THEN LEAVE get_list;
-    END IF;
-    SELECT Collab_SimilarityCosine(user1, uid) INTO similar;
-    INSERT INTO USER_LIST(user_id, cosine_similarity) values(uid, similar);
-    END LOOP get_list;
-    CLOSE cursor_users;
-	SET @row_number = 0;
-	UPDATE USER_LIST
-	SET user_stt = (@row_number:=@row_number + 1)
-	ORDER BY cosine_similarity DESC;
-	SELECT
-		pdmv_movies.*, COALESCE(AVG(pdmv_ratings.rating), 0) AS mvrating
-	FROM
-		pdmv_movies
-	INNER JOIN
-		pdmv_ratings ON pdmv_movies.movie_id = pdmv_ratings.movie_id
-	INNER JOIN
-		(
-			SELECT * from USER_LIST ORDER BY user_stt ASC
-		) AS similar_users ON pdmv_ratings.user_id = similar_users.user_id
-	WHERE
-		pdmv_ratings.user_id <> user1
-		AND pdmv_ratings.movie_id NOT IN (SELECT movie_id FROM pdmv_ratings WHERE user_id = user1)
-		AND pdmv_ratings.rating >= 4.0
-	GROUP BY
-		pdmv_movies.movie_id
-	ORDER BY
-		similar_users.user_stt ASC, pdmv_ratings.rating DESC , AVG(pdmv_ratings.rating) DESC
-		LIMIT numoffilm;
-    DROP TABLE USER_LIST;
+    IF NOT EXISTS (SELECT user_id FROM pdmv_ratings WHERE user_id = user1) THEN
+		call movie_listhighestratingmovies(numoffilm);
+    ELSE
+		CREATE TABLE USER_LIST 
+		  (
+			user_stt int default 0,
+			user_id INT,
+			cosine_similarity DECIMAL(10, 5)
+		  )ENGINE=InnoDB DEFAULT CHARSET=utf8;
+		OPEN cursor_users;
+		get_list: LOOP
+		FETCH cursor_users INTO uid;
+		IF is_done = 1 THEN LEAVE get_list;
+		END IF;
+		SELECT Collab_SimilarityCosine(user1, uid) INTO similar;
+		INSERT INTO USER_LIST(user_id, cosine_similarity) values(uid, similar);
+		END LOOP get_list;
+		CLOSE cursor_users;
+		SET @row_number = 0;
+		UPDATE USER_LIST
+		SET user_stt = (@row_number:=@row_number + 1)
+		ORDER BY cosine_similarity DESC;
+		SELECT
+			pdmv_movies.*, COALESCE(AVG(pdmv_ratings.rating), 0) AS mvrating
+		FROM
+			pdmv_movies
+		INNER JOIN
+			pdmv_ratings ON pdmv_movies.movie_id = pdmv_ratings.movie_id
+		INNER JOIN
+			(
+				SELECT * from USER_LIST ORDER BY user_stt ASC
+			) AS similar_users ON pdmv_ratings.user_id = similar_users.user_id
+		WHERE
+			pdmv_ratings.user_id <> user1
+			AND pdmv_ratings.movie_id NOT IN (SELECT movie_id FROM pdmv_ratings WHERE user_id = user1)
+			AND pdmv_ratings.rating >= 4.0
+		GROUP BY
+			pdmv_movies.movie_id
+		ORDER BY
+			similar_users.user_stt ASC, pdmv_ratings.rating DESC , AVG(pdmv_ratings.rating) DESC
+			LIMIT numoffilm;
+		DROP TABLE USER_LIST;
+	END IF;
 END//
 DELIMITER ;
 -- ---------------------------------------------------------------

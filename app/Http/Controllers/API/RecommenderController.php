@@ -21,6 +21,9 @@ class RecommenderController extends Controller
         else {
             $movies = DB::select('CALL collab_recommendedmovies(?, ?)', array($uid, $numofmov));
         }
+        if (empty($movies)){
+            $movies = DB::select('call movie_listhighestratingmovies(?)', array($numofmov));
+        } 
         $resultArray = [
             'recommendedmovies' => $movies
         ];
