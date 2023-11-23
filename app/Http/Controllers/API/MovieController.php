@@ -220,8 +220,11 @@ class MovieController extends Controller
                 $mid = $request->mId;
                 $rating = $request->ratingpoint;
                 DB::update("CALL rating_post(?, ?, ?)", array($uid, $mid, $rating));
+                $newrt = DB::select("CALL movie_showdetail(?);", array($mid));
                 return response()->json([
                         'success' => true,
+                        "mvpoint" => $newrt[0]->mvpoint,
+                        "numrating" => $newrt[0]->numrating
                     ]);
             } else return response()->json([
                 'success' => false,

@@ -193,7 +193,7 @@ function updateMovieDetail(movieDetail) {
             };
             document.title = movie.title_en;
             window.history.pushState({}, '', "mv" + movie.movie_id + "-" + movie.movie_url);
-            document.getElementById("linktorelatedpage").setAttribute("href", "/related/"+  "mv" + movie.movie_id + "-" + movie.movie_url);
+            document.getElementById("linktorelatedpage").setAttribute("href", "/related/" + "mv" + movie.movie_id + "-" + movie.movie_url);
         });
         console.log("updated");
     }
@@ -754,6 +754,10 @@ document.addEventListener("DOMContentLoaded", function () {
                     else {
                         localStorage.removeItem("recommendedMoviesForLoggedUser");
                         getRCMMoviesToLocalStorage();
+                        var ratingElement = document.getElementById("mvdetail-rating");
+                        var numRatingElement = document.getElementById("mvdetail-numrating");
+                        ratingElement.innerHTML = data.mvpoint;
+                        numRatingElement.innerHTML = data.numrating;
                     }
                 })
                 .catch(error => {

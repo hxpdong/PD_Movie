@@ -588,14 +588,114 @@ BEGIN
 END//
 DELIMITER ;
 
+ALTER TABLE pdmv_movies
+ADD COLUMN mvpoint DECIMAL(10, 1);
+ALTER TABLE pdmv_movies
+ADD COLUMN numrating INT;
+
+UPDATE pdmv_movies
+SET mvpoint = COALESCE(
+    (
+        SELECT AVG(rating)
+        FROM pdmv_ratings
+        WHERE movie_id = pdmv_movies.movie_id
+    ),
+    0
+);
+UPDATE pdmv_movies
+SET numrating = COALESCE(
+    (
+        SELECT count(rating)
+        FROM pdmv_ratings
+        WHERE movie_id = pdmv_movies.movie_id
+    ),
+    0
+);
+
+DELIMITER //
+CREATE TRIGGER before_insert_rating
+AFTER INSERT ON pdmv_ratings
+FOR EACH ROW
+BEGIN
+    UPDATE pdmv_movies
+    SET mvpoint = COALESCE(
+        (
+            SELECT AVG(rating)
+            FROM pdmv_ratings
+            WHERE movie_id = NEW.movie_id
+        ),
+        0
+    )
+    WHERE movie_id = NEW.movie_id;
+
+    UPDATE pdmv_movies
+    SET numrating = (
+        SELECT COUNT(rating)
+        FROM pdmv_ratings
+        WHERE movie_id = NEW.movie_id
+    )
+    WHERE movie_id = NEW.movie_id;
+END; //
+DELIMITER ;
+
+DELIMITER //
+CREATE TRIGGER before_update_rating
+AFTER UPDATE ON pdmv_ratings
+FOR EACH ROW
+BEGIN
+    UPDATE pdmv_movies
+    SET mvpoint = COALESCE(
+        (
+            SELECT AVG(rating)
+            FROM pdmv_ratings
+            WHERE movie_id = NEW.movie_id
+        ),
+        0
+    )
+    WHERE movie_id = NEW.movie_id;
+
+    UPDATE pdmv_movies
+    SET numrating = (
+        SELECT COUNT(rating)
+        FROM pdmv_ratings
+        WHERE movie_id = NEW.movie_id
+    )
+    WHERE movie_id = NEW.movie_id;
+END; //
+DELIMITER ;
+
+DELIMITER //
+CREATE TRIGGER before_delete_rating
+AFTER DELETE ON pdmv_ratings
+FOR EACH ROW
+BEGIN
+    UPDATE pdmv_movies
+    SET mvpoint = COALESCE(
+        (
+            SELECT AVG(rating)
+            FROM pdmv_ratings
+            WHERE movie_id = OLD.movie_id
+        ),
+        0
+    )
+    WHERE movie_id = OLD.movie_id;
+
+    UPDATE pdmv_movies
+    SET numrating = (
+        SELECT COUNT(rating)
+        FROM pdmv_ratings
+        WHERE movie_id = OLD.movie_id
+    )
+    WHERE movie_id = OLD.movie_id;
+END; //
+DELIMITER ;
+
 DELIMITER //
 CREATE PROCEDURE movie_showdetail (IN mvid INT)
 BEGIN
-	SELECT mv.*, ROUND(COALESCE(AVG(rt.rating), 0), 1) as mvpoint, COUNT(rt.rating) as numrating
+	SELECT mv.*
 	FROM pdmv_movies mv
-	LEFT JOIN pdmv_ratings rt ON mv.movie_id = rt.movie_id
-	WHERE mv.movie_id = mvid
-	GROUP BY mv.movie_id, rt.movie_id;
+	WHERE mv.movie_id = mvid;
 END//
 DELIMITER ;
 
@@ -7534,7 +7634,6 @@ BEGIN
 END //
 DELIMITER ;
 
-DROP PROCEDURE IF EXISTS movie_drop;
 DELIMITER //
 CREATE PROCEDURE movie_drop(IN p_mvid INT)
 BEGIN
@@ -8556,7 +8655,6 @@ END //
 DELIMITER ;
 
 -- get danh sach phim goi y
-DROP PROCEDURE IF EXISTS Content_RecommendedMovies;
 DELIMITER //
 CREATE PROCEDURE Content_RecommendedMovies(p_mvid INT, p_KNum INT, p_userid INT, p_min DECIMAL(5,4))
 BEGIN
