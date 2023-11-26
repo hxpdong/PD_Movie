@@ -7,6 +7,7 @@ import pandas as pd
 import traceback
 import requests
 from sklearn.metrics.pairwise import cosine_similarity
+from scipy.stats import pearsonr
 
 app = Flask(__name__)
 CORS(app)
@@ -52,14 +53,40 @@ def update_data(user_id, movie_id, rating):
 
     return {'success': True, 'message': f'Rating for User ID {user_id} and Movie ID {movie_id} updated successfully'}, 200
 
-# Hàm lấy độ tương tự giữa các người dùng
-def get_user_similarity(user_item_matrix):
+#Hàm lấy độ tương tự giữa các người dùng
+def get_user_similarity_cosine(user_item_matrix):
     user_item_matrix_np = user_item_matrix.to_numpy().astype(float)  # Chuyển đổi đánh giá thành số thực
     #return np.dot(user_item_matrix_np, user_item_matrix_np.T) / (np.linalg.norm(user_item_matrix_np, axis=1) * np.linalg.norm(user_item_matrix_np.T, axis=0))
     user_similarity = cosine_similarity(user_item_matrix_np)
     return user_similarity
 
-def get_recommendations_resnick(user_id, num_recommendations):
+def get_user_similarity(user_item_matrix):
+    user_item_matrix_np = user_item_matrix.to_numpy().astype(float)  # Chuyển đổi đánh giá thành số thực
+
+    # Chuyển đổi các giá trị NaN thành 0
+    user_item_matrix_np = np.nan_to_num(user_item_matrix_np)
+
+    # Pearson similarity
+    def pearson_similarity(u, v):
+        mask = ~np.logical_or(np.isnan(u), np.isnan(v))
+        if np.sum(mask) < 2:
+            return 0.0  # Tránh chia cho 0 khi không có đánh giá chung
+        else:
+            return pearsonr(u[mask], v[mask])[0]
+
+    # Tính ma trận tương tự sử dụng Pearson similarity
+    num_users = user_item_matrix_np.shape[0]
+    user_similarity = np.zeros((num_users, num_users))
+
+    for i in range(num_users):
+        for j in range(i, num_users):
+            user_similarity[i, j] = user_similarity[j, i] = pearson_similarity(user_item_matrix_np[i, :], user_item_matrix_np[j, :])
+    user_similarity = np.nan_to_num(user_similarity)
+    return user_similarity
+
+
+
+def get_recommendations_resnick(user_id, num_recommendations, max_recursion=3):
     global global_user_item_matrix
     global global_user_similarity
 
@@ -77,13 +104,13 @@ def get_recommendations_resnick(user_id, num_recommendations):
         # Lọc ra các mục được đề xuất
         top_recommendations = np.argsort(predicted_ratings_resnick)[::-1]
         recommendations = [{'item_id': int(item_id), 'estimated_rating': float(predicted_ratings_resnick[item_id])} for item_id in top_recommendations if item_id in items_not_rated_by_user and predicted_ratings_resnick[item_id] > 0][:num_recommendations]
-        if not recommendations:
-            return {'success': False, 'error': 'No valid recommendations found for the user.'}, 400
         
-        item_ids = [recommendation["item_id"] for recommendation in recommendations]
-        item_id_string = f"{', '.join(map(str, item_ids))}"
-        #print(global_user_item_matrix)
-        return {'success': True, 'recommendations': recommendations, 'itemId_list': item_id_string}, 200
+        if not recommendations:
+            return {'success': False, 'error': f'Not item to recommend for user'}, 400
+        else:
+            item_ids = [recommendation["item_id"] for recommendation in recommendations]
+            item_id_string = f"{', '.join(map(str, item_ids))}"
+            return {'success': True, 'recommendations': recommendations, 'itemId_list': item_id_string}, 200
 
     except KeyError:
         return {'success': False, 'error': f'Invalid user ID {user_id}'}, 400
@@ -199,5 +226,5 @@ if __name__ == '__main__':
     reload_rating()
     global_user_item_matrix = global_df.pivot(index='user_id', columns='movie_id', values='rating').fillna(0)
     global_user_similarity = get_user_similarity(global_user_item_matrix)
-
+    #print(global_user_similarity)
     app.run(debug=True, port=8300)
