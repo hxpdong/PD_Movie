@@ -8641,7 +8641,7 @@ BEGIN
     DECLARE set2 VARCHAR(255);
     DECLARE intersectionCount INT;
     DECLARE unionCount INT;
-
+	DECLARE i INT;
  	SET set1 = ( SELECT movie_getFeatureVector(p_mv1) );
     SET set2 = ( SELECT movie_getFeatureVector(p_mv2) );
 
@@ -8649,6 +8649,7 @@ BEGIN
     SET intersectionCount = ( SELECT CountMatchingCharacters(set1, set2) );
     -- Tính số phần tử hợp của hai tập hợp
 	SET unionCount = 0;
+    SET i = 1;
     WHILE i <= LENGTH(set1) DO
         IF SUBSTRING(set1, i, 1) = "1" OR SUBSTRING(set2, i, 1) = "1" THEN
             SET unionCount = unionCount + 1;
