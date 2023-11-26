@@ -8621,7 +8621,7 @@ BEGIN
 	END IF;
 
     WHILE i <= len1 DO
-        IF SUBSTRING(str1, i, 1) = SUBSTRING(str2, i, 1) AND SUBSTRING(str1, i, 1) THEN
+        IF SUBSTRING(str1, i, 1) = SUBSTRING(str2, i, 1) AND SUBSTRING(str1, i, 1) = "1" THEN
             SET matchingCount = matchingCount + 1;
         END IF;
         SET i = i + 1;
@@ -8648,7 +8648,14 @@ BEGIN
     -- Tính số phần tử giao của hai tập hợp
     SET intersectionCount = ( SELECT CountMatchingCharacters(set1, set2) );
     -- Tính số phần tử hợp của hai tập hợp
-    SET unionCount = ( SELECT LENGTH(set1) );
+	SET unionCount = 0;
+    WHILE i <= LENGTH(set1) DO
+        IF SUBSTRING(set1, i, 1) = "1" OR SUBSTRING(set2, i, 1) = "1" THEN
+            SET unionCount = unionCount + 1;
+        END IF;
+        SET i = i + 1;
+    END WHILE;
+
     -- Tính Jaccard index
     IF unionCount = 0 THEN
         RETURN 0; -- Trường hợp đặc biệt khi cả hai tập hợp đều rỗng
