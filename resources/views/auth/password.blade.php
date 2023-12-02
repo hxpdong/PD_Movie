@@ -101,6 +101,7 @@
                     allowOutsideClick: false,
                     allowEscapeKey: false,
                     allowEnterKey: false,
+                    allowOutsideClick: false,
                     onBeforeOpen: () => {
                         Swal.showLoading();
                     },
@@ -116,6 +117,7 @@
                         icon: 'success',
                         title: response.message,
                         confirmButtonText: 'OK',
+                        allowOutsideClick: false,
                     }).then((result) => {
                         if (result.isConfirmed) {
                             document.getElementById("resetPasswordForm").hidden = false;
