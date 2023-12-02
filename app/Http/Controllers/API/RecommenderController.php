@@ -88,7 +88,7 @@ class RecommenderController extends Controller
                 ->get();
                 */
                 $uid = request()->get('userid', 0);
-                $threshold = request()->get('threshold', 0.02);
+                $threshold = request()->get('threshold', 0.5);
                 $recommendedMovies = DB::select("CALL Content_RecommendedMovies(?,?,?,?)", array($mvid, $numofmov, $uid, $threshold));
             return response()->json([
                 'success' => true,

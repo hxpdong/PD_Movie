@@ -114,7 +114,7 @@
                             </div>
                             <div>
                                 <div class="text-sm text-gray-400">{{ __('content') }}:</div>
-                                <div class=" text-gray-800 text-justify" id="mvdetail-content"></div>
+                                <div class=" text-gray-800 text-justify max-h-48 overflow-auto pr-2" id="mvdetail-content"></div>
 
                                 <div class="flex text-2xl font-bold text-a"></div>
                             </div>
