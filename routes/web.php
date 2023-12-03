@@ -119,3 +119,6 @@ Route::get('/admin', function(){
 Route::get('/not-found', function(){
     return view('page.notfound');
 });
+Route::get('/contact', function () {
+    return view('page.contact');
+});

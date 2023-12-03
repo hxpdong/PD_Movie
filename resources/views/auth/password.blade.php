@@ -82,10 +82,12 @@
                 href="/">
                 {{ __('homepage') }}
             </a>
+<!--
             <a class="pl-3 inline-flex items-center gap-x-2 text-sm text-gray-600 decoration-2 hover:underline hover:text-blue-600 dark:text-gray-500 dark:hover:text-gray-200"
-                href="/">
+                href="/contact">
                {{ __('contactus') }}
             </a>
+-->
         </p>
     </main>
     <script>
