@@ -14,6 +14,7 @@ use App\Http\Controllers\API\MovieChapterController;
 use App\Http\Controllers\API\ReportController;
 use App\Http\Controllers\API\StatisticController;
 use App\Http\Controllers\API\RatingController;
+use App\Http\Controllers\ImageController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -118,3 +119,5 @@ Route::put('/users/forgot-password/reset-password', [AuthController::class, 'res
 Route::get('/exports/rating/csv', [RatingController::class, 'exportCSV']);
 Route::post('/imports/rating/csv', [RatingController::class, 'importCSV']);
 Route::get('/recommend-rating',[RatingController::class, 'getAllRating']);
+
+Route::get('/movies/images/{mvid}',[ImageController::class, 'getById']);

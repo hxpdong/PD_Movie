@@ -6,6 +6,29 @@
     <title>List of Movies</title>
     <link rel="stylesheet" href="/css/main.css">
     <link rel="stylesheet" href="/css/demofilm.css">
+    <style>
+        /* Style for modal */
+        #myModal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgb(0, 0, 0);
+            background-color: rgba(0, 0, 0, 0.9);
+            padding-top: 60px;
+        }
+
+        #myModal img {
+            margin: auto;
+            display: block;
+            max-width: 80%;
+            max-height: 80%;
+        }
+    </style>
 </head>
 
 <body>
@@ -233,6 +256,43 @@
 
             <div class="w-full pt-3 md:pt-1">
                 <div class="bg-white shadow-lg border-gray-100 border rounded-3xl p-4">
+                <div id="gallery" class="relative w-full bg-black" data-carousel="slide">
+                        <!-- Carousel wrapper -->
+                        <div id="imglist2" class="w-full max-h-96  overflow-auto grid grid-cols-4"></div>
+                        <div class="relative h-12 rounded-lg md:h-96 hidden" id="imglist">
+                        </div>
+                        <!-- Slider controls -->
+                        <button type="button"
+                            class="hidden absolute top-0 start-0 z-30 items-center justify-center h-full px-4 cursor-pointer group focus:outline-none"
+                            data-carousel-prev>
+                            <span
+                                class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/30 dark:bg-gray-800/30 group-hover:bg-white/50 dark:group-hover:bg-gray-800/60 group-focus:ring-4 group-focus:ring-white dark:group-focus:ring-gray-800/70 group-focus:outline-none">
+                                <svg class="w-4 h-4 text-white dark:text-gray-800 rtl:rotate-180" aria-hidden="true"
+                                    xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M5 1 1 5l4 4" />
+                                </svg>
+                                <span class="sr-only">Previous</span>
+                            </span>
+                        </button>
+                        <button type="button"
+                            class="hidden top-0 end-0 z-30 items-center justify-center h-full px-4 cursor-pointer group focus:outline-none"
+                            data-carousel-next>
+                            <span
+                                class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/30 dark:bg-gray-800/30 group-hover:bg-white/50 dark:group-hover:bg-gray-800/60 group-focus:ring-4 group-focus:ring-white dark:group-focus:ring-gray-800/70 group-focus:outline-none">
+                                <svg class="w-4 h-4 text-white dark:text-gray-800 rtl:rotate-180" aria-hidden="true"
+                                    xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="m1 9 4-4-4-4" />
+                                </svg>
+                                <span class="sr-only">Next</span>
+                            </span>
+                        </button>
+                    </div>
+                    <div id="myModal">
+                        <span class="close" onclick="closeModal()"></span>
+                        <img id="modalImg" class="modal-content"  onclick="closeModal()">
+                    </div>
                     <div class="text-lg lg:text-2xl font-bold text-gray-900 dark:text-white">{{ __('relatemv') }}</div>
                     <div class="bg-[#3a3a3a] p-4 border rounded-3xl mb-2 flex justify-center flex-col">
                         <div id="related-list">
@@ -268,6 +328,48 @@
         </div>
     </div>
     <script src="/js/detail-movie.js"></script>
+    <script>
+        var imgcontainer = document.getElementById("imglist");
+        var imgcontainer2 = document.getElementById("imglist2");
+
+        axios.get('/api/movies/images/' + getMovieIdFromURL())
+            .then(function (response) {
+                var images = response.data.images;
+                console.log(images);
+
+                // Loop through the images array and create elements for each image
+                images.forEach(function (ima) {
+
+                    var divElement2 = document.createElement("div");
+                    divElement2.classList.add("w-1/2", "p-4");
+                    var imgElement2 = document.createElement("img");
+                    // Add attributes to img
+                    imgElement2.setAttribute("src", ima.imgURL);
+                    imgElement2.setAttribute("alt", "");
+                    // Attach click event to open modal
+                    imgElement2.addEventListener("click", function () {
+                        openModal(ima.imgURL);
+                    });
+                    divElement2.appendChild(imgElement2);
+                    imgcontainer2.appendChild(divElement2);
+                });
+            })
+            .catch(function (error) {
+                console.error("Error fetching images:", error);
+            });
+
+        function openModal(imgURL) {
+            var modal = document.getElementById("myModal");
+            var modalImg = document.getElementById("modalImg");
+            modal.style.display = "block";
+            modalImg.src = imgURL;
+        }
+
+        function closeModal() {
+            var modal = document.getElementById("myModal");
+            modal.style.display = "none";
+        }
+    </script>
 </body>
 
 </html>

@@ -8730,3 +8730,17 @@ UPDATE users
 INNER JOIN pdmv_users ON users.id = pdmv_users.user_id
 SET users.email = pdmv_users.email, users.fullname = pdmv_users.fullname;
 */
+
+update pdmv_movies set numrating = 0 where numrating is null;
+update pdmv_movies set mvpoint = 0 where mvpoint is null;
+
+CREATE TABLE pdmv_mvimages (
+    img_id INT PRIMARY KEY AUTO_INCREMENT,
+	movie_id INT NOT NULL,
+	imgURL TEXT,
+    createAt DATETIME NOT NULL DEFAULT NOW(),
+    updateAt DATETIME NOT NULL DEFAULT NOW(),
+	FOREIGN KEY (movie_id) REFERENCES pdmv_movies(movie_id)
+);
+
+INSERT INTO `pdmv_mvimages` (`img_id`, `movie_id`, `imgURL`, `createAt`, `updateAt`) VALUES (NULL, '340', 'https://flowbite.s3.amazonaws.com/docs/gallery/square/image-1.jpg', current_timestamp(), current_timestamp()), (NULL, '340', 'https://flowbite.s3.amazonaws.com/docs/gallery/square/image-2.jpg', current_timestamp(), current_timestamp());
