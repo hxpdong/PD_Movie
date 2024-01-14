@@ -8744,3 +8744,15 @@ CREATE TABLE pdmv_mvimages (
 );
 
 INSERT INTO `pdmv_mvimages` (`img_id`, `movie_id`, `imgURL`, `createAt`, `updateAt`) VALUES (NULL, '340', 'https://flowbite.s3.amazonaws.com/docs/gallery/square/image-1.jpg', current_timestamp(), current_timestamp()), (NULL, '340', 'https://flowbite.s3.amazonaws.com/docs/gallery/square/image-2.jpg', current_timestamp(), current_timestamp());
+
+DELIMITER //
+CREATE PROCEDURE InsertMultipleRowsInMVImages (IN p_mvid INT, IN num_rows INT)
+BEGIN
+    DECLARE i INT DEFAULT 0;
+
+    WHILE i < num_rows DO
+        INSERT INTO pdmv_mvimages(movie_id) VALUES (p_mvid);
+        SET i = i + 1;
+    END WHILE;
+END; //
+DELIMITER ;
