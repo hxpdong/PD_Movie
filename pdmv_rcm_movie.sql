@@ -917,6 +917,8 @@ BEGIN
     FROM pdmv_movies
     WHERE title_vi COLLATE utf8_unicode_ci LIKE @search_term
     OR title_en COLLATE utf8_unicode_ci LIKE @search_term
+    OR actors COLLATE utf8mb4_unicode_ci LIKE @search_term
+    OR director COLLATE utf8mb4_unicode_ci LIKE @search_term
     ORDER BY movie_id DESC;
 END//
 DELIMITER ;
