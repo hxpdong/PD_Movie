@@ -134,7 +134,12 @@ function updateMovieDetail(movieDetail) {
             titleEnElement.innerHTML = movie.title_vi;
             directorElement.innerHTML = movie.director;
             actorsElement.innerHTML = movie.actors;
-            contentElement.innerHTML = movie.content;
+            var content = movie.content;
+            var urlRegex = /(\bhttps?:\/\/\S+)/gi;
+            var replacedContent = content.replace(urlRegex, function(url) {
+                return '<a href="' + url + '" target="_blank">' + url + '</a>';
+            });
+            contentElement.innerHTML = replacedContent;
             ratingElement.innerHTML = movie.mvpoint;
             numRatingElement.innerHTML = movie.numrating;
             manufactureYearElement.innerHTML = movie.manufactureYear;
